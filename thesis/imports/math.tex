@@ -1,0 +1,105 @@
+% redefinition of left and right to make spacing consistent
+\let\originalleft\left
+\let\originalright\right
+\def\left#1{\mathopen{}\originalleft#1}
+\def\right#1{\originalright#1\mathclose{}}
+
+\usepackage{amsmath}
+\usepackage{mathtools}  % \coloneqq
+%\usepackage{bm}
+%\usepackage[utopia]{mathdesign}
+\usepackage[OMLmathsfit]{isomath}  % \DeclareMathAlphabet ...
+%\usepackage[bbgreekl]{mathbbol}
+
+\usepackage{mathtools}  % smashoperator
+\usepackage{commath}  % calculus, perentheses
+\usepackage{stmaryrd}  % \llbracket for \rrbracket, ...
+
+%\usepackage[croatian]{babel}		% teorem
+%\newtheorem{definition}{Definicija}[section]
+%\newtheorem{theorem}{Teorem}[section]
+%\newtheorem{corollary}{Korolar}[theorem]
+
+\DeclareMathAlphabet{\mathbbmsl}{U}{bbm}{m}{sl}
+\DeclareMathAlphabet{\mathbbmb}{U}{bbm}{b}{it}
+\DeclareMathAlphabet{\mathbbmssit}{U}{bbmss}{m}{it}
+
+
+% common set?, distribution
+\newcommand{\commset}[1]{\mathbbmb{#1}}
+\newcommand{\distrib}[1]{\mathcal{#1}}
+
+% sans-serif blackboard-bold
+\newcommand{\mathsfbbit}[1]{\mathbbmssit{#1}}
+
+% variable
+\let\vec\relax
+\let\set\relax
+\newcommand{\vec}[1]{\mathbfit{#1}}
+\newcommand{\mat}[1]{\vec{#1}}
+\newcommand{\ten}[1]{\vec{#1}}
+\newcommand{\set}[1]{\mathbbmsl{#1}}
+
+% constant
+\newcommand{\const}[1]{\mathrm{#1}}
+\newcommand{\cvec}[1]{\mathbf{#1}}
+\newcommand{\cmat}[1]{\cvec{#1}}
+\newcommand{\cten}[1]{\cvec{#1}}
+\newcommand{\cset}[1]{\mathbb{#1}}
+
+% random variable
+\newcommand{\rvar}[1]{{\color{blue!70!black}\mathsfit{#1}}}
+\newcommand{\rvec}[1]{{\color{blue!70!black}\mathsfbfit{#1}}}
+\newcommand{\rmat}[1]{\rvec{#1}}
+\newcommand{\rten}[1]{\rvec{#1}}
+\newcommand{\rset}[1]{{\color{blue!70!black}\mathsfbbit{#1}}}
+
+% linear algebra
+\newcommand{\transpose}{\mathsf T}
+
+% calculus - commath: od, pd, md, dif
+% parentheses - commath: del, cbr, sbr, envert, enVert
+
+% named functions
+\DeclareMathOperator{\softplus}{softplus}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\logistic}{\sigma}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\diag}{diag}
+
+% operators
+\DeclareMathOperator*{\argmin}{arg\,min} % thin space
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\E}{{\rm I\kern-.28em E}}
+\DeclareMathOperator*{\D}{{\rm I\kern-.281em D}}
+\DeclareMathOperator*{\Cov}{Cov}
+\let\H\relax
+\DeclareMathOperator*{\H}{{\rm H\kern-.8em H}}
+\DeclareMathOperator*{\Dklsym}{D_{\mathrm{KL}}}
+
+% bracket operators
+\newcommand{\enangle}[1]{\mathinner{\left\langle{#1}\right\rangle}}
+\newcommand{\enbbracket}[1]{\mathinner{\left\llbracket{#1}\right\rrbracket}}
+\newcommand{\braket}[2]{\enangle{{#1}|{#2}}}
+
+% parentheses from commath redefined to improve spacing because (left and right were redefined)
+\renewcommand{\del}[1]{\left(#1\right)}
+\renewcommand{\sbr}[1]{\left[#1\right]}
+\renewcommand{\cbr}[1]{\left\{#1\right\}}
+\renewcommand{\intoo}[1]{\mathinner{\del{#1}}}
+\renewcommand{\intcc}[1]{\mathinner{\sbr{#1}}}
+\renewcommand{\intco}[1]{\mathinner{\left(\right]#1\right)}}
+\renewcommand{\intoc}[1]{\mathinner{\left(#1\right]}}
+
+% special
+\newcommand{\funcdef}[3]{#1 \colon #2 \to #3}
+\newcommand{\Dkl}[2]{\Dklsym\del{#1\;\middle\|\;#2}}
+\newcommand{\C}{\cset{C}}
+\newcommand{\R}{\cset{R}}
+\newcommand{\Z}{\cset{Z}}
+\newcommand{\N}{\cset{N}}
+\newcommand{\dirac}{\delta}
+
+% operators
+\newcommand{\bidot}{\mathop{..}}
+\newcommand\sheq{\mkern1.5mu{=}\mkern1.5mu}

@@ -1,0 +1,40 @@
+\BOOKMARK [1][-]{section*.3}{Oznake}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Uvod}{}% 2
+\BOOKMARK [0][-]{chapter.2}{Osnovni pojmovi}{}% 3
+\BOOKMARK [1][-]{section.2.1}{Teorija vjerojatnosti i teorija informaicije}{chapter.2}% 4
+\BOOKMARK [2][-]{subsection.2.1.1}{Vjerojatnost, razdioba i slucajna varijabla}{section.2.1}% 5
+\BOOKMARK [2][-]{subsection.2.1.2}{Teorija informacije}{section.2.1}% 6
+\BOOKMARK [1][-]{section.2.2}{Nadzirano strojno ucenje}{chapter.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.1}{Induktivna pristranost i komponente algoritma strojnog ucenja}{section.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.2}{Kapacitet modela, prenaucenost i podnaucenost}{section.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.3}{Odabir modela}{section.2.2}% 10
+\BOOKMARK [1][-]{section.2.3}{Procjena parametara i zakljucivanje kod probabilistickih modela}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.3.1}{Procjenitelj}{section.2.3}% 12
+\BOOKMARK [2][-]{subsection.2.3.2}{Procjenitelj maksimalne izglednosti}{section.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.3.3}{Procjenitelj maksimalne aposteriorne vjerojatnosti}{section.2.3}% 14
+\BOOKMARK [2][-]{subsection.2.3.4}{Bayesovski procjenitelj i zakljucivanje}{section.2.3}% 15
+\BOOKMARK [1][-]{section.2.4}{Minimizacija rizika}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.4.1}{Rizik i empirijski rizik}{section.2.4}% 17
+\BOOKMARK [2][-]{subsection.2.4.2}{Strukturni rizik}{section.2.4}% 18
+\BOOKMARK [1][-]{section.2.5}{Probabilisticki graficki modeli}{chapter.2}% 19
+\BOOKMARK [1][-]{section.2.6}{Bayesovski modeli}{chapter.2}% 20
+\BOOKMARK [1][-]{section.2.7}{Aproksimacija razdioba i aproksimacijsko zakljucivanje}{chapter.2}% 21
+\BOOKMARK [2][-]{subsection.2.7.1}{Varijacijsko zakljucivanje}{section.2.7}% 22
+\BOOKMARK [2][-]{subsection.2.7.2}{Monte Carlo aproksimacija}{section.2.7}% 23
+\BOOKMARK [0][-]{chapter.3}{Duboko ucenje i konvolucijske mre\236e}{}% 24
+\BOOKMARK [1][-]{section.3.1}{Duboke neuronske mre\236e}{chapter.3}% 25
+\BOOKMARK [1][-]{section.3.2}{Konvolucijske mre\236e}{chapter.3}% 26
+\BOOKMARK [1][-]{section.3.3}{Optimizacija}{chapter.3}% 27
+\BOOKMARK [2][-]{subsection.3.3.1}{Propagacija pogre\235ke unatrag}{section.3.3}% 28
+\BOOKMARK [2][-]{subsection.3.3.2}{Iskljucivanje neurona - dropout}{section.3.3}% 29
+\BOOKMARK [2][-]{subsection.3.3.3}{Normalizacija po grupama}{section.3.3}% 30
+\BOOKMARK [0][-]{chapter.4}{Procjenjivanje nesigurnosti}{}% 31
+\BOOKMARK [1][-]{section.4.1}{Aleatorna i epistemicka nesigurnost}{chapter.4}% 32
+\BOOKMARK [0][-]{chapter.5}{Bayesovske neuronske mre\236e}{}% 33
+\BOOKMARK [0][-]{chapter.6}{Procjenjivanje nesigurnosti kod konvolucijskih mre\236a}{}% 34
+\BOOKMARK [0][-]{chapter.7}{Eksperimentalni rezultati}{}% 35
+\BOOKMARK [1][-]{section.7.1}{Skupovi podataka}{chapter.7}% 36
+\BOOKMARK [0][-]{chapter.8}{Zakljucak}{}% 37
+\BOOKMARK [0][-]{chapter*.7}{Literatura}{}% 38
+\BOOKMARK [0][-]{section*.8}{Appendices}{}% 39
+\BOOKMARK [0][-]{Dodatak.1.A}{Izvod donje varijacijske granice}{}% 40

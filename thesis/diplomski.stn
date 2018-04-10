@@ -1,0 +1,33 @@
+\glossaryentry{Osnovne oznake?\glossentry{osn}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!var?\subglossentry{1}{osn:var}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!vec?\subglossentry{1}{osn:vec}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!mat?\subglossentry{1}{osn:mat}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!set?\subglossentry{1}{osn:set}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!const?\subglossentry{1}{osn:const}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!cvec?\subglossentry{1}{osn:cvec}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!cmat?\subglossentry{1}{osn:cmat}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!cset?\subglossentry{1}{osn:cset}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!rvar?\subglossentry{1}{osn:rvar}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!rvec?\subglossentry{1}{osn:rvec}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!rmat?\subglossentry{1}{osn:rmat}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Osnovne oznake?\glossentry{osn}!mati?\subglossentry{1}{osn:mati}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Operacije linearne algebre?\glossentry{ola}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Operacije linearne algebre?\glossentry{ola}!transp?\subglossentry{1}{ola:transp}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Operacije linearne algebre?\glossentry{ola}!matmul?\subglossentry{1}{ola:matmul}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Operacije linearne algebre?\glossentry{ola}!scalprod?\subglossentry{1}{ola:scalprod}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Operacije linearne algebre?\glossentry{ola}!diag?\subglossentry{1}{ola:diag}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!distrib?\subglossentry{1}{vti:distrib}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!distribcond?\subglossentry{1}{vti:distribcond}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!pdf?\subglossentry{1}{vti:pdf}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!pdfcond?\subglossentry{1}{vti:pdfcond}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!hasdistrib?\subglossentry{1}{vti:hasdistrib}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!E1?\subglossentry{1}{vti:E1}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!D1?\subglossentry{1}{vti:D1}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!Cov1?\subglossentry{1}{vti:Cov1}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!H1?\subglossentry{1}{vti:H1}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Vjerojatnost i teorija informacije?\glossentry{vti}!Dkl1?\subglossentry{1}{vti:Dkl1}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Ostalo?\glossentry{ost}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Ostalo?\glossentry{ost}!setrange?\subglossentry{1}{ost:setrange}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Ostalo?\glossentry{ost}!dirac?\subglossentry{1}{ost:dirac}|setentrycounter[]{page}\glsnumberformat}{v}
+\glossaryentry{Ostalo?\glossentry{ost}!doublebracket?\subglossentry{1}{ost:doublebracket}|setentrycounter[]{page}\glsnumberformat}{v}

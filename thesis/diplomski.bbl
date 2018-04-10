@@ -1,0 +1,68 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bishop(2006)]{Bishop:2006:PRML}
+Christopher~M. Bishop.
+\newblock \emph{Pattern Recognition and Machine Learning (Information Science
+  and Statistics)}.
+\newblock 2006.
+
+\bibitem[Blei et~al.(2017)Blei, Kucukelbir, i McAuliffe]{Blei:2017:VIRS}
+David~M. Blei, Alp Kucukelbir, i Jon~D. McAuliffe.
+\newblock Variational {Inference}: {A} {Review} for {Statisticians}.
+\newblock \emph{Journal of the American Statistical Association}, 2017.
+\newblock URL \url{http://arxiv.org/abs/1601.00670}.
+
+\bibitem[C.~Kennedy i O'Hagan(2002)]{Kennedy:2002:BCCM}
+Marc C.~Kennedy i Anthony O'Hagan.
+\newblock Bayesian calibration of computer models.
+\newblock 2002.
+
+\bibitem[Gal i Ghahramani(2015)]{Gal:2015:DBA}
+Yarin Gal i Zoubin Ghahramani.
+\newblock Dropout as a {Bayesian} {Approximation}: {Representing} {Model}
+  {Uncertainty} in {Deep} {Learning}.
+\newblock 2015.
+\newblock URL \url{http://arxiv.org/abs/1506.02142}.
+
+\bibitem[Jordan et~al.(1999)Jordan, Ghahramani, Jaakkola, i
+  Saul]{Jordan:1999:IVMGM}
+Michael~I. Jordan, Zoubin Ghahramani, Tommi~S. Jaakkola, i Lawrence~K. Saul.
+\newblock An introduction to variational methods for graphical models.
+\newblock 1999.
+
+\bibitem[Kiureghian i Ditlevsen(2009)]{Kiureghian:2009:AEDM}
+Armen~Der Kiureghian i Ove Ditlevsen.
+\newblock Aleatory or epistemic? {Does} it matter?
+\newblock 2009.
+
+\bibitem[Murphy(2012)]{Murphy:2012:MLPP}
+Kevin~P. Murphy.
+\newblock \emph{Machine Learning: A Probabilistic Perspective}.
+\newblock 2012.
+
+\bibitem[Murray i Ghahramani(2005)]{Murray:2005:NEBOR}
+Iain Murray i Zoubin Ghahramani.
+\newblock A note on the evidence and {B}ayesian {O}ccam's razor.
+\newblock 2005.
+
+\bibitem[Šnajder i {Dalbelo~Bašić}(2014)]{Snajder:2014:SU}
+Jan Šnajder i Bojana {Dalbelo~Bašić}.
+\newblock \emph{Strojno učenje}.
+\newblock 2014.
+
+\bibitem[Neal(1995)]{Neal:1995:BLNN}
+Radford~M. Neal.
+\newblock Bayesian learning for neural networks, 1995.
+
+\bibitem[Yang(2017)]{Yang:2017:UVLB}
+Xitong Yang.
+\newblock Understanding the {Variational} {Lower} {Bound}, 2017.
+\newblock URL
+  \url{http://legacydirs.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf}.
+
+\end{thebibliography}

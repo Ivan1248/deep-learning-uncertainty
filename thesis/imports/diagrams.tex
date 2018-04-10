@@ -1,0 +1,19 @@
+\usepackage{tikz} 					% dijagrami
+  \tikzset{>=latex}
+  \usepackage{pgfplots}
+	  \pgfplotsset{every axis/.append style={
+	  		axis x line=middle,    	% put the x axis in the middle
+	  		axis y line=middle,    	% put the y axis in the middle
+	  		axis line style={->},  	% arrows on the axis
+	  		xlabel={$x$},          	% default put x on x-axis
+	  		ylabel={$y$},          	% default put y on y-axis
+	  		samples=100,
+	  		axis equal,
+	  	}} % axis style
+	\usetikzlibrary{fit}
+	
+\usetikzlibrary{automata,arrows,positioning,calc}
+\usetikzlibrary{arrows,%
+	petri,%
+	topaths}%
+	

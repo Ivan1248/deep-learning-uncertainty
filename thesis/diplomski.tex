@@ -1,0 +1,441 @@
+\documentclass[utf8, diplomski, lmodern]{fer}
+
+\input{imports/font}
+
+\input{imports/text}
+\input{imports/math}
+\input{imports/tables}
+\input{imports/figures}
+\input{imports/diagrams}
+\input{imports/misc}
+
+\input{imports/glossary}
+\usepackage[toc]{appendix}
+
+
+\begin{document}
+
+\thesisnumber{1728}
+\title{Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela}
+\author{Ivan Grubišić}
+\maketitle
+
+% Ispis stranice s napomenom o umetanju izvornika rada. Uklonite naredbu \izvornik ako želite izbaciti tu stranicu.
+\izvornik
+\subsection*{Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela}
+
+Procjena nesigurnosti predikcija vrlo je važan sastojak mnogih praktičnih primjena konvolucijskih modela računalnog vida. Do tog cilja možemo doći analizom višeznačnosti podataka, nesigurnosti odluke modela te vjerojatnosti da se podatak nalazi u distribuciji skupa za učenje. U ovom radu razmatramo pristupe koji procjenu nesigurnosti predikcija uče nadzirano, primjenom istih podataka na kojima se uči i promatrani model.
+
+U okviru rada, potrebno je proučiti i ukratko opisati postojeće pristupe za procjenu nesigurnosti predikcija. Uhodati postupke procjene nesigurnosti dubokih konvolucijskih modela temeljene na nadziranom učenju. Validirati hiperparametre te prikazati i ocijeniti ostvarene rezultate na problemu semantičke segmentacije. Predložiti pravce budućeg razvoja.
+Radu priložiti izvorni i izvršni kod razvijenih postupaka, ispitne slijedove i rezultate, uz potrebna objašnjenja i dokumentaciju. Citirati korištenu literaturu i navesti dobivenu pomoć.
+
+
+% Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
+\zahvala{zahvala}
+
+\tableofcontents
+
+\newpage
+
+\begingroup
+\onehalfspacing
+\printunsrtglossary[type=symbols,style=supergroup,title={Oznake}]
+\endgroup
+
+
+
+\chapter{Uvod}
+Uvod rada. Nakon uvoda dolaze poglavlja u kojima se obrađuje tema.
+
+duboko učenje
+
+neizvjesnost modela
+
+primjene procjene nesigurnosti
+
+primjena na semantičkoj segmentaciji i procjeni dubine
+
+struktura rada
+
+
+
+\chapter{Osnovni pojmovi} \label{chap:osnovni-pojmovi}
+
+
+\section{Teorija vjerojatnosti i teorija informaicije}
+
+Jako važan pojam u strojnom učenju je \textcolor{red}{neizvjesnost}. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modelirati \textcolor{red}{neizvjesnost} pronalaziti optimalne zaključke korištenjem dostupnih informacija. Ovaj odjeljak daje kratak pregled nekih od osnovnih pravila vjerojatnosti.
+
+\subsection{Vjerojatnost, razdioba i slučajna varijabla}
+
+Neizvjesnost neke pojave modeliramo slučajnom varijablom. Slučajnoj varijabli dodijeljena je razdioba koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. Elementarni događaj je ostvarenje neke vrijednosti iz prostora elementarnih događaja i, ako je $\rvar a$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $a$, taj događaj ima zapis $\cbr{\rvar a = a}$, a njegova vjerojatnost $P(\cbr{\rvar a = a})$ ili, kraće, $P(\rvar a = a)$. Događaj može biti općenitiji, npr. $\cbr{\rvar a < a}$, i općenito se može izraziti predikatom: $\cbr{R(\rvar a)}$.
+
+Razlikujemo diskretne i kontinuirane razdiobe. 
+
+Neka je $\rvar a$ slučajna varijabla koja može poprimiti vrijednosti iz skupa $\set A$. Ako je $\set A$ konačan skup, $\rvar a$ ima diskretnu razdiobu $P(\rvar a)$ s funkcijom vjerojatnosti $P_{\rvar a}(a)$. Ako je $\set A$ beskonačan skup, $\rvar a$ ima kontinuiranu razdiobu $p(\rvar a)$ s funkcijom gustoće vjerojatnosti $p_{\rvar a}(a)$. Za diskretnu razdiobu mora vrijediti $\sum_a P_{\rvar a}(a)=1$, a za kontinuiranu $\int_a p_{\rvar a}(a)=1$.
+
+U popisu oznaka na početku rada prikazane su još neke oznake 
+
+Ovdje funkcije gustoće vjerojatnosti smatramo poopćenim funkcijama, što znači da za neke vrijednosti gustoća može biti beskonačna (tj. vjerojatnost veća od $0$), ali i dalje mora vrijediti $\int_a p(a)=1$. Svaka razdioba definirana je svojom funkcijom (gustoće) vjerojatnosti.
+
+događaj
+
+Svakoj slučajnoj varijabli je jednoznačno dodijeljena jedna razdioba.
+
+Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar a_1\sim\mathcal A$, $\rvar a_2\sim\mathcal A$ i $\rvar b\sim\mathcal B$, ne mora vrijediti $p(\rvar a_1, \rvar b) = p(\rvar a_2, \rvar b)$.
+
+\subsection{Teorija informacije}
+***
+
+\begin{align}
+	\Dkl{\rvar a}{\rvar b} = \E_{a\sim\rvar a} \ln\frac{p_{\rvar a}(a)}{p_{\rvar b}(a)} = \int_a p(a) \ln\frac{p_{\rvar a}(a)}{p_{\rvar b}(a)}
+\end{align}
+
+\begin{align}
+\lim_{\varepsilon\to 0} \int_{-\varepsilon}^{\varepsilon} \delta(x_0+\varepsilon') \dif\varepsilon' = 1
+\end{align}
+
+
+\section{Nadzirano strojno učenje}
+
+Zadatak algoritama nadziranog strojnog učenja je preslikavanje ulaznih primjera $\vec x\in\set{X}$ u izlaze (oznake) $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i,j}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja što bolje \emph{generalizira}, tj. osim primjera iz skupa za učenje, dobro preslikava i neviđene ulazne primjere u izlaze.
+
+Neka je $\set{D}=\cbr{\vec d_i}_i$ skup nezavisnih primjera izvučenih iz neke razdiobe $\distrib{D}$. Možemo definirati \emph{probabilistički model} $\set H$ s nepoznatim parametrima $\vec\theta$ kojemu je cilj što bolje modelirati tu razdiobu pronalaskom najbolje hipoteze na temelju podataka: $p(\vec{d}\mid\set{D},\set H)$. Model koji modelira razdiobu primjera nazivamo \emph{generativnim modelom}. U nastavku ćemo izostavljati oznaku modela radi kraćeg zapisa.
+
+Ako su primjeri parovi $\vec d_i = \del{\vec x_i, \vec y_i} \in \set{X}\times\set{Y}$, može nam biti cilj ulaznim primjerima iz $\set{X}$ dodjeljivati oznake iz $\set Y$. Ako je problem koji rješavamo dodjeljivanje oznaka ulaznim primjerima, onda su često prikladniji \emph{diskriminativni modeli}. Probabilistički diskriminativni modeli koji izravno modeliraju uvjetne razdiobe $p(\rvec y\mid \vec x)$ hipotezom oblika $p(\rvec y\mid\vec x,\set{D})$. Neprobabilistički diskriminativni modeli modeliraju funkciju dodjeljivanja oznaka $\funcdef{f}{\set{X}}{\set{Y}}$ hipotezom $h(\vec x)$. Modeliranje zajedničke razdiobe $p(\rvec x,\rvec y)$ obično zahtijeva više računalnih resursa i podataka \citep{Bishop:2006:PRML}.
+
+\subsection{Induktivna pristranost i komponente algoritma strojnog učenja}
+
+Uz zadani skup hipoteza koji dopušta model, učenjem se traže parametri koji do kraja definiraju traženu hipotezu. Učenje hipoteze je loše definiran (engl. \textit{ill-posed}) problem jer skup podataka $\set{D}$ nije dovoljan za jednoznačan odabir hipoteze. Osim dobrog opisivanja podataka za učenje, naučena hipoteza mora dobro generalizirati. Kako bi učenje i generalizacija bili mogući, potreban je skup pretpostavki koji se naziva induktivna pristranost. Razlikujemo dvije vrste induktivne pristranosti \citep{Snajder:2014:SU}:
+\begin{enumerate}
+	\item \emph{pristranost ograničavanjem} ili \emph{pristranost jezika} -- ograničavanje skupa hipoteza koje se mogu prikazati modelom,
+	\item \emph{pristranost preferencijom} ili \emph{pristranost pretraživanja} -- dodjeljivanje različitih prednosti različitim hipotezama.
+\end{enumerate}
+Većina algoritama strojnog učenja kombinira obje vrste induktivne pristranosti \citep{Snajder:2014:SU}.
+%TODO
+
+Kod većine algoritama strojnog učenja možemo razlikovati 3 osnovne komponente \citep{Snajder:2014:SU}, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
+\begin{enumerate}
+	\item \emph{Model} ili prostor hipoteza. Model $\set H$ je skup funkcija $h$  parametriziranih parametrima $\vec\theta$: $\set H=\cbr{h(\vec x;\vec{\theta})}_{\vec{\theta}}$.
+	\item \emph{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emph{funkcija gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar izlaz hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
+	\begin{align}
+	E(\vec{\theta,\set D})=\frac{1}{\envert{\set D}}\sum_{(\vec x,\vec y)\in\set D} L(h(\vec x;\vec{\theta}),\vec y) \text{.}
+	\end{align}
+	Obično joj dodajemo \emph{regularizacijski} član kojim unosimo dodatne pretpostavke radi postizanja bolje generalizacije. Više o funkciji pogreške u smislu smanjivanja empirijskog i strukturnog rizika piše u odjeljku~\ref{sec:minimizacija-rizika}.
+	\item \emph{Optimizacijski postupak}. Optimizacijski postupak je algoritam kojim pronalazimo hipotezu koja minimizira pogrešku:
+	\begin{align}
+	\vec\theta^* = \argmin_{\vec{\theta}} E(\vec{\theta,\set D}) \text{.}
+	\end{align}
+	Kod nekih jednostavnijih modela minimum možemo odrediti analitički. Inače moramo koristiti neki iterativni optimizacijski postupak. Kod nekih složenijih modela, kao što su neuronske mreže, funkcija pogreške nije unimodalna i vjerojatnost pronalaska globalnog optimuma je zanemariva, ali ipak se mogu pronaći dobra rješenja.
+\end{enumerate}
+
+\subsection{Kapacitet modela, prenaučenost i podnaučenost}
+TODO
+
+\subsection{Odabir modela}
+TODO
+%https://en.wikipedia.org/wiki/Variational_Bayesian_methods
+\cite{Murray:2005:NEBOR}
+
+
+\section{Procjena parametara i zaključivanje kod probabilističkih modela}
+
+\subsection{Procjenitelj}
+
+%TODO
+TODO: definicija, poželjna svojstva, SU 3.3
+TODO: varijanca i pristranost\\
+
+\subsection{Procjenitelj maksimalne izglednosti}
+
+\emph{Procjenitelj maksimalne izglednosti} (\emph{ML-procjenitelj}, engl. \textit{maximum likelihood}) je statistika koja uzorku dodjeljuje parametre koji imaju najveću \emph{izglednost}:
+\begin{align}
+\rvec\theta_\mathrm{ML} = \argmax_{\vec\theta} p(\rset{D}\mid\vec\theta) \text{.}
+\end{align}
+Zbog pretpostavke međusobne nezavisnosti primjera vrijedi
+\begin{align}
+ p(\set{D}\mid\vec\theta) = \prod_{\vec d\in\set{D}} p(\vec d\mid\vec\theta) \text{.}
+\end{align}
+
+Za razliku od generativnih, diskriminativni modeli ne modeliraju razdiobu ulaznih primjera, nego samo uvjetnu razdiobu $p(\vec y\mid \vec x, \set{D})$ pa kod njih razdioba ulaznih primjera ne ovisi o $\vec\theta$, tj. $p(\vec x\mid\vec\theta) = p(\vec x)$. Onda je izglednost
+\begin{align}\label{eq:izglednost-diskr}
+p(\set{D}\mid\vec\theta) 
+= \prod_{(\vec x,\vec y)\in\set{D}} p(\vec y\mid\vec x,\vec\theta)p(\vec x\mid\vec\theta) 
+= p(\vec x) \prod_{(\vec x,\vec y)\in\set{D}} p(\vec y\mid\vec x,\vec\theta) \text{.}
+\end{align}
+Faktor $p(\vec x)$ ne ovisi o parametrima i može se zanemariti pri optimizaciji.
+
+\subsection{Procjenitelj maksimalne aposteriorne vjerojatnosti}
+
+\emph{Procjenitelj maksimalne aposteriorne vjerojatnosti} (\emph{MAP-procjenitelj}, engl. \textit{maximum a posteriori estimator}) u obzir uzima \emph{apriornu razdiobu} $p(\rvec\theta)$ koja predstavlja dodatne pretpostavke za razdiobu parametara. Apriorna razdioba parametara pojednostavljuje model dajući prednost nekim hipotezama i posebno je korisna kada ima malo podataka. Po Bayesovom pravilu, \emph{aposteriorna vjerojatnost} parametara je
+\begin{equation} \label{eq:posterior-bayes}
+ p(\vec\theta\mid\set D) 
+ = \frac{p(\set{D}\mid\vec\theta)p(\vec\theta)}{p(\set{D})}
+ = \frac{p(\set{D}\mid\vec\theta)p(\vec\theta)}{\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif\vec\theta'} \text{.}
+\end{equation}
+Maksimizacijom aposteriorne vjerojatnosti dobivaju se parametri
+\begin{equation}
+ \rvec\theta_\mathrm{MAP} = \argmax_{\vec\theta} p(\vec\theta\mid\rset D) = \argmax_{\vec\theta} p(\rset{D}\mid\vec\theta)p(\vec\theta) \text{.}
+\end{equation}
+Ovdje nije potrebno normalizirati aposteriornu vjerojatnost izračunavanjem marginalne izglednosti $p(\set{D})$ u nazivniku na desnoj strani jednadžbe~\eqref{eq:posterior-bayes} jer ona ne ovisi $\vec\theta$, nego samo o modelu $\set H$. Odabirom uniformne apriorne razdiobe MAP-procjenitelj postaje ekvivalentan ML-procjenitelju.
+
+Poželjno je da $p(\set{D}\mid\vec\theta)$ i $p(\vec\theta)$ kao funkcije parametra $\vec\theta$ imaju takav oblik da njihov umnožak ima sličan oblik i može se analitički izračunati. Ako $p(\rvec\theta)$ i $p(\rvec\theta\mid\set D)$ imaju isti algebarski oblik definiran nekim parametrima, nazivaju se \emph{konjugatnim razdiobama} \citep{Snajder:2014:SU}.
+% TODO ^^
+
+\subsection{Bayesovski procjenitelj i zaključivanje}
+
+Prethodno opisani procjenitelji daju točkastu procjenu parametara i ne izražavaju nesigurnost procjene kojoj uzrok može biti npr. nedovoljna količina podataka ili šum u podacima za učenje. \emph{bayesovski procjenitelj} kao procjenu daje razdiobu nad hipotezama $p(\rvec\theta\mid\set D)$ za koju je potrebno izračunati integral $p(\set{D})=\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif {\vec\theta'}$ iz nazivnika na desnoj strani jednadžbe~\eqref{eq:posterior-inference}. 
+
+Kod složenijih modela često ne možemo odabrati konjugatnu apriornu razdiobu, a i funkcija izglednosti je sama po sebi već dovoljno složena da se, neovisno o apriornoj razdiobi, integral marginalne izglednosti $p(\set{D})$ ne može ni analitički ni numerički traktabilno računati.
+
+Vjerojatnost nekog primjera $\vec d$ procjenjuje se marginalizacijom po svim mogućim parametrima \citep{Neal:1995:BLNN}:
+\begin{align}
+p(\vec d\mid\set D) 
+= \int p(\vec d\mid\vec\theta)p(\vec\theta\mid\set D) \dif{\vec\theta}
+= \E_{\rvec\theta\mid\set D} p(\vec d\mid\rvec\theta) \text{.}
+\end{align}
+Kada se parametri točkasto procjenjuju, npr. MAP-procjeniteljem, točkasta procjena parametara $\hat{\vec\theta}$ aproksimira cijelu aposteriornu razdiobu, tj. $p(\vec\theta\mid\set{D}) \approx \dirac(\hat{\vec\theta}-\vec\theta)$. Onda je
+\begin{align}
+p(\vec d\mid\set D) 
+\approx \int p(\vec d\mid\vec\theta) \dirac(\hat{\vec\theta}-\theta) \dif{\vec\theta} 
+= p(\vec d\mid\hat{\vec\theta}) \text{.}
+\end{align}
+%TODO: treba li d biti slučajna varijabla?
+
+Za diskriminativne modele se bayesovsko zaključivanje može izraziti ovako:
+\begin{align*}
+p(\vec y\mid \vec x, \set{D})
+&= \frac{p(\vec x,\vec y\mid\set{D})}{p(\vec x\mid\set{D})} \\
+&= \frac{\int p(\vec y\mid \vec x,\vec\theta)p(\vec x\mid\vec\theta) p(\vec\theta\mid\set D) \dif{\vec\theta}}{\int p(\vec x\mid\vec\theta)p(\vec\theta\mid\set D)\dif{\vec\theta}} \\
+&= \frac{ p(\vec x)\int p(\vec y\mid \vec x,\vec\theta)p(\vec\theta\mid\set D) \dif{\vec\theta}}{p(\vec x) \int p(\vec\theta\mid\set D) \dif{\vec\theta}} \text{.}
+\end{align*}
+Poništavanjem $p(\vec x)$ i integriranjem nazivnika dobiva se
+\begin{align}
+p(\vec y\mid \vec x, \set{D})
+= \int p(\vec y\mid \vec x,\vec\theta)p(\vec\theta\mid\set D) \dif{\vec\theta}
+= \E_{\rvec\theta\mid\set D} p(\vec y\mid\vec x,\rvec\theta) \text{.}
+\end{align}
+%TODO: trebaju li x i y biti slučajna varijabla ili obične?
+
+Kod regresije je često, ako pretpostavljamo da pogreška izlaza ima Gaussovu razdiobu, najbolja procjena hipoteze očekivanje po naučenoj razdiobi parametara \citep{Neal:1995:BLNN}: 
+\begin{align}
+h(\vec x)
+= \E_{\rvec\theta\mid\set D} h(\vec x; \rvec\theta)
+= \int h(\vec x; \vec\theta)p(\vec\theta\mid\set D) \dif{\vec\theta} \text{.}
+\end{align}
+U tom slučaju se nesigurnost može izraziti disperzijom
+ $\D_{\rvec\theta\mid\set D} h(\vec x; \rvec\theta)$.
+
+
+\section{Minimizacija rizika} \label{sec:minimizacija-rizika}
+
+\subsection{Rizik i empirijski rizik}
+
+Zadatak nadziranog strojnog učenja može se formulirati kao optimizacijski problem minimizacije \emph{rizika}. Neka su $\vec\theta$ odabrani parametri. Definiramo \emph{funkciju gubitka} $\funcdef{L}{\set{Y}\times\set{Y}}{\R}$ koja kažnjava neslaganje izlaza sa stvarnom oznakom. Očekivanje funkcije gubitka je (frekventistički) \emph{rizik} \citep{Murphy:2012:MLPP}:
+\begin{align}
+R(\vec\theta, \mathcal{D}) = \E_{(\vec x,\vec y)\sim\mathcal{D}} L(h(\vec x;\vec\theta), \vec y) \text{.}
+\end{align}
+Razdioba koja generira podatke nije poznata pa se koristi \emph{empirijski rizik} koji prirodnu razdiobu $\mathcal{D}$ procjenjuje empirijskom, tj. uzorkom $\set{D}$:
+\begin{align}
+R_\mathrm{E}(\vec\theta;\set{D}) 
+= \E_{(\vec x,\vec y)\sim\set D} L(h(\vec x;\vec\theta), \vec y) 
+= \frac{1}{\envert{\set{D}}} 
+\sum_{(\vec x, \vec y)\in\set{D}} L(h(\vec x;\vec\theta), \vec y) \text{.}
+\end{align}
+U slučaju nenadziranog učenja, kada se hipoteza sastoji od kodera $E$ i dekodera $D$, tj. $h(\vec x;\theta) = E(D(\vec x;\theta);\theta)$, ili generativnog modela, kada je $h(\vec x;\theta) = p(\vec x\mid\theta)$, gubitak mjeri \emph{pogrešku rekonstrukcije} i izraz za rizik je \citep{Murphy:2012:MLPP}:
+\begin{align}
+R(\rvec\theta;\mathcal{D}) = \E_{\vec d\sim\mathcal{D}} L(h(\vec d;\vec\theta), \vec d) \text{.}
+\end{align}
+
+Kod probabilističkih modela empirijski rizik se može definirati kao negativni logaritam izglednosti:
+\begin{align}
+R_\mathrm{E}(\vec\theta;\set{D}) = -\ln p(\set{D}\mid\vec\theta) = -\sum_{\vec d\in\set{D}} \ln p(\vec d\mid\vec\theta) \text{,}
+\end{align}
+tj. gubitak je onda $L(h(\vec d;\vec\theta), \vec d) = -\ln p(\vec d\mid\vec\theta)$. U slučaju diskriminativnog modela, uz zanemarivanja faktora izglednosti koji ne ovisi o $\vec\theta$ (jednadžba~\eqref{eq:izglednost-diskr}), vrijedi $L(h(\vec x;\vec\theta), \vec y) = -\ln p(\vec y\mid\vec x,\vec\theta)$.
+
+\subsection{Strukturni rizik}
+
+Kada ima malo podataka ili je model previše složen, minimizacija empirijskog rizika dovodi do velike varijance i slabe generalizacije. Procjenitelj koji minimizira empirijski rizik ne uzima u obzir apriornu razdiobu parametara. Radi postizanja bolje generalizacije, funkciji pogreške dodaje se \emph{regularizacijski} gubitak $\lambda R_\mathrm{R}(\vec\theta)$, $\lambda\geq0$, koji predstavlja \emph{strukturni rizik} koji daje prednost jednostavnijim hipotezama:
+\begin{align}
+E(\vec\theta;\set{D}) = R_\mathrm{E}(\vec\theta;\set{D}) + \lambda R_\mathrm{R}(\vec\theta) \text{.}
+\end{align}
+
+Kod opisanih modela koji uključuju apriorno znanje, regularizacijskom članu uz $\lambda=1$ odgovara negativni logaritam apriorne vjerojatnosti parametara: $R_\mathrm{R}(\vec\theta) = -\frac{1}{\envert{\set{D}}}\ln p(\vec\theta)$. $\lambda$ različit od $1$ odgovara izmjeni entropije apriorne razdiobe $\const H\del{p(\rvec\theta)^\lambda/Z}$, tj. s većim $\lambda$ apriorna razdioba postaje koncentriranija i regularizacija jača. Jačom regularizacijom se povećava pristranost i smanjuje varijanca procjenitelja.
+
+%TODO regularizacijski gubitak autoenkodera
+%TODO?: MLPP 5.7.1.2 Reject option\\
+
+
+\section{Probabilistički grafički modeli}
+
+\section{Bayesovski modeli}
+
+DL 3.14
+
+
+\section{Aproksimacija razdioba i aproksimacijsko zaključivanje}
+
+Ovaj odjeljak uglavnom se temelji na \cite{Blei:2017:VIRS} i malo na \cite{Yang:2017:UVLB}.
+
+Važan problem u bayesovskoj statistici, gdje se zaključivanje temelji na izračunima koji uključuju aposteriornu razdiobu, je aproksimacija razdioba koje su zahtjevne za računanje. Kod složenijih bayesovskih modela\footnote{Bayesovski model (ili Bayesova mreža) je probabilistički grafički model sa strukturom usmjerenog acikličkog grafa.} aposteriorna razdioba se ne može lako izračunati i treba koristiti aproksimacijske postupke od kojih su glavni \emph{varijacijski} postupci \citep{Jordan:1999:IVMGM} i \emph{Monte Carlo} postupci koji se temelje na uzorkovanju \emph{pomoću Markovljevog lanca} (MCMC, engl. \textit{Markov chain Monte Carlo}) i Hamiltonovski (ili hibridni) MC-postupci (HMC). MCMC i HMC temelje se na definiranju stohastičkog procesa koji ima stacionarnu razdiobu jednaku razdiobi koja se aproksimira, omogućuju asimptotski egzaktno uzorkovanje i bolje su istraženi. Varijacijski postupci temelje se na aproksimaciji razdiobe nekom jednostavnijom koja se pronalazi rješavanjem optimizacijskog problema, brži su i jednostavniji za ostvariti za složenije modele.
+
+Razmatramo bayesovski model koji ima jednu latentnu varijablu $\rvec z$ i jednu vidljivu varijablu $\rvec x$. Model je prikazan an slici~\ref{fig:pgm} i opisan je ovom jednadžbom združene vjerojatnosti:
+\begin{align*}
+p(\vec x, \vec z) = p(\vec z) p(\vec x\mid\vec z) \text{.}
+\end{align*}
+Zaključivanjem se određuje aposteriorna razdioba latentne varijable
+\begin{align} \label{eq:posterior-inference}
+p(\vec z\mid\vec x) = \frac{p(\vec x,\vec z)}{p(\vec x)} =  \frac{p(\vec x,\vec z)}{\int p(\vec x, \vec z) \dif{\vec z}} \text{.}
+\end{align}
+na temelju opažanih vrijednosti varijable $\rvec x$ (podataka). Kod složenijih modela integriranje marginalne izglednosti u nazivniku nije traktabilno i aposteriorna razdioba se mora aproksimirati \emph{aproksimacijskim zaključivanjem}.
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{main}=[circle, minimum size = 10mm, thick, draw =black!80, node distance = 16mm]
+	\tikzstyle{connect}=[-latex, thick]
+	\node[main] (z) [] {$\rvec z$};
+	\node[main, fill = black!0] (x) [right=of z] {$\rvec x$};
+	\path (z) edge [connect] (x);
+	\end{tikzpicture}
+	\caption{Prikaz grafičkog modela čija je združena razdioba $p(\vec x, \vec z) = p(\vec z) p(\vec x\mid\vec z)$. }
+	\label{fig:pgm}
+\end{figure}
+%TODO zasjenjen čvor?
+
+
+\subsection{Varijacijsko zaključivanje}
+
+Za razliku od uzorkovanja kod MCMC-postupaka, osnovna ideja kod varijacijskog zaključivanja je optimizacija. Prvo se odabire familija razdioba $\set{Q}=\cbr{p(\tilde{\rvec z})}_{\tilde{\rvec z}}=\cbr{p(\tilde{\rvec z}_{\vec\phi})}_{\vec\phi}$ koje su lakše za računanje. Razdiobe iz $\set{Q}$ su parametrizirane tzv. \emph{varijacijskim parametrima} $\vec\phi$. Cilj je na temelju podataka kao zamjenu za aposteriornu razdiobu $p(\vec z\mid\vec x)$ pronaći razdiobu iz $\set{Q}$ koja ju što bolje aproksimira. To možemo ostvariti minimizacijom Kullback-Leiblerove (KL) divergenciju s obzirom na stvarnu aposteriornu razdiobu po varijacijskim parametrima:
+\begin{align}
+p(\tilde{\rvec z}^*) = \argmin_{p(\tilde{\rvec z})\in\set Q} \Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} \text{.}
+\end{align}
+Ovakva ciljna funkcija obično se ne može lako izračunati jer zahtijeva računanje marginalne izglednosti $p(\vec x)$ iz nazivnika u jednadžbi~\eqref{eq:posterior-inference} marginalizacijom po $\rvec z$, što može biti netraktabilno:
+\begin{align}
+\Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} 
+&= \E_{\tilde{\rvec z}} \ln\frac{p(\tilde{\vec z})}{p(\rvec z\sheq\tilde{\vec z}\mid\vec x)} \nonumber \\
+&= \E_{\tilde{\rvec z}} \ln p(\tilde{\vec z}) - \E_{\tilde{\rvec z}}  \ln p(\rvec z\sheq\tilde{\vec z}\mid\vec x) \nonumber\\
+&= \E_{\tilde{\rvec z}}  \ln p(\tilde{\vec z}) - \E_{\tilde{\rvec z}}  \ln p(\rvec z\sheq\tilde{\vec z},\vec x) + \ln p(\vec x) \text{.} \label{eq:dkl-split}
+\end{align}
+
+Umjesto minimizacije KL-divergencije, možemo maksimizirati funkciju koja se naziva \emph{varijacijska donja granica} (engl. \textit{variational lower bound}) ili \emph{donja granica (logaritma) marginalne izglednosti} (ELBO, engl. \textit{(log) evidence lower bound}):
+\begin{align}
+\mathrm{ELBO}(\tilde{\rvec z}) 
+\coloneqq& \E_{\tilde{\rvec z}} \ln p(\rvec z\sheq\tilde{\vec z},\vec x) - \E_{\tilde{\rvec z}} \ln p(\tilde{\vec z})  \text{.} \label{eq:elbo}
+\end{align}
+To se i ovako može zapisati:
+\begin{align}
+\mathrm{ELBO}(\tilde{\rvec z}) 
+= \E_{\tilde{\rvec z}} \ln p(\vec x\mid\rvec z\sheq\tilde{\vec z}) - \Dkl{\tilde{\rvec z}}{\rvec z}  \text{.}
+\end{align}
+Maksimiziranje takve ciljne funkcije daje razdiobu $p(\tilde{\rvec z})$ koja dobro obješnjava podatke (maksimizacija očekivanje logaritma izglednosti) i nije previše daleko od apriorne razdiobe (minimizacija KL-divergencije između varijacijske razdiobe i apriorne razdiobe) \citep{Gal:2015:DBA}. Zamjenom prva dva člana u jednadžbi \eqref{eq:dkl-split},
+KL-divergencija se može ovako zapisati:
+\begin{align}\label{eq:DklELBO}
+\Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} = - \mathrm{ELBO}(\tilde{\rvec z}) + \ln p(\vec x) \text{.}
+\end{align}
+Naziv \textit{donja granica marginalne izglednosti} dolazi od toga što su \cite{Jordan:1999:IVMGM} izveli nejednakost $\ln p(\vec x) \geq \mathrm{ELBO}(\tilde{\rvec z})$ preko Jensenove nejednakosti. Ta nejednakost slijedi i iz prethodne jednadžbe i nenegativnosti KL-divergencije:
+\begin{align}
+\ln p(\vec x) = \mathrm{ELBO}(\tilde{\rvec z}) + \Dkl{\tilde{\rvec z}}{(\rvec z\mid\rvec x)} \geq \mathrm{ELBO}(\tilde{\rvec z}) \text{.}
+\end{align}
+
+
+
+TODO mean-field, calculus of variations
+%https://en.wikipedia.org/wiki/Variational_Bayesian_methods
+% https://en.wikipedia.org/wiki/Calculus_of_variations
+
+
+\subsection{Monte Carlo aproksimacija}
+
+1.3.1 \cite{Neal:1995:BLNN}.
+
+
+
+\chapter{Duboko učenje i konvolucijske mreže}
+
+
+\section{Duboke neuronske mreže}
+
+
+\section{Konvolucijske mreže}
+
+
+\section{Optimizacija}
+
+\subsection{Propagacija pogreške unatrag}
+
+\subsection{Isključivanje neurona - dropout}
+
+\subsection{Normalizacija po grupama}
+
+
+
+\chapter{Procjenjivanje nesigurnosti}
+
+
+\section{Aleatorna i epistemička nesigurnost}
+
+Kod bayesovskih modela nesigurnost zaključivanja izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i entropijom ili varijancom kada je prikladno.
+
+Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste \citep{Kiureghian:2009:AEDM}: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost}. Riječ \textit{aleatorna} izvedena je od latinske riječi \textit{alea} koja znači \textit{kocka} i asocira na nasumičnost bacanja kocke, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u parametre modela. Ona dolazi od neznanja i može se smanjiti uz više podataka.
+
+Granica između aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti će epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će, neovisno o ograničenosti modela, biti aleatorna.
+
+TODO: homoskedastička, heteroskedastička nesigurnost
+
+\the\fontdimen5\font\newline % em
+\the\fontdimen6\font\newline % ex
+
+\the\textwidth
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
+	\caption{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svijetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
+	\label{fig:homoscedastic-heteroscedastic-noises}
+\end{figure}
+
+
+
+\chapter{Bayesovske neuronske mreže}
+
+
+
+\chapter{Procjenjivanje nesigurnosti kod konvolucijskih mreža}
+
+
+
+\chapter{Eksperimentalni rezultati}
+
+
+\section{Skupovi podataka}
+
+
+
+\chapter{Zaključak}
+
+Zaključak.
+
+\bibliography{literatura}
+\bibliographystyle{fer}
+
+\begin{sazetak}
+Sažetak na hrvatskom jeziku.
+
+\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\end{sazetak}
+
+% TODO: Navedite naslov na engleskom jeziku.
+\engtitle{Title}
+\begin{abstract}
+Abstract.
+
+\keywords{Keywords.}
+\end{abstract}
+
+\begin{appendices}
+	\chapter{Izvod donje varijacijske granice}
+	The contents...
+\end{appendices}
+
+\end{document}
