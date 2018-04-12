@@ -4,13 +4,14 @@ Database file #1: literatura.bib
 Warning--entry type for "Neal:1995:BLNN" isn't style-file defined
 --line 1 of file literatura.bib
 Warning--entry type for "Yang:2017:UVLB" isn't style-file defined
---line 66 of file literatura.bib
+--line 94 of file literatura.bib
 Warning--empty publisher in Bishop:2006:PRML
 Warning--empty journal in Kennedy:2002:BCCM
-Warning--empty journal in Gal:2015:DBA
+Warning--empty publisher in Elezovic:2007:VSSV
+Warning--empty journal in Gal:2015:DBAA
 Warning--empty journal in Jordan:1999:IVMGM
 Warning--empty journal in Kiureghian:2009:AEDM
 Warning--empty publisher in Murphy:2012:MLPP
 Warning--empty journal in Murray:2005:NEBOR
 Warning--empty publisher in Snajder:2014:SU
-(There were 10 warnings)
+(There were 11 warnings)

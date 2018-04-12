@@ -14,7 +14,7 @@
 	\renewcommand{\subglossentry}[3]{%
 		\glssubentryitem{##2}%
 		\glstarget{##2}{\glossentryname{##2}}&%
-		\glossentrydesc{##2}\glspostdescription\space##3\tabularnewline%
+		\raggedright\glossentrydesc{##2}\glspostdescription\space##3\tabularnewline%
 	}%
 }
 \newcommand{\test}[1]{ \def\tst{#1} \ifx\tst\empty \typeout{optional argument was omitted} \else \typeout{optional argument was given: '#1'} \fi}
@@ -27,101 +27,107 @@
 %\setglossarypreamble[symbols]{Ovaj odjeljak sadrži popis velikog broja oznaka koje se koriste u ovom radu. Za neke skupine oznaka napisana su kratka objašnjenja koja dodatno pojašnjavaju i opravdavaju neke oznake. Pojmovi koje označavaju neke oznake detaljnije su objašnjeni u poglavlju~\ref{chap:osnovni-pojmovi}.}
 
 % Objekti
-\glsgroup{obj}{Objekti}
+\glsgroup{o}{Objekti}
 {Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama.}
-\glsentm{obj}{var}{a,\,A,\,\theta}			{Varijabla (najčešće skalar)}
-\glsentm{obj}{vec}{\vec a,\,\vec\theta}		{Vektor ili niz (najčešće vektor stupac)}
-\glsentm{obj}{mat}{\mat A,\,\mat\Theta}		{Matrica ili višedimensionalni niz}
-\glsentm{obj}{set}{\set A,\,\set\Theta}		{Skup ili multiskup}
-\glsentm{obj}{const}{\const a,\,\const A,\,\const\theta} {Konstanta}
-\glsentm{obj}{cvec}{\cvec a,\,\cvec\theta}	{Konstanta vektor ili niz}
-\glsentm{obj}{cmat}{\cmat A,\,\cmat\Theta}	{Konstanta matrica ili višedimensionalni niz}
-\glsentm{obj}{cset}{\cset A,\,\cset\Theta}	{Kostanta skup}
-\glsentm{obj}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta} {Slučajna varijabla}
-\glsentm{obj}{rvec}{\rvec a,\,\rvec\theta}	{Slučajni vektor ili niz}
-\glsentm{obj}{rmat}{\rmat A,\,\rmat\Theta}	{Slučajna matrica ili višedimensionalni niz}
-\glsentm{obj}{rset}{\rset A,\,\rset\Theta}	{Slučajni skup ili multiskup}
+\glsentm{o}{var}{a,\,A,\,\theta}		{Varijabla (najčešće skalar)}
+\glsentm{o}{vec}{\vec a,\,\vec\theta}	{Vektor ili niz (najčešće vektor stupac)}
+\glsentm{o}{mat}{\mat A,\,\mat\Theta}	{Matrica ili višedimensionalni niz}
+\glsentm{o}{set}{\set A,\,\set\Theta}	{Skup ili multiskup}
+\glsentm{o}{const}{\const a,\,\const A,\,\const\theta}{Konstanta}
+\glsentm{o}{cvec}{\cvec a,\,\cvec\theta}{Konstanta vektor ili niz}
+\glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}{Konstanta matrica ili višedimensionalni niz}
+\glsentm{o}{cset}{\cset A,\,\cset\Theta}{Kostanta skup}
+\glsentm{o}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta}{Slučajna varijabla}
+\glsentm{o}{rvec}{\rvec a,\,\rvec\theta}{Slučajni vektor ili niz}
+\glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}{Slučajna matrica ili višedimensionalni niz}
+\glsentm{o}{rset}{\rset A,\,\rset\Theta}{Slučajni skup ili multiskup}
 
 % Konstante
-\glsgroup{kon}{Konstante}{}
-\glsentm{kon}{nul}{\cvec 0}					{Nul-vektor}
-\glsentm{kon}{mati}{\cmat I,\,\cmat I_n}	{Matrica identiteta (s $n$ redaka i stupaca)}
-\glsentm{kon}{cset}{\N,\Z,\R,\C}			{Poznati skup}
+\glsgroup{k}{Konstante}{}
+\glsentm{k}{emptyset}{\cbr{}} 			{Prazni skup}
+\glsentm{k}{nul}{\cvec 0}				{Nul-vektor}
+\glsentm{k}{mati}{\cmat I,\,\cmat I_n}	{Matrica identiteta (s $n$ redaka i stupaca)}
+\glsentm{k}{cset}{\N,\Z,\R,\C}			{Poznati skup}
 
 % Skupovi i nizovi
 \glsgroup{sn}{Skupovi i nizovi}{}
-\glsentm{sn}{range}{a\bidot b} {Kraći zapis za $a,\dots, b$}
+\glsentm{sn}{range}{a\bidot b} 			{Kraći zapis za $a,\dots, b$}
 \glsentm{sn}{setrange}{\cbr{a\bidot b}} {Skup cijelih brojeva od $a$ do $b$}
-\glsentm{sn}{setdefn}{\cbr{a_i\mid i=1\bidot n},\,\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}	{Skup s $n$ elemenata}
-\glsentm{sn}{setdefset}{\cbr{f(a)\mid P(a)},\, \cbr{f(a)}_{P(a)},\, \cbr{f(a)}_{a}} {Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$ koji može biti implicitan ili neodređen}
-\glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}} {Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
-\glsentm{sn}{intoo}{\intoo{a,b}}			{Otvoreni interval}
-\glsentm{sn}{intcc}{\intcc{a,b}}			{Zatvoreni interval}
+\glsentm{sn}{setdefn}{\cbr{a_i\mid i=1\bidot n},\,\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}{Skup s $n$ elemenata}
+\glsentm{sn}{setdefset}{\cbr{f(a)\mid P(a)},\, \cbr{f(a)}_{P(a)},\, \cbr{f(a)}_{a}}{Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$ koji može biti implicitan ili neodređen}
+\glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}}{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
+\glsentm{sn}{intoo}{\intoo{a,b}}		{Otvoreni interval}
+\glsentm{sn}{intcc}{\intcc{a,b}}		{Zatvoreni interval}
 
 % Indeksiranje
-\glsgroup{ind}{Indeksiranje}
+\glsgroup{i}{Indeksiranje}
 {Indeksi elemenata vektora ili višedimenzionalnih nizova se radi jednoznačnosti pišu u zagradama. Npr. ako je definiran vektor $\vec a=(a_1\bidot a_n)$, onda je njegov $i$-ti element $\vec a_{\sbr{i}}=a_i$.}
-\glsentm{ind}{vecelem}{\vec{a}_{\sbr{i}}} 
+\glsentm{i}{vecelem}{\vec{a}_{\sbr{i}}} 
 	{$i$-ti element vektora $\vec{a}$}
-\glsentm{ind}{subvec}{\vec{a}_{\sbr{i_1:i_2}}} 
+\glsentm{i}{subvec}{\vec{a}_{\sbr{i_1:i_2}}} 
 	{Vektor kojeg čine elementi $\vec{a}_{(i_1)}, \vec{a}_{(i_1+1)},\dots, \vec{a}_{(i_2)}$}
-\glsentm{ind}{matelem}{\mat{A}_{\sbr{i,j}}} 
+\glsentm{i}{matelem}{\mat{A}_{\sbr{i,j}}} 
 	{Element $i,j$ matrice $\mat A$}
-\glsentm{ind}{matrow}{\mat{A}_{\sbr{i,:}}}
+\glsentm{i}{matrow}{\mat{A}_{\sbr{i,:}}}
 	{$i$-ti redak matrice $\mat A$}
-\glsentm{ind}{masubmat}{\mat{A}_{\sbr{:,i_1:i_2,j}}} 
+\glsentm{i}{masubmat}{\mat{A}_{\sbr{:,i_1:i_2,j}}} 
 	{2-D odsječak 3-D niza $\mat A$}
 
 % Operacije linearne algebre
-\glsgroup{ola}{Operacije linearne algebre}{}
-\glsentm{ola}{scalprod}{\braket{\vec a}{\vec b}} {Skalarni produkt, može biti i $\vec{a}^\transpose\vec{b}$}
-\glsentm{ola}{hadprod}{\vec a \odot \vec b}	{Umnožak po elementima; Hadamardov produkt}
-\glsentm{ola}{haddiv}{\vec a \oslash \vec b} {Dijeljenje po elementima}
-\glsentm{ola}{matmul}{\mat A \mat B}		{Matrično množenje}
-\glsentm{ola}{matinv}{\mat A^{-1}}			{Inverz matrice}
-\glsentm{ola}{transp}{\mat A^\transpose}	{Transponiranje}
-\glsentm{ola}{diag}{\diag\del{\vec{a}}}		{Dijagonalna matrica kojoj dijagonalu čini vektor $\vec a$}
-\glsentm{ola}{det}{\envert{\mat{A}}}		{Determinanta matrice $\mat A$}
-\glsentm{ola}{vecnorm}{\enVert{\vec a}_p}	{$\const L^p$-norma vektora $\vec a$}
-\glsentm{ola}{matnorm}{\enVert{\mat A}_p}	{Matrična $\const L^p$-norma matrice $\mat A$}
-\glsentm{ola}{frobnorm}{\enVert{\mat A}_\const{F}}	{Frobeniusova norma matrice $\mat A$}
+\glsgroup{l}{Operacije linearne algebre}{}
+\glsentm{l}{scalprod}{\braket{\vec a}{\vec b}} {Skalarni produkt, može biti i $\vec{a}^\transpose\vec{b}$}
+\glsentm{l}{hadprod}{\vec a \odot \vec b}	{Umnožak po elementima; Hadamardov produkt}
+\glsentm{l}{haddiv}{\vec a \oslash \vec b} {Dijeljenje po elementima}
+\glsentm{l}{matmul}{\mat A \mat B}		{Matrično množenje}
+\glsentm{l}{matinv}{\mat A^{-1}}			{Inverz matrice}
+\glsentm{l}{transp}{\mat A^\transpose}	{Transponiranje}
+\glsentm{l}{diag}{\diag\del{\vec{a}}}		{Dijagonalna matrica kojoj dijagonalu čini vektor $\vec a$}
+\glsentm{l}{det}{\envert{\mat{A}}}		{Determinanta matrice $\mat A$}
+\glsentm{l}{vecnorm}{\enVert{\vec a}_p}	{$\const L^p$-norma vektora $\vec a$}
+\glsentm{l}{matnorm}{\enVert{\mat A}_p}	{Matrična $\const L^p$-norma matrice $\mat A$}
+\glsentm{l}{frobnorm}{\enVert{\mat A}_\const{F}}	{Frobeniusova norma matrice $\mat A$}
 
 % Diferencijalni račun
-\glsgroup{dif}{Diferencijalni račun}{}
-\glsentm{dif}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$}
-\glsentm{dif}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ poznat iz konteksta}
+\glsgroup{d}{Diferencijalni račun}{}
+\glsentm{d}{od}{\od{y}{x}} 				{Derivacija $y$ po $x$}
+\glsentm{d}{pd}{\pd{y}{x}} 				{Parcijalna derivacija $y$ po $x$}
+\glsentm{d}{grad}{\nabla_{\vec x}{y}} 	{Gradijent $y$ po $\vec x$}
+\glsentm{d}{gradmat}{\nabla_{\mat X}{y}}	{Gradijent $y$ po $\mat X$}
+\glsentm{d}{jacobi}{\pd{\vec y}{\vec x}} 	{Jakobijan $\mat J\in \R^{m\times n}$ za $\vec y\in\R^m$ i $\vec x\in\R^n$}
+\glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$}
+\glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ poznat iz konteksta}
 
 % Teorija vjerojatnosti i teorija informacije
-\glsgroup{vti}{Teorija vjerojatnosti i teorija informacije}
-{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $p(\rvar a)$ i funkcija gustoće vjerojatnosti $p_{\rvar a}(a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći  zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. Diskretna razdioba s funkcijom vjerojatnosti $P(a)$ može se predstaviti kontinuiranom razdiobom s funkcijom gustoće vjerojatnosti $p(a)=\sum_{a'\in\set A} P(a) \dirac(a-a')$, gdje je $\set A$ skup mogućih vrijednosti varijable $\rvar a$.}
+\glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
+{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $p(\rvar a)$ i funkcija gustoće vjerojatnosti $p_{\rvar a}(a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći  zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $P(\cdot)$ se koristi i kao oznaka vjerojatnosti događaja i kao oznaka funkcije vjerojatnosti.}
 %TODO move to new page if too high
-\glsentm{vti}{rvar}{\rvar a} {Slučajna varijabla}
-\glsentm{vti}{rvarcond}{(\rvar a\mid\rvar b\sheq b),\,(\rvar a\mid b)} {Uvjetna slučajna varijabla}
-\glsentm{vti}{rvarjoint}{(\rvar a,\rvar b)} {Združena slučajna varijabla}
-\glsentm{vti}{distr}{\distrib{A}} {Razdioba}
-\glsentm{vti}{event}{\cbr{R(\rvar a)}} {Događaj koji uključuje slučajnu varijablu $\rvar a$, gdje je $R$ neki predikat}
-\glsentm{vti}{prob}{P(\cbr{R(\rvar a)}),\,P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
-\glsentm{vti}{distrrvardisc}{P(\rvar a)} {Razdioba diskretne slučajne varijable $\rvar a$}
-\glsentm{vti}{pmf}{P(a)} {Funkcija vjerojatnosti diskretne slučajne varijable $\rvar a$}
-\glsentm{vti}{distrrvar}{p(\rvar a)} {Razdioba slučajne varijable $\rvar a$}
-\glsentm{vti}{pdf}{p_{\rvar a}(a),\,p(\rvar a\sheq a),\,p(a)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a=a}$ (vjerojatnost ako je $\rvar a$ ima diskretnu razdiobu)}
-\glsentm{vti}{pdfcond}{p_{\rvar a\mid b}(a),\,p(\rvar a\sheq a\mid\rvar b\sheq b),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a\mid\rvar b\sheq b}$}
-\glsentm{vti}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(\rvar a\sheq a,\rvar b\sheq b),\,p(a, b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a,\rvar b\sheq b}$}
-\glsentm{vti}{hasdistrib}{\rvar a \sim \distrib A,\, p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
-\glsentm{vti}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
-\glsentm{vti}{fromdistrib}{a\sim\distrib A} {\textit{$a$ se izvlači iz razidobe $\distrib{A}$}}
-\glsentm{vti}{fromrvar}{a\sim \rvar a,\,a\sim p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $p(\rvar a)$}}
-\glsentm{vti}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a}f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
-\glsentm{vti}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
-\glsentm{vti}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
-\glsentm{vti}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
-\glsentm{vti}{Ent}{\const{H}(\rvar a)}			{Shannonova entropija}
-\glsentm{vti}{CEnt}{\const{H}(\rvar a, \rvar b)} {Unakrsna entropija}
-\glsentm{vti}{Dkl}{\Dkl{\rvar a}{\rvar b}}		{Kullback-Leiblerova divergencija}
+\glsentm{vi}{rvar}{\rvar a}{Slučajna varijabla}
+\glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b\sheq b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
+\glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
+\glsentm{vi}{distr}{\distrib{A}}{Razdioba}
+\glsentm{vi}{event}{\cbr{R(\rvar a)}} {Događaj koji uključuje slučajnu varijablu $\rvar a$, gdje je $R$ neki predikat}
+\glsentm{vi}{prob}{P(\cbr{R(\rvar a)}),\,P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
+\glsentm{vi}{distrrvar}{P(\rvar a),\,p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $P$ ako je $\rvar a$ diskretna slučajna varijabla, a $p$ ako nije ili ako se ne zna}
+\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(\rvar a\sheq a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$}
+\glsentm{vi}{pdf}{p_{\rvar a}(a),\,p(\rvar a\sheq a),\,p(a)} {Funkcija gustoće vjerojatosti slučajne varijable $\rvar a$}
+\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(\rvar a\sheq a\mid\rvar b\sheq b),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a\mid\rvar b\sheq b}$}
+\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(\rvar a\sheq a,\rvar b\sheq b),\,p(a, b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a,\rvar b\sheq b}$}
+\glsentm{vi}{hasdistrib}{\rvar a \sim \distrib A,\, p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
+\glsentm{vi}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
+\glsentm{vi}{fromdistrib}{a\sim\distrib A} {\textit{$a$ se izvlači iz razidobe $\distrib{A}$}}
+\glsentm{vi}{fromrvar}{a\sim \rvar a,\,a\sim p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $p(\rvar a)$}}
+\glsentm{vi}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a}f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
+\glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
+\glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
+\glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
+\glsentm{vi}{Ent}{\const{H}(\rvar a)}			{Shannonova entropija}
+\glsentm{vi}{CEnt}{\const{H}(\rvar a, \rvar b)} {Unakrsna entropija}
+\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}}		{Kullback-Leiblerova divergencija}
 
 % Ostalo
-\glsgroup{ost}{Funkcije i operatori}{}
-\glsentm{ost}{func}{\funcdef{f}{\set A}{\set B}} {Funkcija s domenom $\set A$ i kodomenom $\set B$}
-\glsentm{ost}{dirac}{\dirac\del{\cdot}}	{Diracova delta razdioba; poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$}
-\glsentm{ost}{doublebracket}{\enbbracket{\cdot}} {Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
+\glsgroup{f}{Funkcije i operatori}{}
+\glsentm{f}{func}{\funcdef{f}{\set A}{\set B}} {Funkcija s domenom $\set A$ i kodomenom $\set B$}
+\glsentm{f}{funcdef}{x\mapsto g(x)} {Definicija funkcije; funkcija koja preslikava $x$ iz domene u $g(x)$ iz kodomene}
+\glsentm{f}{dirac}{\dirac\del{\cdot}}	{Diracova delta razdioba; poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$}
+\glsentm{f}{doublebracket}{\enbbracket{\cdot}} {Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
 

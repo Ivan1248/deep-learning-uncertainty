@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -22,12 +22,23 @@ Marc C.~Kennedy i Anthony O'Hagan.
 \newblock Bayesian calibration of computer models.
 \newblock 2002.
 
-\bibitem[Gal i Ghahramani(2015)]{Gal:2015:DBA}
+\bibitem[Elezović(2007)]{Elezovic:2007:VSSV}
+Neven Elezović.
+\newblock \emph{Vjerojatnost i statistika: {S}lučajne varijable}.
+\newblock 2007.
+
+\bibitem[Gal i Ghahramani(2015)]{Gal:2015:DBAA}
 Yarin Gal i Zoubin Ghahramani.
-\newblock Dropout as a {Bayesian} {Approximation}: {Representing} {Model}
-  {Uncertainty} in {Deep} {Learning}.
+\newblock Dropout as a {Bayesian} {Approximation}: {Appendix}.
 \newblock 2015.
-\newblock URL \url{http://arxiv.org/abs/1506.02142}.
+\newblock URL \url{https://arxiv.org/abs/1506.02157}.
+
+\bibitem[Goodfellow et~al.(2016)Goodfellow, Bengio, i
+  Courville]{Goodfellow:2016:DL}
+Ian Goodfellow, Yoshua Bengio, i Aaron Courville.
+\newblock \emph{Deep Learning}.
+\newblock MIT Press, 2016.
+\newblock \url{http://www.deeplearningbook.org}.
 
 \bibitem[Jordan et~al.(1999)Jordan, Ghahramani, Jaakkola, i
   Saul]{Jordan:1999:IVMGM}
