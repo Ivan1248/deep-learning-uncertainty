@@ -1,5 +1,6 @@
 import abc
 import datetime
+import os
 
 import numpy as np
 import tensorflow as tf
@@ -17,21 +18,15 @@ class AbstractModel(object):
                         output,
                         loss,
                         training_step,
-                        evaluation: dict,
-                        probs=None,
-                        logits=None,
-                        uncertainty=None,
+                        evaluation=dict(),
+                        additional_outputs=dict(),  # probs, logits, ...
                         training_post_step=None):
             self.input = input
             self.target = target
-            self.output = output  # probs or regression output
+            self.outputs = additional_outputs
             self.loss = loss
             self.training_step = training_step
             self.evaluation = evaluation
-            # optional
-            self.probs = probs
-            self.logits = logits
-            self.uncertainty = uncertainty
             self.training_post_step = training_post_step
 
     def __init__(
@@ -107,9 +102,9 @@ class AbstractModel(object):
             ["output", "probs", "logits", "uncertainty"]
         """
         if type(outputs) is str:
-            fetches = self.nodes.output
+            fetches = self.nodes.outputs[outputs]
         if type(outputs) is list:
-            fetches = list(map(self.nodes.__getattribute__, outputs))          
+            fetches = [self.nodes.outputs[o] for o in outputs]          
         return self._run(fetches, inputs, None, False)
    
     def train(self,
@@ -159,12 +154,13 @@ class AbstractModel(object):
                     eval += evalstr(k, v)
                 self._log('  {:3d}.{:3d}: {}'.format(self.epoch, b, eval))
             if self.training_step_event_handler(b):
+                nonlocal end
                 end = True
 
         dr = MiniBatchReader(train_data, self.batch_size)
         log_training_start(epoch_count, dr.number_of_batches, self.batch_size)
         end = False
-        for ep in range(epoch_count):
+        for _ in range(epoch_count):
             self._log('epoch {:d}'.format(self.epoch))
             dr.reset(shuffle=True)
             for b in range(dr.number_of_batches):
@@ -219,8 +215,8 @@ class AbstractModel(object):
         self.log.append(text)
         print(text)
 
-    def _print_vars(self):
-        vars = sorted([v.name for v in tf.global_variables()])
-        for i, v in enumerate(vars):
-            print(i, v)
-        exit()
+    #def _print_vars(self):
+    #    vars = sorted([v.name for v in tf.global_variables()])
+    #    for i, v in enumerate(vars):
+    #        print(i, v)
+    #    exit()

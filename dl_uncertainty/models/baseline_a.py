@@ -14,7 +14,8 @@ class BaselineA(AbstractModel):
                  conv_layer_count=4,
                  learning_rate_policy=1e-3,
                  training_log_period=1,
-                 name='ClfBaselineA'):
+                 name='BaselineA'):
+        self.input_shape, self.class_count = input_shape, class_count
         self.conv_layer_count = conv_layer_count
         self.completed_epoch_count = 0
         self.class0_unknown = class0_unknown
@@ -27,7 +28,7 @@ class BaselineA(AbstractModel):
             name=name)
 
     def _build_graph(self, learning_rate, epoch, is_training):
-        from tf_utils.layers import conv, max_pool, rescale_bilinear, avg_pool, bn_relu
+        from .tf_utils.layers import conv, max_pool
 
         def layer_width(layer: int):  # number of channels (features per pixel)
             return min([4 * 4**(layer + 1), 32])
@@ -80,9 +81,9 @@ class BaselineA(AbstractModel):
         return AbstractModel.EssentialNodes(
             input=input,
             target=target,
-            probs=probs,
+            output=preds,
             loss=loss,
             training_step=training_step,
-            evaluation={
-                'accuracy': accuracy
-            })
+            evaluation={'accuracy': accuracy},
+            additional_outputs={'probs': probs, 'logits': logits},
+            )

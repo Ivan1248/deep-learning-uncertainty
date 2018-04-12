@@ -1,38 +1,28 @@
 import datetime
 import numpy as np
-import os
 import tensorflow as tf
-from tensorflow.python.framework import ops
-
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  # /*
-from data import Dataset, MiniBatchReader
 
 from .abstract_model import AbstractModel
-
+from .tf_utils import layers
 
 class Dummy(AbstractModel):
     def __init__(self,
                  input_shape, ##
                  class_count, ##
                  batch_size=32,  #
-                 conv_layer_count=4,
                  learning_rate_policy=1e-3,  #
                  training_log_period=1,  #
                  name='Dummy'):  #
+
+        self.input_shape, self.class_count = input_shape, class_count
         super().__init__(
-            input_shape=input_shape,
-            class_count=class_count,
             batch_size=batch_size,
             learning_rate_policy=learning_rate_policy,
             training_log_period=training_log_period,
             name=name)
 
     def _build_graph(self, learning_rate, epoch, is_training):
-        from tf_utils.layers import conv, max_pool, rescale_bilinear, avg_pool, bn_relu
-
-        def layer_width(layer: int):  # number of channels (features per pixel)
-            return min([4 * 4**(layer + 1), 32])
+        from .tf_utils.layers import conv
 
         input_shape = [None] + list(self.input_shape)
         output_shape = [None, self.class_count]
@@ -67,9 +57,8 @@ class Dummy(AbstractModel):
         return AbstractModel.EssentialNodes(
             input=input,
             target=target,
-            probs=probs,
+            output=preds,
             loss=loss,
             training_step=training_step,
-            evaluation={
-                'accuracy': accuracy
-            })
+            evaluation={ 'accuracy': accuracy },
+            )
