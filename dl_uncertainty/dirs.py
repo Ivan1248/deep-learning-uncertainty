@@ -1,4 +1,5 @@
-import .ioutils.filesystem as fs
+#from . import ioutils
+from .ioutils import filesystem as fs
 
 def _find_in_ancestor(path_end):
     try:
@@ -8,6 +9,6 @@ def _find_in_ancestor(path_end):
         return None
 
 
-SAVED_MODELS = _find_in_ancestor('data/models')
+SAVED_NETS = _find_in_ancestor('data/nets')
 LOGS = _find_in_ancestor('data/logs')
-DATASETS = _find_in_ancestor('projects/datasets')
+DATASETS = _find_in_ancestor('datasets')

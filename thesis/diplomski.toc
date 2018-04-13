@@ -10,7 +10,7 @@
 \contentsline {subsection}{\numberline {2.1.5}Monte Carlo aproksimacija}{5}{subsection.2.1.5}
 \contentsline {subsection}{\numberline {2.1.6}Teorija informacije}{5}{subsection.2.1.6}
 \contentsline {section}{\numberline {2.2}Nadzirano strojno u\IeC {\v c}enje}{6}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Induktivna pristranost i komponente algoritma strojnog u\IeC {\v c}enja}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.1}Induktivna pristranost i komponente algoritma strojnog u\IeC {\v c}enja}{7}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Kapacitet modela, prenau\IeC {\v c}enost i podnau\IeC {\v c}enost}{8}{subsection.2.2.2}
 \contentsline {subsection}{\numberline {2.2.3}Odabir modela}{8}{subsection.2.2.3}
 \contentsline {section}{\numberline {2.3}Procjena parametara i zaklju\IeC {\v c}ivanje kod probabilisti\IeC {\v c}kih modela}{8}{section.2.3}
@@ -18,29 +18,29 @@
 \contentsline {subsection}{\numberline {2.3.2}Svojstva i pogre\IeC {\v s}ka procjenitelja}{9}{subsection.2.3.2}
 \contentsline {subsection}{\numberline {2.3.3}Procjenitelj maksimalne izglednosti}{9}{subsection.2.3.3}
 \contentsline {subsection}{\numberline {2.3.4}Procjenitelj maksimalne aposteriorne vjerojatnosti}{10}{subsection.2.3.4}
-\contentsline {subsection}{\numberline {2.3.5}Bayesovski procjenitelj i zaklju\IeC {\v c}ivanje}{10}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.5}Bayesovski procjenitelj i zaklju\IeC {\v c}ivanje}{11}{subsection.2.3.5}
 \contentsline {section}{\numberline {2.4}Minimizacija rizika}{12}{section.2.4}
 \contentsline {subsection}{\numberline {2.4.1}Rizik i empirijski rizik}{12}{subsection.2.4.1}
-\contentsline {subsection}{\numberline {2.4.2}Strukturni rizik}{12}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.2}Strukturni rizik}{13}{subsection.2.4.2}
 \contentsline {section}{\numberline {2.5}Probabilisti\IeC {\v c}ki grafi\IeC {\v c}ki modeli}{13}{section.2.5}
 \contentsline {section}{\numberline {2.6}Bayesovski modeli}{13}{section.2.6}
-\contentsline {section}{\numberline {2.7}Aproksimacija razdioba i aproksimacijsko zaklju\IeC {\v c}ivanje}{13}{section.2.7}
-\contentsline {subsection}{\numberline {2.7.1}Varijacijsko zaklju\IeC {\v c}ivanje}{14}{subsection.2.7.1}
-\contentsline {subsection}{\numberline {2.7.2}Monte Carlo aproksimacija}{15}{subsection.2.7.2}
-\contentsline {chapter}{\numberline {3}Duboko u\IeC {\v c}enje i konvolucijske mre\IeC {\v z}e}{16}{chapter.3}
-\contentsline {section}{\numberline {3.1}Duboke neuronske mre\IeC {\v z}e}{16}{section.3.1}
-\contentsline {section}{\numberline {3.2}Konvolucijske mre\IeC {\v z}e}{16}{section.3.2}
-\contentsline {section}{\numberline {3.3}Optimizacija}{16}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Propagacija pogre\IeC {\v s}ke unatrag}{16}{subsection.3.3.1}
-\contentsline {subsection}{\numberline {3.3.2}Isklju\IeC {\v c}ivanje neurona - dropout}{16}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}Normalizacija po grupama}{16}{subsection.3.3.3}
-\contentsline {chapter}{\numberline {4}Procjenjivanje nesigurnosti}{17}{chapter.4}
-\contentsline {section}{\numberline {4.1}Aleatorna i epistemi\IeC {\v c}ka nesigurnost}{17}{section.4.1}
-\contentsline {chapter}{\numberline {5}Bayesovske neuronske mre\IeC {\v z}e}{19}{chapter.5}
-\contentsline {chapter}{\numberline {6}Procjenjivanje nesigurnosti kod konvolucijskih mre\IeC {\v z}a}{20}{chapter.6}
-\contentsline {chapter}{\numberline {7}Eksperimentalni rezultati}{21}{chapter.7}
-\contentsline {section}{\numberline {7.1}Skupovi podataka}{21}{section.7.1}
-\contentsline {chapter}{\numberline {8}Zaklju\IeC {\v c}ak}{22}{chapter.8}
-\contentsline {chapter}{Literatura}{23}{chapter*.7}
-\contentsline {chapter}{Appendices}{26}{section*.8}
-\contentsline {chapter}{\numberline {A}Izvod donje varijacijske granice}{26}{Dodatak.1.A}
+\contentsline {section}{\numberline {2.7}Aproksimacija razdioba i aproksimacijsko zaklju\IeC {\v c}ivanje}{14}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}Varijacijsko zaklju\IeC {\v c}ivanje}{15}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}Monte Carlo aproksimacija}{16}{subsection.2.7.2}
+\contentsline {chapter}{\numberline {3}Duboko u\IeC {\v c}enje i konvolucijske mre\IeC {\v z}e}{17}{chapter.3}
+\contentsline {section}{\numberline {3.1}Duboke neuronske mre\IeC {\v z}e}{17}{section.3.1}
+\contentsline {section}{\numberline {3.2}Konvolucijske mre\IeC {\v z}e}{17}{section.3.2}
+\contentsline {section}{\numberline {3.3}Optimizacija}{17}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Propagacija pogre\IeC {\v s}ke unatrag}{17}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Isklju\IeC {\v c}ivanje neurona - dropout}{17}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Normalizacija po grupama}{17}{subsection.3.3.3}
+\contentsline {chapter}{\numberline {4}Procjenjivanje nesigurnosti}{18}{chapter.4}
+\contentsline {section}{\numberline {4.1}Aleatorna i epistemi\IeC {\v c}ka nesigurnost}{18}{section.4.1}
+\contentsline {chapter}{\numberline {5}Bayesovske neuronske mre\IeC {\v z}e}{20}{chapter.5}
+\contentsline {chapter}{\numberline {6}Procjenjivanje nesigurnosti kod konvolucijskih mre\IeC {\v z}a}{21}{chapter.6}
+\contentsline {chapter}{\numberline {7}Eksperimentalni rezultati}{22}{chapter.7}
+\contentsline {section}{\numberline {7.1}Skupovi podataka}{22}{section.7.1}
+\contentsline {chapter}{\numberline {8}Zaklju\IeC {\v c}ak}{23}{chapter.8}
+\contentsline {chapter}{Literatura}{24}{chapter*.7}
+\contentsline {chapter}{Appendices}{27}{section*.8}
+\contentsline {chapter}{\numberline {A}Izvod donje varijacijske granice}{27}{Dodatak.1.A}

@@ -86,13 +86,13 @@ Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $P(\rvar
 
 \subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
-Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu združenu razdiobu $p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će $x$ označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi.
+Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će $x$ skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi.
 
 \emph{Združena vjerojatnost} se može rastaviti \emph{pravilom umnoška}: 
 \begin{align} \label{eq:zdruzena-vj}
 P(x,y) = P(x\mid y)P(y) \text{.}
 \end{align}
-$P(x\mid y)$ označava \emph{uvjetnu vjerojatnost} događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$. Ako su $\rvar x$ i $\rvar y$ nezavisne, onda vrijedi $P(x,y) = P(x)P(y)$. \emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $P(x) = P(x,y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
+$P(x\mid y)$ označava \emph{uvjetnu vjerojatnost} događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$. Pravilo umnoška se \emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $P(x) = P(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
 \begin{align}
 p(x) = \int_{\set Y} p(x,y)\dif y = \int_{\set Y} p(x\mid y)p(y)\dif y \text{.}
 \end{align}
@@ -101,13 +101,15 @@ Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu
 
 Rastavljanjem lijeve strane jednadžbe~\ref{eq:zdruzena-vj} na umnožak $P(B\mid A)P(A)$ dobivamo \emph{Bayesovo pravilo}:
 \begin{align}
-P(A\mid B) = \frac{P(B\mid A)P(A)}{P(B)} \text{,}
+P(x\mid y) = \frac{P(y\mid x)P(x)}{P(y)} \text{,}
 \end{align}
 što možemo i ovako zapisati:
 \begin{align}
 p(x\mid y) = \frac{p(y\mid x)p(x)}{\int p(y\mid x)p(x)\dif x} \text{,}
 \end{align}
-gdje se nazivnih integrira po svim vrijednostima.
+gdje se nazivnik integrira po svim vrijednostima.
+
+Opisana pravila vrijede i za općenitije događaje. Svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih isto vrijede gore opisana pravila.
 
 \subsection{Nezavisnost i uvjetna nezavisnost}
 
@@ -212,11 +214,11 @@ Ovaj pododjeljak se temelji na \cite{Elezovic:2007:VSSV}.
 
 Neka je $\rvar x$ slučajna varijabla koju promatramo i $\mathcal D$ njena razdioba s nama nepoznatim parametrom $\theta$. Taj parametar možemo procijeniti na temelju opaženih vrijednosti $x_1,\dots,x_n$ slučajne varijable $\rvar x$, za što definiramo funkciju $g$ koja daje procjenu parametara
 \begin{align}
-\hat{\theta}=g(x_1,\dots,x_N) \text{.}
+\hat{\theta}=f(x_1,\dots,x_N) \text{.}
 \end{align}
-Ako kao parametre takve funkcije uzmemo \emph{uzorak}, tj. skup slučajnih varijabli $\rset D=\del{\rvar x_1,\dots,\rvar x_N}$ koje su nezavisne i imaju istu razdiobu kao $\rvar x$ dobivamo slučajnu varijablu
+Ako kao parametre takve funkcije uzmemo \emph{uzorak}, tj. skup slučajnih varijabli $\rset D=\del{\rvar x_1,\dots,\rvar x_N}$, gdje pretpostavljamo da su $\rvar x_1,\dots,\rvar x_N$ međusobno nezavisne i imaju istu razdiobu kao $\rvar x$, dobivamo slučajnu varijablu
 \begin{align}
-\hat{\rvar\theta}=g(\rset D) \text{.}
+\hat{\rvar\theta}=f(\rset D) \text{.}
 \end{align}
 Takva slučajna varijabla naziva se \emph{statistika}. Ako je $\theta$ nepoznati parametar razdiobe $p(\rvar x)=\mathcal{D}$, onda kažemo da je ta statistika $\hat{\rvar\theta}$ \emph{procjenitelj} parametra $\theta$, a njena opažena vrijednost $\hat{\theta}$ \emph{procjena} parametra $\theta$.
 
@@ -234,10 +236,13 @@ Takva slučajna varijabla naziva se \emph{statistika}. Ako je $\theta$ nepoznati
 %\end{align}
 Neka $N$ u oznaci ${\rset D}_N$ označava veličinu uzorka. Nepristrani procjenitelj $\hat{\rvar\theta}$ je \emph{valjan} ako 
 \begin{align}
-\lim_{N\to\infty} \D\sbr{\hat{\rvar\theta}(\rset D_N)} = 0 \text{.}
+\lim_{N\to\infty} \D\sbr{\hat{\rvar\theta}(\rset D_N)} = 0  \text{.}
 \end{align}
 
-Može se pokazati da je srednja kvadratna pogreška procjenitelja $\E\sbr{\del{\hat{\rvar\theta}-\theta}^2}$ jednaka zbroju varijance i kvadrata pristranosti procjenitelja \citep{Snajder:2014:SU}.
+Može se pokazati da je očekivanje srednje kvadratne pogreške procjenitelja jednaka zbroju njegove varijance i kvadrata njegove pristranosti \citep{Snajder:2014:SU}, tj. 
+\begin{align}
+\E\sbr{\del{\hat{\rvar\theta}-\theta}^2} = \D\hat{\rvar\theta} + \del{\E\hat{\rvar\theta}}^2  \text{.}
+\end{align}
 
 \subsection{Procjenitelj maksimalne izglednosti}
 

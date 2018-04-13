@@ -9,7 +9,7 @@ from models import Dummy
 from training import train
 
 get_model = lambda: Dummy(
-    input_shape=ds_test.image_shape,
+    input_shape=ds_test.input_shape,
     class_count=ds_test.class_count,
     batch_size=1,
     training_log_period=100)

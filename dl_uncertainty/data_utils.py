@@ -1,7 +1,6 @@
-import processing.preprocessing as pp
-from .data import loaders, Dataset, MiniBatchReader
-import dirs
-
+from .processing import preprocessing as pp
+from .data import datasets, Dataset, MiniBatchReader
+from . import dirs
 
 class Cifar10Loader(object):
     mean, std = None, None
@@ -9,7 +8,7 @@ class Cifar10Loader(object):
 
     @classmethod
     def load_train_val(cls, normalize=True):
-        ds = loaders.load_cifar10(cls.data_path, 'train')
+        ds = datasets.load_cifar10(cls.data_path, 'train')
         if normalize:
             cls.mean, cls.std = pp.get_normalization_statistics(ds.images)
             ds = Dataset(
@@ -25,7 +24,7 @@ class Cifar10Loader(object):
                   use_test_set_normalization_statistics=False):
         if cls.mean is None:
             cls.load_train_val()
-        ds = loaders.load_cifar10(cls.data_path, 'test')
+        ds = datasets.load_cifar10(cls.data_path, 'test')
         if not normalize:
             return ds
         mean, std = None, None

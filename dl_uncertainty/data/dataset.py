@@ -1,9 +1,5 @@
-from typing import Tuple, List
 import numpy as np
 import random
-
-from .dataset_dir import load_images, load_labels, load_info
-
 
 class Dataset:
     def __init__(self, images, labels, class_count: int, random_seed=51):
@@ -14,22 +10,22 @@ class Dataset:
         self._indices = np.arange(len(self._images))
 
     def __len__(self):
-        return len(self.images)
+        return len(self._images)
 
     def __getitem__(self, key):
         if isinstance(key, int):  # int
-            return self.images[key], self.labels[key]
+            return self._images[key], self._labels[key]
         return Dataset(
-            self.images.__getitem__(key),
-            self.labels.__getitem__(key), self.class_count)
+            self._images.__getitem__(key),
+            self._labels.__getitem__(key), self.class_count)
 
     @property
     def size(self) -> int:
-        return len(self)
+        return len(self._images)
 
     @property
-    def image_shape(self):
-        return self.images[0].shape
+    def input_shape(self):
+        return self._images[0].shape
 
     @property
     def class_count(self):
@@ -73,15 +69,18 @@ class Dataset:
         return self._labels
 
     def unpack(self):
-        return self.images, self.labels
+        return self._images, self._labels
 
-    @staticmethod
-    def load(dataset_directory: str):
-        images = load_images(dataset_directory)
-        labels = load_labels(dataset_directory)
-        assert (len(images) > 0 and len(images) == len(labels))
-        class_count = load_info(dataset_directory).class_count
-        return Dataset(images, labels, class_count)
+
+def save_dataset(path: str):
+    if not path.endswith('.npy'):
+        path += '.npy'
+    np.load(path)
+
+def load_dataset(path: str) -> Dataset:
+    if not path.endswith('.npy'):
+        path += '.npy'
+    return np.load(path)[()]
 
 
 class MiniBatchReader:

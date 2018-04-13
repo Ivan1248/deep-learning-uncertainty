@@ -19,7 +19,7 @@ ds_test = Cifar10Loader.load_test()
 
 print("Initializing model...")
 model = standard_resnets.get_wrn(
-    zaggydepth, k, ds_train.image_shape, ds_train.class_count)
+    zaggydepth, k, ds_train.input_shape, ds_train.class_count)
 
 print("Starting training and validation loop...")
 train(model, ds_trainval, ds_test, epoch_count=200)

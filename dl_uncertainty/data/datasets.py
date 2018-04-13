@@ -1,13 +1,10 @@
-import numpy as np
+import os
 import pickle
 
+import numpy as np
+
 from .dataset import Dataset
-from .preparers import Iccv09Preparer
 
-
-def load_iccv09(data_dir):
-    data_dir = Iccv09Preparer.prepare(data_dir)
-    return Dataset.load(data_dir)
 
 def load_cifar10(data_dir, subset='train'):
     # https://dlunizg.github.io/lab2/

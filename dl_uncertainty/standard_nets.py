@@ -1,4 +1,4 @@
-from models import ResidualBlockProperties, ResNet
+from .models import ResidualBlockConfig, ResNet
 
 
 def get_wrn(zagoruyko_depth,
@@ -20,7 +20,7 @@ def get_wrn(zagoruyko_depth,
             'boundaries': [60, 120, 160],
             'values': [1e-1 * 0.2**i for i in range(4)]
         },
-        block_properties=ResidualBlockProperties(
+        block_properties=ResidualBlockConfig(
             ksizes=ksizes,
             dropout_locations=[0],
             dropout_rate=0.3,

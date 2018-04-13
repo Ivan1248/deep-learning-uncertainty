@@ -23,7 +23,7 @@ from standard_resnets import get_wrn
 model = standard_resnets.get_wrn(
     zaggydepth,
     k,
-    ds_test.image_shape,
+    ds_test.input_shape,
     ds_test.class_count)
 saved_path = dirs.SAVED_MODELS + '/wrn-28-10-t--2018-01-23-19-13/ResNet'  # vanilla
 model.load_state(saved_path)

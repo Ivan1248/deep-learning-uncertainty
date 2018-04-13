@@ -3,7 +3,8 @@ import tensorflow as tf
 from .ioutils import console
 from .data import Dataset
 from .models import AbstractModel
-import dirs
+from . import dirs
+from .processing.data_augmentation import augment_cifar
 
 
 def train(model: AbstractModel,
@@ -20,8 +21,6 @@ def train(model: AbstractModel,
         return False
 
     model.training_step_event_handler = handle_step
-
-    from processing.data_augmentation import augment_cifar
 
     model.test(ds_val)
     ds_train_part = ds_train[:ds_val.size*2]

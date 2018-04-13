@@ -39,9 +39,9 @@ class ResNet(AbstractModel):
 
         # Input image and labels placeholders
         input_shape = [None] + list(self.input_shape)
-        output_shape = [None, self.class_count]
-        input = tf.placeholder(tf.float32, shape=input_shape)
-        target = tf.placeholder(tf.float32, shape=output_shape)
+        input = tf.placeholder(tf.float32, shape=input_shape, name='input')
+        target = tf.placeholder(tf.int32, shape=[None], name='input')
+        target_oh = tf.one_hot(indices=target, depth=self.class_count)
 
         # Hidden layers
         h = resnet(
@@ -53,30 +53,29 @@ class ResNet(AbstractModel):
             block_properties=self.block_properties)
 
         # Global pooling and softmax classification
-        h = tf.reduce_mean(h, axis=[1, 2], keep_dims=True)
+        h = tf.reduce_mean(h, axis=[1, 2], keepdims=True)
         logits = conv(h, 1, self.class_count)
         logits = tf.reshape(logits, [-1, self.class_count])
         probs = tf.nn.softmax(logits)
 
         # Loss and regularization
         loss = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(
-                labels=target, logits=logits))
+            tf.nn.softmax_cross_entropy_with_logits_v2(
+                labels=target_oh, logits=logits))
 
         w_vars = filter(lambda x: 'weights' in x.name, tf.global_variables())
         loss += self.weight_decay * regularization.l2_regularization(w_vars)
 
         # Optimization
-        optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
-        #optimizer = tf.train.AdamOptimizer(learning_rate*1e-2)
+        #optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
+        optimizer = tf.train.AdamOptimizer(learning_rate*5e-3)
         training_step = optimizer.minimize(loss)
 
-        # Dense predictions and labels
-        output, dense_labels = tf.argmax(logits, 1), tf.argmax(target, 1)
+        # Dense prediction
+        output = tf.argmax(logits, 1, output_type=tf.int32)
 
         # Other evaluation measures
-        accuracy = tf.reduce_mean(
-            tf.cast(tf.equal(output, dense_labels), tf.float32))
+        accuracy = tf.reduce_mean(tf.cast(tf.equal(output, target), tf.float32))
 
         return AbstractModel.EssentialNodes(
             input=input,
@@ -86,5 +85,4 @@ class ResNet(AbstractModel):
             training_step=training_step,
             evaluation={'accuracy': accuracy},
             additional_outputs={'probs': probs,
-                                'logits': logits},
-            )
+                                'logits': logits},)
