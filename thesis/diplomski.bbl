@@ -1,4 +1,4 @@
-\begin{thebibliography}{13}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -26,6 +26,11 @@ Marc C.~Kennedy i Anthony O'Hagan.
 Neven Elezović.
 \newblock \emph{Vjerojatnost i statistika: {S}lučajne varijable}.
 \newblock 2007.
+
+\bibitem[Gal(2016)]{Gal:2016:UDL}
+Yarin Gal.
+\newblock \emph{Uncertainty in Deep Learning}.
+\newblock Doktorska disertacija, University of Cambridge, 2016.
 
 \bibitem[Gal i Ghahramani(2015)]{Gal:2015:DBAA}
 Yarin Gal i Zoubin Ghahramani.

@@ -78,21 +78,45 @@ Razlikujemo diskretne i kontinuirane slučajne varijable. Prostor elementarnih d
 \begin{align}
 P(\rvar x\in \set A) = \int_{\set A} p_{\rvar x}(x)\dif x
 \end{align}
-za svaki $\set A\subset\set X$. Funkciju gustoće možemo smatrati i poopćenom funkcijom\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. Diskretnu razdiobu možemo onda predstaviti funkcijom gustoće vjerojatnosti $p_{\rvar x}(x)=\sum_{x'\in\set X} P(\rvar x=x) \dirac(x-x')$, gdje je $\set X$ skup mogućih vrijednosti varijable $\rvar x$. npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
+za svaki $\set A\subset\set X$. 
 
-Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Ako dvije slučajne varijable imaju istu razdiobu, one ne moraju biti iste jer se mogu razlikovati po odnosu s drugim slučajnim varijablama.
+Funkciju gustoće vjerojatnosti možemo smatrati i poopćenom funkcijom\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da gustoćom prikazujemo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
+\begin{align}
+p_{\rvar x}(x)=\sum_{x'\in\set X} P(\rvar x=x) \dirac(x-x')  \text{,}
+\end{align}
+gdje je $\set X$ skup mogućih vrijednosti varijable $\rvar x$. Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
+\begin{align}
+\dirac(\vec x-\vec x')\coloneqq\prod_i\dirac(x_i- x_i')
+\end{align}
+kako bi vrijednost $n$-strukog integrala gustoće bila $1$.
+
+%npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
 Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $P(\rvar x)$ ako je diskretna, a s $p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada.
 
 \subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
-Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će $x$ skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi.
+Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Ako dvije slučajne varijable imaju istu razdiobu, one ne moraju biti iste jer se mogu razlikovati po odnosu s drugim slučajnim varijablama.
 
-\emph{Združena vjerojatnost} se može rastaviti \emph{pravilom umnoška}: 
-\begin{align} \label{eq:zdruzena-vj}
+Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se u izrazima koristiti samo elementarni događaji. Npr. $x$ će skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila koja vrijede za sve slučajne varijable.
+
+\emph{Uvjetna vjerojatnost} je vjerojatnost nekog događaja ako je poznato da se neki drugi događaj ostvario. Ovako je definirana uvjetnu vjerojatnost događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$:
+\begin{align} \label{eq:uvjetna-vj}
+P(x\mid y) \coloneqq \frac{P(x,y)}{P(y)}  \text{.}
+\end{align}
+
+Združena vjerojatnost se može rastaviti \emph{pravilom umnoška}: 
+\begin{align} \label{eq:pravilo-umnoska}
 P(x,y) = P(x\mid y)P(y) \text{.}
 \end{align}
-$P(x\mid y)$ označava \emph{uvjetnu vjerojatnost} događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$. Pravilo umnoška se \emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $P(x) = P(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
+Općenitije, pravilo umnoška za $n$ slučajnih varijabli $\rvar x_1,..,\rvar x_n$ izgleda ovako:
+\begin{align} \label{eq:pravilo-umnoska}
+P(x_1\bidot x_n) 
+&= P(x_1)P(x_2\mid x_1)\cdots P(x_n\mid x_1,..,x_{n-1})  \\
+&= P(x_1)\prod_{i=2\bidot n}P(x_i\mid x_1,..,x_{i-1})  \text{.}
+\end{align}
+
+\emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $P(x) = P(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
 \begin{align}
 p(x) = \int_{\set Y} p(x,y)\dif y = \int_{\set Y} p(x\mid y)p(y)\dif y \text{.}
 \end{align}
@@ -108,8 +132,6 @@ P(x\mid y) = \frac{P(y\mid x)P(x)}{P(y)} \text{,}
 p(x\mid y) = \frac{p(y\mid x)p(x)}{\int p(y\mid x)p(x)\dif x} \text{,}
 \end{align}
 gdje se nazivnik integrira po svim vrijednostima.
-
-Opisana pravila vrijede i za općenitije događaje. Svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih isto vrijede gore opisana pravila.
 
 \subsection{Nezavisnost i uvjetna nezavisnost}
 
@@ -203,7 +225,10 @@ TODO
 \subsection{Odabir modela}
 TODO
 %https://en.wikipedia.org/wiki/Variational_Bayesian_methods
-\cite{Murray:2005:NEBOR}
+
+%MLPP 5.3 Bayesian model selection
+
+\cite{Murray:2005:NEBOR} % MLPP! 5.3.1 Bayesian Occam’s razor
 
 
 \section{Procjena parametara i zaključivanje kod probabilističkih modela}
@@ -212,11 +237,11 @@ TODO
 
 Ovaj pododjeljak se temelji na \cite{Elezovic:2007:VSSV}.
 
-Neka je $\rvar x$ slučajna varijabla koju promatramo i $\mathcal D$ njena razdioba s nama nepoznatim parametrom $\theta$. Taj parametar možemo procijeniti na temelju opaženih vrijednosti $x_1,\dots,x_n$ slučajne varijable $\rvar x$, za što definiramo funkciju $g$ koja daje procjenu parametara
+Neka je $\rvar x$ slučajna varijabla koju promatramo i $\mathcal D$ njena razdioba s nama nepoznatim parametrom $\theta$. Taj parametar možemo procijeniti na temelju opaženih vrijednosti $x_1,..,x_n$ slučajne varijable $\rvar x$, za što definiramo funkciju $g$ koja daje procjenu parametara
 \begin{align}
-\hat{\theta}=f(x_1,\dots,x_N) \text{.}
+\hat{\theta}=f(x_1,..,x_N) \text{.}
 \end{align}
-Ako kao parametre takve funkcije uzmemo \emph{uzorak}, tj. skup slučajnih varijabli $\rset D=\del{\rvar x_1,\dots,\rvar x_N}$, gdje pretpostavljamo da su $\rvar x_1,\dots,\rvar x_N$ međusobno nezavisne i imaju istu razdiobu kao $\rvar x$, dobivamo slučajnu varijablu
+Ako kao parametre takve funkcije uzmemo \emph{uzorak}, tj. skup slučajnih varijabli $\rset D=\del{\rvar x_1,..,\rvar x_N}$, gdje pretpostavljamo da su $\rvar x_1,..,\rvar x_N$ međusobno nezavisne i imaju istu razdiobu kao $\rvar x$, dobivamo slučajnu varijablu
 \begin{align}
 \hat{\rvar\theta}=f(\rset D) \text{.}
 \end{align}
@@ -275,16 +300,16 @@ Maksimizacijom aposteriorne vjerojatnosti dobivaju se parametri
 \begin{equation}
  \rvec\theta_\mathrm{MAP} = \argmax_{\vec\theta} p(\vec\theta\mid\rset D) = \argmax_{\vec\theta} p(\rset{D}\mid\vec\theta)p(\vec\theta) \text{.}
 \end{equation}
-Ovdje nije potrebno normalizirati aposteriornu vjerojatnost izračunavanjem marginalne izglednosti $p(\set{D})$ u nazivniku na desnoj strani jednadžbe~\eqref{eq:posterior-bayes} jer ona ne ovisi $\vec\theta$, nego samo o modelu $\set H$. Odabirom uniformne apriorne razdiobe MAP-procjenitelj postaje ekvivalentan ML-procjenitelju.
+Ovdje nije potrebno normalizirati aposteriornu vjerojatnost izračunavanjem \emph{marginalne izglednosti} (engl. \textit{marginal likelihood}, \textit{evidence}) $p(\set{D})$ u nazivniku na desnoj strani jednadžbe~\eqref{eq:posterior-bayes} jer ona ne ovisi $\vec\theta$, nego samo o modelu $\set H$. Odabirom uniformne apriorne razdiobe MAP-procjenitelj postaje ekvivalentan ML-procjenitelju.
 
 Poželjno je da $p(\set{D}\mid\vec\theta)$ i $p(\vec\theta)$ kao funkcije parametra $\vec\theta$ imaju takav oblik da njihov umnožak ima sličan oblik i može se analitički izračunati. Ako $p(\rvec\theta)$ i $p(\rvec\theta\mid\set D)$ imaju isti algebarski oblik definiran nekim parametrima, nazivaju se \emph{konjugatnim razdiobama} \citep{Snajder:2014:SU}.
 % TODO ^^
 
 \subsection{Bayesovski procjenitelj i zaključivanje}
 
-Prethodno opisani procjenitelji daju točkastu procjenu parametara i ne izražavaju nesigurnost procjene kojoj uzrok može biti npr. nedovoljna količina podataka ili šum u podacima za učenje. \emph{bayesovski procjenitelj} kao procjenu daje razdiobu nad hipotezama $p(\rvec\theta\mid\set D)$ za koju je potrebno izračunati integral $p(\set{D})=\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif {\vec\theta'}$ iz nazivnika na desnoj strani jednadžbe~\eqref{eq:posterior-inference}. 
+Prethodno opisani procjenitelji daju točkastu procjenu parametara i ne izražavaju nesigurnost procjene kojoj uzrok može biti npr. nedovoljna količina podataka ili šum u podacima za učenje. \emph{bayesovski procjenitelj} kao procjenu daje razdiobu nad hipotezama $p(\rvec\theta\mid\set D)$ za koju je integriranjem po svim mogućim parametrima potrebno izračunati marginalnu izglednost $p(\set{D})=\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif {\vec\theta'}$ iz nazivnika na desnoj strani jednadžbe~\eqref{eq:posterior-inference}. 
 
-Kod složenijih modela često ne možemo odabrati konjugatnu apriornu razdiobu, a i funkcija izglednosti je sama po sebi već dovoljno složena da se, neovisno o apriornoj razdiobi, integral marginalne izglednosti $p(\set{D})$ ne može ni analitički ni numerički traktabilno računati.
+Kod složenijih modela često ne možemo odabrati konjugatnu apriornu razdiobu, a i funkcija izglednosti je sama po sebi već dovoljno složena da se, neovisno o apriornoj razdiobi, marginalna izglednost $p(\set{D})$ ne može ni analitički ni numerički traktabilno računati. 
 
 Vjerojatnost nekog primjera $\vec d$ procjenjuje se marginalizacijom po svim mogućim parametrima \citep{Neal:1995:BLNN}:
 \begin{align}
@@ -366,7 +391,7 @@ Kod opisanih modela koji uključuju apriorno znanje, regularizacijskom članu uz
 
 \section{Probabilistički grafički modeli}
 
-\section{Bayesovski modeli}
+\subsection{Bayesovski modeli}
 
 DL 3.14
 
@@ -408,29 +433,26 @@ Za razliku od uzorkovanja kod MCMC-postupaka, osnovna ideja kod varijacijskog za
 \begin{align}
 \mathcal{Q}^* = \argmin_{p(\tilde{\rvec z})\in\set Q} \Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} \text{.}
 \end{align}
-Ovakva ciljna funkcija obično se ne može lako izračunati jer zahtijeva računanje marginalne izglednosti $p(\vec x)$ iz nazivnika u jednadžbi~\eqref{eq:posterior-inference} marginalizacijom po $\rvec z$, što može biti netraktabilno:
+
+Ovakva ciljna funkcija obično se ne može lako izračunati jer zahtijeva računanje marginalne izglednosti $p(\vec x)$ iz nazivnika u jednadžbi~\eqref{eq:posterior-inference} marginalizacijom po $\rvec z$:
 \begin{align}
 \Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} 
 &= \E_{\tilde{\rvec z}} \ln\frac{p(\tilde{\vec z})}{p(\rvec z\sheq\tilde{\vec z}\mid\vec x)} \nonumber \\
 &= \E_{\tilde{\rvec z}} \ln p(\tilde{\vec z}) - \E_{\tilde{\rvec z}}  \ln p(\rvec z\sheq\tilde{\vec z}\mid\vec x) \nonumber\\
 &= \E_{\tilde{\rvec z}}  \ln p(\tilde{\vec z}) - \E_{\tilde{\rvec z}}  \ln p(\rvec z\sheq\tilde{\vec z},\vec x) + \ln p(\vec x) \text{.} \label{eq:dkl-split}
 \end{align}
-
-Umjesto minimizacije KL-divergencije, možemo maksimizirati funkciju koja se naziva \emph{varijacijska donja granica} (engl. \textit{variational lower bound}) ili \emph{donja granica (logaritma) marginalne izglednosti} (engl. \textit{(log) evidence lower bound}, \textit{ELBO}):
+Marginalna izglednost se može zanemariti jer marginalna izgledost ne ovisi o parametrima po kojima se optimizira pa umjesto minimizacije KL-divergencije maksimiziramo funkciju koja se naziva \emph{varijacijska donja granica} (engl. \textit{variational lower bound}) ili \emph{donja granica (logaritma) marginalne izglednosti} (engl. \textit{(log) evidence lower bound}, \textit{ELBO}):
 \begin{align}
 L_{\rvec x}(\tilde{\rvec z}) 
 \coloneqq& \E_{\tilde{\rvec z}} \ln p(\rvec z\sheq\tilde{\vec z},\vec x) - \E_{\tilde{\rvec z}} \ln p(\tilde{\vec z})  \text{.} \label{eq:elbo}
 \end{align}
-To se i ovako može izraziti:
+Vrijedi $\Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} = - L_{\rvec x}(\tilde{\rvec z}) + \ln p(\vec x)$. Varijacijska donja granica se može i ovako izraziti:
 \begin{align}
 L_{\rvec x}(\tilde{\rvec z}) 
 = \E_{\tilde{\rvec z}} \ln p(\vec x\mid\rvec z\sheq\tilde{\vec z}) - \Dkl{\tilde{\rvec z}}{\rvec z}  \text{.}
 \end{align}
-Maksimiziranje takve ciljne funkcije daje razdiobu $p(\tilde{\rvec z})$ koja dobro objašnjava podatke, jer se potiče veće očekivanje logaritma izglednosti, i nije previše daleko od apriorne razdiobe, jer se potiče manja KL-divergencija između varijacijske razdiobe i apriorne razdiobe \citep{Gal:2015:DBAA}. Zamjenom prvih dvaju članova u jednadžbi \eqref{eq:dkl-split},
-KL-divergencija se može ovako izraziti:
-\begin{align}\label{eq:DklELBO}
-\Dkl{\tilde{\rvec z}}{(\rvec z\mid\vec x)} = - L_{\rvec x}(\tilde{\rvec z}) + \ln p(\vec x) \text{.}
-\end{align}
+Maksimiziranje takve ciljne funkcije daje razdiobu $p(\tilde{\rvec z})$ koja dobro objašnjava podatke jer se potiče veće očekivanje logaritma izglednosti, i nije previše daleko od apriorne razdiobe jer se potiče manja KL-divergencija između varijacijske razdiobe i apriorne razdiobe \citep{Gal:2015:DBAA}.
+
 Naziv \textit{donja granica marginalne izglednosti} dolazi od toga što su \cite{Jordan:1999:IVMGM} izveli nejednakost $\ln p(\vec x) \geq L_{\rvec x}(\tilde{\rvec z})$ preko Jensenove nejednakosti. Ta nejednakost slijedi i iz prethodne jednadžbe i nenegativnosti KL-divergencije:
 \begin{align}
 \ln p(\vec x) = L_{\rvec x}(\tilde{\rvec z}) + \Dkl{\tilde{\rvec z}}{(\rvec z\mid\rvec x)} \geq L_{\rvec x}(\tilde{\rvec z}) \text{.}
@@ -471,15 +493,19 @@ TODO mean-field, calculus of variations
 \chapter{Procjenjivanje nesigurnosti}
 
 
+
+
 \section{Aleatorna i epistemička nesigurnost}
 
 Kod bayesovskih modela nesigurnost zaključivanja izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i entropijom ili varijancom kada je prikladno.
 
-Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste \citep{Kiureghian:2009:AEDM}: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost}. Riječ \textit{aleatorna} izvedena je od latinske riječi \textit{alea} koja znači \textit{kocka} i asocira na nasumičnost bacanja kocke, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u parametre modela. Ona dolazi od neznanja i može se smanjiti uz više podataka.
+Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste \citep{Kiureghian:2009:AEDM}: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u strukturu i parametre modela \cite{Gal:2016:UDL}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
 
 Granica između aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti će epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će, neovisno o ograničenosti modela, biti aleatorna.
 
 TODO: homoskedastička, heteroskedastička nesigurnost
+
+TODO: model uncertainty Gal-thesis 1.2
 
 \the\fontdimen5\font\newline % em
 \the\fontdimen6\font\newline % ex

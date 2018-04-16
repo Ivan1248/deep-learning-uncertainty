@@ -2,8 +2,9 @@ import datetime
 import numpy as np
 import tensorflow as tf
 
+from ..tf_utils import layers
+from ..tf_utils.layers import conv
 from .abstract_model import AbstractModel
-from .tf_utils import layers
 
 class Dummy(AbstractModel):
     def __init__(self,
@@ -22,8 +23,6 @@ class Dummy(AbstractModel):
             name=name)
 
     def _build_graph(self, learning_rate, epoch, is_training):
-        from .tf_utils.layers import conv
-
         input_shape = [None] + list(self.input_shape)
         output_shape = [None, self.class_count]
 
