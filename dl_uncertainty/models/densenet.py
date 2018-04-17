@@ -57,8 +57,8 @@ class DenseNet(AbstractModel):
         loss += self.weight_decay * regularization.l2_regularization(w_vars)
 
         # Optimization
-        #optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
-        optimizer = tf.train.AdamOptimizer(learning_rate * 5e-3)
+        optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
+        #optimizer = tf.train.AdamOptimizer(learning_rate * 5e-3)
         training_step = optimizer.minimize(loss)
 
         # Dense prediction

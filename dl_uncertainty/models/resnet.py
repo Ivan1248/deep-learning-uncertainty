@@ -14,8 +14,8 @@ class ResNet(AbstractModel):
             class_count,
             group_lengths=[3, 3, 3],
             block_structure=layers.BlockStructure.resnet(),
-            base_width=16,
-            widening_factor=1,
+            base_width=None,  # if None, 16*widening_factor
+            widening_factor=1,  # used if base_width=None
             weight_decay=5e-4,
             batch_size=128,
             learning_rate_policy=1e-2,
@@ -26,10 +26,11 @@ class ResNet(AbstractModel):
         self.depth = 1 + sum(group_lengths) * len(block_structure.ksizes) + 1
         self.zagoruyko_depth = self.depth - 1 + len(group_lengths)
         self.weight_decay = weight_decay
-        rpn = [
-           'group_lengths', 'block_structure',  'base_width', 'widening_factor'
-        ]
+
+        base_width = base_width or 16 * widening_factor
+        rpn = ['group_lengths', 'block_structure', 'base_width']
         self.resnet_params = {k: v for k, v in locals().items() if k in rpn}
+
         super().__init__(
             batch_size=batch_size,
             learning_rate_policy=learning_rate_policy,
@@ -44,10 +45,7 @@ class ResNet(AbstractModel):
         target_oh = tf.one_hot(indices=target, depth=self.class_count)
 
         # Hidden layers
-        h = resnet(
-            input,
-            is_training=is_training,
-            **self.resnet_params)
+        h = resnet(input, is_training=is_training, **self.resnet_params)
 
         # Global pooling and softmax classification
         h = tf.reduce_mean(h, axis=[1, 2], keepdims=True)
@@ -64,8 +62,8 @@ class ResNet(AbstractModel):
         loss += self.weight_decay * regularization.l2_regularization(w_vars)
 
         # Optimization
-        #optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
-        optimizer = tf.train.AdamOptimizer(learning_rate*5e-3)
+        optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
+        #optimizer = tf.train.AdamOptimizer(learning_rate * 5e-3)
         training_step = optimizer.minimize(loss)
 
         # Dense prediction
@@ -81,5 +79,4 @@ class ResNet(AbstractModel):
             loss=loss,
             training_step=training_step,
             evaluation={'accuracy': accuracy},
-            additional_outputs={'probs': probs,
-                                'logits': logits},)
+            additional_outputs={'probs': probs, 'logits': logits},)
