@@ -19,7 +19,7 @@ class DenseNet(AbstractModel):
             batch_size=128,
             learning_rate_policy=1e-2,
             training_log_period=1,
-            name='ResNet'):
+            name='DenseNet'):
         self.input_shape, self.class_count = input_shape, class_count
         self.completed_epoch_count = 0  # TODO: remove
         self.weight_decay = weight_decay

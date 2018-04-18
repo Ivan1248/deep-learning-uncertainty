@@ -7,7 +7,7 @@ from . import dirs
 from .processing.data_augmentation import augment_cifar
 
 
-def train(model: AbstractModel,
+def train_cifar(model: AbstractModel,
           ds_train: Dataset,
           ds_val: Dataset,
           epoch_count=200):

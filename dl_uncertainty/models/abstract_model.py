@@ -67,6 +67,16 @@ class AbstractModel(object):
 
             self.training_step_event_handler = lambda step: False
 
+            total_parameters = 0
+            for variable in tf.trainable_variables():
+                # shape is an array of tf.Dimension
+                shape = variable.get_shape()
+                variable_parameters = 1
+                for dim in shape:
+                    variable_parameters *= dim.value
+                total_parameters += variable_parameters
+            print(f"Number of parameters: {total_parameters}")
+
     def __del__(self):  # I am not sure whether this is good
         self._sess.close()
         #with self._graph.as_default():

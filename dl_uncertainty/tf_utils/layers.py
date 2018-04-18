@@ -15,6 +15,8 @@ def scoped(fun):
 
     @functools.wraps(fun)  # preserves the signature (needed for default_arg)
     def wrapper(*args, reuse: bool = None, name: str = None, **kwargs):
+        #if reuse == -1:  # TODO: change reuse default to tf.AUTO_REUSE
+        #    reuse = tf.get_variable_scope().reuse
         a = list(args) + list(kwargs.values())
         tensors = [v for v in a if type(v) is tf.Tensor]
         with var_scope(
@@ -181,7 +183,9 @@ def batch_normalization(x,
     return tf.nn.batch_normalization(x, mean, var, offset, scale, var_epsilon)
 
 
-def dropout(x, on, rate, is_training=None, **kwargs):
+def dropout(x, on, rate, feature_map_wise=False, **kwargs):
+    if feature_map_wise:
+        kwargs = {**kwargs, 'noise_shape': [None, 1, 1, None]}
     return tf.layers.dropout(x, rate, training=on, **kwargs)
 
 
@@ -199,12 +203,12 @@ def convex_combination(x, r, scope: str = None):
     return a * x + (1 - a) * r
 
 
+@scoped
 def sample(x, op, n: int):
-    tf.get_default_graph().get_name_scope().reuse_variables()
-    res = [op(x) for _ in range(n)]
-    if n > 1:  # TODO: remove later
-        tf.Assert(tf.logical_not(tf.reduce_all(tf.equal(res[0], res[1]))))
-    return res
+    res = [op(x)]
+    tf.get_variable_scope().reuse_variables()
+    res += [op(x) for _ in range(n - 1)]
+    return tf.stack(res)
 
 
 # Blocks
@@ -335,8 +339,8 @@ def residual_block(x,
         parameter is not in `bn_params`
     :param structure: a BlockStructure instance
     :param width: number of output channels
-    :param bn_params: batch normalization parameters
-    :param dropout_params: dropout parameters
+    :param bn_params: parameters for `batch_normalization`
+    :param dropout_params: parameters for `dropout`
     """
 
     def _skip_connection(x, stride, width):
@@ -345,7 +349,7 @@ def residual_block(x,
         if width > x_width or stride > 1:
             if dim_change == 'id':
                 x = identity_mapping(x, stride, width)
-            elif dim_change == 'nin':
+            elif dim_change == 'nin':  # zagoruyko, TODO: bn_relu can be shared
                 x = bn_relu_conv(
                     x,
                     bn_params=bn_params,
@@ -399,8 +403,8 @@ def dense_block(x,
     :param size: number of elementary blocks
     :param block_structure: a BlockStructure instance
     :param base_width: number of output channels of an elementary block
-    :param bn_params: batch normalization parameters
-    :param dropout_params: dropout parameters
+    :param bn_params: parameters for `batch_normalization`
+    :param dropout_params: parameters for `dropout`
     """
     for i in range(length):
         a = block(
@@ -435,10 +439,10 @@ def resnet(x,
     :param base_width: number of output channels of layers in the first group
     :param group_lengths: (N) numbers of blocks per group (width)
     :param block_structure: a BlockStructure instance
-    :param bn_params: batch normalization parameters
-    :param dropout_params: dropout parameters
+    :param bn_params: parameters for `batch_normalization`
+    :param dropout_params: parameters for `dropout`
     """
-    x = conv(x, 3, base_width, bias=False)
+    x = conv(x, 3, base_width, bias=False)  # cifar
     for i, length in enumerate(group_lengths):
         group_width = 2**i * base_width
         with tf.variable_scope(f'group{i}'):
@@ -459,9 +463,9 @@ def resnet(x,
 @scoped
 def densenet(x,
              is_training,
+             base_width=12,
              group_lengths=[19] * 3,
              block_structure=BlockStructure.densenet(),
-             base_width=12,
              compression_factor=0.5,
              bn_params=dict(),
              dropout_params={'rate': 0.2}):
@@ -470,15 +474,13 @@ def densenet(x,
     :param x: input tensor
     :param is_training: Tensor. training indicator for batch normalization
     :param base_width: number of output channels of the first layer
-    :param widening_factor: (k) block widths are proportional to 
-        base_width*widening_factor
-    :param group_lengths: (N) numbers of blocks per group (width)
-    :param block_properties: kernel sizes of convolutional layers in a block
-    :param bn_decay: batch normalization exponential moving average decay
+    :param group_lengths: numbers of elementary blocks per dense block
+    :param block_structure: a BlockStructure instance
+    :param compression_factor: float from 0 to 1. transition layer compression
+    :param bn_params: parameters for `batch_normalization`
+    :param dropout_params: parameters for `dropout`
     """
-    x = conv(x, ksize=7, width=2 * base_width, stride=2, bias=False)
-    x = bn_relu(x, bn_params, is_training=is_training)
-    x = max_pool(x, stride=2, ksize=3)
+    x = conv(x, 3, 2 * base_width, bias=False)  # cifar
     for i, length in enumerate(group_lengths):
         if i > 0:
             x = densenet_transition(

@@ -1,3 +1,6 @@
+# python train_cifar.py wrn 28 10 --test --epochs 200
+# python train_cifar.py dn 100 12 --test --epochs 300
+
 import sys
 import argparse
 import datetime
@@ -7,7 +10,7 @@ from _context import dl_uncertainty
 from dl_uncertainty.data import Dataset
 from dl_uncertainty.data_utils import Cifar10Loader
 from dl_uncertainty.standard_models import resnet, densenet
-from dl_uncertainty.training import train
+from dl_uncertainty.training import train_cifar
 from dl_uncertainty import dirs
 
 parser = argparse.ArgumentParser()
@@ -58,7 +61,7 @@ if False:
     builtins.range = progress_range
 
 print("Starting training and validation loop...")
-train(model, ds_train, ds_test, epoch_count=200)
+train_cifar(model, ds_train, ds_test, epoch_count=args.epochs)
 
 print("Saving model...")
 traning_set = 'train-val' if args.test else 'train'
