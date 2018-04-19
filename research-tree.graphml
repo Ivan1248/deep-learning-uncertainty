@@ -533,7 +533,7 @@ Fast dropout training
         <y:ShapeNode>
           <y:Geometry height="65.0" width="150.0" x="1330.2521825396825" y="599.3337301587302"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
-          <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal et Ghahramani, 2015
 Bayesian Convolutional Neural Networks with Bernoulli Approximate Variational Inference <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -551,9 +551,9 @@ Bayesian Convolutional Neural Networks with Bernoulli Approximate Variational In
       <data key="d5">
         <y:ShapeNode>
           <y:Geometry height="65.0" width="150.0" x="1685.7521825396825" y="245.0206349206349"/>
-          <y:Fill color="#000000" transparent="false"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#CCFFCC" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kendall et Gal, 2017-3
+          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kendall et Gal, 2017-3
 What uncertainties do we need in bayesian deep learning for computer vision? <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -930,7 +930,7 @@ Dropout-based Automatic Relevance Determination<y:LabelModel>
       <data key="d5">
         <y:ShapeNode>
           <y:Geometry height="65.0" width="150.0" x="2107.0" y="1823.6670634920636"/>
-          <y:Fill color="#FFDD88" transparent="false"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Moja tema
 Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela<y:LabelModel>
@@ -3303,7 +3303,6 @@ From neural PCA to deep unsupervised learning<y:LabelModel>
       </data>
     </edge>
     <edge id="e120" source="n72" target="n75">
-      <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="16.25" tx="75.0" ty="0.0"/>
@@ -3314,7 +3313,6 @@ From neural PCA to deep unsupervised learning<y:LabelModel>
       </data>
     </edge>
     <edge id="e121" source="n52" target="n10">
-      <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>

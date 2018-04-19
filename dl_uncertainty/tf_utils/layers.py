@@ -35,6 +35,43 @@ def default_args(func, params):
                  for p in params])
 
 
+# Slicing, joining, copying
+
+
+def repeat(x, n, axis=0):
+    """
+    Repeats subarrays in axis. The returned array has shape such that
+    shape[i] = x.shape[i] if i != axis, shape[axis] = n*x.shape[axis].
+    Based on https://github.com/tensorflow/tensorflow/issues/8246
+    :param repeats: list. Numbers of repeats for each dimension    
+    """
+    repeats = [1] * len(x.shape)
+    repeats[axis] = n
+    xe = tf.expand_dims(x, -1)
+    xt = tf.tile(xe, multiples=[1] + repeats)
+    return tf.reshape(xt, tf.shape(x) * repeats)
+
+
+def repeat_batch(x, n, expand_dims=True):
+    multiples = [n] + [1] * (len(x.shape) - 1)
+    if expand_dims:  # [N,H,W,C]->[n,N,H,W,C] else: [N,H,W,C]->[nN,H,W,C]
+        x = tf.expand_dims(x, -1)
+        multiples += [1]
+    return tf.tile(x, multiples)
+
+
+def join_batches(x):  # [n,N,H,W,C]->[nN,H,W,C]
+    s = tf.shape(x)
+    shape = tf.concat([[s[0] * s[1]], s[2:]], 0)
+    return tf.reshape(x, shape)
+
+
+def split_batch(x, n: int):  # [nN,H,W,C]->[n,N,H,W,C]
+    s = tf.shape(x)
+    shape = tf.concat([[n, tf.floordiv(s[0], n)], s[1:]], 0)
+    return tf.reshape(x, shape)
+
+
 # Linear, affine
 
 
@@ -184,8 +221,8 @@ def batch_normalization(x,
 
 
 def dropout(x, on, rate, feature_map_wise=False, **kwargs):
-    if feature_map_wise:
-        kwargs = {**kwargs, 'noise_shape': [None, 1, 1, None]}
+    if feature_map_wise:  # TODO: remove True
+        kwargs = {**kwargs, 'noise_shape': [x.shape[0], 1, 1, x.shape[3]]}
     return tf.layers.dropout(x, rate, training=on, **kwargs)
 
 
@@ -204,11 +241,56 @@ def convex_combination(x, r, scope: str = None):
 
 
 @scoped
-def sample(x, op, n: int):
-    res = [op(x)]
+def sample1(fn, x, sample_count: int):
+    res = [fn(x)]
     tf.get_variable_scope().reuse_variables()
-    res += [op(x) for _ in range(n - 1)]
+    res += [fn(x) for _ in range(sample_count - 1)]
     return tf.stack(res)
+
+
+def _sample(fn, x, n: int, examplewise=False):
+    if examplewise:
+        xr = repeat(x, n, axis=0)  # [N,H,W,C]->[Nn,H,W,C]
+        yr = fn(xr)  # [Nn,H',W',C']
+        return split_batch(yr, tf.shape(x)[0])  # [N,n,H',W',C']
+    else:
+        xr = repeat_batch(x, n, expand_dims=False)  # [nN,H,W,C]
+        yr = fn(xr)  # [nN,H',W',C']
+        return split_batch(yr, n)  # [n,N,H',W',C']
+
+
+@scoped
+def sample(fn,
+           x,
+           n: int,
+           examplewise=False,
+           max_batch_size=None,
+           backprop=True):
+    """
+    Sampling of a stochastic operation. 
+    :param fn: function. Stochastic operation to be sampled.
+    :param x: Tensor. Input.
+    :param n: number of samples; must be smaller than `max_batch_size`.
+    :param examplewise: samples of elements side to side instead of batches. If
+        True, output has shape `[N,n,...]` and `[n,N,...]` otherwise, where 
+        `N = x.shape[0]` is the batch size.
+    :param max_batch_size: int. maximum batch size to be let through `op`.
+        Defaults to `n`.
+    :param backprop: True enables support for back propagation.
+    """
+    max_batch_size = max_batch_size or n
+    assert n <= max_batch_size  # TODO: case when n > max_batch_size
+    examples_per_iteration = max(1, max_batch_size // n)
+    ys = tf.map_fn(
+        fn=lambda x: _sample(fn, x, n),  # [H,W,C]->[n,H,W,C]
+        elems=x,  # [N,H,W,C]
+        parallel_iterations=examples_per_iteration,
+        back_prop=backprop)  # [N,n,H,W,C]
+    if examplewise:  # [N,n,H,W,C]
+        return ys
+    else:  # [n,N,H,W,C]
+        t = [1, 0] + list(range(2, len(ys.shape)))
+        return tf.transpose(ys, t)  # [n,N,H,W,C]
 
 
 # Blocks
