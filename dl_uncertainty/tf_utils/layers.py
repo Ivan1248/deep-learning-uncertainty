@@ -260,14 +260,11 @@ def _sample(fn, x, n: int, examplewise=False):
 
 
 @scoped
-def sample(fn,
-           x,
-           n: int,
-           examplewise=False,
-           max_batch_size=None,
+def sample(fn, x, n: int, examplewise=False, max_batch_size=None,
            backprop=True):
     """
-    Sampling of a stochastic operation. 
+    Sampling of a stochastic operation. NOTE: unfortunately doesn't work if 
+    there are variables defined inside fn.
     :param fn: function. Stochastic operation to be sampled.
     :param x: Tensor. Input.
     :param n: number of samples; must be smaller than `max_batch_size`.

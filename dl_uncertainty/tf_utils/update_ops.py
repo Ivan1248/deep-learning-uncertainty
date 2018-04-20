@@ -2,8 +2,9 @@ import tensorflow as tf
 
 
 def _multi_update(vars, update):
+    # TODO: try  return tf.group(list(map(update, vars)))
     with tf.control_dependencies(list(map(update, vars))):
-        return tf.constant(0)
+        return tf.no_op()
 
 
 def ortho_retraction_step(weight_vars, retraction_rate):
