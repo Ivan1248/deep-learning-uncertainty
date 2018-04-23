@@ -51,7 +51,7 @@ class AbstractModel(object):
                 self._epoch, self._epoch + 1, name='increment_epoch')
             self._is_training = tf.placeholder(tf.bool, name='is_training')
             lr = self.learning_rate_policy
-            if not type(lr) is float:
+            if type(lr) is dict:
                 lr = tf.train.piecewise_constant(
                     self._epoch,
                     boundaries=lr['boundaries'],

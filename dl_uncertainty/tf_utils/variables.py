@@ -10,7 +10,7 @@ def conv_weight_variable(ksize,
         ksize = [ksize, ksize]
     shape = list(ksize) + [in_channels, out_channels]
     n = ksize[0] * ksize[1] * in_channels + out_channels
-    initializer = tf.random_normal_initializer(stddev=np.sqrt(2.0 / n))
+    initializer = tf.random_normal_initializer(stddev=np.sqrt(2 / n))
     return tf.get_variable(name, shape=shape, initializer=initializer)
 
 

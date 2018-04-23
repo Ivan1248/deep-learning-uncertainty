@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from ..tf_utils import layers, regularization
+from ..tf_utils import layers, regularization, losses
 from ..tf_utils.layers import conv, resnet
 
 from .abstract_model import AbstractModel
@@ -14,8 +14,7 @@ class ResNet(AbstractModel):
             class_count,
             group_lengths=[3, 3, 3],
             block_structure=layers.BlockStructure.resnet(),
-            base_width=None,  # if None, 16*widening_factor
-            widening_factor=1,  # used if base_width=None
+            base_width=None,
             weight_decay=5e-4,
             batch_size=128,
             learning_rate_policy=1e-2,
@@ -27,7 +26,7 @@ class ResNet(AbstractModel):
         self.zagoruyko_depth = self.depth - 1 + len(group_lengths)
         self.weight_decay = weight_decay
 
-        base_width = base_width or 16 * widening_factor
+        base_width = base_width
         rpn = ['group_lengths', 'block_structure', 'base_width']
         self.resnet_params = {k: v for k, v in locals().items() if k in rpn}
 
@@ -45,7 +44,14 @@ class ResNet(AbstractModel):
         target_oh = tf.one_hot(indices=target, depth=self.class_count)
 
         # Hidden layers
-        h = resnet(input, is_training=is_training, **self.resnet_params)
+        h = resnet(
+            input,
+            **self.resnet_params,
+            bn_params={'is_training': is_training},
+            dropout_params={
+                **layers.default_arg(layers.resnet, 'dropout_params'),
+                'is_training': is_training
+            })
 
         # Global pooling and softmax classification
         h = tf.reduce_mean(h, axis=[1, 2], keepdims=True)
@@ -54,6 +60,7 @@ class ResNet(AbstractModel):
         probs = tf.nn.softmax(logits)
 
         # Loss and regularization
+        #loss = losses.cross_entropy_loss(logits, target_oh)
         loss = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits_v2(
                 labels=target_oh, logits=logits))

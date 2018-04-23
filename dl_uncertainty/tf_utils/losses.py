@@ -1,6 +1,7 @@
 import tensorflow as tf
 
-def multiclass_hinge(labels_oh, logits, delta=1):
+
+def multiclass_hinge_loss(labels_oh, logits, delta=1):
     # TODO: optimize
     #labels = tf.cast(tf.argmax(labels_oh, 1), tf.int32)
     #p = tf.dynamic_partition(logits, labels, labels_oh.shape[1])
@@ -9,3 +10,13 @@ def multiclass_hinge(labels_oh, logits, delta=1):
     r = (logits - s_true + delta) * (1 - labels_oh)
     return tf.reduce_mean(tf.reduce_sum(tf.nn.relu(r), axis=1))
 
+
+def cross_entropy_loss(logits, labels_oh):
+    class_count = logits.shape[-1]
+    if len(logits.shape) > 2:
+        logits = tf.reshape(logits, [-1, class_count])
+        labels_oh = tf.reshape(labels_oh, [-1, class_count])
+    loss = tf.nn.softmax_cross_entropy_with_logits_v2(
+        logits=logits, labels=labels_oh)
+    labels_count = tf.reduce_sum(labels_oh)
+    return tf.reduce_sum(loss) / labels_count

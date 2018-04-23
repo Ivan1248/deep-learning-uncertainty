@@ -9,19 +9,18 @@ from _context import dl_uncertainty
 
 from dl_uncertainty.data import Dataset
 from dl_uncertainty.data_utils import Cifar10Loader
-from dl_uncertainty.standard_models import resnet, densenet
+from dl_uncertainty.standard_models import resnet, densenet, BlockStructure
 from dl_uncertainty.training import train_cifar
 from dl_uncertainty import dirs
 
 parser = argparse.ArgumentParser()
 parser.add_argument('net', type=str)  # 'wrn' or 'dn'
-parser.add_argument('depth_k', nargs=2, type=int)
+parser.add_argument('depth', type=int)
+parser.add_argument('width', type=int)
 parser.add_argument('--test', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 args = parser.parse_args()
 print(args)
-
-depth, k = args.depth_k
 
 print("Loading and preparing data...")
 if args.test:
@@ -32,19 +31,48 @@ else:
 
 print("Initializing model...")
 if args.net == 'wrn':
-    print(f'WRN-{depth}-{k}')
+    print(f'WRN-{args.depth}-{args.width}')
+    zagoruyko_depth=args.depth
+    group_count = 3
+    ksizes=[3,3]
+    blocks_per_group = (zagoruyko_depth - 4) // (group_count * len(ksizes))
+    print(
+        f"group count: {group_count}, blocks per group: {blocks_per_group}")
+    group_lengths = [blocks_per_group] * group_count
     model = resnet(
-        zagoruyko_depth=depth,
+        group_lengths=group_lengths,
+        block_structure=BlockStructure.resnet(
+            ksizes=ksizes, dropout_locations=[0]),
         input_shape=ds_train.input_shape,
         class_count=ds_train.class_count,
-        widening_factor=k)
+        base_width=args.width*16)
+    assert zagoruyko_depth == model.zagoruyko_depth, "invalid depth (zagoruyko_depth={}!={}=model.zagoruyko_depth)".format(
+        zagoruyko_depth, model.zagoruyko_depth)
+elif args.net == 'rn':
+    print(f'ResNet-{args.depth}-{args.width}')
+    if args.depth == 34:
+        group_lengths = [3, 4, 6, 3]
+        ksizes = [3, 3]
+        width_factors = [1, 1]
+    if args.depth == 50:
+        group_lengths = [3, 4, 6, 3]
+        ksizes = [1, 3, 1]
+        width_factors = [1, 1, 4]
+    print(args.depth)
+    model = resnet(
+        group_lengths=group_lengths,
+        block_structure=BlockStructure.resnet(
+            ksizes=ksizes, dropout_locations=[], width_factors=width_factors),
+        input_shape=ds_train.input_shape,
+        class_count=ds_train.class_count,
+        base_width=args.width)
 elif args.net == 'dn':
-    print(f'Densenet-{depth}-{k}')
+    print(f'DenseNet-{args.depth}-{args.width}')
     model = densenet(
-        depth=depth,
+        depth=args.depth,
         input_shape=ds_train.input_shape,
         class_count=ds_train.class_count,
-        base_width=k)
+        base_width=args.width)
 else:
     print(args.net)
 
@@ -65,5 +93,6 @@ train_cifar(model, ds_train, ds_test, epoch_count=args.epochs)
 
 print("Saving model...")
 traning_set = 'train-val' if args.test else 'train'
-model.save_state(f'{dirs.SAVED_NETS}/{args.net}-{depth}-{k}-{traning_set}/' +
+model.save_state(f'{dirs.SAVED_NETS}/' +
+                 f'{args.net}-{args.depth}-{args.width}-{traning_set}/' +
                  f'{datetime.datetime.now():%Y-%m-%d-%H%M}')
