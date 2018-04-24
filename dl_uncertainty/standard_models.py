@@ -1,30 +1,6 @@
 from .models import BlockStructure, ResNet, DenseNet    
 
 
-def resnet(input_shape,
-           class_count,
-           group_lengths=None,
-           base_width=16,
-           block_structure=BlockStructure.resnet(
-               ksizes=[3, 3], dropout_locations=[0]),
-           initial_learning_rate=1e-1,
-           epoch_count=200):
-    model = ResNet(
-        input_shape=input_shape,
-        class_count=class_count,
-        batch_size=128,
-        learning_rate_policy={
-            'boundaries': [
-                int(i * epoch_count / 200 + 0.5) for i in [60, 120, 160]
-            ], 'values': [initial_learning_rate * 0.2**i for i in range(4)]
-        },
-        block_structure=block_structure,
-        group_lengths=group_lengths,
-        base_width=base_width,
-        weight_decay=5e-4,
-        training_log_period=39)
-    return model
-
 def densenet(depth,
              input_shape,
              class_count,

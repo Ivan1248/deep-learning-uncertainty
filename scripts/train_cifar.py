@@ -9,7 +9,8 @@ from _context import dl_uncertainty
 
 from dl_uncertainty.data import Dataset
 from dl_uncertainty.data_utils import Cifar10Loader
-from dl_uncertainty.standard_models import resnet, densenet, BlockStructure
+from dl_uncertainty.models import ResNet, DenseNet
+from dl_uncertainty.standard_models import densenet, BlockStructure
 from dl_uncertainty.training import train_cifar
 from dl_uncertainty import dirs
 
@@ -29,23 +30,33 @@ if args.test:
 else:
     ds_train, ds_test = Cifar10Loader.load_train_val()
 
+# resnets
+resnet_initial_learning_rate = 1e-1
+resnet_learning_rate_policy = {
+    'boundaries': [int(i * args.epochs / 200 + 0.5) for i in [60, 120, 160]],
+    'values': [resnet_initial_learning_rate * 0.2**i for i in range(4)]
+}
+
 print("Initializing model...")
 if args.net == 'wrn':
     print(f'WRN-{args.depth}-{args.width}')
-    zagoruyko_depth=args.depth
+    zagoruyko_depth = args.depth
     group_count = 3
-    ksizes=[3,3]
+    ksizes = [3, 3]
     blocks_per_group = (zagoruyko_depth - 4) // (group_count * len(ksizes))
-    print(
-        f"group count: {group_count}, blocks per group: {blocks_per_group}")
+    print(f"group count: {group_count}, blocks per group: {blocks_per_group}")
     group_lengths = [blocks_per_group] * group_count
-    model = resnet(
-        group_lengths=group_lengths,
-        block_structure=BlockStructure.resnet(
-            ksizes=ksizes, dropout_locations=[0]),
+    model = ResNet(
         input_shape=ds_train.input_shape,
         class_count=ds_train.class_count,
-        base_width=args.width*16)
+        batch_size=128,
+        learning_rate_policy=resnet_learning_rate_policy,
+        block_structure=BlockStructure.resnet(
+            ksizes=ksizes, dropout_locations=[0]),
+        group_lengths=group_lengths,
+        base_width=args.width * 16,
+        weight_decay=5e-4,
+        training_log_period=39)
     assert zagoruyko_depth == model.zagoruyko_depth, "invalid depth (zagoruyko_depth={}!={}=model.zagoruyko_depth)".format(
         zagoruyko_depth, model.zagoruyko_depth)
 elif args.net == 'rn':
@@ -59,13 +70,17 @@ elif args.net == 'rn':
         ksizes = [1, 3, 1]
         width_factors = [1, 1, 4]
     print(args.depth)
-    model = resnet(
-        group_lengths=group_lengths,
-        block_structure=BlockStructure.resnet(
-            ksizes=ksizes, dropout_locations=[], width_factors=width_factors),
+    model = ResNet(
         input_shape=ds_train.input_shape,
         class_count=ds_train.class_count,
-        base_width=args.width)
+        batch_size=128,
+        learning_rate_policy=resnet_learning_rate_policy,
+        block_structure=BlockStructure.resnet(
+            ksizes=ksizes, dropout_locations=[], width_factors=width_factors),
+        group_lengths=group_lengths,
+        base_width=args.width,
+        weight_decay=5e-4,
+        training_log_period=39)
 elif args.net == 'dn':
     print(f'DenseNet-{args.depth}-{args.width}')
     model = densenet(

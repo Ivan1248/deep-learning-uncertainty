@@ -5,5 +5,7 @@ from .dummy import Dummy
 from .baseline_a import BaselineA
 from .resnet import ResNet
 from .densenet import DenseNet
+
+from .resnet_ss import ResNetSS
 from .ladder_densenet import LadderDenseNet
 

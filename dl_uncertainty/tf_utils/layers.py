@@ -258,14 +258,6 @@ def convex_combination(x, r, scope: str = None):
     return a * x + (1 - a) * r
 
 
-@scoped
-def sample1(fn, x, sample_count: int):
-    res = [fn(x)]
-    tf.get_tf.variable_scope().reuse_variables()
-    res += [fn(x) for _ in range(sample_count - 1)]
-    return tf.stack(res)
-
-
 def _sample(fn, x, n: int, examplewise=False):
     if examplewise:
         xr = repeat(x, n, axis=0)  # [N,H,W,C]->[Nn,H,W,C]
@@ -279,7 +271,7 @@ def _sample(fn, x, n: int, examplewise=False):
 
 @scoped
 def sample(fn, x, n: int, examplewise=False, max_batch_size=None,
-           backprop=True):
+           backprop=True, use_tf_loop=True):
     """
     Sampling of a stochastic operation. NOTE: unfortunately doesn't work if 
     there are variables defined inside fn.
@@ -295,12 +287,18 @@ def sample(fn, x, n: int, examplewise=False, max_batch_size=None,
     """
     max_batch_size = max_batch_size or n
     assert n <= max_batch_size  # TODO: case when n > max_batch_size
-    examples_per_iteration = max(1, max_batch_size // n)
-    ys = tf.map_fn(
-        fn=lambda x: _sample(fn, x, n),  # [H,W,C]->[n,H,W,C]
-        elems=x,  # [N,H,W,C]
-        parallel_iterations=examples_per_iteration,
-        back_prop=backprop)  # [N,n,H,W,C]
+    if use_tf_loop:
+        examples_per_iteration = max(1, max_batch_size // n)
+        ys = tf.map_fn(
+            fn=lambda x: _sample(fn, x, n),  # [H,W,C]->[n,H,W,C]
+            elems=x,  # [N,H,W,C]
+            parallel_iterations=examples_per_iteration,
+            back_prop=backprop)  # [N,n,H,W,C]
+    else:
+        ys = [fn(x)]
+        tf.get_tf.variable_scope().reuse_variables()
+        ys += [fn(x) for _ in range(sample_count - 1)]
+        ys = tf.stack(ys)  # [N,n,H,W,C]
     if examplewise:  # [N,n,H,W,C]
         return ys
     else:  # [n,N,H,W,C]
@@ -318,19 +316,11 @@ def bn_relu(x, bn_params=dict()):
 
 
 @scoped
-def bn_relu_conv(x, bn_params=dict(), conv_params=dict()):
-    """ Convolutions are unbiased """
-    x = batch_normalization(x, **bn_params)
-    x = tf.nn.relu(x)
-    return conv(x, **conv_params)
-
-
-@scoped
 def identity_mapping(x, stride, width):
     x_width = x.shape[-1].value
     assert width >= x_width
     if stride > 1:
-        x = avg_pool(x, stride, padding='VALID')
+        x = avg_pool(x, stride, padding='SAME')
     if width > x_width:
         x = tf.pad(x, 3 * [[0, 0]] + [[0, width - x_width]])
     return x
@@ -573,8 +563,8 @@ def ladder_densenet(
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    db_params = filter_dict(locals(), ['block_structure', 'base_width', \
-                            'bn_params', 'dropout_params'])
+    db_params = filter_dict(locals(), \
+        ['block_structure', 'base_width', 'bn_params', 'dropout_params'])
     tr_params = filter_dict(locals(), ['compression', 'bn_params'])
 
     def _split_dense_block(x):

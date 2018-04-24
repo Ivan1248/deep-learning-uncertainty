@@ -9,15 +9,14 @@ from _context import dl_uncertainty
 
 from dl_uncertainty.data import Dataset
 from dl_uncertainty.data_utils import VOC2012SegmentationLoader
-from dl_uncertainty.standard_models import resnet, densenet, BlockStructure
 from dl_uncertainty.training import train_semantic_segmentation
-from dl_uncertainty.models import LadderDenseNet
+from dl_uncertainty.models import LadderDenseNet, ResNetSS, BlockStructure
 from dl_uncertainty import dirs
 
 parser = argparse.ArgumentParser()
 parser.add_argument('net', type=str)  # 'wrn' or 'dn'
-#parser.add_argument('depth', type=int)
-#parser.add_argument('width', type=int)
+parser.add_argument('depth', type=int)
+parser.add_argument('width', type=int)
 parser.add_argument('--test', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 args = parser.parse_args()
@@ -31,15 +30,48 @@ else:
     ds_train = VOC2012SegmentationLoader.load('train')
     ds_train.shuffle(random_seed=53)
     ds_train, ds_test = ds_train.split(0, int(ds_train.size * 0.8))
+    #ds_train, ds_test = ds_train.split(0, int(ds_train.size * 0.1))
 
 print("Initializing model...")
+
+# resnets
+resnet_initial_learning_rate = 1e-4  #1e-3
+resnet_learning_rate_policy = {
+    'boundaries': [int(i * args.epochs / 200 + 0.5) for i in [60, 120, 160]],
+    'values': [resnet_initial_learning_rate * 0.2**i for i in range(4)]
+}
+
 if args.net == 'ldn':
-    net_name = f'Ladder-DenseNet'
+    net_name = f'Ladder-DenseNet-{args.depth}'
     print(net_name)
+    group_lengths={121:[6, 12, 24, 16], 169:[6, 12, 32, 32]}[args.depth]
     model = LadderDenseNet(
         input_shape=ds_train.input_shape,
         class_count=ds_train.class_count,
-        epoch_count=args.epochs)
+        epoch_count=args.epochs,
+        group_lengths=group_lengths)
+elif args.net == 'rn':
+    print(f'ResNet-{args.depth}-{args.width}')
+    if args.depth == 34:
+        group_lengths = [3, 4, 6, 3]
+        ksizes = [3, 3]
+        width_factors = [1, 1]
+    if args.depth == 50:
+        group_lengths = [3, 4, 6, 3]
+        ksizes = [1, 3, 1]
+        width_factors = [1, 1, 4]
+    print(args.depth)
+    model = ResNetSS(
+        input_shape=ds_train.input_shape,
+        class_count=ds_train.class_count,
+        batch_size=4,
+        learning_rate_policy=resnet_learning_rate_policy,
+        block_structure=BlockStructure.resnet(
+            ksizes=ksizes, dropout_locations=[], width_factors=width_factors),
+        group_lengths=group_lengths,
+        base_width=args.width,
+        weight_decay=5e-4,
+        training_log_period=39)
 else:
     assert False, "invalid model name"
 
@@ -60,5 +92,5 @@ train_semantic_segmentation(model, ds_train, ds_test, epoch_count=args.epochs)
 
 print("Saving model...")
 traning_set = 'train-val' if args.test else 'train'
-model.save_state(f'{dirs.SAVED_NETS}/' + f'{net_name}-{traning_set}/' +
+model.save_state(f'{dirs.SAVED_NETS}/' + f'{net_name}-{traning_set}-{args.epochs}/' +
                  f'{datetime.datetime.now():%Y-%m-%d-%H%M}')

@@ -5,12 +5,10 @@ import skimage
 
 
 def get_color_palette(n, black_first=True):
-    cmap = mpl.cm.get_cmap('hsv')
+    cmap = mpl.cm.get_cmap('jet')
     colors = [np.zeros(3)] if black_first else []
-    colors += [
-        np.array(cmap(0.8 * i / (n - len(colors) - 1))[:3])
-        for i in range(n - len(colors))
-    ]
+    m = n - len(colors)
+    colors += [np.array(cmap(i / (m - 1))[:3]) for i in range(m)]
     return colors
 
 
@@ -54,7 +52,6 @@ class Viewer:
         self.name = name
 
     def display(self, data, mapping=lambda x: x):
-        import matplotlib as mpl
         mpl.use('wxAgg')
 
         i = 0
@@ -81,13 +78,22 @@ class Viewer:
 
 
 def view_semantic_segmentation(dataset, infer=None):
-    colors = get_color_palette(dataset.class_count+1, black_first=True)
+    colors = get_color_palette(dataset.class_count + 1, black_first=True)
 
     def get_frame(datapoint):
         im, lab = datapoint
         nim = skimage.img_as_float(im)
         clab = colorify_label(lab + 1, colors)
         cplab = clab if infer is None else colorify_label(infer(im) + 1, colors)
-        return compose([nim, clab, cplab], format='0,0;2,0-2;1,0-1')
+
+        comp = compose([nim, clab, cplab], format='0,0;2,0-2;1,0-1')
+
+        bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
+        step = bar_height // len(colors)
+        bar = np.zeros((bar_height, bar_width), dtype=np.int8)
+        for i in range(len(colors)):
+            bar[i * step:(i + 1) * step, 1:] = len(colors) - 1 - i
+        bar = colorify_label(bar, colors)
+        return compose([comp, bar], format='0,1')
 
     return Viewer().display(dataset, get_frame)

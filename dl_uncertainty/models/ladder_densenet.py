@@ -18,13 +18,13 @@ class LadderDenseNet(AbstractModel):
             batch_size=4,
             base_learning_rate=5e-4,
             training_log_period=20,
-            name='DenseNet'):
+            name='LadderDenseNet'):
         self.input_shape, self.class_count = input_shape, class_count
         self.completed_epoch_count = 0  # TODO: remove
         self.weight_decay = weight_decay
         self.epoch_count = epoch_count
         self.base_learning_rate = base_learning_rate
-        self.group_lengths=group_lengths
+        self.group_lengths = group_lengths
         # parameters to be forwarded to layers.resnet
         super().__init__(
             batch_size=batch_size,
@@ -36,7 +36,7 @@ class LadderDenseNet(AbstractModel):
         # Input image and labels placeholders
         input_shape = [None] + list(self.input_shape)
         input = tf.placeholder(tf.float32, shape=input_shape, name='input')
-        target = tf.placeholder(tf.int32, shape=input_shape[:-1], name='input')
+        target = tf.placeholder(tf.int32, shape=input_shape[:-1], name='target')
         target_oh = tf.one_hot(target, self.class_count)
 
         # Hidden layers
@@ -58,11 +58,10 @@ class LadderDenseNet(AbstractModel):
 
         # Loss and regularization
         weight_logits_pairs = [(0.7, logits), (0.3, logits_aux)]
-        loss_emp = sum(w * losses.cross_entropy_loss(l, target_oh)
-                       for w, l in weight_logits_pairs)
+        loss = sum(w * losses.cross_entropy_loss(l, target_oh)
+                   for w, l in weight_logits_pairs)
         w_vars = filter(lambda x: 'weights' in x.name, tf.global_variables())
-        loss_reg = self.weight_decay * regularization.l2_regularization(w_vars)
-        loss = loss_emp + loss_reg
+        loss += self.weight_decay * regularization.l2_regularization(w_vars)
 
         # Optimization
         learning_rate = tf.train.polynomial_decay(
@@ -71,7 +70,7 @@ class LadderDenseNet(AbstractModel):
             decay_steps=self.epoch_count,
             end_learning_rate=0,
             power=1.5)
-        optimizer = tf.train.AdamOptimizer(learning_rate)
+        optimizer = tf.train.AdamOptimizer(learning_rate * 10)
         training_step = optimizer.minimize(loss)
 
         # Dense prediction
@@ -79,6 +78,7 @@ class LadderDenseNet(AbstractModel):
 
         # Other evaluation measures
         accuracy = tf.reduce_mean(tf.cast(tf.equal(output, target), tf.float32))
+        #accuracy *= tf.reduce_mean(target == -1)
         #miou = evaluation.mean_iou(target, output, self.class_count)
 
         return AbstractModel.EssentialNodes(
@@ -87,5 +87,6 @@ class LadderDenseNet(AbstractModel):
             output=output,
             loss=loss,
             training_step=training_step,
-            evaluation={'accuracy': accuracy}, #, 'mIoU': miou},
-            additional_outputs={'probs': probs, 'logits': logits},)
+            evaluation={'accuracy': accuracy},  #, 'mIoU': miou},
+            additional_outputs={'probs': probs,
+                                'logits': logits})

@@ -12,11 +12,12 @@ def multiclass_hinge_loss(labels_oh, logits, delta=1):
 
 
 def cross_entropy_loss(logits, labels_oh):
-    class_count = logits.shape[-1]
+    class_count = logits.shape[-1].value
     if len(logits.shape) > 2:
         logits = tf.reshape(logits, [-1, class_count])
         labels_oh = tf.reshape(labels_oh, [-1, class_count])
     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
         logits=logits, labels=labels_oh)
-    labels_count = tf.reduce_sum(labels_oh)
-    return tf.reduce_sum(loss) / labels_count
+    label_count = tf.reduce_sum(labels_oh)
+    loss = tf.reduce_sum(loss) / label_count
+    return loss
