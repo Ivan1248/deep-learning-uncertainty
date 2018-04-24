@@ -60,7 +60,7 @@ def repeat(x, n, axis=0):
 def repeat_batch(x, n, expand_dims=True):
     multiples = [n] + [1] * (len(x.shape) - 1)
     if expand_dims:  # [N,H,W,C]->[n,N,H,W,C] else: [N,H,W,C]->[nN,H,W,C]
-        x = tf.expand_dims(x, -1)
+        x = tf.expand_dims(x, 0)
         multiples += [1]
     return tf.tile(x, multiples)
 
@@ -258,20 +258,14 @@ def convex_combination(x, r, scope: str = None):
     return a * x + (1 - a) * r
 
 
-def _sample(fn, x, n: int, examplewise=False):
-    if examplewise:
-        xr = repeat(x, n, axis=0)  # [N,H,W,C]->[Nn,H,W,C]
-        yr = fn(xr)  # [Nn,H',W',C']
-        return split_batch(yr, tf.shape(x)[0])  # [N,n,H',W',C']
-    else:
-        xr = repeat_batch(x, n, expand_dims=False)  # [nN,H,W,C]
-        yr = fn(xr)  # [nN,H',W',C']
-        return split_batch(yr, n)  # [n,N,H',W',C']
-
-
 @scoped
-def sample(fn, x, n: int, examplewise=False, max_batch_size=None,
-           backprop=True, use_tf_loop=True):
+def sample(fn,
+           x,
+           n: int,
+           examplewise=False,
+           max_batch_size=None,
+           backprop=True,
+           use_tf_loop=True):
     """
     Sampling of a stochastic operation. NOTE: unfortunately doesn't work if 
     there are variables defined inside fn.
@@ -285,25 +279,36 @@ def sample(fn, x, n: int, examplewise=False, max_batch_size=None,
         Defaults to `n`.
     :param backprop: True enables support for back propagation.
     """
+    def sample_inner(fn, x, n: int, examplewise=False):
+        xr = repeat_batch(x, n, expand_dims=False)  # [nN,H,W,C]
+        yr = fn(xr)  # [nN,H',W',C']
+        yr = split_batch(yr, n)  # [n,N,H',W',C']
+        if examplewise:
+            transp = [1, 0] + list(range(2, len(yr.shape)))
+            yr = tf.transpose(yr, transp)  # [N,n,H,W,C]
+        return yr
+
     max_batch_size = max_batch_size or n
     assert n <= max_batch_size  # TODO: case when n > max_batch_size
     if use_tf_loop:
         examples_per_iteration = max(1, max_batch_size // n)
+        print("asdasfasfasfasdasdsa ")
+        exit()
         ys = tf.map_fn(
-            fn=lambda x: _sample(fn, x, n),  # [H,W,C]->[n,H,W,C]
+            fn=lambda x: sample_inner(fn, x, n),  # [H,W,C]->[n,H,W,C]
             elems=x,  # [N,H,W,C]
             parallel_iterations=examples_per_iteration,
             back_prop=backprop)  # [N,n,H,W,C]
-    else:
-        ys = [fn(x)]
-        tf.get_tf.variable_scope().reuse_variables()
-        ys += [fn(x) for _ in range(sample_count - 1)]
-        ys = tf.stack(ys)  # [N,n,H,W,C]
-    if examplewise:  # [N,n,H,W,C]
+        if not examplewise:  # [N,n,H,W,C]
+            transp = [1, 0] + list(range(2, len(ys.shape)))
+            ys = tf.transpose(ys, transp)  # [n,N,H,W,C]
         return ys
-    else:  # [n,N,H,W,C]
-        t = [1, 0] + list(range(2, len(ys.shape)))
-        return tf.transpose(ys, t)  # [n,N,H,W,C]
+    else:
+        return sample_inner(fn, x, n, examplewise=examplewise)
+
+
+def gaussian_noise(stddev, mean=0.0):
+    return tf.random_normal(shape=stddev.shape, stddev=stddev)
 
 
 # Blocks
