@@ -52,7 +52,7 @@ class LadderDenseNet(AbstractModel):
 
         # Logits, auxiliary logits, softmax
         logits, logits_aux = layers.ladder_densenet_logits(
-            pre_logits, pre_logits_aux, input_shape, self.class_count,
+            pre_logits, pre_logits_aux, input_shape[1:3], self.class_count,
             bn_params)
         probs = tf.nn.softmax(logits)
 
@@ -79,7 +79,7 @@ class LadderDenseNet(AbstractModel):
 
         # Other evaluation measures
         accuracy = tf.reduce_mean(tf.cast(tf.equal(output, target), tf.float32))
-        miou = evaluation.mean_iou(target, output)
+        #miou = evaluation.mean_iou(target, output, self.class_count)
 
         return AbstractModel.EssentialNodes(
             input=input,
@@ -87,5 +87,5 @@ class LadderDenseNet(AbstractModel):
             output=output,
             loss=loss,
             training_step=training_step,
-            evaluation={'accuracy': accuracy, 'mIoU': miou},
+            evaluation={'accuracy': accuracy}, #, 'mIoU': miou},
             additional_outputs={'probs': probs, 'logits': logits},)

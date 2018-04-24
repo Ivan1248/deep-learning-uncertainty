@@ -1,9 +1,13 @@
 import os
 import pickle
 
+import PIL.Image as pimg
 import numpy as np
 
 from .dataset import Dataset
+
+from ..processing.shape import pad_to_shape
+from ..ioutils import file
 
 
 def load_cifar10(data_dir, subset='train'):
@@ -11,6 +15,7 @@ def load_cifar10(data_dir, subset='train'):
     def unpickle(file):
         with open(file, 'rb') as f:
             return pickle.load(f, encoding='latin1')
+
     h, w, ch = 32, 32, 3
     if subset == 'train':
         train_x = np.ndarray((0, h * w * ch), dtype=np.float32)
@@ -37,3 +42,34 @@ def load_svhn(data_dir, subset='train'):
     import scipy.io as sio
     data = sio.loadmat(subset + '_32x32.mat')
     return Dataset(data['X'], np.remainder(data['y'], 10), 10)
+
+
+def load_voc2012_segmentation(data_dir, subset='trainval'): # TODO subset
+    sets_dir = f'{data_dir}/ImageSets/Segmentation'
+    images_dir = f'{data_dir}/JPEGImages'
+    labels_dir = f'{data_dir}/SegmentationClass'
+    #image_list = [x[:-4] for x in os.listdir(labels_dir)]
+    image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')  
+
+    def load_image(path):
+        return np.array(pimg.open(path))
+
+    def get_image(name):
+        img = load_image(f"{images_dir}/{name}.jpg")
+        return pad_to_shape(img, [500] * 2)
+
+    def get_labels(name):
+        label = load_image(f"{labels_dir}/{name}.png")
+        label = label.astype(np.int8)
+        return pad_to_shape(label, [500] * 2, value=-1)  # -1 ok?
+
+    images = list(map(get_image, image_list))
+    labels = list(map(get_labels, image_list))
+    return Dataset(images, labels, class_count=21)
+
+
+voc2012_classes = [
+    'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
+    'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike',
+    'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
+]

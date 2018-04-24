@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import skimage
 
 
 def get_color_palette(n, black_first=True):
@@ -17,11 +18,18 @@ def fuse_images(im1, im2, a):
     return a * im1 + (1 - a) * im2
 
 
+def colorify_label(lab, colors):
+    plab = np.empty(list(lab.shape) + [3])
+    for i in range(lab.shape[0]):
+        for j in range(lab.shape[1]):
+            plab[i, j, :] = colors[lab[i, j]]
+    return plab
+
+
 def compose(images, format='0,0;1,0-1'):
     if format is None:
-        return np.concatenate([
-            np.concatenate([im for im in row], 1) for row in images
-        ], 0)
+        return np.concatenate(
+            [np.concatenate([im for im in row], 1) for row in images], 0)
 
     def get_image(frc):
         inds = [int(i) for i in frc.split('-')]
@@ -42,7 +50,7 @@ class Viewer:
         composite image. Press "a" to return to the previous image.
     """
 
-    def __init__(self, name=None):
+    def __init__(self, name='Viewer'):
         self.name = name
 
     def display(self, data, mapping=lambda x: x):
@@ -53,16 +61,16 @@ class Viewer:
 
         def on_press(event):
             nonlocal i
-            if event.key == 'a':
+            if event.key == 'left':
                 i -= 1
-            elif event.key == 'q':
+            elif event.key == 'right':
+                i += 1
+            elif event.key == 'q' or event.key == 'esc':
                 plt.close(event.canvas.figure)
                 return
-            else:
-                i += 1
             i = i % data.size
             imgplot.set_data(mapping(data[i]))
-            fig.canvas.set_window_title(str(i) +"-" + self.name)
+            fig.canvas.set_window_title(str(i) + "-" + self.name)
             fig.canvas.draw()
 
         fig, ax = plt.subplots()
@@ -70,3 +78,16 @@ class Viewer:
         fig.canvas.set_window_title(self.name)
         imgplot = ax.imshow(mapping(data[0]))
         plt.show()
+
+
+def view_semantic_segmentation(dataset, infer=None):
+    colors = get_color_palette(dataset.class_count+1, black_first=True)
+
+    def get_frame(datapoint):
+        im, lab = datapoint
+        nim = skimage.img_as_float(im)
+        clab = colorify_label(lab + 1, colors)
+        cplab = clab if infer is None else colorify_label(infer(im) + 1, colors)
+        return compose([nim, clab, cplab], format='0,0;2,0-2;1,0-1')
+
+    return Viewer().display(dataset, get_frame)

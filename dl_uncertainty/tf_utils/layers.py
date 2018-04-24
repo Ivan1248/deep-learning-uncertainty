@@ -170,7 +170,7 @@ def _get_resized_shape(x, factor):
                       for d in x.shape[1:3]]) * factor + 0.5).astype(np.int)
 
 
-def resize_nearest_neighbor(x, factor):
+def rescale_nearest_neighbor(x, factor):
     shape = _get_resized_shape(x, factor)
     return x if factor == 1 else tf.image.resize_nearest_neighbor(x, shape)
 
@@ -489,7 +489,7 @@ def resnet(x,
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    small_input = small_input or (min(x.shape[i].value for i in [1,2]) < 128)
+    small_input = small_input or (min(x.shape[i].value for i in [1, 2]) < 128)
     if small_input:
         x = conv(x, 3, base_width)  # cifar
     else:
@@ -531,7 +531,7 @@ def densenet(
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    small_input = small_input or (min(x.shape[i].value for i in [1,2]) < 128)
+    small_input = small_input or (min(x.shape[i].value for i in [1, 2]) < 128)
     if small_input:
         x = conv(x, 3, 2 * base_width, name='conv_in')  # cifar
     else:
@@ -588,11 +588,11 @@ def ladder_densenet(
 
     @scoped
     def blend_up(x, skip):
-        x = resize_bilinear(x, 2)
-        skip = bn_relu(skip, bn_params, name=f'bn_relu_blend{i}')  # TODO name
+        x = tf.image.resize_bilinear(x, [d.value for d in skip.shape[1:3]])
+        skip = bn_relu(skip, bn_params)  # TODO name
         skip = conv(skip, 1, x.shape[-1].value, name=f'conv_bottleneck{i}')
         x = tf.concat([x, skip], axis=3)
-        x = bn_relu(x, bn_params, name=f'bn_relu_blend{i}')
+        x = bn_relu(x, bn_params)
         x = conv(x, 3, upsampling_block_width, name=f'conv_blend{i}')
         return x
 
@@ -602,13 +602,12 @@ def ladder_densenet(
         x = max_pool(x, 2)
 
     skips = []
-
     for i, length in enumerate(group_lengths[:-1]):
         x = dense_block(x, length=length, **db_params, name=f'dblock{i}')
-        skips.append([x])
+        skips.append(x)
         x = densenet_transition(x, **tr_params, name=f'transition{i}')
     x, skip = _split_dense_block(x)
-    skips.append([x])
+    skips.append(x)
 
     with tf.variable_scope('head'):
         x = bn_relu(x, bn_params, name='bn_relu_bottleneck')

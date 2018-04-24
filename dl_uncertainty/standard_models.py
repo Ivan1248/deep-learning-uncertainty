@@ -1,4 +1,4 @@
-from .models import BlockStructure, ResNet, DenseNet
+from .models import BlockStructure, ResNet, DenseNet    
 
 
 def resnet(input_shape,
