@@ -25,7 +25,7 @@ class AbstractModel(object):
                 training_post_step=None):
             self.input = input
             self.target = target
-            self.outputs = additional_outputs
+            self.outputs = {**additional_outputs, 'output': output}
             self.loss = loss
             self.training_step = training_step
             self.evaluation = evaluation
@@ -161,7 +161,8 @@ class AbstractModel(object):
         def handle_step_completed(batch, cost, extra):
             if b % self.training_log_period == 0 or b == dr.number_of_batches - 1:
                 ev = zip(extra_fetches.keys(), extra)
-                self._log(f" {self.epoch:3d}.{b:3d}: {self._eval_str(cost, ev)}")
+                self._log(
+                    f" {self.epoch:3d}.{b:3d}: {self._eval_str(cost, ev)}")
             if self.training_step_event_handler(b):
                 nonlocal end
                 end = True
@@ -195,7 +196,7 @@ class AbstractModel(object):
         cost = cost_sum / dr.number_of_batches
         extra = extra_sum / dr.number_of_batches
         ev = list(zip(extra_fetches.keys(), extra))
-        self._log(" "+self._eval_str(cost, ev))
+        self._log(" " + self._eval_str(cost, ev))
         return cost, dict(ev)
 
     @abc.abstractmethod
@@ -219,7 +220,7 @@ class AbstractModel(object):
         return self._sess.run(fetches, feed_dict)
 
     def _eval_str(self, cost: float, ev: list):
-        return f"cost {cost:.4f}, "  + ", ".join([f"{k} {v:.4f}" for k, v in ev])
+        return f"cost {cost:.4f}, " + ", ".join([f"{k} {v:.4f}" for k, v in ev])
 
     def _log(self, text: str):
         timestr = datetime.datetime.now().strftime('%H:%M:%S')

@@ -9,7 +9,7 @@ from dl_uncertainty.dirs import DATASETS
 import dl_uncertainty.visualization as vis
 
 
-voc = load_voc2012_segmentation(f"{DATASETS}/VOC2012", 'train#')
+voc = load_voc2012_segmentation(f"{DATASETS}/VOC2012", 'train')
 assert voc.images[0].shape[0] == 500
 print(np.unique(voc.labels))
 

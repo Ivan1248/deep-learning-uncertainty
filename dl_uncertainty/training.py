@@ -44,7 +44,7 @@ def train_semantic_segmentation(model: AbstractModel,
         elif text == 's':
             writer = tf.summary.FileWriter(dirs.LOGS, graph=model._sess.graph)
         elif text == 'd':
-            view_semantic_segmentation(ds_val, model)
+            view_semantic_segmentation(ds_val, lambda x: model.predict([x])[0])
         return False
 
     model.training_step_event_handler = handle_step

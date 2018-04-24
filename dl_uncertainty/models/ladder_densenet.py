@@ -17,7 +17,7 @@ class LadderDenseNet(AbstractModel):
             weight_decay=1e-4,
             batch_size=4,
             base_learning_rate=5e-4,
-            training_log_period=1,
+            training_log_period=20,
             name='DenseNet'):
         self.input_shape, self.class_count = input_shape, class_count
         self.completed_epoch_count = 0  # TODO: remove
