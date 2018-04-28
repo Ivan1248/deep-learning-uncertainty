@@ -1,7 +1,10 @@
 import tensorflow as tf
 from tensorflow.python.framework import ops
 
+from ..tf_utils.layers import bn_relu
+
 from .abstract_model import AbstractModel
+
 
 
 class SemSegBaselineA(AbstractModel):

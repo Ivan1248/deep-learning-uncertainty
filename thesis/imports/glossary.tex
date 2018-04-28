@@ -61,7 +61,7 @@
 
 % Indeksiranje
 \glsgroup{i}{Indeksiranje}
-{Indeksi elemenata vektora ili višedimenzionalnih nizova se radi jednoznačnosti mogu pisati u indeksu oznake vektora u uglatim zagradama. Npr. ako je definiran vektor $\vec a=(a_1,.., a_n)$, onda je njegov $i$-ti element $\vec a_{\sbr{i}}=a_i$.}
+{Indeksi elemenata vektora ili višedimenzionalnih nizova se radi jednoznačnosti mogu pisati u indeksu oznake vektora u uglatim zagradama. Npr. ako je definiran vektor $\vec a=(a_1,.., a_n)^\transpose$, onda je njegov $i$-ti element $\vec a_{\sbr{i}}=a_i$.}
 \glsentm{i}{vecelem}{\vec{a}_{\sbr{i}}} 
 	{$i$-ti element vektora $\vec{a}$}
 \glsentm{i}{subvec}{\vec{a}_{\sbr{i_1:i_2}}}{Vektor kojeg čine elementi $\vec{a}_{\sbr{i_1}}, \vec{a}_{\sbr{i_1+1}},.., \vec{a}_{\sbr{i_2}}$}
@@ -96,23 +96,24 @@
 
 % Teorija vjerojatnosti i teorija informacije
 \glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
-{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $p(\rvar a)$ i funkcija gustoće vjerojatnosti $p_{\rvar a}(a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći  zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $P(\cdot)$ se koristi i kao oznaka vjerojatnosti događaja i kao oznaka funkcije vjerojatnosti.}
+{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}(a)(\cdot)$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
 %TODO move to new page if too high
 \glsentm{vi}{rvar}{\rvar a}{Slučajna varijabla}
 \glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b\sheq b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
 \glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
-\glsentm{vi}{distr}{\distrib{A}}{Razdioba}
+\glsentm{vi}{distr}{\distrib{A},\,q}{Razdioba}
 \glsentm{vi}{event}{\cbr{R(\rvar a)}} {Događaj koji uključuje slučajnu varijablu $\rvar a$, gdje je $R$ neki predikat}
-\glsentm{vi}{prob}{P(\cbr{R(\rvar a)}),\,P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
-\glsentm{vi}{distrrvar}{P(\rvar a),\,p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $P$ ako je $\rvar a$ diskretna slučajna varijabla, a $p$ ako nije ili ako se ne zna}
-\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(\rvar a\sheq a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$}
-\glsentm{vi}{pdf}{p_{\rvar a}(a),\,p(\rvar a\sheq a),\,p(a)} {Funkcija gustoće vjerojatosti slučajne varijable $\rvar a$}
-\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(\rvar a\sheq a\mid\rvar b\sheq b),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a\mid\rvar b\sheq b}$}
-\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(\rvar a\sheq a,\rvar b\sheq b),\,p(a, b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a,\rvar b\sheq b}$}
-\glsentm{vi}{hasdistrib}{\rvar a \sim \distrib A,\, p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
+\glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
+\glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
+\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$: $P_{\rvar a}(a)=\P(\rvar a\sheq a)$}
+\glsentm{vi}{probdens}{\p(\rvar a\sheq a)} {Gustoća vjerojatnosti događaja $\rvar a=a$}
+\glsentm{vi}{pdf}{p_{\rvar a}(a),\,p(a)} {Funkcija gustoće vjerojatosti slučajne varijable $\rvar a$}
+\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a\mid\rvar b\sheq b}$; $p_{\rvar a\mid b}(a)=\p(\rvar a\sheq a\mid\rvar b\sheq b)$}
+\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(a,b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a,\rvar b\sheq b}$; $p_{\rvar a,\rvar b}(a,b)=\p(\rvar a\sheq a,\rvar b\sheq b)$}
+\glsentm{vi}{hasdistrib}{\rvar a \sim \distrib A,\, \p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
 \glsentm{vi}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
 \glsentm{vi}{fromdistrib}{a\sim\distrib A} {\textit{$a$ se izvlači iz razidobe $\distrib{A}$}}
-\glsentm{vi}{fromrvar}{a\sim \rvar a,\,a\sim p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $p(\rvar a)$}}
+\glsentm{vi}{fromrvar}{a\sim \rvar a,\,a\sim \p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $\p(\rvar a)$}}
 \glsentm{vi}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a}f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}

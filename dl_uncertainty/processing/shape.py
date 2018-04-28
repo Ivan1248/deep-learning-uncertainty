@@ -27,7 +27,3 @@ def pad_to_shape(image: np.ndarray, shape, value=1):
 
 def adjust_shape(image: np.ndarray, shape):
     return pad_to_shape(crop(image, shape), shape)
-
-
-def resize(image: np.ndarray, shape):
-    return skimage.transform.resize(image, shape, anti_aliasing=True)

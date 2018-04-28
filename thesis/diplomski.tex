@@ -317,10 +317,11 @@ p(\vec d\mid\set D)
 = \int p(\vec d\mid\vec\theta)p(\vec\theta\mid\set D) \dif{\vec\theta}
 = \E_{\rvec\theta\mid\set D} p(\vec d\mid\rvec\theta) \text{.}
 \end{align}
+
 Kada se parametri točkasto procjenjuju, npr. MAP-procjeniteljem, točkasta procjena parametara $\hat{\vec\theta}$ aproksimira cijelu aposteriornu razdiobu, tj. $p(\vec\theta\mid\set{D}) \approx \dirac(\hat{\vec\theta}-\vec\theta)$. Onda je
 \begin{align}
 p(\vec d\mid\set D) 
-\approx \int p(\vec d\mid\vec\theta) \dirac(\hat{\vec\theta}-\theta) \dif{\vec\theta} 
+\approx \int p(\vec d\mid\vec\theta) \dirac(\hat{\vec\theta}-\vec\theta) \dif{\vec\theta} 
 = p(\vec d\mid\hat{\vec\theta}) \text{.}
 \end{align}
 %TODO: treba li d biti slučajna varijabla?
@@ -400,17 +401,17 @@ DL 3.14
 
 Ovaj odjeljak uglavnom se temelji na \cite{Blei:2017:VIRS} i malo na \cite{Yang:2017:UVLB}.
 
-Važan problem u bayesovskoj statistici, gdje se zaključivanje temelji na izračunima koji uključuju aposteriornu razdiobu, je aproksimacija razdioba koje su zahtjevne za računanje. Kod složenijih bayesovskih modela\footnote{Bayesovski model (ili Bayesova mreža) je probabilistički grafički model sa strukturom usmjerenog acikličkog grafa.} aposteriorna razdioba se ne može lako izračunati i treba koristiti aproksimacijske postupke od kojih su glavni \emph{varijacijski} postupci \citep{Jordan:1999:IVMGM} i \emph{Monte Carlo} postupci koji se temelje na uzorkovanju \emph{pomoću Markovljevog lanca} (MCMC, engl. \textit{Markov chain Monte Carlo}) i Hamiltonovski (ili hibridni) MC-postupci (HMC). MCMC i HMC temelje se na definiranju stohastičkog procesa koji ima stacionarnu razdiobu jednaku razdiobi koja se aproksimira, omogućuju asimptotski egzaktno uzorkovanje i bolje su istraženi. Varijacijski postupci temelje se na aproksimaciji razdiobe nekom jednostavnijom koja se pronalazi rješavanjem optimizacijskog problema, brži su i jednostavniji za ostvariti za složenije modele.
+Važan problem u bayesovskoj statistici, gdje se zaključivanje temelji na izračunima koji uključuju aposteriornu razdiobu, je aproksimacija razdioba koje su zahtjevne za računanje. Kod složenijih bayesovskih modela\footnote{Bayesovski model (ili Bayesova mreža) je probabilistički grafički model sa strukturom usmjerenog acikličkog grafa.} aposteriorna razdioba se ne može lako izračunati i treba koristiti aproksimacijske postupke od kojih su glavni \emph{varijacijski} postupci \citep{Jordan:1999:IVMGM} i \emph{Monte Carlo} postupci koji se temelje na uzorkovanju pomoću \emph{Markovljevog lanca} (MCMC, engl. \textit{Markov chain Monte Carlo}) i Hamiltonovski (ili hibridni) MC-postupci (HMC). MCMC i HMC temelje se na definiranju stohastičkog procesa koji ima stacionarnu razdiobu jednaku razdiobi koja se aproksimira, omogućuju asimptotski egzaktno uzorkovanje i bolje su istraženi. Varijacijski postupci temelje se na aproksimaciji razdiobe nekom jednostavnijom koja se pronalazi rješavanjem optimizacijskog problema, brži su i jednostavniji za ostvariti za složenije modele.
 
 Razmatramo bayesovski model koji ima jednu latentnu varijablu $\rvec z$ i jednu vidljivu varijablu $\rvec x$. Model je prikazan an slici~\ref{fig:pgm} i opisan je ovom jednadžbom združene vjerojatnosti:
 \begin{align*}
 p(\vec x, \vec z) = p(\vec z) p(\vec x\mid\vec z) \text{.}
 \end{align*}
-Zaključivanjem se određuje aposteriorna razdioba latentne varijable
+Zaključivanjem se određuje aposteriorna razdioba latentne varijable:
 \begin{align} \label{eq:posterior-inference}
 p(\vec z\mid\vec x) = \frac{p(\vec x,\vec z)}{p(\vec x)} =  \frac{p(\vec x,\vec z)}{\int p(\vec x, \vec z) \dif{\vec z}} \text{.}
 \end{align}
-na temelju opažanih vrijednosti varijable $\rvec x$ (podataka). Kod složenijih modela integriranje marginalne izglednosti u nazivniku nije traktabilno i aposteriorna razdioba se mora aproksimirati \emph{aproksimacijskim zaključivanjem}.
+na temelju opažanih vrijednosti slučajne varijable $\rvec x$ (podataka). Kod složenijih modela integriranje marginalne izglednosti u nazivniku nije traktabilno i aposteriorna razdioba se mora aproksimirati \emph{aproksimacijskim zaključivanjem}.
 
 \begin{figure}
 	\centering
@@ -491,7 +492,6 @@ TODO mean-field, calculus of variations
 
 
 \chapter{Procjenjivanje nesigurnosti}
-
 
 
 

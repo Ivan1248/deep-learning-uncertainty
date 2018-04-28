@@ -100,7 +100,7 @@ def conv(x, ksize, width, stride=1, dilation=1, padding='SAME', bias=False):
     :param stride: int (or float in case of transposed convolution)
     :param dilation: dilation of the kernel
     :param padding: string. "SAME" or "VALID" 
-    :param bias: add biases
+    :param bias: add biases. default: False
     """
     h = tf.nn.convolution(
         x,
@@ -142,6 +142,28 @@ def separable_conv(x,
         padding=padding)
     if bias:
         h += bias_variable(width)
+    return h
+
+
+@scoped
+def conv_transp(x, ksize, output_shape, stride=1, padding='SAME', bias=False):
+    '''
+    A wrapper for tf.nn.tf.nn.conv2d_transpose.
+    :param x: 4D input "NHWC" tensor 
+    :param ksize: int or tuple of 2 ints representing spatial dimensions 
+    :param width: number of output channels
+    :param output_shape: tuple of 2 ints
+    :param padding: string. "SAME" or "VALID" 
+    :param bias: add biases
+    '''
+    h = tf.nn.conv2d_transpose(
+        x,
+        filter=conv_weight_variable(ksize, output_shape[-1], x.shape[-1].value),
+        output_shape=output_shape,
+        strides=[1] + [stride] * 2 + [1],
+        padding=padding)
+    if bias:
+        h += bias_variable(output_shape[-1])
     return h
 
 
@@ -279,6 +301,7 @@ def sample(fn,
         Defaults to `n`.
     :param backprop: True enables support for back propagation.
     """
+
     def sample_inner(fn, x, n: int, examplewise=False):
         xr = repeat_batch(x, n, expand_dims=False)  # [nN,H,W,C]
         yr = fn(xr)  # [nN,H',W',C']
@@ -292,8 +315,6 @@ def sample(fn,
     assert n <= max_batch_size  # TODO: case when n > max_batch_size
     if use_tf_loop:
         examples_per_iteration = max(1, max_batch_size // n)
-        print("asdasfasfasfasdasdsa ")
-        exit()
         ys = tf.map_fn(
             fn=lambda x: sample_inner(fn, x, n),  # [H,W,C]->[n,H,W,C]
             elems=x,  # [N,H,W,C]
@@ -307,7 +328,7 @@ def sample(fn,
         return sample_inner(fn, x, n, examplewise=examplewise)
 
 
-def gaussian_noise(stddev, mean=0.0):
+def normal_noise(stddev):
     return tf.random_normal(shape=stddev.shape, stddev=stddev)
 
 
@@ -356,6 +377,13 @@ class BlockStructure:
         return BlockStructure(**filter_dict(locals(), lambda k: k != 'cls'))
 
     @classmethod
+    def resnet_bottleneck(cls,
+                          ksizes=[1, 3, 1],
+                          width_factors=[1, 1, 4],
+                          dropout_locations=[0]):
+        return BlockStructure(**filter_dict(locals(), lambda k: k != 'cls'))
+
+    @classmethod
     def densenet(cls,
                  ksizes=[1, 3],
                  width_factors=[4, 1],
@@ -368,18 +396,23 @@ def block(x,
           structure=BlockStructure.resnet(),
           stride=1,
           base_width=16,
+          omit_first_bn_relu=False,
           bn_params=dict(),
           dropout_params=dict()):
-    s = structure
-    for i, (ksize, wf) in enumerate(zip(s.ksizes, s.width_factors)):
-        x = bn_relu(x, bn_params, name=f'bn_relu{i}')
+    struct = structure
+
+    for i, (ksize, wf) in enumerate(zip(struct.ksizes, struct.width_factors)):
+        if not omit_first_bn_relu:
+            x = bn_relu(x, bn_params, name=f'bn_relu{i}')
+        omit_first_bn_relu = False
         x = conv(
             x,
             ksize,
             base_width * wf,
             stride=stride if i == 0 else 1,
+            bias=False,
             name=f'conv{i}')
-        if i in s.dropout_locations:
+        if i in struct.dropout_locations:
             x = dropout(x, **dropout_params)
     return x
 
@@ -400,37 +433,48 @@ def residual_block(x,
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
+    x_width = x.shape[-1].value
+    assert width >= x_width
+    dim_changing = width > x_width or stride > 1
+    skip_connection_needs_bn_relu = dim_changing and dim_change == 'proj'
 
     def _skip_connection(x, stride, width):
-        x_width = x.shape[-1].value
-        assert width >= x_width
-        if width > x_width or stride > 1:
+        if dim_changing:
             if dim_change == 'id':
                 x = identity_mapping(x, stride, width)
-            elif dim_change == 'nin':  # zagoruyko, TODO: bn_relu can be shared
-                x = bn_relu(x, bn_params)
-                x = conv(x, 1, width, stride=stride, name='conv_skip')
+            elif dim_change == 'proj':  # He
+                x = conv(
+                    x, 1, width, stride=stride, bias=False, name='conv_skip')
         return x
 
+    if skip_connection_needs_bn_relu:
+        x = bn_relu(x, bn_params)
     r = block(
         x,
         structure,
         stride=stride,
         base_width=width,
+        omit_first_bn_relu=skip_connection_needs_bn_relu,
         bn_params=bn_params,
         dropout_params=dropout_params)
-    s = _skip_connection(x, stride, r.shape[-1])
+    s = _skip_connection(x, stride, r.shape[-1].value)
     assert s.shape[-1] == r.shape[-1]
     return s + r
 
 
 @scoped
-def densenet_transition(x, compression: float = 0.5, bn_params=dict()):
+def densenet_transition(x,
+                        compression: float = 0.5,
+                        pool_func=avg_pool,
+                        bn_params=dict(),
+                        dropout_params={'rate': 0}):
     """ Densenet transition layer without dropoout """
-    width = int(x.shape[-1].value * compression)
     x = bn_relu(x, bn_params)
-    x = conv(x, 1, width)
-    x = avg_pool(x, stride=2)
+    width = int(x.shape[-1].value * compression)
+    x = conv(x, 1, width, bias=False)
+    if 'rate' in dropout_params.keys() and dropout_params['rate'] != 0:
+        x = dropout(x, **dropout_params)
+    x = pool_func(x, stride=2)
     return x
 
 
@@ -473,23 +517,24 @@ def resnet(x,
            dim_change='id',
            bn_params=dict(),
            dropout_params={'rate': 0.3},
-           small_input=None):
+           large_input=None):
     """
     A pre-activation resnet without the final global pooling and classification
     layers.
     :param x: input tensor
     :param base_width: number of output channels of layers in the first group
-    :param group_lengths: (N) numbers of blocks per group (width)
+    :param group_lengths: numbers of blocks per group
     :param block_structure: a BlockStructure instance
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    small_input = small_input or (min(x.shape[i].value for i in [1, 2]) < 128)
-    if small_input:
-        x = conv(x, 3, base_width)  # cifar
-    else:
-        x = conv(x, 7, base_width, stride=2)
+    if large_input is None:
+        large_input = (min(x.shape[i].value for i in [1, 2]) >= 128)
+    if large_input:
+        x = conv(x, 7, base_width, stride=2, bias=False)
         x = max_pool(x, stride=2, ksize=3)
+    else:
+        x = conv(x, 3, base_width, bias=False)  # cifar
     for i, length in enumerate(group_lengths):
         group_width = 2**i * base_width
         with tf.variable_scope(f'group{i}'):
@@ -515,7 +560,7 @@ def densenet(
         compression=0.5,
         bn_params=dict(),
         dropout_params={'rate': 0.3},
-        small_input=None):
+        large_input=None):
     """
     A densenet without the final global pooling and classification layers.
     :param x: input tensor
@@ -526,17 +571,21 @@ def densenet(
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    small_input = small_input or (min(x.shape[i].value for i in [1, 2]) < 128)
-    if small_input:
-        x = conv(x, 3, 2 * base_width, name='conv_in')  # cifar
-    else:
-        x = conv(x, 7, base_width, stride=2, name='conv_in')
+    if large_input is None:
+        large_input = (min(x.shape[i].value for i in [1, 2]) >= 128)
+    if large_input:
+        x = conv(x, 7, base_width, stride=2, bias=False)
         x = max_pool(x, stride=2, ksize=3)
-    x = conv(x, 3, 2 * base_width)  # cifar
+    else:
+        x = conv(x, 3, 2 * base_width, bias=False)  # cifar
     for i, length in enumerate(group_lengths):
         if i > 0:
             x = densenet_transition(
-                x, compression, bn_params=bn_params, name=f'transition{i-1}')
+                x,
+                compression,
+                bn_params=bn_params,
+                dropout_params=dropout_params,
+                name=f'transition{i-1}')
         x = dense_block(
             x,
             length=length,
@@ -585,14 +634,16 @@ def ladder_densenet(
     def blend_up(x, skip):
         x = tf.image.resize_bilinear(x, [d.value for d in skip.shape[1:3]])
         skip = bn_relu(skip, bn_params)  # TODO name
-        skip = conv(skip, 1, x.shape[-1].value, name=f'conv_bottleneck{i}')
+        skip = conv(
+            skip, 1, x.shape[-1].value, bias=False, name=f'conv_bottleneck{i}')
         x = tf.concat([x, skip], axis=3)
         x = bn_relu(x, bn_params)
-        x = conv(x, 3, upsampling_block_width, name=f'conv_blend{i}')
+        x = conv(
+            x, 3, upsampling_block_width, bias=False, name=f'conv_blend{i}')
         return x
 
     with tf.variable_scope('layer_in'):
-        x = conv(x, 7, 2 * base_width, stride=2)
+        x = conv(x, 7, 2 * base_width, stride=2, bias=False)
         x = bn_relu(x, bn_params)
         x = max_pool(x, 2)
 
@@ -606,9 +657,9 @@ def ladder_densenet(
 
     with tf.variable_scope('head'):
         x = bn_relu(x, bn_params, name='bn_relu_bottleneck')
-        x = conv(x, 1, 512, name='conv_bottleneck')
+        x = conv(x, 1, 512, bias=False, name='conv_bottleneck')
         x = bn_relu(x, bn_params, name='bn_relu_context')
-        x = conv(x, 3, 128, dilation=2, name='conv_context')
+        x = conv(x, 3, 128, dilation=2, bias=False, name='conv_context')
 
         pre_logits_aux = x
         for i, skip in reversed(list(enumerate(skips))):
@@ -624,7 +675,7 @@ def ladder_densenet_logits(pre_logits, pre_logits_aux, image_shape, class_count,
     for i, x in enumerate([pre_logits, pre_logits_aux]):
         with tf.variable_scope(f'logits{i}'):
             x = bn_relu(x, bn_params)  # no bn in the original code
-            x = conv(x, 1, class_count)
+            x = conv(x, 1, class_count, bias=True)
             logits = tf.image.resize_bilinear(x, image_shape)
             logitses.append(logits)
     return logitses[0], logitses[1]

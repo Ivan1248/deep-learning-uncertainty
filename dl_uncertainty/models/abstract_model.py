@@ -36,11 +36,15 @@ class AbstractModel(object):
             batch_size: int,  # mini-batch size
             learning_rate_policy,
             training_log_period=1,
+            input_mean=None,
+            input_stddev=None,
             name="DCNN"):
         self.name = name
 
         self.batch_size = batch_size
         self.learning_rate_policy = learning_rate_policy
+
+        self.input_mean, self.input_stddev = input_mean, input_stddev
 
         self._graph = tf.Graph()
         self._sess = tf.Session(graph=self._graph)
@@ -212,6 +216,8 @@ class AbstractModel(object):
         return AbstractModel.EssentialNodes(*([None] * 6))
 
     def _run(self, fetches: list, inputs, labels=None, is_training=None):
+        if self.input_mean is not None:
+            inputs = (inputs - self.input_mean) / self.input_stddev
         feed_dict = {self.nodes.input: inputs}
         if labels is not None:
             feed_dict[self.nodes.target] = np.array(labels)

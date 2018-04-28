@@ -21,7 +21,6 @@ class DenseNet(AbstractModel):
             training_log_period=1,
             name='DenseNet'):
         self.input_shape, self.class_count = input_shape, class_count
-        self.completed_epoch_count = 0  # TODO: remove
         self.weight_decay = weight_decay
         # parameters to be forwarded to layers.resnet
         rpn = ['group_lengths', 'block_structure', 'base_width']
@@ -36,7 +35,7 @@ class DenseNet(AbstractModel):
         # Input image and labels placeholders
         input_shape = [None] + list(self.input_shape)
         input = tf.placeholder(tf.float32, shape=input_shape, name='input')
-        target = tf.placeholder(tf.int32, shape=[None], name='input')
+        target = tf.placeholder(tf.int32, shape=[None], name='target')
         target_oh = tf.one_hot(indices=target, depth=self.class_count)
 
         # Hidden layers
@@ -45,13 +44,13 @@ class DenseNet(AbstractModel):
             **self.densenet_params,
             bn_params={'is_training': is_training},
             dropout_params={
-                **layers.default_arg(layers.resnet, 'dropout_params'),
+                **layers.default_arg(layers.densenet, 'dropout_params'),
                 'is_training': is_training
             })
 
         # Global pooling and softmax classification
         h = tf.reduce_mean(h, axis=[1, 2], keepdims=True)
-        logits = conv(h, 1, self.class_count)
+        logits = conv(h, 1, self.class_count, bias=True)
         logits = tf.reshape(logits, [-1, self.class_count])
         probs = tf.nn.softmax(logits)
 

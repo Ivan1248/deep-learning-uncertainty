@@ -1,11 +1,12 @@
 #from . import ioutils
 from .ioutils import filesystem as fs
 
+
 def _find_in_ancestor(path_end):
     try:
         return fs.find_in_ancestor(__file__, path_end)
     except:
-        print("ERROR: dirs.py: Could not find '"+path_end+"'.")
+        print("ERROR: dirs.py: Could not find '" + path_end + "'.")
         return None
 
 
