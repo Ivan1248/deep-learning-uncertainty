@@ -1,13 +1,32 @@
 import numpy as np
 import random
 
+
+class DatasetGenerator:
+
+    def __init__(self, inputs, labels, class_count, size=None):
+        self.inputs = (inp for inp in inputs)
+        self.labels = (lab for lab in labels)
+        self.class_count = class_count
+        self.size = size
+
+    def to_dataset(self):
+        return Dataset(list(self.inputs), list(self.labels), self.class_count)
+
+
 class Dataset:
+
     def __init__(self, images, labels, class_count: int, random_seed=51):
         self._images = np.ascontiguousarray(np.array(images))
         self._labels = np.ascontiguousarray(np.array(labels))
         self._class_count = class_count
         self._rand = np.random.RandomState(random_seed)
         self._indices = np.arange(len(self._images))
+
+    @staticmethod
+    def from_dataset_generator(dg: DatasetGenerator) -> Dataset:
+        images, labels = zip(*dg.input_label_pairs)
+        return Dataset(list(images), list(labels), dg.class_count)
 
     def __len__(self):
         return len(self._images)
@@ -31,7 +50,7 @@ class Dataset:
     def class_count(self):
         return self._class_count
 
-    def set_random_seed(self, seed:int):
+    def set_random_seed(self, seed: int):
         self._rand.seed(seed)
 
     def shuffle(self, random_seed=None):
@@ -77,6 +96,7 @@ def save_dataset(path: str):
         path += '.npy'
     np.load(path)
 
+
 def load_dataset(path: str) -> Dataset:
     if not path.endswith('.npy'):
         path += '.npy'
@@ -84,6 +104,7 @@ def load_dataset(path: str) -> Dataset:
 
 
 class MiniBatchReader:
+
     def __init__(self, dataset: Dataset, batch_size: int):
         self.current_batch_number = 0
         self.dataset = dataset

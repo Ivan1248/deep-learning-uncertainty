@@ -4,8 +4,9 @@ import pickle
 import PIL.Image as pimg
 import numpy as np
 from skimage.transform import resize
+from tqdm import tqdm
 
-from .dataset import Dataset
+from .dataset import Dataset, DatasetGenerator
 
 from ..processing.shape import pad_to_shape, crop
 from ..ioutils import file
@@ -33,13 +34,13 @@ def load_cifar10(data_dir, subset='train'):
             train_y += subset['labels']
         train_x = train_x.reshape((-1, ch, h, w)).transpose(0, 2, 3, 1)
         train_y = np.array(train_y, dtype=np.int32)
-        return Dataset(train_x, train_y, 10)
+        return DatasetGenerator(train_x, train_y, 10, train_x.shape[0])
     elif subset == 'test':
         subset = unpickle(os.path.join(data_dir, 'test_batch'))
         test_x = subset['data'].reshape(
             (-1, ch, h, w)).transpose(0, 2, 3, 1).astype(np.float32)
         test_y = np.array(subset['labels'], dtype=np.int32)
-        return Dataset(test_x, test_y, 10)
+        return DatasetGenerator(test_x, test_y, 10, test_x.shape[0])
     else:
         raise ValueError("The value of subset must be in {'train','test'}.")
 
@@ -48,7 +49,8 @@ def load_svhn(data_dir, subset='train'):
     # 0..9 instead of 10,1..9
     import scipy.io as sio
     data = sio.loadmat(subset + '_32x32.mat')
-    return Dataset(data['X'], np.remainder(data['y'], 10), 10)
+    xs = data['X']
+    return DatasetGenerator(xs, np.remainder(data['y'], 10), 10, xs.shape[0])
 
 
 def load_voc2012_segmentation(data_dir, subset='trainval'):  # TODO
@@ -69,9 +71,10 @@ def load_voc2012_segmentation(data_dir, subset='trainval'):  # TODO
         label = label.astype(np.int8)
         return pad_to_shape(label, [500] * 2, value=-1)  # -1 ok?
 
-    images = list(map(get_image, image_list))
-    labels = list(map(get_label, image_list))
-    return Dataset(images, labels, class_count=21)
+    images = map(get_image, image_list)
+    labels = map(get_label, image_list)
+    return DatasetGenerator(
+        images, labels, class_count=21, size=len(image_list))
 
 
 def load_cityscapes_segmentation(data_dir,
@@ -79,7 +82,7 @@ def load_cityscapes_segmentation(data_dir,
                                  downsampling_factor=1):
     assert subset in ['train', 'val', 'test']
     assert downsampling_factor >= 1
-
+    """
     prepared_ds_dir = f"{data_dir}.prepared"
     prepared_ds_path = f"{prepared_ds_dir}/{subset}-{downsampling_factor}"
     if os.path.exists(prepared_ds_path):
@@ -88,6 +91,7 @@ def load_cityscapes_segmentation(data_dir,
         except:
             print("Removing invalid prepared datased")
             os.remove(prepared_ds_path)
+    """
 
     if downsampling_factor > 1:
         shape = np.array([2018, 1024]) // downsampling_factor
@@ -118,16 +122,18 @@ def load_cityscapes_segmentation(data_dir,
             lab[lab == id] = lb
         return lab
 
-    from tqdm import tqdm, tqdm
-    print(f"Loading '{subset}' images...")
-    images = [get_image(x) for x in tqdm(image_list)]
-    print(f"Loading '{subset}' labels...")
-    labels = [get_label(x) for x in tqdm(label_list)]
+    """
     ds = Dataset(images, labels, class_count=19)
 
     os.makedirs(prepared_ds_dir, exist_ok=True)
     pickle.dump(ds, open(f"{prepared_ds_path}", 'wb'), protocol=4)
     return ds
+    """
+
+    images = map(get_image, tqdm(image_list))
+    labels = map(get_label, label_list)
+    return DatasetGenerator(
+        images, labels, class_count=19, size=len(image_list))
 
 
 def load_iccv09(data_dir):  # TODO subset
@@ -144,9 +150,10 @@ def load_iccv09(data_dir):  # TODO subset
         label = np.loadtxt(f"{labels_dir}/{name}.regions.txt", dtype=np.int8)
         return pad_to_shape(crop(label, shape), shape, value=-1)
 
-    images = list(map(get_image, image_list))
-    labels = list(map(get_label, image_list))
-    return Dataset(images, labels, class_count=8)
+    images = map(get_image, tqdm(image_list))
+    labels = map(get_label, image_list)
+    return DatasetGenerator(
+        images, labels, class_count=19, size=len(image_list))
 
 
 iccv09_classes = [

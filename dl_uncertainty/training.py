@@ -55,10 +55,9 @@ def train_semantic_segmentation(model: AbstractModel,
     model.test(ds_val)
     ds_train_part = ds_train[:ds_val.size * 2]
     for i in range(epoch_count):
-        ds_train.shuffle()
         prepr_ds_train = Dataset(
             list(map(random_fliplr, ds_train.images)), ds_train.labels,
             ds_train.class_count)
-        model.train(prepr_ds_train, epoch_count=1)
+        model.train(prepr_ds_train, epoch_count=1)  # shuffled here
         model.test(ds_val, 'validation data')
         model.test(ds_train_part, 'training data subset')

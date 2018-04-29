@@ -1,1 +1,1 @@
-from .dataset import Dataset, MiniBatchReader, save_dataset, load_dataset
+from .dataset import Dataset, DatasetGenerator, MiniBatchReader, save_dataset, load_dataset

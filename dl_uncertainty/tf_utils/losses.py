@@ -49,20 +49,20 @@ def class_distribution_weighted_cross_entropy_loss(logits,
     return loss * (tf.size(labels) / label_count)
 
 
-def gaussian_logit_cross_entropy_loss(logits_means,
-                                      logit_log_variances,
-                                      labels,
-                                      sample_count=50,
-                                      reduce_mean=True):
+def gaussian_logit_expected_cross_entropy_loss(logits_means,
+                                               logit_log_variances,
+                                               labels,
+                                               sample_count=50,
+                                               reduce_mean=True):
     """
-    https://arxiv.org/abs/1703.04977
+    NOTE: NOT EQUIVALENT to eq. 11 or eq. 12 in https://arxiv.org/abs/1703.04977
     :param logits: Tensor. N[HW]C
     :param logit_log_variances: Tensor. N[HW]1
     :param labels: Tensor. N[HW]C
     """
     stddevs = tf.exp(0.5 * logit_log_variances)
 
-    def sample_loss(*args):
+    def sample_loss(*args):  # args are ignored
         logits = tf.random_normal(
             shape=logits_means.shape, mean=logits_means, stddev=stddevs)
         return cross_entropy_loss(logits, labels, reduce_mean=reduce_mean)
@@ -76,7 +76,7 @@ def gaussian_logit_cross_entropy_loss(logits_means,
 def temperature_uncertainty_cross_entropy_loss(logits, log_temperatures,
                                                labels):
     """
-    https://arxiv.org/abs/1705.07115 (T=sigma^2)
+    https://arxiv.org/abs/1705.07115
     :param logits: Tensor. N[HW]C
     :param log_temperatures: Tensor. N[HW]1
     :param labels: Tensor. N[HW]C
