@@ -1,4 +1,6 @@
 import tensorflow as tf
+import numpy as np
+import layers
 
 
 def multiclass_hinge_loss(labels_oh, logits, delta=1):
@@ -11,42 +13,85 @@ def multiclass_hinge_loss(labels_oh, logits, delta=1):
     return tf.reduce_mean(tf.reduce_sum(tf.nn.relu(r), axis=1))
 
 
-def cross_entropy_loss(logits, labels):
+def cross_entropy_loss(logits, labels, reduce_mean=True):
     class_count = logits.shape[-1].value
     labels_oh = tf.one_hot(labels, class_count)
-    if len(logits.shape) > 2:
-        logits = tf.reshape(logits, [-1, class_count])
-        labels_oh = tf.reshape(labels_oh, [-1, class_count])
     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
         logits=logits, labels=labels_oh)
     label_count = tf.reduce_sum(labels_oh)
-    loss = tf.reduce_sum(loss) / label_count
-    return loss
+    if reduce_mean:
+        return tf.reduce_sum(loss) / label_count  # 1
+    return loss * (tf.size(labels) / label_count)  # N
 
 
-def weighted_cross_entropy_loss(logits,
-                                labels,
-                                class_distribution=None,
-                                eps=1e-3):
+def class_distribution_weighted_cross_entropy_loss(logits,
+                                                   labels,
+                                                   class_distribution=None,
+                                                   eps=1e-3,
+                                                   reduce_mean=True):
     class_count = logits.shape[-1].value
-    labels_oh = tf.one_hot(labels, class_count)
     if len(logits.shape) > 2:
         logits = tf.reshape(logits, [-1, class_count])
         labels = tf.reshape(labels, [-1])
-        labels_oh = tf.reshape(labels_oh, [-1, class_count])
+    labels_oh = tf.one_hot(labels, class_count)
     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
         logits=logits, labels=labels_oh)
     if class_distribution is None:
-        class_distribution = tf.reduce_sum(
-            labels_oh, axis=0) + eps * tf.cast(tf.shape(loss)[0], tf.float32)
-        class_distribution /= tf.reduce_sum(class_distribution)
-    #import pdb
-    #pdb.set_trace()
-    weights = tf.concat([[0], tf.reciprocal(class_distribution)], 0)
-    loss = loss * tf.gather(weights, labels + 1)
+        class_distribution = tf.reduce_sum(labels_oh, axis=0) + \
+            eps * tf.cast(tf.shape(loss)[0], tf.float32)  # C
+        class_distribution /= tf.reduce_sum(class_distribution)  # C
+    weights = tf.concat([[0], tf.reciprocal(class_distribution)], axis=0)
+    loss = loss * tf.gather(weights, labels + 1)  # gather
     label_count = tf.reduce_sum(labels_oh)
-    loss = tf.reduce_sum(loss) / label_count
-    return loss
+    if reduce_mean:
+        return tf.reduce_sum(loss) / label_count
+    loss = tf.reshape(loss, labels.shape)
+    return loss * (tf.size(labels) / label_count)
+
+
+def gaussian_logit_cross_entropy_loss(logits_means,
+                                      logit_log_variances,
+                                      labels,
+                                      sample_count=50,
+                                      reduce_mean=True):
+    """
+    https://arxiv.org/abs/1703.04977
+    :param logits: Tensor. N[HW]C
+    :param logit_log_variances: Tensor. N[HW]1
+    :param labels: Tensor. N[HW]C
+    """
+    stddevs = tf.exp(0.5 * logit_log_variances)
+
+    def sample_loss(*args):
+        logits = tf.random_normal(
+            shape=logits_means.shape, mean=logits_means, stddev=stddevs)
+        return cross_entropy_loss(logits, labels, reduce_mean=reduce_mean)
+
+    map_hack = tf.constant(0, shape=[sample_count], dtype=logits_means.dtype)
+    loss_samples = tf.map_fn(sample_loss, map_hack)
+
+    return tf.reduce_mean(loss_samples, axis=0)
+
+
+def temperature_uncertainty_cross_entropy_loss(logits, log_temperatures,
+                                               labels):
+    """
+    https://arxiv.org/abs/1705.07115 (T=sigma^2)
+    :param logits: Tensor. N[HW]C
+    :param log_temperatures: Tensor. N[HW]1
+    :param labels: Tensor. N[HW]C
+    """
+    class_count = logits.shape[-1].value
+    labels_oh = tf.one_hot(labels, class_count)
+    valid_labels = tf.reduce_sum(labels_oh, axis=-1)
+
+    loss = tf.nn.softmax_cross_entropy_with_logits_v2(
+        logits=logits, labels=labels_oh)
+    loss /= tf.exp(log_temperatures)
+    loss -= tf.log(tf.reduce_sum(tf.exp(logits), axis=-1)) * valid_labels
+
+    label_count = tf.reduce_sum(valid_labels)
+    return loss * (tf.size(labels) / label_count)
 
 
 def mean_squared_error(output, label):

@@ -282,7 +282,7 @@ def convex_combination(x, r, scope: str = None):
 
 @scoped
 def sample(fn,
-           x,
+           x=None,
            n: int,
            examplewise=False,
            max_batch_size=None,
@@ -303,12 +303,12 @@ def sample(fn,
     """
 
     def sample_inner(fn, x, n: int, examplewise=False):
-        xr = repeat_batch(x, n, expand_dims=False)  # [nN,H,W,C]
-        yr = fn(xr)  # [nN,H',W',C']
-        yr = split_batch(yr, n)  # [n,N,H',W',C']
+        xr = repeat_batch(x, n, expand_dims=False)  # [nN,*,C]
+        yr = fn(xr)  # [nN,*,C']
+        yr = split_batch(yr, n)  # [n,N,*,C']
         if examplewise:
             transp = [1, 0] + list(range(2, len(yr.shape)))
-            yr = tf.transpose(yr, transp)  # [N,n,H,W,C]
+            yr = tf.transpose(yr, transp)  # [N,n,*,C']
         return yr
 
     max_batch_size = max_batch_size or n
@@ -316,13 +316,13 @@ def sample(fn,
     if use_tf_loop:
         examples_per_iteration = max(1, max_batch_size // n)
         ys = tf.map_fn(
-            fn=lambda x: sample_inner(fn, x, n),  # [H,W,C]->[n,H,W,C]
-            elems=x,  # [N,H,W,C]
+            fn=lambda x: sample_inner(fn, x, n),  # [*,C]->[n,*,C']
+            elems=x,  # [N,*,C]
             parallel_iterations=examples_per_iteration,
-            back_prop=backprop)  # [N,n,H,W,C]
-        if not examplewise:  # [N,n,H,W,C]
+            back_prop=backprop)  # [N,n,*,C']
+        if not examplewise:  # [N,n,*,C']
             transp = [1, 0] + list(range(2, len(ys.shape)))
-            ys = tf.transpose(ys, transp)  # [n,N,H,W,C]
+            ys = tf.transpose(ys, transp)  # [n,N,*,C']
         return ys
     else:
         return sample_inner(fn, x, n, examplewise=examplewise)
