@@ -16,7 +16,7 @@
       <data key="d3"><![CDATA[https://arxiv.org/abs/1305.6663]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="1132.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="1862.0" y="1823.6670634920636"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Bengio et al., 2013
@@ -187,7 +187,7 @@ Dropout Inference in Bayesian Neural Networks with Alpha-divergences<y:LabelMode
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.02914]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="1327.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="2057.0" y="1823.6670634920636"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Probabilistic Backpropagation - introduction
@@ -225,7 +225,7 @@ Identity Mappings in Deep Residual Networks.pdf<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="1522.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="2252.0" y="1823.6670634920636"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hu et al., 2017
@@ -415,7 +415,7 @@ Transforming Neural-Net Output Levels to Probability Distributions<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="1717.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="2447.0" y="1823.6670634920636"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Luizos et Wellig, 2017-3
@@ -664,7 +664,7 @@ Aggregated Residual Transformations for Deep Neural Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://pdfs.semanticscholar.org/dde4/b95be20a160253a6cc9ecd75492a13d60c10.pdf]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="1912.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="2642.0" y="1823.6670634920636"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Yang, 2017-9
@@ -929,7 +929,7 @@ Dropout-based Automatic Relevance Determination<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.04977]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="2107.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="2837.0" y="1823.6670634920636"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Moja tema
@@ -1089,7 +1089,7 @@ Deep Gaussian Processes<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="65.0" width="150.0" x="2302.0" y="1823.6670634920636"/>
+          <y:Geometry height="65.0" width="150.0" x="3032.0" y="1823.6670634920636"/>
           <y:Fill color="#44DDFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Bishop, 2006
@@ -1167,7 +1167,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="268.7535714285716" width="335.0" x="0.0" y="1823.6670634920636"/>
+              <y:Geometry height="268.7531746031748" width="335.0" x="0.0" y="1823.6670634920636"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="335.0" x="0.0" y="0.0">Legend</y:NodeLabel>
@@ -1196,14 +1196,14 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GroupNode>
-                  <y:Geometry height="144.3765873015875" width="165.0" x="15.0" y="1922.0438492063493"/>
+                  <y:Geometry height="144.37698412698433" width="165.0" x="15.0" y="1922.0434523809524"/>
                   <y:Fill color="#F5F5F5" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
                   <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="165.0" x="0.0" y="0.0">Proportion read</y:NodeLabel>
                   <y:Shape type="roundrectangle"/>
                   <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
                   <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-                  <y:BorderInsets bottom="1" bottomF="1.0" left="0" leftF="0.0" right="0" rightF="0.0" top="1" topF="1.0001224578372785"/>
+                  <y:BorderInsets bottom="1" bottomF="1.0003968253968196" left="0" leftF="0.0" right="0" rightF="0.0" top="1" topF="1.0001224578372785"/>
                 </y:GroupNode>
                 <y:GroupNode>
                   <y:Geometry height="50.0" width="50.0" x="0.0" y="60.0"/>
@@ -1223,7 +1223,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="30.0" y="1960.4204365079365"/>
+                  <y:Geometry height="20.0" width="135.0" x="30.0" y="1960.4200396825397"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">A little<y:LabelModel>
@@ -1241,7 +1241,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="30.0" y="1995.4204365079365"/>
+                  <y:Geometry height="20.0" width="135.0" x="30.0" y="1995.4200396825397"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">Some important parts<y:LabelModel>
@@ -1259,7 +1259,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="30.0" y="2030.4204365079365"/>
+                  <y:Geometry height="20.0" width="135.0" x="30.0" y="2030.4200396825397"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="2.2737367544323206E-13">(Almost) everything<y:LabelModel>
@@ -1281,7 +1281,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GroupNode>
-                  <y:Geometry height="214.37698412698433" width="125.0" x="195.0" y="1862.0436507936508"/>
+                  <y:Geometry height="214.3765873015875" width="125.0" x="195.0" y="1862.0436507936508"/>
                   <y:Fill color="#F5F5F5" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
                   <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.0" x="0.0" y="0.0">Type</y:NodeLabel>
@@ -1344,7 +1344,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="210.0" y="1970.420634920635"/>
+                  <y:Geometry height="20.0" width="95.0" x="210.0" y="1970.4202380952381"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Article<y:LabelModel>
@@ -1362,7 +1362,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[mlg.eng.cam.ac.uk/yarin/thesis/thesis.pdf]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="210.0" y="2005.420634920635"/>
+                  <y:Geometry height="20.0" width="95.0" x="210.0" y="2005.4202380952381"/>
                   <y:Fill color="#AAFFFF" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Thesis<y:LabelModel>
@@ -1380,7 +1380,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"/>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="210.0" y="2040.420634920635"/>
+                  <y:Geometry height="20.0" width="95.0" x="210.0" y="2040.4202380952381"/>
                   <y:Fill color="#44DDFF" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="2.2737367544323206E-13">Book<y:LabelModel>
@@ -1400,7 +1400,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
           <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
           <data key="d5">
             <y:ShapeNode>
-              <y:Geometry height="35.0" width="135.0" x="30.0" y="1872.0438492063493"/>
+              <y:Geometry height="35.0" width="135.0" x="30.0" y="1872.0434523809524"/>
               <y:Fill color="#CCFFCC" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="35.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">Author, year
@@ -1672,6 +1672,81 @@ On Calibration of Modern Neural Networks<y:LabelModel>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Valpola, 2014
 From neural PCA to deep unsupervised learning<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n76">
+      <data key="d3"/>
+      <data key="d5">
+        <y:ShapeNode>
+          <y:Geometry height="65.0" width="150.0" x="1302.0" y="1823.6670634920636"/>
+          <y:Fill color="#CCFFCC" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Miyato et al., 2017
+Virtual Adversarial Training: a Regularization Method for Supervised and Semi-supervised Learning<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n77">
+      <data key="d3"/>
+      <data key="d5">
+        <y:ShapeNode>
+          <y:Geometry height="65.0" width="150.0" x="1132.0" y="1823.6670634920636"/>
+          <y:Fill color="#CCFFCC" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Miyato et al., 2015
+Distributional Smoothing with Virtual Adversarial Training<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n78">
+      <data key="d3"><![CDATA[http://www.inference.vc]]></data>
+      <data key="d5">
+        <y:ShapeNode>
+          <y:Geometry height="65.0" width="150.0" x="1667.0" y="1823.6670634920636"/>
+          <y:Fill color="#FFFF99" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Christopher Olah - Blog<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n79">
+      <data key="d3"><![CDATA[http://www.inference.vc]]></data>
+      <data key="d5">
+        <y:ShapeNode>
+          <y:Geometry height="65.0" width="150.0" x="1497.0" y="1823.6670634920636"/>
+          <y:Fill color="#FFFF99" transparent="false"/>
+          <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-10
+Visual Information Theory<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -3168,7 +3243,7 @@ From neural PCA to deep unsupervised learning<y:LabelModel>
     <edge id="n61::e0" source="n61::n1" target="n61::n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-62.5" sy="-79.68829365079364" tx="67.5" ty="0.0"/>
+          <y:Path sx="-62.5" sy="-79.68849206349206" tx="67.5" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -3313,6 +3388,28 @@ From neural PCA to deep unsupervised learning<y:LabelModel>
       </data>
     </edge>
     <edge id="e121" source="n52" target="n10">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e122" source="n76" target="n77">
+      <data key="d8"/>
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e123" source="n78" target="n79">
+      <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>

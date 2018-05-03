@@ -1,9 +1,6 @@
 import tensorflow as tf
 
-from ..tf_utils import layers, regularization, losses
-from ..tf_utils import layers
-
-from .model import ModelNodes
+from ..tf_utils import layers, losses, regularization, evaluation
 
 
 def global_pool_affine_logits_func(class_count):
@@ -29,46 +26,46 @@ class InferenceComponent:
 
     def __init__(
             self,
+            input_shape,
             input_to_features,
-            class_count=None,  # clf
             features_to_logits='auto',  # clf
             features_to_output=None,  # regr
-            logits_to_probs=tf.nn.softmax):
-        self._input_to_features = input_to_features
-        self._features_to_logits = features_to_logits
-        self._logits_to_probs = logits_to_probs
-        self._features_to_output = features_to_output
-        self._class_count = class_count
-        self.input_to_output = None
-
-    def initialize(self, problem, input_shape):
+            logits_to_probs=tf.nn.softmax,
+            problem='clf',  # clf, regr, semseg, other
+            class_count=None):  # clf, semseg
+        assert problem in ['clf', 'semseg' 'regr']
         if problem in ['clf', 'semseg']:
-            if self._features_to_logits == 'auto':
+            assert class_count is not None
+
+        if problem in ['clf', 'semseg']:
+            if features_to_logits == 'auto':
                 if problem == 'semseg':
-                    self._features_to_logits = semseg_affine_resize_logits_func(
-                        self._class_count, input_shape[1:3])
+                    features_to_logits = semseg_affine_resize_logits_func(
+                        class_count, input_shape[0:2])
                 else:
-                    self._features_to_logits = global_pool_affine_logits_func(
-                        self._class_count)
-        elif problem == 'regr' and self._features_to_output is None:
+                    features_to_logits = global_pool_affine_logits_func(
+                        class_count)
+        elif problem == 'regr' and features_to_output is None:
 
             def identity(x, **kwargs):
                 return x
 
-            self._features_to_output = identity
+            features_to_output = identity
 
         def input_to_output(input, **kwargs):
-            features = self._input_to_features(input, **kwargs)
+            features = input_to_features(input, **kwargs)
             additional_outputs = {'features': features}
-            if problem == 'clf':
-                logits = self._features_to_logits(features)
-                probs = self._logits_to_probs(logits)
-                output = tf.argmax(logits, 1, output_type=tf.int32)
+            if problem in ['clf', 'semseg']:
+                logits = features_to_logits(features)
+                probs = logits_to_probs(logits)
+                output = tf.argmax(logits, -1, output_type=tf.int32)
                 additional_outputs.update({'logits': logits, 'probs': probs})
             else:
-                output = self._features_to_output(features)
+                output = features_to_output(features)
             return output, additional_outputs
 
+        self.problem = problem
+        self.input_shape = input_shape
         self.input_to_output = input_to_output
 
 
@@ -96,43 +93,53 @@ class TrainingComponent:
                 'regr': losses.mean_squared_error
             }[problem]
         if type(self.learning_rate_policy) is dict:
+            lrp = self.learning_rate_policy
 
-            def lrp(epoch):
+            def learning_rate_policy(epoch):
                 return tf.train.piecewise_constant(
-                    epoch,
-                    boundaries=self.learning_rate_policy['boundaries'],
-                    values=self.learning_rate_policy['values'])
+                    epoch, boundaries=lrp['boundaries'], values=lrp['values'])
 
-            self.learning_rate_policy = lrp
+            self.learning_rate_policy = learning_rate_policy
+
+
+class ModelNodes:
+
+    def __init__(
+            self,
+            input,
+            label,
+            output,
+            loss,
+            training_step,
+            evaluation=dict(),
+            additional_outputs=dict(),  # probs, logits, ...
+            training_post_step=None):
+        self.input = input
+        self.label = label
+        self.outputs = {**additional_outputs, 'output': output}
+        self.loss = loss
+        self.training_step = training_step
+        self.evaluation = evaluation
+        self.training_post_step = training_post_step
 
 
 class ModelDef():
 
-    def __init__(
-            self,
-            problem: str,  # clf, regr, semseg, other
-            input_shape,  # [width, height, number of channels], maybe [None, None, number of channels] could be allowed too for variable input size
-            inference_component: InferenceComponent,
-            training_component: TrainingComponent,
-            evaluation_metrics=[]):
-        assert problem in ['clf', 'regr', 'semseg', 'other']
-        self.input_shape = input_shape
-        self.problem = problem
-
-        inference_component.initialize(problem, input_shape)
+    def __init__(self,
+                 inference_component: InferenceComponent,
+                 training_component: TrainingComponent,
+                 evaluation_metrics=[]):
         self.inference_component = inference_component
-        training_component.initialize(problem)
-        self.training_component = training_component.initialize(problem)
-       
+        self.training_component = training_component
         self.evaluation_metrics = evaluation_metrics
 
     def build_graph(self, epoch, is_training):
-        clf = self.problem == 'clf'
         ic = self.inference_component
         tc = self.training_component
+        tc.initialize(ic.problem)
 
-        # Input image and labels placeholders
-        input_shape = [None] + list(self.input_shape)
+        # Input
+        input_shape = [None] + list(ic.input_shape)
         input = tf.placeholder(tf.float32, shape=input_shape, name='input')
 
         # Inference
@@ -140,8 +147,9 @@ class ModelDef():
             input, is_training=is_training)
 
         # Loss and regularization
-        target = tf.placeholder(output.dtype, output.shape, name='target')
-        loss = tc.loss(additional_outputs['logits'] if clf else output, target)
+        label = tf.placeholder(output.dtype, output.shape, name='label')
+        loss = tc.loss(additional_outputs['logits']
+                       if ic.problem == 'clf' else output, label)
 
         if tc.weight_decay > 0:
             w_vars = filter(lambda x: 'weights' in x.name,
@@ -155,14 +163,15 @@ class ModelDef():
 
         # Evaluation
         outputs = {**additional_outputs, 'output': output}
+        evnodes = {**outputs, 'label': label}
         evaluation = {
-            name: fn(outputs[arg] for arg in args)
+            name: fn(*[evnodes[arg] for arg in args])
             for name, args, fn in self.evaluation_metrics
         }
 
         return ModelNodes(
             input=input,
-            target=target,
+            label=label,
             output=output,
             loss=loss,
             training_step=training_step,
@@ -173,7 +182,8 @@ class ModelDef():
 class InferenceComponents:
 
     @staticmethod
-    def resnet(base_width,
+    def resnet(input_shape,
+               base_width,
                group_lengths,
                block_structure,
                dim_change,
@@ -200,10 +210,13 @@ class InferenceComponents:
                 })
 
         return InferenceComponent(
-            input_to_features=input_to_features, class_count=class_count)
+            input_shape=input_shape,
+            input_to_features=input_to_features,
+            class_count=class_count)
 
     @staticmethod
-    def densenet(base_width,
+    def densenet(input_shape,
+                 base_width,
                  group_lengths,
                  block_structure,
                  large_input=None,
@@ -226,34 +239,10 @@ class InferenceComponents:
                 })
 
         return InferenceComponent(
-            input_to_features=input_to_features, class_count=class_count)
+            input_shape=input_shape,
+            input_to_features=input_to_features,
+            class_count=class_count)
 
 
-def resnet(input_shape,
-           base_width=64,
-           group_lengths=[3, 3, 3],
-           block_structure=layers.BlockStructure.resnet(),
-           dim_change='id',
-           large_input=None,
-           problem='clf',
-           class_count=None,
-           batch_size=128,
-           weight_decay=5e-4,
-           optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
-           learning_rate_policy={
-               'boundaries': [int(i + 0.5) for i in [60, 120, 160]],
-               'values': [1e-1 * 0.2**i for i in range(4)]
-           }):
-    if problem in ['semseg', 'regr'] and large_input is None:
-        large_input = False
-    ic = InferenceComponents.resnet(base_width, group_lengths, block_structure,
-                                    dim_change, large_input, problem,
-                                    class_count)
-    tc = TrainingComponent(batch_size, weight_decay, 'auto', optimizer,
-                           learning_rate_policy)
-    return ModelDef(
-        problem=problem,  # clf, regr, semseg, other
-        input_shape=input_shape,
-        inference_component=ic,
-        training_component=tc,
-        evaluation_metrics=[])
+class EvaluationMetrics:
+    accuracy = ['accuracy', ['label', 'output'], evaluation.accuracy]

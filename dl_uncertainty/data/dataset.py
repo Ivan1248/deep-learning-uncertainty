@@ -24,9 +24,8 @@ class Dataset:
         self._indices = np.arange(len(self._images))
 
     @staticmethod
-    def from_dataset_generator(dg: DatasetGenerator) -> Dataset:
-        images, labels = zip(*dg.input_label_pairs)
-        return Dataset(list(images), list(labels), dg.class_count)
+    def from_generator(dsg: DatasetGenerator):
+        return Dataset(list(dsg.images), list(dsg.labels), dsg.class_count)
 
     def __len__(self):
         return len(self._images)
@@ -79,6 +78,15 @@ class Dataset:
         """ Splits the dataset into two datasets. """
         return self[start:end], Dataset.join(self[:start], self[end:])
 
+    def batches(self, batch_size, return_batch_count=False):
+        mbr = MiniBatchReader(self, batch_size)
+        batch_count = mbr.number_of_batches
+        while True:
+            batch = mbr.get_next_batch()
+            if batch is None:
+                return
+            yield batch
+
     @property
     def images(self):
         return self._images
@@ -97,7 +105,7 @@ def save_dataset(path: str):
     np.load(path)
 
 
-def load_dataset(path: str) -> Dataset:
+def load_dataset(path: str):
     if not path.endswith('.npy'):
         path += '.npy'
     return np.load(path)[()]

@@ -1,6 +1,5 @@
 import tensorflow as tf
 import numpy as np
-import layers
 
 
 def multiclass_hinge_loss(labels_oh, logits, delta=1):

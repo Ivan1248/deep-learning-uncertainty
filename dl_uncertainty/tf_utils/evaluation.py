@@ -2,16 +2,7 @@ import tensorflow as tf
 
 
 def accuracy(labels, predictions):
-    class_count = logits.shape[-1].value
-    labels_oh = tf.one_hot(labels, class_count)
-    if len(logits.shape) > 2:
-        logits = tf.reshape(logits, [-1, class_count])
-        labels_oh = tf.reshape(labels_oh, [-1, class_count])
-    loss = tf.nn.softmax_cross_entropy_with_logits_v2(
-        logits=logits, labels=labels_oh)
-    label_count = tf.reduce_sum(labels_oh)
-    loss = tf.reduce_sum(loss) / label_count
-    return loss
+    return tf.reduce_mean(tf.cast(tf.equal(predictions, labels), tf.float32))
 
 
 def evaluate_semantic_segmentation(labels,

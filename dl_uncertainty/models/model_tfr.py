@@ -6,34 +6,86 @@ from functools import reduce
 import numpy as np
 import tensorflow as tf
 
-from ..data import Dataset, MiniBatchReader, tfrecords, DataLoader
-from ..ioutils import file, console
+from ..data import Dataset, MiniBatchReader, tfrecords
+from ..ioutils import file
 
 from .modeldef import ModelDef
 
 
+class ModelNodes:
+
+    def __init__(
+            self,
+            input,
+            target,
+            output,
+            loss,
+            training_step,
+            evaluation=dict(),
+            additional_outputs=dict(),  # probs, logits, ...
+            training_post_step=None):
+        self.input = input
+        self.target = target
+        self.outputs = {**additional_outputs, 'output': output}
+        self.loss = loss
+        self.training_step = training_step
+        self.evaluation = evaluation
+        self.training_post_step = training_post_step
+
+
 class Model(object):
 
-    def __init__(self, modeldef: ModelDef, training_log_period=1, name="Model"):
+    def __init__(self,
+                 modeldef: ModelDef,
+                 input_shape,
+                 use_tfrecords=False,
+                 tfrecords_parser=None,
+                 input_preprocesing=None,
+                 input_jitter=None,
+                 training_log_period=1,
+                 name="Model"):
         self.name = name
 
+        self.use_tfrecords = use_tfrecords
+        if use_tfrecords:
+            assert tfrecords_parser is not None
+
         self.batch_size = modeldef.training_component.batch_size
+        self.input_preprocesing = input_preprocesing
 
         self.training_log_period = training_log_period
         self.log = []
-        self.training_step_event_handler = lambda i: \
-            console.read_line(impatient=True, discard_non_last=True)
+        self.training_step_event_handler = lambda step: False
 
         self._graph = tf.Graph()
         self._sess = tf.Session(graph=self._graph)
 
         with self._graph.as_default():
+            if use_tfrecords:
+                self.data_files = tf.placeholder(tf.string, shape=[None])
+                self.dataset = tf.data.TFRecordDataset(self.data_files)
+                self.dataset = self.dataset.map(tfrecords.parse_tfrecord)
+                if self.input_preprocesing is not None:
+                    self.dataset = self.dataset.map(self.input_preprocesing)
+                self.dataset = self.dataset.shuffle().repeat()
+                self.examplewise_dataset = self.dataset.batch(1)
+                self.examplewise_iterator = \
+                    self.examplewise_dataset.make_initializable_iterator()
+                self.batched_dataset = self.dataset.batch_and_drop_remainder(self.batch_size)
+                self.batched_iterator = \
+                    self.batched_dataset.make_initializable_iterator()
+            else:
+                input_shape = [None] + list(input_shape)
+                self.input = tf.placeholder(
+                    tf.float32, shape=input_shape, name='input')
+
             self._epoch = tf.Variable(0, False, dtype=tf.int32, name='epoch')
             self._increment_epoch = tf.assign(
                 self._epoch, self._epoch + 1, name='increment_epoch')
             self._is_training = tf.placeholder(tf.bool, name='is_training')
 
-            self.nodes = modeldef.build_graph(self._epoch, self._is_training)
+            self.nodes = modeldef.build_graph(self.input, self._epoch,
+                                              self._is_training)
 
             self._sess.run(tf.global_variables_initializer())
 
@@ -81,8 +133,9 @@ class Model(object):
             fetches = [self.nodes.outputs[o] for o in outputs]
         return self._run(fetches, inputs, None, False)
 
-    def train(self, train_data, epoch_count=1):
-        self._train(train_data, epoch_count, self.nodes.evaluation)
+    def train(self, train_data, validation_data=None, epoch_count=1):
+        self._train(train_data, validation_data, epoch_count,
+                    self.nodes.evaluation)
 
     def test(self, dataset, test_name=None):
         return self._test(dataset, self.nodes.evaluation, test_name)
@@ -106,48 +159,60 @@ class Model(object):
         cost, extra = evals[0], evals[1:]
         return cost, extra
 
-    def _train(self, data: DataLoader, epoch_count=1, extra_fetches=dict()):
+    def _train(self,
+               train_data,
+               validation_data=None,
+               epoch_count=1,
+               extra_fetches=dict()):
 
         def handle_step_completed(batch, cost, extra):
-            if b % self.training_log_period == 0:
+            if b % self.training_log_period == 0 or b == dr.number_of_batches - 1:
                 ev = zip(extra_fetches.keys(), extra)
                 self._log(
                     f" {self.epoch:3d}.{b:3d}: {self._eval_str(cost, ev)}")
-            return self.training_step_event_handler(b)
+            if self.training_step_event_handler(b):
+                nonlocal end
+                end = True
 
+        dr = MiniBatchReader(train_data, self.batch_size)
+        end = False
         for _ in range(epoch_count):
-            self._log(f"Training: epoch {self.epoch:d} " +
-                      f"({len(data)} batches of size {self.batch_size})")
-            for b, (inputs, labels) in enumerate(data):
+            self._log(
+                f"Training: epoch {self.epoch:d} ({dr.number_of_batches} batches of size {self.batch_size})"
+            )
+            dr.reset(shuffle=True)
+            for b in range(dr.number_of_batches):
+                inputs, labels = dr.get_next_batch()
                 ef = extra_fetches.values()
                 cost, extra = self._train_minibatch(inputs, labels, ef)
-                end = handle_step_completed(b, cost, extra) == 'q'
+                handle_step_completed(b, cost, extra)
             self._sess.run(self._increment_epoch)
             if end:
                 return False
 
-    def _test(self,
-              data: DataLoader,
-              extra_fetches: dict = dict(),
-              test_name=None):
+    def _test(self, dataset, extra_fetches: dict = dict(), test_name=None):
         self._log('Testing%s...' %
                   ("" if test_name is None else " (" + test_name + ")"))
         cost_sum, extra_sum = 0, np.zeros(len(extra_fetches))
-        for inputs, labels in data:
+        dr = MiniBatchReader(dataset, self.batch_size)
+        for _ in range(dr.number_of_batches):
+            inputs, labels = dr.get_next_batch()
             cost, extra = self._test_minibatch(inputs, labels,
                                                extra_fetches.values())
             cost_sum += cost
             extra_sum += np.array(extra)
-        cost = cost_sum / len(data)
-        extra = extra_sum / len(data)
+        cost = cost_sum / dr.number_of_batches
+        extra = extra_sum / dr.number_of_batches
         ev = list(zip(extra_fetches.keys(), extra))
         self._log(" " + self._eval_str(cost, ev))
         return cost, dict(ev)
 
     def _run(self, fetches: list, inputs, labels=None, is_training=None):
+        if self.input_preprocesing is not None:
+            inputs = self.input_preprocesing(inputs)
         feed_dict = {self.nodes.input: inputs}
         if labels is not None:
-            feed_dict[self.nodes.label] = np.array(labels)
+            feed_dict[self.nodes.target] = np.array(labels)
         if self._is_training is not None:
             feed_dict[self._is_training] = is_training
         return self._sess.run(fetches, feed_dict)

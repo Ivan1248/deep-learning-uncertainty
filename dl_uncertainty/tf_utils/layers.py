@@ -282,7 +282,7 @@ def convex_combination(x, r, scope: str = None):
 
 @scoped
 def sample(fn,
-           x=None,
+           x,
            n: int,
            examplewise=False,
            max_batch_size=None,

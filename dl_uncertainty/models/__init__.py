@@ -12,6 +12,10 @@ from .ladder_densenet import LadderDenseNet
 
 from .generic_model import GenericModel
 
+from .model import Model
+from .modeldef import ModelDef, InferenceComponent, TrainingComponent, ModelDef 
+from .modeldef import InferenceComponents, EvaluationMetrics 
+
 """
 from ..tf_utils import layers
 
