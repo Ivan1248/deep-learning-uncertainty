@@ -64,68 +64,82 @@ struktura rada
 
 \section{Teorija vjerojatnosti i teorija informacije}
 
-Jako važan pojam u strojnom učenju je \textcolor{red}{neizvjesnost}. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje \textcolor{red}{neizvjesnosti} pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
+Jako važan pojam u strojnom učenju je nesigurnost ili neizvjesnost. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje nesigurnosti pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
 
 Postoje dvije glavne interpretacije vjerojatnosti \citep{Murphy:2012:MLPP}. Jedna je \emph{frekventistička interpretacija} prema kojoj vjerojatnosti predstavljaju učestalosti različitih događaja ako se pokus ponavlja velik broj puta. Druga je \emph{bayesovska interpretacija} prema kojoj vjerojatnost izražava našu nesigurnost o ishodu pokusa. 
  
-Ovaj odjeljak daje kratak i matematički ne potpuno precizan pregled nekih od osnovnih pojmova i pravila vezanih uz vjerojatnost. Na strukturu ovog odjeljka imaju utjecaj \cite{Goodfellow:2016:DL,Murphy:2012:MLPP}.
+Ovaj odjeljak daje kratak i matematički ne potpuno precizan pregled nekih od osnovnih pojmova i pravila vezanih uz vjerojatnost. Na strukturu ovog odjeljka imaju utjecaj \citet{Goodfellow:2016:DL,Murphy:2012:MLPP}.
 
 \subsection{Slučajne varijable i razdiobe}
 
-Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je ostvarenje neke vrijednosti iz prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $a$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $P(\cbr{\rvar x = x})$ ili, kraće, $P(\rvar x = x)$. \emph{Događaj} može biti općenitiji, npr. $\cbr{\rvar x < x}$, i općenito se može izraziti predikatom: $\cbr{R(\rvar x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $P(\rvar x\in \set X)=1$. Funkcija $P_{\rvar x}:x\mapsto P(\rvar x=x)$ je \emph{funkcija vjerojatnosti} (engl. \textit{probability mass function}, \textit{pmf}).
+Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je ostvarenje neke vrijednosti iz prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili, kraće, $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\mid R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
+\begin{align*}
+P_{\rvar x} \colon \set X &\to \intcc{0,1} \\
+x &\mapsto \P(\rvar x=x)
+\end{align*}
+je \emph{funkcija vjerojatnosti} (engl. \textit{probability mass function}, \textit{pmf}).
 
-Razlikujemo diskretne i kontinuirane slučajne varijable. Prostor elementarnih događaja diskretne slučajne varijable je prebrojiv skup. Razdioba kontinuirane slučajne varijable $\rvar x$ koja poprima vrijednosti iz skupa $\set X$ je određena \emph{funkcijom gustoće vjerojatnosti} (engl. \textit{probability density function}, \textit{pdf}) $p_{\rvar x}:\set X\to \intco{0,\infty}$ za koju vrijedi:
+Razlikujemo diskretne i kontinuirane slučajne varijable. Prostor elementarnih događaja diskretne slučajne varijable je prebrojiv skup. Razdioba kontinuirane slučajne varijable $\rvar x$ koja poprima vrijednosti iz skupa $\set X$ je određena \emph{funkcijom gustoće vjerojatnosti} (engl. \textit{probability density function}, \textit{pdf})
+\begin{align*}
+p_{\rvar x} \colon \set X &\to \intco{0,\infty} \\
+x &\mapsto \p(x)
+\end{align*}
+za koju vrijedi
 \begin{align}
-P(\rvar x\in \set A) = \int_{\set A} p_{\rvar x}(x)\dif x
+\P(\rvar x\in \set A) = \int_{\set A} p_{\rvar x}(x)\dif x
 \end{align}
-za svaki $\set A\subset\set X$. 
+za svaki $\set A\subset\set X$.
 
-Funkciju gustoće vjerojatnosti možemo smatrati i poopćenom funkcijom\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da gustoćom prikazujemo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
-\begin{align}
-p_{\rvar x}(x)=\sum_{x'\in\set X} P(\rvar x=x) \dirac(x-x')  \text{,}
+Funkciju gustoće vjerojatnosti možemo smatrati i \emph{poopćenom funkcijom}\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da gustoćom prikazujemo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
+\begin{align} \label{eq:dirac-density}
+p_{\rvar x}(x)=\sum_{x'\in\set X} \P(\rvar x=x) \dirac(x-x')  \text{,}
 \end{align}
-gdje je $\set X$ skup mogućih vrijednosti varijable $\rvar x$. Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
+gdje je $\set X$ skup mogućih vrijednosti varijable $\rvar x$, a $\delta$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
+\begin{align*}
+\delta(x)=\lim_{\sigma\to 0}\frac{1}{\sqrt{2\pi}\sigma}\exp\del{\frac{x^2}{2\sigma^2}}.
+\end{align*}
+Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
 \begin{align}
-\dirac(\vec x-\vec x')\coloneqq\prod_i\dirac(x_i- x_i')
+\dirac(\vec x)\coloneqq\prod_i\dirac(x_i) .
 \end{align}
-kako bi vrijednost $n$-strukog integrala gustoće bila $1$.
+Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} po skupu mogućih ima vrijednost $1$. 
 
 %npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
-Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $P(\rvar x)$ ako je diskretna, a s $p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada.
+Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada.
 
 \subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
-Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Ako dvije slučajne varijable imaju istu razdiobu, one ne moraju biti iste jer se mogu razlikovati po odnosu s drugim slučajnim varijablama.
+Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Dvije slučajne varijable, i ako imaju istu razdiobu, ne moraju biti iste jer se mogu razlikovati po odnosima s drugim slučajnim varijablama.
 
-Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se u izrazima koristiti samo elementarni događaji. Npr. $x$ će skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila koja vrijede za sve slučajne varijable.
+Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $\p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se u izrazima koristiti samo elementarni događaji. Npr. $x$ će skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila koja vrijede za sve slučajne varijable.
 
-\emph{Uvjetna vjerojatnost} je vjerojatnost nekog događaja ako je poznato da se neki drugi događaj ostvario. Ovako je definirana uvjetnu vjerojatnost događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$:
+\emph{Uvjetna vjerojatnost} je vjerojatnost nekog događaja ako je poznato da se neki drugi događaj ostvario. Ovako je definirana uvjetna vjerojatnost događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$:
 \begin{align} \label{eq:uvjetna-vj}
-P(x\mid y) \coloneqq \frac{P(x,y)}{P(y)}  \text{.}
+p(x\mid y) \coloneqq \frac{p(x,y)}{p(y)}  \text{.}
 \end{align}
 
 Združena vjerojatnost se može rastaviti \emph{pravilom umnoška}: 
 \begin{align} \label{eq:pravilo-umnoska}
-P(x,y) = P(x\mid y)P(y) \text{.}
+p(x,y) = p(x\mid y)p(y) \text{.}
 \end{align}
 Općenitije, pravilo umnoška za $n$ slučajnih varijabli $\rvar x_1,..,\rvar x_n$ izgleda ovako:
 \begin{align} \label{eq:pravilo-umnoska}
-P(x_1\bidot x_n) 
-&= P(x_1)P(x_2\mid x_1)\cdots P(x_n\mid x_1,..,x_{n-1})  \\
-&= P(x_1)\prod_{i=2\bidot n}P(x_i\mid x_1,..,x_{i-1})  \text{.}
+p(x_1,..,x_n) 
+&= p(x_1)p(x_2\mid x_1)\cdots p(x_n\mid x_1,..,x_{n-1})  \\
+&= p(x_1)\prod_{i=2\bidot n}p(x_i\mid x_1,..,x_{i-1})  \text{.}
 \end{align}
 
-\emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $P(x) = P(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
+\emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $p(x) = \p(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
 \begin{align}
 p(x) = \int_{\set Y} p(x,y)\dif y = \int_{\set Y} p(x\mid y)p(y)\dif y \text{.}
 \end{align}
 
-Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar x_1\sim\mathcal A$, $\rvar x_2\sim\mathcal A$ i $\rvar y\sim\mathcal B$, ne mora vrijediti $p(\rvar x_1, \rvar y) = p(\rvar x_2, \rvar y)$.
+Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar x_1\sim\mathcal A$, $\rvar x_2\sim\mathcal A$ i $\rvar y\sim\mathcal B$, ne mora vrijediti $\p(\rvar x_1, \rvar y) = \p(\rvar x_2, \rvar y)$.
 
-Rastavljanjem lijeve strane jednadžbe~\ref{eq:zdruzena-vj} na umnožak $P(B\mid A)P(A)$ dobivamo \emph{Bayesovo pravilo}:
+Rastavljanjem lijeve strane jednadžbe~\ref{eq:pravilo-umnoska} na umnožak $p(x\mid y)p(y)$ dobivamo \emph{Bayesovo pravilo}:
 \begin{align}
-P(x\mid y) = \frac{P(y\mid x)P(x)}{P(y)} \text{,}
+p(x\mid y) = \frac{p(y\mid x)p(x)}{p(y)} \text{,}
 \end{align}
 što možemo i ovako zapisati:
 \begin{align}
@@ -133,11 +147,27 @@ p(x\mid y) = \frac{p(y\mid x)p(x)}{\int p(y\mid x)p(x)\dif x} \text{,}
 \end{align}
 gdje se nazivnik integrira po svim vrijednostima.
 
-\subsection{Nezavisnost i uvjetna nezavisnost}
+\subsection{Nezavisnost, uvjetna nezavisnost i uvjetna zavisnost}
+
+Kada su dvije slučajne varijable $\rvar x$ i $\rvar y$ \emph{zavisne}, znanje o ishodu jedne utječe na znanje o ishodu druge, tj. uvjetna razdioba $\p\del{\rvar x\mid\rvar y = y}$ ovisi o ishodu $y$.
+Slučajne varijable $\rvar x$ i $\rvar y$ su \emph{nezavisne}, što se označava $\rvar x\perp\rvar y$, akko za svaki par mogućih vrijednosti $(x, y)$ vrijedi
+\begin{align}
+p(x,y) = p(x)p(y),
+\end{align}
+ili, ekvivalentno, $p(x\mid y)=p(x)$ i $p(y|x)=p(y)$. Znanje o ishodu jedne slučajne varijable onda ne utječe na znanje o ishodu druge.
+
+Slučajne varijable $\rvar x$ i $\rvar y$, koje mogu biti zavisne, su uz ostvarenje slučajne varijable $\rvar z$ \emph{uvjetno nezavisne}, što se označava $\rvar x\perp\rvar y\mid\rvar z$, akko su slučajne varijable $\del{\rvar x\mid\rvar z=z}$ i $\del{\rvar y\mid\rvar z=z}$ nezavisne za svaki mogući ishod $z$. To se preko (gustoće) vjerojatnosti može ovako izraziti:
+\begin{align}
+p(x,y\mid z) = p(x\mid z)p(y\mid z),
+\end{align}
+Isto tako, slučajne varijable $\rvar x$ i $\rvar y$ koje su nezavisne mogu biti \emph{uvjetno zavisne} uz ostvarenje neke slučajne varijable $\rvar z$. Općenito, dvije slučajne varijable ne moraju biti ni uvjetno zavisne ni uvjetno nezavisne jer neki ishodi treće slučajne varijable mogu utjecati na njihovu zavisnost, a neki ne.
+
+
+
 
 \subsection{Očekivanje, varijanca i kovarijanca}
 
-\emph{Očekivanje} slučajne varijable definirano je ovako:
+\emph{Očekivanje} (prvi moment) slučajne varijable definirano je ovako:
 \begin{align}
 \E\rvar x \coloneqq \int xp(x)\dif x,
 \end{align}
@@ -150,11 +180,11 @@ Ako je po oznaci jasno o kojoj se slučanoj varijabli radi, možemo kraće pisat
 \E\sbr{\alpha f(\rvar x)+\beta g(\rvar x)} = \alpha\E f(\rvar x)+\beta\E g(\rvar x) \text{.}
 \end{align}
 
-\emph{Varijanca} (ili disperzija) slučajne varijable definirana je ovako:
+\emph{Varijanca} (disperzija, drugi centralni moment) slučajne varijable definirana je ovako:
 \begin{align}
 \D\rvar x \coloneqq \E\sbr{\del{\rvar x-\E \rvar x}^2} = \int (x-\E \rvar x)^2 p(x)\dif x  \text{.}
 \end{align}
-Varijanca se može izraziti preko očekivanja $\E{\rvar x}^2$ i $\del{\E\rvar x}^2$:
+Varijanca se može izraziti preko drugog momenta $\E{\rvar x}^2$ i kvadrata očekivanja $\del{\E\rvar x}^2$:
 \begin{align}
 \D\rvar x 
 &= \E\sbr{\del{\rvar x-\E \rvar x}^2} = \E\sbr{\del{{\rvar x}^2-2x\E \rvar x+\del{\E\rvar x}^2}} \\
@@ -164,7 +194,7 @@ Drugi korijen varijance je standardna devijacija $\sigma_{\rvar x}$.
 
 \emph{Kovarijanca} para slučajnih varijabli definirana je ovako:
 \begin{align}
-\Cov\del{\rvar x,\rvar y} \coloneqq \E\sbr{\del{\rvar x-\E\rvar x}\del{\rvar y-\E\rvar y}} = \E{\rvar x\rvar y}^2 - \del{\E\rvar x}\del{\E\rvar y} \text{.}
+\Cov\del{\rvar x,\rvar y} \coloneqq \E\sbr{\del{\rvar x-\E\rvar x}\del{\rvar y-\E\rvar y}} = \E{\rvar x\rvar y} - \del{\E\rvar x}\del{\E\rvar y} \text{.}
 \end{align}
 \emph{Kovarijacijska matrica} slučajnog vektora $\rvec x\in\R^n$ je matrica tipa $n\times n$ takva da:
 \begin{align}
@@ -172,31 +202,62 @@ Drugi korijen varijance je standardna devijacija $\sigma_{\rvar x}$.
 \end{align}
 Dijagonalni elementi te matrice su $\Cov\del{\rvec x}_{\sbr{i,i}} = \D\ind{\rvec x}{i}$.
 
-\subsection{Monte Carlo aproksimacija}
-
 \subsection{Teorija informacije}
-***
 
+Jedan od osnovnih pojmova u teoriji informacije je \emph{sadržaj informacije} koji događaj preslikava u nenegativan realni broj:
 \begin{align}
-	\Dkl{\rvar x}{\rvar y} = \E_{x\sim\rvar x} \ln\frac{p_{\rvar x}(x)}{p_{\rvar y}(x)} = \int_x p(x) \ln\frac{p_{\rvar x}(x)}{p_{\rvar y}(x)}
+\I(x\in\set A)\coloneqq\log_b \frac{1}{\P(x\in\set A)} = -\log_b \P(x\in\set A).
+\end{align}
+Događaji koji imaju manju vjerojatnost sadrže više informacije. Ako je vjerojatnost nekog događaja $1$, njegov sadržaj informacije je $0$. $b$ je najčešće $2$ ili $e$.
+
+Sadržaj informacije odgovara minimalnom broju simbola (bitova ako $b=2$) potrebnih za kodiranje elementarnih događaja prefiksnim kodom za koji je očekivanje duljine poruke minimalno \citep{Olah:2015:VIT}. Kod prefiksnog koda nijedna kodna riječ nije prefiks neke druge kodne riječi. Takav kod se može prenositi kao niz združenih kodnih riječi bez posebnog simbola za označavanje granica između kodnih riječi. Donja granica očekivanja duljine poruke kod optimalnog koda naziva se \emph{entropija}:
+\begin{align}\label{eq:entropy}
+\H(\rvar x) \coloneqq  \E_{\rvar x}\I(\rvar x=x) = -\E_{\rvar x}\log_b P(x).
+\end{align}
+Ona iskazuje neizvjesnost diskretne slučajne varijable. Entropija će biti $0$ ako je vjerojatnost nekog elementarnog događaja $1$, a najveća će biti kada svi elementarni događaji imaju istu vjerojatnost: $\H(\rvar x)=\log_b n$, gdje je $n$ broj elementarnih događaja. 
+
+Entropija kontinuirane slučajne varijable je beskonačna. Ako se u izrazu \eqref{eq:entropy} vjerojatnost zamijeni gustoćom vjerojatnosti, onda on predstavlja \emph{diferencijalnu entropiju}, jedan od analoga\footnote{\url{https://en.wikipedia.org/wiki/Differential_entropy}, \url{https://en.wikipedia.org/wiki/Limiting_density_of_discrete_points}} entropije za kontinuirane varijable koji nema neka od svojstava koja ima entropija.
+
+Kao mjera razlike između dviju razdioba često se koristi \emph{Kullback-Leiblerova divergencija} (KL-divergencija) ili \emph{relativna entropija}:
+\begin{align}
+	\Dkl{\rvar x}{\rvar y} &= \E_{\rvar x}\sbr{\I(\rvar y=x) - \I(\rvar x=x)} \\
+	&= \E_{\rvar x} \log_b\frac{P_{\rvar x}(x)}{P_{\rvar y}(x)} \label{eq:dkl}
+\end{align}
+Ona je uvijek pozitivna i mjeri koliko simbola više se u prosjeku koristi ako se opaža razdioba $\P(\rvar x)$, a događaji se kodiraju kodom optimalnim za razdiobu $\P(\rvar y)$, što se bolje vidi ako se ovako izrazi:
+\begin{align}
+\Dkl{\rvar x}{\rvar y} = \E_{\rvar x}\I(\rvar y=x) - \H(\rvar x).
+\end{align}
+Prvi član na desnoj strani ove jednadžbe je \emph{unakrsna entropija}\footnote{Najčešće se koristi oznaka $\H(\rvar x,\rvar y)$, ali ista oznaka se koristi i za entropiju združene slučajne varijable $(\rvar x,\rvar y)$. Po uzoru na $\citet{Olah:2015:VIT}$, ovdje koristimo oznaku $\H_{\rvar y}(\rvar x)$.}:
+\begin{align}
+\H_{\rvar y}(\rvar x)\coloneqq \E_{\rvar x}\I(\rvar y=x) = -\E_{\rvar x}\log_b P_{\rvar y}(x).
 \end{align}
 
-\begin{align}
-\lim_{\varepsilon\to 0} \int_{-\varepsilon}^{\varepsilon} \delta(x_0+\varepsilon') \dif\varepsilon' = 1
-\end{align}
+KL-divergencija će biti $0$ akko $\rvar x$ i $\rvar y$ imaju iste razdiobe. Ona, kao ni unakrsna entropija, nije simetrična (slika~\ref{fig:dkl-asymmetry}), tj. općenito $\Dkl{\rvar x}{\rvar y}\neq\Dkl{\rvar y}{\rvar x}$ i $\H_{\rvar y}(\rvar x)\neq\H_{\rvar x}(\rvar y)$. KL-divergencija je izrazom \eqref{eq:dkl} definirana i za kontinuirane slučajne varijable ako se funkcije vjerojatnosti zamijene funkcijama gustoće vjerojatnosti. Ona divergira kada postoji $x$ za koji $P_{\rvar x}(x)>0$ i $P_{\rvar y}(x)=0$ ili, u slučaju kontinuiranih razdioba, $p_{\rvar x}(x)>0$ i $p_{\rvar y}(x)=0$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{dkl-asymmetry}
+	\caption{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl{p}{q}$ (lijevo) ili $\Dkl{q}{p}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl{p}{q}$ (crveno) ili $\Dkl{q}{p}$ (zeleno). Optimalna aproksimirajuća razdioba lijevo ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Desno optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je rzmak između modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sličnija lijevoj. Slika je napravljena po uzoru na sliku~$3.6$ u \citet{Goodfellow:2016:DL}.}
+	\label{fig:dkl-asymmetry}
+\end{figure}
+
+\subsection{Probabilistički grafički modeli}
+
+
+\subsection{Monte Carlo aproksimacija}
 
 
 \section{Nadzirano strojno učenje}
 
-Zadatak algoritama nadziranog strojnog učenja je preslikavanje ulaznih primjera $\vec x\in\set{X}$ u izlaze (oznake) $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i,j}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja što bolje \emph{generalizira}, tj. osim primjera iz skupa za učenje, dobro preslikava i neviđene ulazne primjere u izlaze.
+Zadatak algoritama nadziranog strojnog učenja je preslikavanje ulaznih primjera $\vec x\in\set{X}$ u izlaze (oznake) $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja što bolje \emph{generalizira}, tj. osim primjera iz skupa za učenje, dobro preslikava i neviđene ulazne primjere u izlaze.
 
 Neka je $\set{D}=\cbr{\vec d_i}_i$ skup nezavisnih primjera izvučenih iz neke razdiobe $\distrib{D}$. Možemo definirati \emph{probabilistički model} $\set H$ s nepoznatim parametrima $\vec\theta$ kojemu je cilj što bolje modelirati tu razdiobu pronalaskom najbolje hipoteze na temelju podataka: $p(\vec{d}\mid\set{D},\set H)$. Model koji modelira razdiobu primjera nazivamo \emph{generativnim modelom}. U nastavku ćemo izostavljati oznaku modela radi kraćeg zapisa.
 
-Ako su primjeri parovi $\vec d_i = \del{\vec x_i, \vec y_i} \in \set{X}\times\set{Y}$, može nam biti cilj ulaznim primjerima iz $\set{X}$ dodjeljivati oznake iz $\set Y$. Ako je problem koji rješavamo dodjeljivanje oznaka ulaznim primjerima, onda su često prikladniji \emph{diskriminativni modeli}. Probabilistički diskriminativni modeli koji izravno modeliraju uvjetne razdiobe $p(\rvec y\mid \vec x)$ hipotezom oblika $p(\rvec y\mid\vec x,\set{D})$. Neprobabilistički diskriminativni modeli modeliraju funkciju dodjeljivanja oznaka $\funcdef{f}{\set{X}}{\set{Y}}$ hipotezom $h(\vec x)$. Modeliranje zajedničke razdiobe $p(\rvec x,\rvec y)$ obično zahtijeva više računalnih resursa i podataka \citep{Bishop:2006:PRML}.
+Ako su primjeri parovi $\vec d_i = \del{\vec x_i, \vec y_i} \in \set{X}\times\set{Y}$, može nam biti cilj ulaznim primjerima iz $\set{X}$ dodjeljivati oznake iz $\set Y$. Ako je problem koji rješavamo dodjeljivanje oznaka ulaznim primjerima, onda su često prikladniji \emph{diskriminativni modeli}. Probabilistički diskriminativni modeli izravno modeliraju uvjetne razdiobe $p(\rvec y\mid \vec x)$ hipotezom koja ulazni primjer $\vec x$ preslikava u razdiobu $p(\rvec y\mid\vec x,\set{D})$. Neprobabilistički diskriminativni modeli modeliraju funkciju dodjeljivanja oznaka $\funcdef{f}{\set{X}}{\set{Y}}$ hipotezom $h(\vec x)$. Modeliranje zajedničke razdiobe $p(\rvec x,\rvec y)$ obično zahtijeva više računalnih resursa i podataka \citep{Bishop:2006:PRML}.
 
 \subsection{Induktivna pristranost i komponente algoritma strojnog učenja}
 
-Uz zadani skup hipoteza koji dopušta model, učenjem se traže parametri koji do kraja definiraju traženu hipotezu. Učenje hipoteze je loše definiran (engl. \textit{ill-posed}) problem jer skup podataka $\set{D}$ nije dovoljan za jednoznačan odabir hipoteze. Osim dobrog opisivanja podataka za učenje, naučena hipoteza mora dobro generalizirati. Kako bi učenje i generalizacija bili mogući, potreban je skup pretpostavki koji se naziva induktivna pristranost. Razlikujemo dvije vrste induktivne pristranosti \citep{Snajder:2014:SU}:
+Uz zadani skup hipoteza koji dopušta model, \emph{algoritam strojnog učenja} traži parametre koji definiraju jednu hipotezu. Učenje hipoteze je loše definiran (engl. \textit{ill-posed}) problem jer skup podataka $\set{D}$ nije dovoljan za jednoznačan odabir hipoteze. Osim dobrog opisivanja podataka za učenje, naučena hipoteza mora dobro generalizirati. Kako bi učenje i generalizacija bili mogući, potreban je skup pretpostavki koji se naziva induktivna pristranost. Razlikujemo dvije vrste induktivne pristranosti \citep{Snajder:2014:SU}:
 \begin{enumerate}
 	\item \emph{pristranost ograničavanjem} ili \emph{pristranost jezika} -- ograničavanje skupa hipoteza koje se mogu prikazati modelom,
 	\item \emph{pristranost preferencijom} ili \emph{pristranost pretraživanja} -- dodjeljivanje različitih prednosti različitim hipotezama.
@@ -219,6 +280,8 @@ Kod većine algoritama strojnog učenja možemo razlikovati 3 osnovne komponente
 	Kod nekih jednostavnijih modela minimum možemo odrediti analitički. Inače moramo koristiti neki iterativni optimizacijski postupak. Kod nekih složenijih modela, kao što su neuronske mreže, funkcija pogreške nije unimodalna i vjerojatnost pronalaska globalnog optimuma je zanemariva, ali ipak se mogu pronaći dobra rješenja.
 \end{enumerate}
 
+U literaturi riječ \textit{model} često ima šire značenje. Uz skup hipoteza često obuhvaća i induktivnu pristranost ili dio nje. Riječ \textit{model} može imati i značenje statističkog modela.
+
 \subsection{Kapacitet modela, prenaučenost i podnaučenost}
 TODO
 
@@ -228,14 +291,14 @@ TODO
 
 %MLPP 5.3 Bayesian model selection
 
-\cite{Murray:2005:NEBOR} % MLPP! 5.3.1 Bayesian Occam’s razor
+\citet{Murray:2005:NEBOR} % MLPP! 5.3.1 Bayesian Occam’s razor
 
 
 \section{Procjena parametara i zaključivanje kod probabilističkih modela}
 
 \subsection{Procjenitelji i točkaste procjene parametara}
 
-Ovaj pododjeljak se temelji na \cite{Elezovic:2007:VSSV}.
+Ovaj pododjeljak se temelji na \citet{Elezovic:2007:VSSV}.
 
 Neka je $\rvar x$ slučajna varijabla koju promatramo i $\mathcal D$ njena razdioba s nama nepoznatim parametrom $\theta$. Taj parametar možemo procijeniti na temelju opaženih vrijednosti $x_1,..,x_n$ slučajne varijable $\rvar x$, za što definiramo funkciju $g$ koja daje procjenu parametara
 \begin{align}
@@ -399,7 +462,7 @@ DL 3.14
 
 \section{Aproksimacija razdioba i aproksimacijsko zaključivanje}
 
-Ovaj odjeljak uglavnom se temelji na \cite{Blei:2017:VIRS} i malo na \cite{Yang:2017:UVLB}.
+Ovaj odjeljak uglavnom se temelji na \citet{Blei:2017:VIRS} i malo na \citet{Yang:2017:UVLB}.
 
 Važan problem u bayesovskoj statistici, gdje se zaključivanje temelji na izračunima koji uključuju aposteriornu razdiobu, je aproksimacija razdioba koje su zahtjevne za računanje. Kod složenijih bayesovskih modela\footnote{Bayesovski model (ili Bayesova mreža) je probabilistički grafički model sa strukturom usmjerenog acikličkog grafa.} aposteriorna razdioba se ne može lako izračunati i treba koristiti aproksimacijske postupke od kojih su glavni \emph{varijacijski} postupci \citep{Jordan:1999:IVMGM} i \emph{Monte Carlo} postupci koji se temelje na uzorkovanju pomoću \emph{Markovljevog lanca} (MCMC, engl. \textit{Markov chain Monte Carlo}) i Hamiltonovski (ili hibridni) MC-postupci (HMC). MCMC i HMC temelje se na definiranju stohastičkog procesa koji ima stacionarnu razdiobu jednaku razdiobi koja se aproksimira, omogućuju asimptotski egzaktno uzorkovanje i bolje su istraženi. Varijacijski postupci temelje se na aproksimaciji razdiobe nekom jednostavnijom koja se pronalazi rješavanjem optimizacijskog problema, brži su i jednostavniji za ostvariti za složenije modele.
 
@@ -454,7 +517,7 @@ L_{\rvec x}(\tilde{\rvec z})
 \end{align}
 Maksimiziranje takve ciljne funkcije daje razdiobu $p(\tilde{\rvec z})$ koja dobro objašnjava podatke jer se potiče veće očekivanje logaritma izglednosti, i ne razlikuje se previše od apriorne razdiobe jer se potiče manja KL-divergencija između varijacijske razdiobe i apriorne razdiobe \citep{Gal:2015:DBAA}.
 
-Naziv \textit{donja granica marginalne izglednosti} dolazi od toga što su \cite{Jordan:1999:IVMGM} izveli nejednakost $\ln p(\vec x) \geq L_{\rvec x}(\tilde{\rvec z})$ preko Jensenove nejednakosti. Ta nejednakost slijedi i iz prethodne jednadžbe i nenegativnosti KL-divergencije:
+Naziv \textit{donja granica marginalne izglednosti} dolazi od toga što su \citet{Jordan:1999:IVMGM} izveli nejednakost $\ln p(\vec x) \geq L_{\rvec x}(\tilde{\rvec z})$ preko Jensenove nejednakosti. Ta nejednakost slijedi i iz prethodne jednadžbe i nenegativnosti KL-divergencije:
 \begin{align}
 \ln p(\vec x) = L_{\rvec x}(\tilde{\rvec z}) + \Dkl{\tilde{\rvec z}}{(\rvec z\mid\rvec x)} \geq L_{\rvec x}(\tilde{\rvec z}) \text{.}
 \end{align}
@@ -468,7 +531,7 @@ TODO mean-field, calculus of variations
 
 \subsection{Monte Carlo aproksimacija}
 
-1.3.1 \cite{Neal:1995:BLNN}.
+1.3.1 \citet{Neal:1995:BLNN}.
 
 
 
@@ -499,7 +562,7 @@ TODO mean-field, calculus of variations
 
 Kod bayesovskih modela nesigurnost zaključivanja izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i entropijom ili varijancom kada je prikladno.
 
-Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste \citep{Kiureghian:2009:AEDM}: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u strukturu i parametre modela \cite{Gal:2016:UDL}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
+Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste \citep{Kiureghian:2009:AEDM}: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u strukturu i parametre modela \citet{Gal:2016:UDL}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
 
 Granica između aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti će epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će, neovisno o ograničenosti modela, biti aleatorna.
 
@@ -509,13 +572,14 @@ TODO: model uncertainty Gal-thesis 1.2
 
 \the\fontdimen5\font\newline % em
 \the\fontdimen6\font\newline % ex
-
+small {\small \the\fontdimen6\font\newline % ex}
+footnotesize {\footnotesize \the\fontdimen6\font\newline % ex}
 \the\textwidth
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
-	\caption{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svijetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
+	\caption{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
 	\label{fig:homoscedastic-heteroscedastic-noises}
 \end{figure}
 

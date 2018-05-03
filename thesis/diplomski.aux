@@ -35,90 +35,100 @@
 \newlabel{chap:osnovni-pojmovi}{{2}{2}{Osnovni pojmovi}{chapter.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Teorija vjerojatnosti i teorija informacije}{2}{section.2.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Slu\IeC {\v c}ajne varijable i razdiobe}{2}{subsection.2.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Zdru\IeC {\v z}ena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{3}{subsection.2.1.2}}
+\newlabel{eq:dirac-density}{{2.2}{3}{Slučajne varijable i razdiobe}{equation.2.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Zdru\IeC {\v z}ena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{4}{subsection.2.1.2}}
 \newlabel{eq:uvjetna-vj}{{2.4}{4}{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{equation.2.1.4}{}}
-\newlabel{eq:pravilo-umnoska}{{2.5}{4}{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{equation.2.1.5}{}}
-\newlabel{eq:pravilo-umnoska}{{2.6}{4}{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{equation.2.1.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Nezavisnost i uvjetna nezavisnost}{5}{subsection.2.1.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.4}O\IeC {\v c}ekivanje, varijanca i kovarijanca}{5}{subsection.2.1.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.5}Monte Carlo aproksimacija}{6}{subsection.2.1.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.6}Teorija informacije}{6}{subsection.2.1.6}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}Nadzirano strojno u\IeC {\v c}enje}{6}{section.2.2}}
+\newlabel{eq:pravilo-umnoska}{{2.5}{5}{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{equation.2.1.5}{}}
+\newlabel{eq:pravilo-umnoska}{{2.6}{5}{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{equation.2.1.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Nezavisnost, uvjetna nezavisnost i uvjetna zavisnost}{5}{subsection.2.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.4}O\IeC {\v c}ekivanje, varijanca i kovarijanca}{6}{subsection.2.1.4}}
+\citation{Olah:2015:VIT}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.5}Teorija informacije}{7}{subsection.2.1.5}}
+\citation{Olah:2015:VIT}
+\newlabel{eq:entropy}{{2.22}{8}{Teorija informacije}{equation.2.1.22}{}}
+\newlabel{eq:dkl}{{2.24}{8}{Teorija informacije}{equation.2.1.24}{}}
+\citation{Goodfellow:2016:DL}
+\citation{Goodfellow:2016:DL}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Asimetri\IeC {\v c}nost KL-divergencije. $p$ je fiksna razdioba (funkcija gusto\IeC {\'c}e), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dklsym  \mathopen {}\originalleft (p\tmspace  +\thickmuskip {.2777em}\middle \delimiter "026B30D \tmspace  +\thickmuskip {.2777em}q\originalright )\mathclose {}$ (lijevo) ili $\Dklsym  \mathopen {}\originalleft (q\tmspace  +\thickmuskip {.2777em}\middle \delimiter "026B30D \tmspace  +\thickmuskip {.2777em}p\originalright )\mathclose {}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovaraju\IeC {\'c}ih KL-divergencija. Kod njih zbrojevi predzna\IeC {\v c}enih povr\IeC {\v s}ina obojanih podru\IeC {\v c}ja odgovaraju KL-divergencijama $\Dklsym  \mathopen {}\originalleft (p\tmspace  +\thickmuskip {.2777em}\middle \delimiter "026B30D \tmspace  +\thickmuskip {.2777em}q\originalright )\mathclose {}$ (crveno) ili $\Dklsym  \mathopen {}\originalleft (q\tmspace  +\thickmuskip {.2777em}\middle \delimiter "026B30D \tmspace  +\thickmuskip {.2777em}p\originalright )\mathclose {}$ (zeleno). Optimalna aproksimiraju\IeC {\'c}a razdioba lijevo ima veliku gusto\IeC {\'c}u gdje god razdioba $p$ ima veliku gusto\IeC {\'c}u. Desno optimalna aproksimiraju\IeC {\'c}a razdioba nema veliku gusto\IeC {\'c}u gdje razdioba $p$ nema veliku gusto\IeC {\'c}u. Da je rzmak izme\IeC {\dj }u modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sli\IeC {\v c}nija lijevoj. Slika je napravljena po uzoru na sliku~$3.6$ u \citet  {Goodfellow:2016:DL}.\relax }}{9}{figure.caption.5}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:dkl-asymmetry}{{2.1}{9}{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl {p}{q}$ (lijevo) ili $\Dkl {q}{p}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl {p}{q}$ (crveno) ili $\Dkl {q}{p}$ (zeleno). Optimalna aproksimirajuća razdioba lijevo ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Desno optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je rzmak između modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sličnija lijevoj. Slika je napravljena po uzoru na sliku~$3.6$ u \citet {Goodfellow:2016:DL}.\relax }{figure.caption.5}{}}
 \citation{Bishop:2006:PRML}
 \citation{Snajder:2014:SU}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.6}Probabilisti\IeC {\v c}ki grafi\IeC {\v c}ki modeli}{10}{subsection.2.1.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.7}Monte Carlo aproksimacija}{10}{subsection.2.1.7}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Nadzirano strojno u\IeC {\v c}enje}{10}{section.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Induktivna pristranost i komponente algoritma strojnog u\IeC {\v c}enja}{10}{subsection.2.2.1}}
 \citation{Snajder:2014:SU}
 \citation{Snajder:2014:SU}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Induktivna pristranost i komponente algoritma strojnog u\IeC {\v c}enja}{7}{subsection.2.2.1}}
 \citation{Murray:2005:NEBOR}
 \citation{Elezovic:2007:VSSV}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Kapacitet modela, prenau\IeC {\v c}enost i podnau\IeC {\v c}enost}{8}{subsection.2.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Odabir modela}{8}{subsection.2.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Procjena parametara i zaklju\IeC {\v c}ivanje kod probabilisti\IeC {\v c}kih modela}{9}{section.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Procjenitelji i to\IeC {\v c}kaste procjene parametara}{9}{subsection.2.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Svojstva i pogre\IeC {\v s}ka procjenitelja}{9}{subsection.2.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Kapacitet modela, prenau\IeC {\v c}enost i podnau\IeC {\v c}enost}{12}{subsection.2.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Odabir modela}{12}{subsection.2.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Procjena parametara i zaklju\IeC {\v c}ivanje kod probabilisti\IeC {\v c}kih modela}{12}{section.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Procjenitelji i to\IeC {\v c}kaste procjene parametara}{12}{subsection.2.3.1}}
 \citation{Snajder:2014:SU}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Procjenitelj maksimalne izglednosti}{10}{subsection.2.3.3}}
-\newlabel{eq:izglednost-diskr}{{2.30}{10}{Procjenitelj maksimalne izglednosti}{equation.2.3.30}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Procjenitelj maksimalne aposteriorne vjerojatnosti}{10}{subsection.2.3.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Svojstva i pogre\IeC {\v s}ka procjenitelja}{13}{subsection.2.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Procjenitelj maksimalne izglednosti}{13}{subsection.2.3.3}}
 \citation{Snajder:2014:SU}
+\newlabel{eq:izglednost-diskr}{{2.36}{14}{Procjenitelj maksimalne izglednosti}{equation.2.3.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Procjenitelj maksimalne aposteriorne vjerojatnosti}{14}{subsection.2.3.4}}
+\newlabel{eq:posterior-bayes}{{2.37}{14}{Procjenitelj maksimalne aposteriorne vjerojatnosti}{equation.2.3.37}{}}
 \citation{Neal:1995:BLNN}
-\newlabel{eq:posterior-bayes}{{2.31}{11}{Procjenitelj maksimalne aposteriorne vjerojatnosti}{equation.2.3.31}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Bayesovski procjenitelj i zaklju\IeC {\v c}ivanje}{11}{subsection.2.3.5}}
 \citation{Neal:1995:BLNN}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Bayesovski procjenitelj i zaklju\IeC {\v c}ivanje}{15}{subsection.2.3.5}}
 \citation{Murphy:2012:MLPP}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Minimizacija rizika}{12}{section.2.4}}
-\newlabel{sec:minimizacija-rizika}{{2.4}{12}{Minimizacija rizika}{section.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Rizik i empirijski rizik}{12}{subsection.2.4.1}}
 \citation{Murphy:2012:MLPP}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Strukturni rizik}{13}{subsection.2.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Minimizacija rizika}{16}{section.2.4}}
+\newlabel{sec:minimizacija-rizika}{{2.4}{16}{Minimizacija rizika}{section.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Rizik i empirijski rizik}{16}{subsection.2.4.1}}
 \citation{Blei:2017:VIRS}
 \citation{Yang:2017:UVLB}
 \citation{Jordan:1999:IVMGM}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Probabilisti\IeC {\v c}ki grafi\IeC {\v c}ki modeli}{14}{section.2.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Bayesovski modeli}{14}{subsection.2.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Aproksimacija razdioba i aproksimacijsko zaklju\IeC {\v c}ivanje}{14}{section.2.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Prikaz grafi\IeC {\v c}kog modela \IeC {\v c}ija je zdru\IeC {\v z}ena razdioba $p(\mathbfit  {x}, \mathbfit  {z}) = p(\mathbfit  {z}) p(\mathbfit  {x}\mid \mathbfit  {z})$. \relax }}{15}{figure.caption.5}}
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:pgm}{{2.1}{15}{Prikaz grafičkog modela čija je združena razdioba $p(\vec x, \vec z) = p(\vec z) p(\vec x\mid \vec z)$. \relax }{figure.caption.5}{}}
-\newlabel{eq:posterior-inference}{{2.42}{15}{Aproksimacija razdioba i aproksimacijsko zaključivanje}{equation.2.6.42}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Varijacijsko zaklju\IeC {\v c}ivanje}{15}{subsection.2.6.1}}
-\newlabel{eq:dkl-split}{{2.44}{15}{Varijacijsko zaključivanje}{equation.2.6.44}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Strukturni rizik}{17}{subsection.2.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Probabilisti\IeC {\v c}ki grafi\IeC {\v c}ki modeli}{17}{section.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Bayesovski modeli}{17}{subsection.2.5.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Aproksimacija razdioba i aproksimacijsko zaklju\IeC {\v c}ivanje}{17}{section.2.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Prikaz grafi\IeC {\v c}kog modela \IeC {\v c}ija je zdru\IeC {\v z}ena razdioba $p(\mathbfit  {x}, \mathbfit  {z}) = p(\mathbfit  {z}) p(\mathbfit  {x}\mid \mathbfit  {z})$. \relax }}{18}{figure.caption.6}}
+\newlabel{fig:pgm}{{2.2}{18}{Prikaz grafičkog modela čija je združena razdioba $p(\vec x, \vec z) = p(\vec z) p(\vec x\mid \vec z)$. \relax }{figure.caption.6}{}}
+\newlabel{eq:posterior-inference}{{2.48}{18}{Aproksimacija razdioba i aproksimacijsko zaključivanje}{equation.2.6.48}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Varijacijsko zaklju\IeC {\v c}ivanje}{18}{subsection.2.6.1}}
 \citation{Gal:2015:DBAA}
 \citation{Jordan:1999:IVMGM}
+\newlabel{eq:dkl-split}{{2.50}{19}{Varijacijsko zaključivanje}{equation.2.6.50}{}}
+\newlabel{eq:elbo}{{2.51}{19}{Varijacijsko zaključivanje}{equation.2.6.51}{}}
 \citation{Neal:1995:BLNN}
-\newlabel{eq:elbo}{{2.45}{16}{Varijacijsko zaključivanje}{equation.2.6.45}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Monte Carlo aproksimacija}{16}{subsection.2.6.2}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Duboko u\IeC {\v c}enje i konvolucijske mre\IeC {\v z}e}{17}{chapter.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.2}Monte Carlo aproksimacija}{20}{subsection.2.6.2}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Duboko u\IeC {\v c}enje i konvolucijske mre\IeC {\v z}e}{21}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Duboke neuronske mre\IeC {\v z}e}{17}{section.3.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Konvolucijske mre\IeC {\v z}e}{17}{section.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Optimizacija}{17}{section.3.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Propagacija pogre\IeC {\v s}ke unatrag}{17}{subsection.3.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Isklju\IeC {\v c}ivanje neurona - dropout}{17}{subsection.3.3.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Normalizacija po grupama}{17}{subsection.3.3.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Duboke neuronske mre\IeC {\v z}e}{21}{section.3.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Konvolucijske mre\IeC {\v z}e}{21}{section.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Optimizacija}{21}{section.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Propagacija pogre\IeC {\v s}ke unatrag}{21}{subsection.3.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Isklju\IeC {\v c}ivanje neurona - dropout}{21}{subsection.3.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Normalizacija po grupama}{21}{subsection.3.3.3}}
 \citation{Kennedy:2002:BCCM}
 \citation{Kiureghian:2009:AEDM}
 \citation{Gal:2016:UDL}
 \citation{Gal:2016:UDL}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Procjenjivanje nesigurnosti}{18}{chapter.4}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Procjenjivanje nesigurnosti}{22}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Aleatorna i epistemi\IeC {\v c}ka nesigurnost}{18}{section.4.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Homoskedakti\IeC {\v c}ki (lijevo) i heteroskedakti\IeC {\v c}ki (desno) Gaussov \IeC {\v s}um. Crta prikazuje o\IeC {\v c}ekivanje $f(x)$, svijetloplava povr\IeC {\v s}ina standardnu devijaciju \IeC {\v s}uma $s(x)$, a to\IeC {\v c}ke slu\IeC {\v c}ajne uzorke. To\IeC {\v c}ke su generirane prema $({\color  {blue!70!black}\mathsfit  {y}}\mid x) \sim \mathcal  {N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.\relax }}{19}{figure.caption.6}}
-\newlabel{fig:homoscedastic-heteroscedastic-noises}{{4.1}{19}{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum. Crta prikazuje očekivanje $f(x)$, svijetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal {N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.\relax }{figure.caption.6}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Bayesovske neuronske mre\IeC {\v z}e}{20}{chapter.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Aleatorna i epistemi\IeC {\v c}ka nesigurnost}{22}{section.4.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Homoskedakti\IeC {\v c}ki (lijevo) i heteroskedakti\IeC {\v c}ki (desno) Gaussov \IeC {\v s}um. Crta prikazuje o\IeC {\v c}ekivanje $f(x)$, svjetloplava povr\IeC {\v s}ina standardnu devijaciju \IeC {\v s}uma $s(x)$, a to\IeC {\v c}ke slu\IeC {\v c}ajne uzorke. To\IeC {\v c}ke su generirane prema $({\color  {green!50!blue!40!black}\mathsfit  {y}}\mid x) \sim \mathcal  {N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.\relax }}{23}{figure.caption.7}}
+\newlabel{fig:homoscedastic-heteroscedastic-noises}{{4.1}{23}{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum. Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal {N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Bayesovske neuronske mre\IeC {\v z}e}{24}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Procjenjivanje nesigurnosti kod konvolucijskih mre\IeC {\v z}a}{21}{chapter.6}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Procjenjivanje nesigurnosti kod konvolucijskih mre\IeC {\v z}a}{25}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Eksperimentalni rezultati}{22}{chapter.7}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Eksperimentalni rezultati}{26}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Skupovi podataka}{22}{section.7.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Skupovi podataka}{26}{section.7.1}}
 \bibdata{literatura}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Zaklju\IeC {\v c}ak}{23}{chapter.8}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Zaklju\IeC {\v c}ak}{27}{chapter.8}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \bibcite{Bishop:2006:PRML}{{1}{2006}{{Bishop}}{{}}}
@@ -134,10 +144,11 @@
 \bibcite{Murray:2005:NEBOR}{{11}{2005}{{Murray i Ghahramani}}{{}}}
 \bibcite{Snajder:2014:SU}{{12}{2014}{{\IeC {\v S}najder i {Dalbelo~Ba\IeC {\v s}i\IeC {\'c}}}}{{}}}
 \bibcite{Neal:1995:BLNN}{{13}{1995}{{Neal}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{Literatura}{24}{chapter*.7}}
-\bibcite{Yang:2017:UVLB}{{14}{2017}{{Yang}}{{}}}
+\bibcite{Olah:2015:VIT}{{14}{2015}{{Olah}}{{}}}
+\bibcite{Yang:2017:UVLB}{{15}{2017}{{Yang}}{{}}}
 \bibstyle{fer}
-\@writefile{toc}{\contentsline {chapter}{Appendices}{27}{section*.8}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Izvod donje varijacijske granice}{27}{Dodatak.1.A}}
+\@writefile{toc}{\contentsline {chapter}{Literatura}{28}{chapter*.8}}
+\@writefile{toc}{\contentsline {chapter}{Appendices}{30}{section*.9}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Izvod donje varijacijske granice}{30}{Dodatak.1.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

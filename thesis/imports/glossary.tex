@@ -28,11 +28,11 @@
 
 % Objekti
 \glsgroup{o}{Objekti}
-{Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama. }
+{Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama. Za svaku vrstu objekta mogu se koristiti i latinska i grčka slova.}
 \glsentm{o}{var}{a,\,A,\,\theta}		{Varijabla (najčešće skalar)}
 \glsentm{o}{vec}{\vec a,\,\vec\theta}	{Vektor ili niz (najčešće vektor stupac)}
 \glsentm{o}{mat}{\mat A,\,\mat\Theta}	{Matrica ili višedimensionalni niz}
-\glsentm{o}{set}{\set A,\,\set\Theta}	{Skup ili multiskup}
+\glsentm{o}{set}{\set A}	{Skup ili multiskup}
 \glsentm{o}{const}{\const a,\,\const A,\,\const\theta}{Konstanta}
 \glsentm{o}{cvec}{\cvec a,\,\cvec\theta}{Konstanta vektor ili niz}
 \glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}{Konstanta matrica ili višedimensionalni niz}
@@ -40,7 +40,7 @@
 \glsentm{o}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta}{Slučajna varijabla}
 \glsentm{o}{rvec}{\rvec a,\,\rvec\theta}{Slučajni vektor ili niz}
 \glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}{Slučajna matrica ili višedimensionalni niz}
-\glsentm{o}{rset}{\rset A,\,\rset\Theta}{Slučajni skup ili multiskup}
+\glsentm{o}{rset}{\rset A}{Slučajni skup ili multiskup}
 
 % Konstante
 \glsgroup{k}{Konstante}{}
@@ -96,20 +96,20 @@
 
 % Teorija vjerojatnosti i teorija informacije
 \glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
-{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}(a)(\cdot)$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
+{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}(a)$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
 %TODO move to new page if too high
 \glsentm{vi}{rvar}{\rvar a}{Slučajna varijabla}
-\glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b\sheq b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
+\glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
 \glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
-\glsentm{vi}{distr}{\distrib{A},\,q}{Razdioba}
+\glsentm{vi}{distr}{\distrib{A},\,p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
 \glsentm{vi}{event}{\cbr{R(\rvar a)}} {Događaj koji uključuje slučajnu varijablu $\rvar a$, gdje je $R$ neki predikat}
 \glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
 \glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
-\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$: $P_{\rvar a}(a)=\P(\rvar a\sheq a)$}
-\glsentm{vi}{probdens}{\p(\rvar a\sheq a)} {Gustoća vjerojatnosti događaja $\rvar a=a$}
+\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$: $P_{\rvar a}(a)=\P(\rvar a= a)$}
+\glsentm{vi}{probdens}{\p(\rvar a= a)} {Gustoća vjerojatnosti događaja $\rvar a=a$}
 \glsentm{vi}{pdf}{p_{\rvar a}(a),\,p(a)} {Funkcija gustoće vjerojatosti slučajne varijable $\rvar a$}
-\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a\mid\rvar b\sheq b}$; $p_{\rvar a\mid b}(a)=\p(\rvar a\sheq a\mid\rvar b\sheq b)$}
-\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(a,b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a\sheq a,\rvar b\sheq b}$; $p_{\rvar a,\rvar b}(a,b)=\p(\rvar a\sheq a,\rvar b\sheq b)$}
+\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a= a\mid\rvar b= b}$; $p_{\rvar a\mid b}(a)=\p(\rvar a= a\mid\rvar b= b)$}
+\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(a,b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a= a,\rvar b= b}$; $p_{\rvar a,\rvar b}(a,b)=\p(\rvar a= a,\rvar b= b)$}
 \glsentm{vi}{hasdistrib}{\rvar a \sim \distrib A,\, \p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
 \glsentm{vi}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
 \glsentm{vi}{fromdistrib}{a\sim\distrib A} {\textit{$a$ se izvlači iz razidobe $\distrib{A}$}}
@@ -119,13 +119,13 @@
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
 \glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
 \glsentm{vi}{Ent}{\const{H}(\rvar a)}			{Shannonova entropija}
-\glsentm{vi}{CEnt}{\const{H}(\rvar a, \rvar b)} {Unakrsna entropija}
+\glsentm{vi}{CEnt}{\const{H}_{\rvar b}(\rvar a)} {Unakrsna entropija}
 \glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}}		{Kullback-Leiblerova divergencija}
 
 % Ostalo
 \glsgroup{f}{Funkcije i operatori}{}
 \glsentm{f}{func}{\funcdef{f}{\set A}{\set B}} {Funkcija s domenom $\set A$ i kodomenom $\set B$}
 \glsentm{f}{funcdef}{x\mapsto g(x)} {Definicija funkcije; funkcija koja preslikava $x$ iz domene u $g(x)$ iz kodomene}
-\glsentm{f}{dirac}{\dirac\del{\cdot}}	{Diracova delta razdioba; poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$}
+\glsentm{f}{dirac}{\dirac\del{\cdot}}	{Diracova delta}
 \glsentm{f}{doublebracket}{\enbbracket{\cdot}} {Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
 

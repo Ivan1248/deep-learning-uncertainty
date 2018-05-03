@@ -4,42 +4,43 @@
 \BOOKMARK [1][-]{section.2.1}{Teorija vjerojatnosti i teorija informacije}{chapter.2}% 4
 \BOOKMARK [2][-]{subsection.2.1.1}{Slucajne varijable i razdiobe}{section.2.1}% 5
 \BOOKMARK [2][-]{subsection.2.1.2}{Zdru\236ena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}{section.2.1}% 6
-\BOOKMARK [2][-]{subsection.2.1.3}{Nezavisnost i uvjetna nezavisnost}{section.2.1}% 7
+\BOOKMARK [2][-]{subsection.2.1.3}{Nezavisnost, uvjetna nezavisnost i uvjetna zavisnost}{section.2.1}% 7
 \BOOKMARK [2][-]{subsection.2.1.4}{Ocekivanje, varijanca i kovarijanca}{section.2.1}% 8
-\BOOKMARK [2][-]{subsection.2.1.5}{Monte Carlo aproksimacija}{section.2.1}% 9
-\BOOKMARK [2][-]{subsection.2.1.6}{Teorija informacije}{section.2.1}% 10
-\BOOKMARK [1][-]{section.2.2}{Nadzirano strojno ucenje}{chapter.2}% 11
-\BOOKMARK [2][-]{subsection.2.2.1}{Induktivna pristranost i komponente algoritma strojnog ucenja}{section.2.2}% 12
-\BOOKMARK [2][-]{subsection.2.2.2}{Kapacitet modela, prenaucenost i podnaucenost}{section.2.2}% 13
-\BOOKMARK [2][-]{subsection.2.2.3}{Odabir modela}{section.2.2}% 14
-\BOOKMARK [1][-]{section.2.3}{Procjena parametara i zakljucivanje kod probabilistickih modela}{chapter.2}% 15
-\BOOKMARK [2][-]{subsection.2.3.1}{Procjenitelji i tockaste procjene parametara}{section.2.3}% 16
-\BOOKMARK [2][-]{subsection.2.3.2}{Svojstva i pogre\235ka procjenitelja}{section.2.3}% 17
-\BOOKMARK [2][-]{subsection.2.3.3}{Procjenitelj maksimalne izglednosti}{section.2.3}% 18
-\BOOKMARK [2][-]{subsection.2.3.4}{Procjenitelj maksimalne aposteriorne vjerojatnosti}{section.2.3}% 19
-\BOOKMARK [2][-]{subsection.2.3.5}{Bayesovski procjenitelj i zakljucivanje}{section.2.3}% 20
-\BOOKMARK [1][-]{section.2.4}{Minimizacija rizika}{chapter.2}% 21
-\BOOKMARK [2][-]{subsection.2.4.1}{Rizik i empirijski rizik}{section.2.4}% 22
-\BOOKMARK [2][-]{subsection.2.4.2}{Strukturni rizik}{section.2.4}% 23
-\BOOKMARK [1][-]{section.2.5}{Probabilisticki graficki modeli}{chapter.2}% 24
-\BOOKMARK [2][-]{subsection.2.5.1}{Bayesovski modeli}{section.2.5}% 25
-\BOOKMARK [1][-]{section.2.6}{Aproksimacija razdioba i aproksimacijsko zakljucivanje}{chapter.2}% 26
-\BOOKMARK [2][-]{subsection.2.6.1}{Varijacijsko zakljucivanje}{section.2.6}% 27
-\BOOKMARK [2][-]{subsection.2.6.2}{Monte Carlo aproksimacija}{section.2.6}% 28
-\BOOKMARK [0][-]{chapter.3}{Duboko ucenje i konvolucijske mre\236e}{}% 29
-\BOOKMARK [1][-]{section.3.1}{Duboke neuronske mre\236e}{chapter.3}% 30
-\BOOKMARK [1][-]{section.3.2}{Konvolucijske mre\236e}{chapter.3}% 31
-\BOOKMARK [1][-]{section.3.3}{Optimizacija}{chapter.3}% 32
-\BOOKMARK [2][-]{subsection.3.3.1}{Propagacija pogre\235ke unatrag}{section.3.3}% 33
-\BOOKMARK [2][-]{subsection.3.3.2}{Iskljucivanje neurona - dropout}{section.3.3}% 34
-\BOOKMARK [2][-]{subsection.3.3.3}{Normalizacija po grupama}{section.3.3}% 35
-\BOOKMARK [0][-]{chapter.4}{Procjenjivanje nesigurnosti}{}% 36
-\BOOKMARK [1][-]{section.4.1}{Aleatorna i epistemicka nesigurnost}{chapter.4}% 37
-\BOOKMARK [0][-]{chapter.5}{Bayesovske neuronske mre\236e}{}% 38
-\BOOKMARK [0][-]{chapter.6}{Procjenjivanje nesigurnosti kod konvolucijskih mre\236a}{}% 39
-\BOOKMARK [0][-]{chapter.7}{Eksperimentalni rezultati}{}% 40
-\BOOKMARK [1][-]{section.7.1}{Skupovi podataka}{chapter.7}% 41
-\BOOKMARK [0][-]{chapter.8}{Zakljucak}{}% 42
-\BOOKMARK [0][-]{chapter*.7}{Literatura}{}% 43
-\BOOKMARK [0][-]{section*.8}{Appendices}{}% 44
-\BOOKMARK [0][-]{Dodatak.1.A}{Izvod donje varijacijske granice}{}% 45
+\BOOKMARK [2][-]{subsection.2.1.5}{Teorija informacije}{section.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.1.6}{Probabilisticki graficki modeli}{section.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.1.7}{Monte Carlo aproksimacija}{section.2.1}% 11
+\BOOKMARK [1][-]{section.2.2}{Nadzirano strojno ucenje}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.2.1}{Induktivna pristranost i komponente algoritma strojnog ucenja}{section.2.2}% 13
+\BOOKMARK [2][-]{subsection.2.2.2}{Kapacitet modela, prenaucenost i podnaucenost}{section.2.2}% 14
+\BOOKMARK [2][-]{subsection.2.2.3}{Odabir modela}{section.2.2}% 15
+\BOOKMARK [1][-]{section.2.3}{Procjena parametara i zakljucivanje kod probabilistickih modela}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.3.1}{Procjenitelji i tockaste procjene parametara}{section.2.3}% 17
+\BOOKMARK [2][-]{subsection.2.3.2}{Svojstva i pogre\235ka procjenitelja}{section.2.3}% 18
+\BOOKMARK [2][-]{subsection.2.3.3}{Procjenitelj maksimalne izglednosti}{section.2.3}% 19
+\BOOKMARK [2][-]{subsection.2.3.4}{Procjenitelj maksimalne aposteriorne vjerojatnosti}{section.2.3}% 20
+\BOOKMARK [2][-]{subsection.2.3.5}{Bayesovski procjenitelj i zakljucivanje}{section.2.3}% 21
+\BOOKMARK [1][-]{section.2.4}{Minimizacija rizika}{chapter.2}% 22
+\BOOKMARK [2][-]{subsection.2.4.1}{Rizik i empirijski rizik}{section.2.4}% 23
+\BOOKMARK [2][-]{subsection.2.4.2}{Strukturni rizik}{section.2.4}% 24
+\BOOKMARK [1][-]{section.2.5}{Probabilisticki graficki modeli}{chapter.2}% 25
+\BOOKMARK [2][-]{subsection.2.5.1}{Bayesovski modeli}{section.2.5}% 26
+\BOOKMARK [1][-]{section.2.6}{Aproksimacija razdioba i aproksimacijsko zakljucivanje}{chapter.2}% 27
+\BOOKMARK [2][-]{subsection.2.6.1}{Varijacijsko zakljucivanje}{section.2.6}% 28
+\BOOKMARK [2][-]{subsection.2.6.2}{Monte Carlo aproksimacija}{section.2.6}% 29
+\BOOKMARK [0][-]{chapter.3}{Duboko ucenje i konvolucijske mre\236e}{}% 30
+\BOOKMARK [1][-]{section.3.1}{Duboke neuronske mre\236e}{chapter.3}% 31
+\BOOKMARK [1][-]{section.3.2}{Konvolucijske mre\236e}{chapter.3}% 32
+\BOOKMARK [1][-]{section.3.3}{Optimizacija}{chapter.3}% 33
+\BOOKMARK [2][-]{subsection.3.3.1}{Propagacija pogre\235ke unatrag}{section.3.3}% 34
+\BOOKMARK [2][-]{subsection.3.3.2}{Iskljucivanje neurona - dropout}{section.3.3}% 35
+\BOOKMARK [2][-]{subsection.3.3.3}{Normalizacija po grupama}{section.3.3}% 36
+\BOOKMARK [0][-]{chapter.4}{Procjenjivanje nesigurnosti}{}% 37
+\BOOKMARK [1][-]{section.4.1}{Aleatorna i epistemicka nesigurnost}{chapter.4}% 38
+\BOOKMARK [0][-]{chapter.5}{Bayesovske neuronske mre\236e}{}% 39
+\BOOKMARK [0][-]{chapter.6}{Procjenjivanje nesigurnosti kod konvolucijskih mre\236a}{}% 40
+\BOOKMARK [0][-]{chapter.7}{Eksperimentalni rezultati}{}% 41
+\BOOKMARK [1][-]{section.7.1}{Skupovi podataka}{chapter.7}% 42
+\BOOKMARK [0][-]{chapter.8}{Zakljucak}{}% 43
+\BOOKMARK [0][-]{chapter*.8}{Literatura}{}% 44
+\BOOKMARK [0][-]{section*.9}{Appendices}{}% 45
+\BOOKMARK [0][-]{Dodatak.1.A}{Izvod donje varijacijske granice}{}% 46

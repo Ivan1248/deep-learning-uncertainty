@@ -9,11 +9,11 @@
 %\usepackage{bm}
 %\usepackage[utopia]{mathdesign}
 \usepackage[OMLmathsfit]{isomath}  % \DeclareMathAlphabet ...
-%\usepackage[bbgreekl]{mathbbol}
 
 \usepackage{mathtools}  % smashoperator
 \usepackage{commath}  % calculus, perentheses
 \usepackage{stmaryrd}  % \llbracket for \rrbracket, ...
+
 
 %\usepackage[croatian]{babel}		% teorem
 %\newtheorem{definition}{Definicija}[section]
@@ -48,11 +48,11 @@
 \newcommand{\cset}[1]{\mathbb{#1}}
 
 % random variable
-\newcommand{\rvar}[1]{{\color{blue!70!black}\mathsfit{#1}}}
-\newcommand{\rvec}[1]{{\color{blue!70!black}\mathsfbfit{#1}}}
+\newcommand{\rvar}[1]{{\color{green!50!blue!40!black}\mathsfit{#1}}}
+\newcommand{\rvec}[1]{{\color{green!50!blue!40!black}\mathsfbfit{#1}}}
 \newcommand{\rmat}[1]{\rvec{#1}}
 \newcommand{\rten}[1]{\rvec{#1}}
-\newcommand{\rset}[1]{{\color{blue!70!black}\mathsfbbit{#1}}}
+\newcommand{\rset}[1]{{\color{green!50!blue!40!black}\mathsfbbit{#1}}}
 
 % linear algebra
 \newcommand{\transpose}{\mathsf T}
@@ -71,13 +71,14 @@
 \DeclareMathOperator*{\argmin}{arg\,min} % thin space
 \DeclareMathOperator*{\argmax}{arg\,max}
 \let\P\relax
-\DeclareMathOperator*{\P}{{\rm P}}
-\DeclareMathOperator*{\p}{{\rm p}}
-\DeclareMathOperator*{\E}{{\rm I\kern-.282em E}}
-\DeclareMathOperator*{\D}{{\rm I\kern-.282em D}}
-\DeclareMathOperator*{\Cov}{Cov}
-\let\H\relax
-\DeclareMathOperator*{\H}{{\rm H\kern-.8em H}}
+\DeclareMathOperator*{\P}{\mathrm{P}}
+\DeclareMathOperator*{\p}{\mathrm{p}}
+\DeclareMathOperator*{\E}{\mathrm{I\kern-.282em E}}
+\DeclareMathOperator*{\D}{\mathrm{I\kern-.282em D}}
+\DeclareMathOperator*{\Cov}{\mathrm{Cov}}
+%\let\H\relax
+\renewcommand{\H}{\mathrm{H}}
+\newcommand{\I}{\mathrm{I}}
 \DeclareMathOperator*{\Dklsym}{D_{\mathrm{KL}}}
 
 % bracket operators
