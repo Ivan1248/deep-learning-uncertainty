@@ -1,5 +1,2 @@
-# Old
-from .dataset import Dataset, DatasetGenerator, MiniBatchReader, save_dataset, load_dataset
-# New
-from torch.utils.data.dataset import ConcatDataset
-from .dataset_loaders import AbstractDataset, DataLoader
+from .data import Dataset, DataLoader
+from .datasets import Cifar10Dataset, ICCV09DiskDataset, VOC2012SegmentationDiskDataset, CityscapesSegmentationDiskDataset

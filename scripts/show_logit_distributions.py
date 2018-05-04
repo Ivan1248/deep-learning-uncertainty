@@ -3,7 +3,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from _context import dl_uncertainty
-from dl_uncertainty.data_utils import Cifar10Loader, Dataset, MiniBatchReader
+from dl_uncertainty.data_utils import Cifar10Loader, OldDataset, MiniBatchReader
 from dl_uncertainty.visualization import compose, Viewer
 import dl_uncertainty.dirs as dirs
 from dl_uncertainty.training import train_cifar
@@ -14,10 +14,10 @@ ds = Cifar10Loader.load('test')
 ds = ds.split(0, 4096)[0]
 
 images_ud = np.array(list(map(np.flipud, ds.images)))
-ds_ud = Dataset(images_ud, ds.labels, ds.class_count)
+ds_ud = OldDataset(images_ud, ds.labels, ds.class_count)
 
 images_rand = np.random.randn(images_ud.shape)
-ds_rand = Dataset(images_rand, ds.labels, ds.class_count)
+ds_rand = OldDataset(images_rand, ds.labels, ds.class_count)
 
 dsid_to_ds = {'Cifar': ds, 'Cifar-UD': ds_ud, 'random': ds_rand}
 

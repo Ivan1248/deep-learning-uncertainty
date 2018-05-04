@@ -7,7 +7,7 @@ import datetime
 
 from _context import dl_uncertainty
 
-from dl_uncertainty.data import Dataset
+from dl_uncertainty.data import OldDataset
 from dl_uncertainty.data_utils import Cifar10Loader
 from dl_uncertainty.models import ResNet, DenseNet
 from dl_uncertainty.standard_models import densenet, BlockStructure

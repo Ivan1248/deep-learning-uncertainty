@@ -7,7 +7,7 @@ import datetime
 
 from _context import dl_uncertainty
 
-from dl_uncertainty.data import Dataset
+from dl_uncertainty.data import OldDataset
 from dl_uncertainty.data_utils import VOC2012SegmentationLoader, CityscapesSegmentation, ICCV09Loader
 from dl_uncertainty.training import train_semantic_segmentation
 from dl_uncertainty.models import LadderDenseNet, ResNetSS, BlockStructure

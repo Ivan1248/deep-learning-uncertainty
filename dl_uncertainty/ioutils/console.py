@@ -30,6 +30,5 @@ def main():
     while True:
         print(read_line(impatient=False, discard_non_last=True))
 
-
 if __name__ == "__main__":
     main()

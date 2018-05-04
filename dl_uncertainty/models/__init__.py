@@ -1,5 +1,6 @@
 from ..tf_utils.layers import BlockStructure
 
+"""
 from .abstract_model import AbstractModel
 from .dummy import Dummy
 from .baseline_a import BaselineA
@@ -8,9 +9,7 @@ from .densenet import DenseNet
 
 from .resnet_ss import ResNetSS
 from .ladder_densenet import LadderDenseNet
-
-
-from .generic_model import GenericModel
+"""
 
 from .model import Model
 from .modeldef import ModelDef, InferenceComponent, TrainingComponent, ModelDef 

@@ -5,7 +5,7 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from ..data import Dataset, MiniBatchReader
+from ..data import OldDataset, MiniBatchReader
 from ..ioutils import file
 
 
@@ -124,8 +124,8 @@ class AbstractModel(object):
         return self._run(fetches, inputs, None, False)
 
     def train(self,
-              train_data: Dataset,
-              validation_data: Dataset = None,
+              train_data: OldDataset,
+              validation_data: OldDataset = None,
               epoch_count: int = 1):
         self._train(train_data, validation_data, epoch_count,
                     self.nodes.evaluation)
@@ -153,8 +153,8 @@ class AbstractModel(object):
         return cost, extra
 
     def _train(self,
-               train_data: Dataset,
-               validation_data: Dataset = None,
+               train_data: OldDataset,
+               validation_data: OldDataset = None,
                epoch_count: int = 1,
                extra_fetches: dict = dict()):
 

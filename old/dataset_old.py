@@ -11,10 +11,10 @@ class DatasetGenerator:
         self.size = size
 
     def to_dataset(self):
-        return Dataset(list(self.inputs), list(self.labels), self.class_count)
+        return OldDataset(list(self.inputs), list(self.labels), self.class_count)
 
 
-class Dataset:
+class OldDataset:
 
     def __init__(self, images, labels, class_count: int, random_seed=51):
         self._images = np.ascontiguousarray(np.array(images))
@@ -25,7 +25,7 @@ class Dataset:
 
     @staticmethod
     def from_generator(dsg: DatasetGenerator):
-        return Dataset(list(dsg.images), list(dsg.labels), dsg.class_count)
+        return OldDataset(list(dsg.images), list(dsg.labels), dsg.class_count)
 
     def __len__(self):
         return len(self._images)
@@ -33,7 +33,7 @@ class Dataset:
     def __getitem__(self, key):
         if isinstance(key, int):  # int
             return self._images[key], self._labels[key]
-        return Dataset(
+        return OldDataset(
             self._images.__getitem__(key),
             self._labels.__getitem__(key), self.class_count)
 
@@ -70,13 +70,13 @@ class Dataset:
     @staticmethod
     def join(ds1, ds2):
         assert (ds1.class_count == ds2.class_count)
-        return Dataset(
+        return OldDataset(
             np.concatenate([ds1.images, ds2.images]),
             np.concatenate([ds1.labels, ds2.labels]), ds1.class_count)
 
     def split(self, start, end):
         """ Splits the dataset into two datasets. """
-        return self[start:end], Dataset.join(self[:start], self[end:])
+        return self[start:end], OldDataset.join(self[:start], self[end:])
 
     def batches(self, batch_size, return_batch_count=False):
         mbr = MiniBatchReader(self, batch_size)
@@ -113,7 +113,7 @@ def load_dataset(path: str):
 
 class MiniBatchReader:
 
-    def __init__(self, dataset: Dataset, batch_size: int):
+    def __init__(self, dataset: OldDataset, batch_size: int):
         self.current_batch_number = 0
         self.dataset = dataset
         self.batch_size = batch_size

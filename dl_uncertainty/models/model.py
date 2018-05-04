@@ -6,7 +6,7 @@ from functools import reduce
 import numpy as np
 import tensorflow as tf
 
-from ..data import Dataset, MiniBatchReader, tfrecords, DataLoader
+from ..data import DataLoader
 from ..ioutils import file, console
 
 from .modeldef import ModelDef

@@ -33,7 +33,7 @@ class InferenceComponent:
             logits_to_probs=tf.nn.softmax,
             problem='clf',  # clf, regr, semseg, other
             class_count=None):  # clf, semseg
-        assert problem in ['clf', 'semseg' 'regr']
+        assert problem in ['clf', 'semseg', 'regr']
         if problem in ['clf', 'semseg']:
             assert class_count is not None
 
@@ -87,11 +87,12 @@ class TrainingComponent:
 
     def initialize(self, problem):
         if self.loss == 'auto':
-            self.loss = {
-                'clf': losses.cross_entropy_loss,
-                'semseg': losses.cross_entropy_loss,
-                'regr': losses.mean_squared_error
-            }[problem]
+            if problem in ['clf', 'semseg']:
+                self.loss = (['logits', 'label'], losses.cross_entropy_loss)
+            elif problem == 'regr':
+                self.loss = (['output', 'label'], losses.mean_squared_error)
+            else:
+                assert False
         if type(self.learning_rate_policy) is dict:
             lrp = self.learning_rate_policy
 
@@ -146,10 +147,17 @@ class ModelDef():
         output, additional_outputs = ic.input_to_output(
             input, is_training=is_training)
 
-        # Loss and regularization
+        # Label
         label = tf.placeholder(output.dtype, output.shape, name='label')
-        loss = tc.loss(additional_outputs['logits']
-                       if ic.problem == 'clf' else output, label)
+
+        # Accessible nodes
+        outputs = {**additional_outputs, 'output': output}
+        evnodes = {**outputs, 'label': label}
+
+        # Loss and regularization
+
+        loss_args, loss_fn = tc.loss
+        loss = loss_fn(* [evnodes[arg] for arg in loss_args])
 
         if tc.weight_decay > 0:
             w_vars = filter(lambda x: 'weights' in x.name,
@@ -162,12 +170,13 @@ class ModelDef():
         training_step = optimizer.minimize(loss)
 
         # Evaluation
-        outputs = {**additional_outputs, 'output': output}
-        evnodes = {**outputs, 'label': label}
-        evaluation = {
-            name: fn(*[evnodes[arg] for arg in args])
-            for name, args, fn in self.evaluation_metrics
-        }
+        evaluation = dict()
+        for name, args, fn in self.evaluation_metrics:
+            if type(name) is list:
+                evs = fn(* [evnodes[arg] for arg in args])
+                evaluation.update(dict(zip(name, evs)))
+            else:
+                evaluation[name] = fn(* [evnodes[arg] for arg in args])
 
         return ModelNodes(
             input=input,
@@ -177,6 +186,9 @@ class ModelDef():
             training_step=training_step,
             evaluation=evaluation,
             additional_outputs=additional_outputs)
+
+
+# Special cases
 
 
 class InferenceComponents:
@@ -212,6 +224,7 @@ class InferenceComponents:
         return InferenceComponent(
             input_shape=input_shape,
             input_to_features=input_to_features,
+            problem=problem,
             class_count=class_count)
 
     @staticmethod
@@ -241,8 +254,19 @@ class InferenceComponents:
         return InferenceComponent(
             input_shape=input_shape,
             input_to_features=input_to_features,
+            problem=problem,
             class_count=class_count)
 
 
 class EvaluationMetrics:
-    accuracy = ['accuracy', ['label', 'output'], evaluation.accuracy]
+    accuracy = ('accuracy', ['label', 'output'], evaluation.accuracy)
+
+    @staticmethod
+    def semantic_segementation(class_count,
+                               returns=['m_p', 'm_r', 'm_f1', 'm_iou']):
+
+        def func(labels, predictions):
+            return evaluation.evaluate_semantic_segmentation(
+                labels, predictions, class_count, returns)
+
+        return (returns, ['label', 'output'], func)

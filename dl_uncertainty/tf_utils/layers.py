@@ -434,8 +434,7 @@ def residual_block(x,
     :param dropout_params: parameters for `dropout`
     """
     x_width = x.shape[-1].value
-    assert width >= x_width
-    dim_changing = width > x_width or stride > 1
+    dim_changing = width * structure.width_factors[-1] > x_width or stride > 1
     skip_connection_needs_bn_relu = dim_changing and dim_change == 'proj'
 
     def _skip_connection(x, stride, width):
@@ -458,7 +457,6 @@ def residual_block(x,
         bn_params=bn_params,
         dropout_params=dropout_params)
     s = _skip_connection(x, stride, r.shape[-1].value)
-    assert s.shape[-1] == r.shape[-1]
     return s + r
 
 

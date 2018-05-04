@@ -51,7 +51,7 @@ class Viewer:
     def __init__(self, name='Viewer'):
         self.name = name
 
-    def display(self, data, mapping=lambda x: x):
+    def display(self, dataset, mapping=lambda x: x):
         mpl.use('wxAgg')
 
         i = 0
@@ -65,28 +65,30 @@ class Viewer:
             elif event.key == 'q' or event.key == 'esc':
                 plt.close(event.canvas.figure)
                 return
-            i = i % data.size
-            imgplot.set_data(mapping(data[i]))
+            i = i % len(dataset)
+            imgplot.set_data(mapping(dataset[i]))
             fig.canvas.set_window_title(str(i) + "-" + self.name)
             fig.canvas.draw()
 
         fig, ax = plt.subplots()
         fig.canvas.mpl_connect('key_press_event', on_press)
         fig.canvas.set_window_title(self.name)
-        imgplot = ax.imshow(mapping(data[0]))
+        imgplot = ax.imshow(mapping(dataset[0]))
         plt.show()
 
 
 def view_semantic_segmentation(dataset, infer=None):
-    colors = get_color_palette(dataset.class_count + 1, black_first=True)
+    colors = get_color_palette(
+        dataset.info['class_count'] + 1, black_first=True)
 
     def get_frame(datapoint):
-        im, lab = datapoint
-        nim = skimage.img_as_float(im)
+        img, lab = datapoint
+        img_scaled01 = (img - np.min(img)) / (np.max(img) - np.min(img))
         clab = colorify_label(lab + 1, colors)
-        cplab = clab if infer is None else colorify_label(infer(im) + 1, colors)
+        cplab = clab if infer is None else colorify_label(
+            infer(img) + 1, colors)
 
-        comp = compose([nim, clab, cplab], format='0,0;2,0-2;1,0-1')
+        comp = compose([img_scaled01, clab, cplab], format='0,0;2,0-2;1,0-1')
 
         bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
         step = bar_height // len(colors)

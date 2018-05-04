@@ -11,12 +11,12 @@ from _context import dl_uncertainty
 
 from dl_uncertainty import dirs
 from dl_uncertainty.data import DataLoader, ConcatDataset
-from dl_uncertainty.data.dataset_loaders import Cifar10DiskDataset
+from dl_uncertainty.data.datasets import Cifar10Dataset
 from dl_uncertainty.data_utils import get_input_mean_std
 from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent, InferenceComponents, EvaluationMetrics
 from dl_uncertainty.standard_models import densenet, BlockStructure
-from dl_uncertainty.tf_utils.evaluation import accuracy
-from dl_uncertainty.training import train_cifar
+from dl_uncertainty.training import train
+from dl_uncertainty.processing.data_augmentation import augment_cifar
 
 parser = argparse.ArgumentParser()
 parser.add_argument('net', type=str)  # 'wrn' or 'dn'
@@ -30,9 +30,9 @@ print(args)
 
 print("Loading and preparing data...")
 cifar_path = dirs.DATASETS + '/cifar-10-batches-py'
-ds_train = Cifar10DiskDataset(cifar_path, 'train')
+ds_train = Cifar10Dataset(cifar_path, 'train')
 if args.test:
-    ds_test = Cifar10DiskDataset(cifar_path, 'test')
+    ds_test = Cifar10Dataset(cifar_path, 'test')
 else:
     ds_train, ds_test = ds_train.shuffle().split(0.8)
 
@@ -41,7 +41,8 @@ normalize = lambda x: (x - mean) / std
 ds_train = ds_train.map(normalize, 0).cache_all()
 ds_test = ds_test.map(normalize, 0).cache_all()
 
-# resnets
+print("Initializing model...")
+
 resnet_learning_rate_policy = {
     'boundaries': [int(i * args.epochs / 200 + 0.5) for i in [60, 120, 160]],
     'values': [1e-1 * 0.2**i for i in range(4)]
@@ -51,10 +52,10 @@ densenet_learning_rate_policy = {
     'values': [1e-1 * 0.1**i for i in range(3)]
 }
 
-print("Initializing model...")
 tc = TrainingComponent(
     batch_size=64 if args.net == 'dn' else 128,
     weight_decay=1e-4 if args.net == 'dn' else 5e-4,
+    loss='auto',
     optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
     learning_rate_policy=densenet_learning_rate_policy
     if args.net == 'dn' else resnet_learning_rate_policy)
@@ -85,7 +86,7 @@ elif args.net == 'rn':
     ic = InferenceComponents.resnet(
         **ic_args,
         base_width=args.width,
-        group_lengths=[blocks_per_group] * group_count,
+        group_lengths=group_lengths,
         block_structure=BlockStructure.resnet(
             ksizes=ksizes, dropout_locations=[], width_factors=width_factors),
         dim_change='id')
@@ -113,11 +114,16 @@ model = Model(
     name="Model")
 
 print("Starting training and validation loop...")
-train_cifar_new(model, ds_train, ds_test, epoch_count=args.epochs)
+train(
+    model,
+    ds_train,
+    ds_test,
+    input_jitter=augment_cifar,
+    epoch_count=args.epochs)
 
 print("Saving model...")
-traning_set = 'trainval' if args.test else 'train'
+train_set_name = 'trainval' if args.test else 'train'
 name = f'{args.net}-{args.depth}-{args.width}' + \
        ('-nd' if args.nodropout else '')
-model.save_state(f'{dirs.SAVED_NETS}/cifar-{traning_set}/{name}/'
+model.save_state(f'{dirs.SAVED_NETS}/cifar-{train_set_name}/{name}/'
                  f'{datetime.datetime.now():%Y-%m-%d-%H%M}')

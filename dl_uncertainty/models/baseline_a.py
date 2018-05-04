@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-from ..data import Dataset, MiniBatchReader
+from ..data import OldDataset, MiniBatchReader
 
 from .abstract_model import AbstractModel
 

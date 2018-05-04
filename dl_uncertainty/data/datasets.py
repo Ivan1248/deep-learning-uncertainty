@@ -8,7 +8,7 @@ from tqdm import tqdm
 import torch.utils.data
 from functools import lru_cache
 
-from .dataset import Dataset, DatasetGenerator
+from .data import Dataset
 
 from ..processing.shape import pad_to_shape, crop
 from ..ioutils import file
@@ -169,115 +169,10 @@ voc2012_classes = [
     'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
 ]
 
-
-class AbstractDataset(torch.utils.data.Dataset):
-
-    def map(self, func=lambda x: x, component=None):
-        if component is not None:
-            f = func
-            func = lambda x: tuple(
-                    f(c) if i == component else c for i, c in enumerate(x))
-        return MappedDataset(self, func)
-
-    def cache(self, max_cache_size=1000):
-        return CachedDataset(self, max_cache_size)
-
-    def cache_all(self):
-        return LoadedDataset(self)
-
-    def subset(self, indices):
-        return SubDataset(self, indices)
-
-    def shuffle(self):
-        indices = np.random.permutation(len(self))
-        return SubDataset(self, indices)
-
-    def split(self, proportion: float):
-        indices = np.arange(len(self))
-        s = int(proportion * len(self) + 0.5)
-        return SubDataset(self, indices[:s]), SubDataset(self, indices[s:])
+# Datasets
 
 
-class LoadedDataset(AbstractDataset):
-
-    def __init__(self, dataset, map_func=lambda x: x):
-        self.data = [x for x in dataset]
-        self.class_count = dataset.class_count
-
-    def __getitem__(self, idx):
-        return self.data[idx]
-
-    def __len__(self):
-        return len(self.data)
-
-
-class MappedDataset(AbstractDataset):
-
-    def __init__(self, dataset, func=lambda x: x):
-        self.dataset = dataset
-        self.class_count = dataset.class_count
-        self._func = func
-
-    def __getitem__(self, idx):
-        return self._func(self.dataset[idx])
-
-    def __len__(self):
-        return len(self.dataset)
-
-
-class CachedDataset(AbstractDataset):
-
-    def __init__(self, dataset, max_cache_size=1000):
-        self.dataset = dataset
-        self.class_count = dataset.class_count
-
-        @lru_cache(maxsize=max_cache_size)
-        def _cached_get(i):
-            return self.dataset[i]
-
-        self._cached_get = _cached_get
-
-    def __getitem__(self, idx):
-        return self._cached_get(idx)
-
-    def __len__(self):
-        return len(self.dataset)
-
-
-class SubDataset(AbstractDataset):
-
-    def __init__(self, dataset, indices):
-        self.dataset = dataset
-        self.indices = indices
-        self.class_count = dataset.class_count
-
-    def __getitem__(self, idx):
-        return self.dataset[self.indices[idx]]
-
-    def __len__(self):
-        return len(self.indices)
-
-
-class DataLoader(torch.utils.data.DataLoader):
-
-    def __init__(self,
-                 dataset,
-                 batch_size,
-                 shuffle=True,
-                 num_workers=0,
-                 drop_last=True):
-
-        collate_fn = lambda batch: tuple(map(np.array, zip(*batch)))
-
-        super().__init__(
-            dataset,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_workers=num_workers,
-            drop_last=drop_last,collate_fn=collate_fn)
-
-
-class Cifar10DiskDataset(AbstractDataset):
+class Cifar10Dataset(Dataset):
 
     def __init__(self, data_dir, subset='train'):
         assert subset in ['train', 'test']
@@ -305,7 +200,8 @@ class Cifar10DiskDataset(AbstractDataset):
             self.x, self.y = test_x, test_y
         else:
             raise ValueError("The value of subset must be in {'train','test'}.")
-        self.class_count = 10
+        self.info = {'class_count': 10}
+        self.name = f"Cifar10Dataset-{subset}"
 
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
@@ -314,7 +210,7 @@ class Cifar10DiskDataset(AbstractDataset):
         return len(self.x)
 
 
-class ICCV09DiskDataset(AbstractDataset):
+class ICCV09DiskDataset(Dataset):
 
     def __init__(self, data_dir):  # TODO subset
         self._shape = [240, 320]
@@ -322,7 +218,8 @@ class ICCV09DiskDataset(AbstractDataset):
         self._labels_dir = f'{data_dir}/labels'
         self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
 
-        self.class_count = 19
+        self.info = {'class_count': 8}
+        self.name = "ICCV09Dataset"
 
     def _get_image(self, i):
         img = _load_image(f"{self._images_dir}/{self._image_list[i]}.jpg")
@@ -340,7 +237,7 @@ class ICCV09DiskDataset(AbstractDataset):
         return len(self._image_list)
 
 
-class VOC2012SegmentationDiskDataset(AbstractDataset):
+class VOC2012SegmentationDiskDataset(Dataset):
 
     def __init__(self, data_dir, subset='train'):
         assert subset in ['train', 'val', 'trainval']
@@ -348,7 +245,8 @@ class VOC2012SegmentationDiskDataset(AbstractDataset):
         self._images_dir = f'{data_dir}/JPEGImages'
         self._labels_dir = f'{data_dir}/SegmentationClass'
         self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
-        self.class_count = 21
+        self.info = {'class_count': 21}
+        self.name = f"VOC2012Segmentation-{subset}"
 
     def _get_image(self, i):
         img = _load_image(f"{self._images_dir}/{self._image_list[i]}.jpg")
@@ -366,7 +264,7 @@ class VOC2012SegmentationDiskDataset(AbstractDataset):
         return len(self._image_list)
 
 
-class CityscapesSegmentationDiskDataset(AbstractDataset):
+class CityscapesSegmentationDiskDataset(Dataset):
 
     def __init__(self,
                  data_dir,
@@ -387,14 +285,20 @@ class CityscapesSegmentationDiskDataset(AbstractDataset):
 
         self._images_dir = f'{data_dir}/left/leftImg8bit/{subset}'
         self._labels_dir = f'{data_dir}/fine_annotations/{subset}'
-        image_list = glob.glob(self._images_dir + '/*/*')
         self._image_list = [
-            os.path.relpath(x, start=self._images_dir) for x in image_list
+            os.path.relpath(x, start=self._images_dir)
+            for x in glob.glob(self._images_dir + '/*/*')
         ]
         self._label_list = [
-            x[:-len(IMG_SUFFIX)] + LAB_SUFFIX for x in image_list
+            x[:-len(IMG_SUFFIX)] + LAB_SUFFIX for x in self._image_list
         ]
-        self.class_count = 19
+        self.info = {'class_count': 19}
+        self.name = f"CityscapesSegmentation-{subset}"
+
+        if downsampling_factor > 1:
+            self.name += f"-downsampled{downsampling_factor}x"
+        if remove_hood:
+            self.name += f"-removedhood"
 
     def _get_image(self, i):
         img = pimg.open(f"{self._images_dir}/{self._image_list[i]}")
@@ -402,7 +306,7 @@ class CityscapesSegmentationDiskDataset(AbstractDataset):
             img = img.resize(self._shape, pimg.BILINEAR)
         img = np.array(img, dtype=np.uint8)
         if self._remove_hood:
-            img = img[:, :self._shape[2] * 7 // 8, :]
+            img = img[:, :self._shape[1] * 7 // 8, :]
         return img
 
     def _get_label(self, i):
@@ -413,7 +317,7 @@ class CityscapesSegmentationDiskDataset(AbstractDataset):
         for id, lb in self._id_to_label:
             lab[lab == id] = lb
         if self._remove_hood:
-            lab = lab[:, :self._shape[2] * 7 // 8]
+            lab = lab[:, :self._shape[1] * 7 // 8]
         return lab
 
     def __getitem__(self, idx):
