@@ -55,13 +55,14 @@ class Dataset(torch.utils.data.Dataset):
         s = int(proportion * len(self) + 0.5)
         dss = SubDataset(self, indices[:s]), SubDataset(self, indices[s:])
         dss[0].name += f"0to{s}"
-        dss[0].name += f"{s}toend"
+        dss[1].name += f"{s}toend"
         return dss
 
     def join(self, other):
         if type(other) is not list:
             other = [other]
-        return ConcatDataset([self] + other)
+        name = f"concat[{self.name}," + ",".join(x.name for x in other) + "]"
+        return Dataset(ConcatDataset([self] + other), self.info, name)
 
 
 class MappedDataset(Dataset):
@@ -111,17 +112,17 @@ class CompletelyCachedDataset(Dataset):
             cache = None
             if os.path.exists(cache_path):
                 try:
-                    print("Loading dataset cache from disk")
+                    print("Loading dataset cache from disk...")
                     cache = pickle.load(open(cache_path, 'rb'))
                 except:
-                    print("Removing invalid disk-cached dataset")
+                    print("Removing invalid disk-cached dataset...")
                     os.remove(cache_path)
             if cache is not None:
                 self.data, self.info = cache
             else:
                 self.data, self.info = [x for x in tqdm(dataset)], dataset.info
             if cache is None:
-                print("Saving dataset cache to disk")
+                print("Saving dataset cache to disk...")
                 pickle.dump(
                     (self.data, self.info),
                     open(f"{cache_path}", 'wb'),
