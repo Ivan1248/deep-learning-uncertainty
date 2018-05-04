@@ -189,6 +189,30 @@ class ModelDef():
 
 
 # Special cases
+class TrainingComponents:
+
+    @staticmethod
+    def ladder_densenet(epoch_count,
+                        base_learning_rate=5e-4,
+                        batch_size=4,
+                        weight_decay=1e-4):
+        p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
+        params = {k: v for k, v in locals().items() if k in p}
+
+        def learning_rate_policy(epoch):
+            return tf.train.polynomial_decay(
+                base_learning_rate,
+                global_step=epoch,
+                decay_steps=epoch_count,
+                end_learning_rate=0,
+                power=1.5)
+
+        return TrainingComponent(
+            batch_size=batch_size,
+            weight_decay=weight_decay,
+            loss='auto',
+            optimizer=lambda lr: tf.train.AdamOptimizer(lr),
+            learning_rate_policy=learning_rate_policy)
 
 
 class InferenceComponents:
@@ -247,7 +271,7 @@ class InferenceComponents:
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    **layers.default_arg(layers.resnet, 'dropout_params'),
+                    **layers.default_arg(layers.densenet, 'dropout_params'),
                     'is_training': is_training
                 })
 
@@ -255,6 +279,41 @@ class InferenceComponents:
             input_shape=input_shape,
             input_to_features=input_to_features,
             problem=problem,
+            class_count=class_count)
+
+    @staticmethod
+    def ladder_densenet(input_shape,
+                        class_count,
+                        base_width=32,
+                        group_lengths=[6, 12, 24, 16],
+                        block_structure=layers.BlockStructure.densenet(
+                            dropout_locations=[])):
+        p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
+        params = {k: v for k, v in locals().items() if k in p}
+
+        def input_to_features(x, is_training, **kwargs):
+            return layers.ladder_densenet(x,
+                **params,
+                bn_params={'is_training': is_training},
+                dropout_params={
+                    **layers.default_arg(layers.ladder_densenet, 'dropout_params'),
+                    'is_training': is_training
+                })
+
+        def features_to_logits(all_pre_logits, is_training, **kwargs):
+            pre_logits, pre_logits_aux = all_pre_logits
+            return layers.ladder_densenet_logits(
+                pre_logits,
+                pre_logits_aux,
+                image_shape=input_shape[1:3],
+                class_count=class_count,
+                bn_params={'is_training': is_training})
+
+        return InferenceComponent(
+            input_shape=input_shape,
+            input_to_features=input_to_features,
+            features_to_logits=features_to_logits,
+            problem='semseg',
             class_count=class_count)
 
 

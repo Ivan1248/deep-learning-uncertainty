@@ -12,7 +12,9 @@ from dl_uncertainty import dirs
 from dl_uncertainty.data import DataLoader
 from dl_uncertainty.data.datasets import ICCV09DiskDataset, VOC2012SegmentationDiskDataset, CityscapesSegmentationDiskDataset
 from dl_uncertainty.data_utils import get_input_mean_std
-from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent, InferenceComponents, EvaluationMetrics, BlockStructure
+from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent
+from dl_uncertainty.models import InferenceComponents, TrainingComponents, EvaluationMetrics
+from dl_uncertainty.models import BlockStructure
 from dl_uncertainty.training import train
 from dl_uncertainty.processing.data_augmentation import random_fliplr
 from dl_uncertainty.ioutils import RangeProgressBar
@@ -34,20 +36,17 @@ if args.ds == 'cityscapes':
     ds_path = dirs.DATASETS + '/cityscapes'
     load = lambda s: CityscapesSegmentationDiskDataset(ds_path, s, \
         downsampling_factor=2, remove_hood=True)
-    ds_train = load('train')
+    ds_train, ds_test = map(load, ['train', 'val'])    
     if args.test:
-        ds_train = ds_train.join(load('val'))
+        ds_train = ds_train.join(ds_test)
         ds_test = load('test')
-    else:
-        ds_test = load('val')
 elif args.ds == 'voc2012':
     ds_path = dirs.DATASETS + '/VOC2012'
     load = lambda s: VOC2012SegmentationDiskDataset(ds_path, s)
-    ds_train = load('train')
     if args.test:
-        ds_test = load('val')
+        ds_train, ds_test = map(load, ['trainval', 'test'])
     else:
-        ds_train, ds_test = ds_train.shuffle().split(0.8)
+        ds_train, ds_test = map(load, ['train', 'val'])
 elif args.ds == 'iccv09':
     if args.test:
         assert False, "Test set not defined"
@@ -92,35 +91,42 @@ densenet_learning_rate_policy = {
     'values': [5e-4 * 0.1**i for i in range(3)]
 }
 
-tc = TrainingComponent(
-    batch_size=4,
-    weight_decay={'dn': 1e-4,
-                  'rn': 5e-4}[args.net],
-    loss='auto',
-    optimizer=lambda lr: tf.train.AdamOptimizer(lr),
-    learning_rate_policy={
-        'dn': densenet_learning_rate_policy,
-        'ldn': densenet_learning_rate_policy,
-        'rn': resnet_learning_rate_policy
-    }[args.net])
+if args.net in ['rn', 'dn']:
+    tc = TrainingComponent(
+        batch_size=4,
+        weight_decay={'dn': 1e-4,
+                      'rn': 5e-4}[args.net],
+        loss='auto',
+        optimizer=lambda lr: tf.train.AdamOptimizer(lr),
+        learning_rate_policy={
+            'dn': densenet_learning_rate_policy,
+            'rn': resnet_learning_rate_policy
+        }[args.net])
+elif args.net == 'ldn':
+    tc = TrainingComponents.ladder_densenet(
+        epoch_count=args.epochs, base_learning_rate=5e-4, batch_size=4)
 
 ic_args = {
     'input_shape': ds_train[0][0].shape,
     'class_count': ds_train.info['class_count'],
-    'problem': 'semseg',
 }
 
+if args.net != 'ldn':
+    ic_args['problem'] = 'semseg'
+
+if args.net in ['dn', 'ldn']:
+    densenet_group_lengths = {
+        121: [6, 12, 24, 16],
+        169: [6, 12, 32, 32]
+    }[args.depth]
+
 if args.net == 'ldn':
-    net_name = f'Ladder-DenseNet-{args.depth}'
-    print(net_name)
-    group_lengths = {121: [6, 12, 24, 16], 169: [6, 12, 32, 32]}[args.depth]
-    model = LadderDenseNet(
-        input_shape=ds_train.input_shape,
-        class_count=ds_train.class_count,
-        epoch_count=args.epochs,
-        group_lengths=group_lengths,
-        base_learning_rate=5e-4,  # 5e-4
-        training_log_period=40)
+    print(f'Ladder-DenseNet-{args.depth}')
+    ic = InferenceComponents.ladder_densenet(
+        **ic_args,
+        base_width=32,
+        group_lengths=densenet_group_lengths,
+        block_structure=BlockStructure.densenet(dropout_locations=[]))
 elif args.net == 'dn':
     print(f'DenseNet-{args.depth}-{args.width}')
     group_count, ksizes = 3, [1, 3]
