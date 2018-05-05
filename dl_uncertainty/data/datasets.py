@@ -21,6 +21,23 @@ def _load_image(path):
 # Datasets
 
 
+class SVHNDataset(Dataset):
+
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['train', 'test']
+        import scipy.io as sio
+        data = sio.loadmat(subset + '_32x32.mat')
+        self.x, self.y = data['X'], np.remainder(data['y'], 10)
+        self.info = {'class_count': 10}
+        self.name = f"SVHNDataset-{subset}"
+
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+
+    def __len__(self):
+        return len(self.x)
+
+
 class Cifar10Dataset(Dataset):
 
     def __init__(self, data_dir, subset='train'):
@@ -59,24 +76,41 @@ class Cifar10Dataset(Dataset):
         return len(self.x)
 
 
-class SVHNDataset(Dataset):
+class MozgaloRobustVisionChallengeDataset(Dataset):
 
     def __init__(self, data_dir, subset='train'):
-        assert subset in ['train', 'test']
-        import scipy.io as sio
-        data = sio.loadmat(subset + '_32x32.mat')
-        self.x, self.y = data['X'], np.remainder(data['y'], 10)
-        self.info = {'class_count': 10}
-        self.name = f"SVHNDataset-{subset}"
+        assert subset in ['train']
+
+        train_dir = f"{data_dir}/train"
+        class_names = sorted(map(os.path.basename, os.listdir(train_dir)))
+        assert len(class_names) == 25
+
+        self._subset_dir = f"{data_dir}/{subset}"
+        subset_class_names = sorted(
+            map(os.path.basename, os.listdir(self._subset_dir)))
+        self._image_list = [
+            os.path.relpath(x, start=self._subset_dir)
+            for x in glob.glob(self._subset_dir + '/*/*')
+        ]
+
+        self.info = {
+            'class_count': len(class_names),
+            'class_names': class_names
+        }
+        self.name = f"Cifar10Dataset-{subset}"
 
     def __getitem__(self, idx):
-        return self.x[idx], self.y[idx]
+        example_name = self._image_list[idx]
+        lab_str = os.path.dirname(example_name)
+        lab = self.info['class_names'].index(lab_str)
+        img = _load_image(f"{self._subset_dir}/{example_name}")
+        return img, lab
 
     def __len__(self):
-        return len(self.x)
+        return len(self._image_list)
 
 
-class ICCV09DiskDataset(Dataset):
+class ICCV09Dataset(Dataset):
 
     def __init__(self, data_dir):  # TODO subset
         self._shape = [240, 320]
@@ -84,7 +118,12 @@ class ICCV09DiskDataset(Dataset):
         self._labels_dir = f'{data_dir}/labels'
         self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
 
-        self.info = {'class_count': 8}
+        self.info = dict()
+        self.info['class_names'] = [
+            'sky', 'tree', 'road', 'grass', 'water', 'building', 'mountain',
+            'foreground object'
+        ]
+        self.info['class_count'] = len(self.info['class_names'])  # 8
         self.name = "ICCV09Dataset"
 
     def _get_image(self, i):
@@ -103,7 +142,7 @@ class ICCV09DiskDataset(Dataset):
         return len(self._image_list)
 
 
-class VOC2012SegmentationDiskDataset(Dataset):
+class VOC2012SegmentationDataset(Dataset):
 
     def __init__(self, data_dir, subset='train'):
         assert subset in ['train', 'val', 'trainval', 'test']
@@ -111,7 +150,14 @@ class VOC2012SegmentationDiskDataset(Dataset):
         self._images_dir = f'{data_dir}/JPEGImages'
         self._labels_dir = f'{data_dir}/SegmentationClass'
         self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
-        self.info = {'class_count': 21}
+        self.info = dict()
+        self.info['class_names'] = [
+            'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
+            'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
+            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
+            'tvmonitor'
+        ]
+        self.info['class_count'] = len(self.info['class_names'])  # 21
         self.name = f"VOC2012Segmentation-{subset}"
 
     def _get_image(self, i):
@@ -130,7 +176,7 @@ class VOC2012SegmentationDiskDataset(Dataset):
         return len(self._image_list)
 
 
-class CityscapesSegmentationDiskDataset(Dataset):
+class CityscapesSegmentationDataset(Dataset):
 
     def __init__(self,
                  data_dir,
@@ -139,6 +185,7 @@ class CityscapesSegmentationDiskDataset(Dataset):
                  remove_hood=False):
         assert subset in ['train', 'val', 'test']
         assert downsampling_factor >= 1
+        from .cityscapes_labels import labels as cslabels
 
         self._downsampling_factor = downsampling_factor
         self._shape = np.array([1024, 2048]) // downsampling_factor
@@ -146,7 +193,6 @@ class CityscapesSegmentationDiskDataset(Dataset):
 
         IMG_SUFFIX = "_leftImg8bit.png"
         LAB_SUFFIX = "_gtFine_labelIds.png"
-        from .cityscapes_labels import labels as cslabels
         self._id_to_label = [(l.id, l.trainId) for l in cslabels]
 
         self._images_dir = f'{data_dir}/left/leftImg8bit/{subset}'
@@ -158,7 +204,14 @@ class CityscapesSegmentationDiskDataset(Dataset):
         self._label_list = [
             x[:-len(IMG_SUFFIX)] + LAB_SUFFIX for x in self._image_list
         ]
-        self.info = {'class_count': 19}
+
+        self.info = {
+            'class_count': 19,
+            'class_names': [l.name for l in cslabels if l.trainId >= 0],
+            'class_colors': [l.color for l in cslabels if l.trainId >= 0],
+        }
+        assert self.info['class_count'] == len(self.info['class_names']), len(
+            self.info['class_names'])
         self.name = f"CityscapesSegmentation-{subset}"
 
         if downsampling_factor > 1:
@@ -172,7 +225,7 @@ class CityscapesSegmentationDiskDataset(Dataset):
             img = img.resize(self._shape[::-1], pimg.BILINEAR)
         img = np.array(img, dtype=np.uint8)
         if self._remove_hood:
-            img = img[:, :self._shape[0] * 7 // 8, :]
+            img = img[:self._shape[0] * 7 // 8, :, :]
         return img
 
     def _get_label(self, i):
@@ -191,15 +244,3 @@ class CityscapesSegmentationDiskDataset(Dataset):
 
     def __len__(self):
         return len(self._image_list)
-
-
-iccv09_classes = [
-    'sky', 'tree', 'road', 'grass', 'water', 'building', 'mountain',
-    'foreground object'
-]
-
-voc2012_classes = [
-    'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
-    'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike',
-    'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
-]
