@@ -28,13 +28,17 @@ def train(model: Model,
 
     model.training_step_event_handler = handle_step
 
-    ds_train_part = ds_train.subset(np.arange(len(ds_val)))
+    ds_train_part = ds_train.permute().subset(np.arange(len(ds_val)))
     ds_train = ds_train.map(input_jitter, 0)
 
-    ds_train = DataLoader(ds_train, batch_size=model.batch_size, num_workers=0)
-    ds_val = DataLoader(ds_val, batch_size=model.batch_size, num_workers=0)
-    ds_train_part = DataLoader(
-        ds_train_part, batch_size=model.batch_size, num_workers=0)
+    ds_train, ds_val, ds_train_part = [
+        DataLoader(
+            ds,
+            batch_size=model.batch_size,
+            shuffle=True,
+            num_workers=0,
+            drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
+    ]
 
     model.test(ds_val)
     for i in range(epoch_count):
