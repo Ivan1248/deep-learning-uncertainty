@@ -6,14 +6,15 @@ import argparse
 import datetime
 
 import tensorflow as tf
+from tqdm import tqdm
 
 from _context import dl_uncertainty
 
 from dl_uncertainty import dirs
 from dl_uncertainty.data import DataLoader
-from dl_uncertainty.data.datasets import Cifar10Dataset
+from dl_uncertainty.data.datasets import MozgaloRobustVisionChallengeDataset
 from dl_uncertainty.data_utils import get_input_mean_std
-from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent, EvaluationMetrics
+from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent, InferenceComponents, EvaluationMetrics
 from dl_uncertainty.model_utils import StandardInferenceComponents
 from dl_uncertainty.training import train
 from dl_uncertainty.processing.data_augmentation import augment_cifar
@@ -29,17 +30,16 @@ args = parser.parse_args()
 print(args)
 
 print("Loading and preparing data...")
-cifar_path = dirs.DATASETS + '/cifar-10-batches-py'
-ds_train = Cifar10Dataset(cifar_path, 'train')
-if args.test:
-    ds_test = Cifar10Dataset(cifar_path, 'test')
-else:
-    ds_train, ds_test = ds_train.permute().split(0.8)
+mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
+ds_train = MozgaloRobustVisionChallengeDataset(mozgalo_path, 'train')
+ds_train, ds_test = ds_train.split(0.8)
+ds_train, ds_val = ds_train.split(0.8)
 
-mean, std = get_input_mean_std(ds_train)
+mean, std = get_input_mean_std(tqdm(ds_train))
 normalize = lambda x: (x - mean) / std
-ds_train = ds_train.map(normalize, 0).cache()
-ds_test = ds_test.map(normalize, 0).cache()
+ds_train, ds_val, ds_test = [
+    ds.map(normalize, 0).cache() for ds in [ds_train, ds_val, ds_test]
+]
 
 print("Initializing model...")
 
