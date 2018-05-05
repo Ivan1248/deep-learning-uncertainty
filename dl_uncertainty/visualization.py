@@ -4,12 +4,9 @@ import matplotlib.pyplot as plt
 import skimage
 
 
-def get_color_palette(n, black_first=True):
-    cmap = mpl.cm.get_cmap('jet')
-    colors = [np.zeros(3)] if black_first else []
-    m = n - len(colors)
-    colors += [np.array(cmap(i / (m - 1))[:3]) for i in range(m)]
-    return colors
+def get_color_palette(n, cmap='jet'):
+    cmap = mpl.cm.get_cmap(cmap)
+    return [np.array(cmap(i / (n - 1))[:3]) for i in range(n)]
 
 
 def fuse_images(im1, im2, a):
@@ -78,8 +75,13 @@ class Viewer:
 
 
 def view_semantic_segmentation(dataset, infer=None):
-    colors = get_color_palette(
-        dataset.info['class_count'] + 1, black_first=True)
+    if False and 'class_colors' in dataset.info:
+        colors = list(map(np.array, dataset.info['class_colors']))
+        if np.max(np.array(colors)) > 1:
+            colors = [c / 255 for c in colors]
+    else:
+        colors = get_color_palette(dataset.info['class_count'])
+    colors = [np.zeros(3)] + list(map(np.array, colors))  # unknown black
 
     def get_frame(datapoint):
         img, lab = datapoint
@@ -87,6 +89,8 @@ def view_semantic_segmentation(dataset, infer=None):
         clab = colorify_label(lab + 1, colors)
         cplab = clab if infer is None else colorify_label(
             infer(img) + 1, colors)
+
+        print([(np.max(x), np.min(x)) for x in [img_scaled01, clab, cplab]])
 
         comp = compose([img_scaled01, clab, cplab], format='0,0;2,0-2;1,0-1')
 
