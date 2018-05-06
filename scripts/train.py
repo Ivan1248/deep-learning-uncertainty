@@ -1,4 +1,5 @@
 import sys
+import os
 import argparse
 import datetime
 
@@ -20,7 +21,6 @@ from dl_uncertainty.model_utils import StandardInferenceComponents
 from dl_uncertainty.training import train
 from dl_uncertainty.processing.data_augmentation import random_fliplr
 from dl_uncertainty.processing.data_augmentation import augment_cifar
-from dl_uncertainty.ioutils import RangeProgressBar
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
@@ -78,28 +78,38 @@ elif args.ds in ['cityscapes', 'voc2012', 'iccv09']:
 
 # Cache size (must be computed before normalization because we want to cache normalized images)
 
+
+def get_cache_size(mem_B):
+    img, lab = ds_train[0]
+    img = img.astype(np.float32)
+    example_mem = (img.nbytes + np.array(lab).nbytes)
+    return mem_B // example_mem
+
+
 Gi = 1024**3
 cache_mem = 14 * Gi
-example_mem = (ds_train[0][0].nbytes * 4 + np.array(ds_train[0][1]).nbytes)
-cache_size = cache_mem // example_mem
+cache_size = get_cache_size(cache_mem)
 print(f"Cache size = {cache_size} examples ({cache_mem / Gi} GiB)")
-
-cache_dir = f"{dirs.DATASETS}/_CACHE"
 
 # Input preprocessing and caching
 
 
-def normalize(x):  # TODO: fix multithreading problem
-    if normalize.mean is None:  # lazy for disk caching purposes
-        print("Computing dataset statistics")
-        normalize.mean, normalize.std = get_input_mean_std(tqdm(normalize.ds))
-    return ((x - normalize.mean) / normalize.std).astype(np.float32)
+class Normalizer:
+    ds, mean, std = ds_train, None, None
+
+    @classmethod
+    def normalize(cls, x):  # TODO: fix multithreading problem
+        if cls.mean is None:  # lazy
+            print("Computing dataset statistics")
+            cls.mean, cls.std = get_input_mean_std(tqdm(cls.ds))
+        return ((x - cls.mean) / cls.std).astype(np.float32)
 
 
-normalize.ds, normalize.mean, normalize.std = ds_train, None, None
+ds_train = ds_train.map(Normalizer.normalize, 0)
+ds_test = ds_test.map(Normalizer.normalize, 0)
 
-ds_train = ds_train.map(normalize, 0)
-ds_test = ds_test.map(normalize, 0)
+# Caching
+cache_dir = f"{dirs.DATASETS}/{os.path.basename(dirs.DATASETS)}_cache"
 
 
 def cache(ds, cache_size):  # Data caching (HDD, RAM)
@@ -114,6 +124,11 @@ ds_train = cache(ds_train, cache_size)
 cache_size_left = cache_size - len(ds_train)
 if cache_size_left > 0:
     ds_test = cache(ds_test, cache_size_left)
+
+# If normalized data is not already on disk, this will trigger normalization
+# statistics computation. Normalization statistics need to be computed before
+# parallelized DataLoader is used.
+ds_train[0]
 
 # Model
 
@@ -214,7 +229,8 @@ train(
     ds_train,
     ds_test,
     input_jitter=random_fliplr if problem == 'semseg' else augment_cifar,
-    epoch_count=args.epochs)
+    epoch_count=args.epochs,
+    data_loading_worker_count=8)
 
 # Saving
 
