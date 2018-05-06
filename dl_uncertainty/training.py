@@ -12,7 +12,8 @@ def train(model: Model,
           ds_train: Dataset,
           ds_val: Dataset,
           input_jitter=None,
-          epoch_count=200):
+          epoch_count=200,
+          data_loading_worker_count=0):
 
     ds_view = ds_val
 
@@ -36,7 +37,7 @@ def train(model: Model,
             ds,
             batch_size=model.batch_size,
             shuffle=True,
-            num_workers=0,
+            num_workers=data_loading_worker_count,
             drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
     ]
 
