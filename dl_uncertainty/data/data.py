@@ -1,10 +1,12 @@
 import os
 import pickle
+import pickle
 
 import numpy as np
 import torch.utils.data
 from torch.utils.data.dataset import ConcatDataset
 from functools import lru_cache
+import itertools
 from tqdm import tqdm, trange
 
 # Dataset
@@ -23,9 +25,12 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.data)
 
+    def _print(self, *args, **kwargs):
+        print(f"{self.name}:", *args, **kwargs)
+
     def id(self):
         return IdDataset(self)
-    
+
     def test(self, callback):
         return TestDataset(self, callback)
 
@@ -37,17 +42,22 @@ class Dataset(torch.utils.data.Dataset):
         return MappedDataset(self, func)
 
     def cache(self, max_cache_size=np.inf):
+        # caches the dataset in RAM (partially or wholly)
         return CachedDataset(self, max_cache_size)
 
     def cache_lru(self, max_cache_size=1000):
+        # caches the dataset in RAM (partially or wholly) keepeing only the last
+        # used examples
         if max_cache_size > len(self):
             return self.cache()
         return LRUCachedDataset(self, max_cache_size)
 
-    def cache_hdd(self, directory):
-        return HDDCachedDataset(self, directory)
+    def cache_hdd(self, directory, buffer_size=100):
+        # caches the whole dataset in RAM and on HDD as a single file
+        return HDDCachedDataset(self, directory, buffer_size)
 
     def cache_hdd_examplewise(self, directory):
+        # caches the whole dataset on disk without keeping it in RAM
         return ExamplewiseHDDCachedDataset(self, directory)
 
     def permute(self, seed=53):
@@ -126,11 +136,12 @@ class CachedDataset(Dataset):
         self.cached_all = cache_size == len(dataset)
         if self.cached_all:
             self.name = dataset.name + "-cache"
-            print("Caching whole dataset...")
+            self._print("Caching whole dataset...")
             self.data = [x for x in tqdm(dataset)]
         else:
             self.name = dataset.name + f"-cache_0_to_{cache_size-1}"
-            print(f"Caching {cache_size}/{len(dataset)} of the dataset...")
+            self._print(
+                f"Caching {cache_size}/{len(dataset)} of the dataset...")
             self.data = [dataset[i] for i in trange(cache_size)]
             self.dataset = dataset
         self.info = dataset.info
@@ -165,7 +176,7 @@ class LRUCachedDataset(Dataset):
 
 class HDDCachedDataset(Dataset):
 
-    def __init__(self, dataset, cache_dir):
+    def __init__(self, dataset, cache_dir, buffer_size=100):
         self.cache_dir = cache_dir
         self.name = dataset.name + "-cache_hdd"
         os.makedirs(cache_dir, exist_ok=True)
@@ -173,16 +184,34 @@ class HDDCachedDataset(Dataset):
         data = None
         if os.path.exists(cache_path):
             try:
-                print("Loading dataset cache from hdd...")
-                data = pickle.load(open(cache_path, 'rb'))
-            except:
-                print("Removing invalid hdd-cached dataset...")
+                self._print("Loading dataset cache from hdd...")
+                with open(cache_path, 'rb') as f:
+                    n = (len(dataset) - 1) // buffer_size + 1  # ceil
+                    chunks = [pickle.load(f) for i in trange(n)]
+                    data = list(itertools.chain(*chunks))
+            except Exception as rx:                
+                self._print(ex)
+                self._print("Removing invalid hdd-cached dataset...")
                 os.remove(cache_path)
         if data is None:
-            print(f"Caching whole dataset...")
+            self._print(f"Caching whole dataset...")
             data = [x for x in tqdm(dataset)]
-            print("Saving dataset cache to hdd...")
-            pickle.dump(data, open(f"{cache_path}", 'wb'), protocol=4)
+
+            def get_chunks(data):
+                chunk = []
+                for x in data:
+                    chunk.append(x)
+                    if len(chunk) >= buffer_size:
+                        yield chunk
+                        chunk = []
+                yield chunk
+
+            self._print("Saving dataset cache to hdd...")
+            with open(cache_path, 'wb') as f:
+                #pickle.dump(data, cache_file, protocol=4)
+                # examples pickled individually because of memory constraints
+                for x in tqdm(get_chunks(data)):
+                    pickle.dump(x, f, protocol=4)
         self.data, self.info = data, dataset.info
 
     def __getitem__(self, idx):
@@ -206,12 +235,14 @@ class ExamplewiseHDDCachedDataset(Dataset):
         example = None
         if os.path.exists(cache_path):
             try:
-                example = pickle.load(open(cache_path, 'rb'))
+                with open(cache_path, 'rb') as cache_file:
+                    example = pickle.load(cache_file)
             except:
                 os.remove(cache_path)
         if example is None:
             example = self.dataset[idx]
-            pickle.dump(example, open(f"{cache_path}", 'wb'), protocol=4)
+            with open(f"{cache_path}", 'wb') as cache_file:
+                pickle.dump(example, cache_file, protocol=4)
         return example
 
     def __len__(self):
