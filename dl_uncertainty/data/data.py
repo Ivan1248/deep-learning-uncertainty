@@ -23,6 +23,12 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.data)
 
+    def id(self):
+        return IdDataset(self)
+    
+    def test(self, callback):
+        return TestDataset(self, callback)
+
     def map(self, func=lambda x: x, component=None):
         if component is not None:
             f = func  # to avoid lambda capturing itself
@@ -66,6 +72,36 @@ class Dataset(torch.utils.data.Dataset):
             other = [other]
         name = f"concat[{self.name}," + ",".join(x.name for x in other) + "]"
         return Dataset(ConcatDataset([self] + other), self.info, name)
+
+
+class IdDataset(Dataset):
+
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.name = dataset.name + "-id"
+        self.info = self.dataset.info
+
+    def __getitem__(self, idx):
+        return self.dataset[idx]
+
+    def __len__(self):
+        return len(self.dataset)
+
+
+class TestDataset(Dataset):
+
+    def __init__(self, dataset, callback):
+        self.dataset = dataset
+        self.name = dataset.name + "-id"
+        self.info = self.dataset.info
+        self.callback = callback
+
+    def __getitem__(self, idx):
+        self.callback(idx)
+        return self.dataset[idx]
+
+    def __len__(self):
+        return len(self.dataset)
 
 
 class MappedDataset(Dataset):
