@@ -510,29 +510,35 @@ def dense_block(x,
 @scoped
 def resnet(x,
            base_width=16,
+           width_factor=1,
+           include_root_block=True,
+           cifar_root_block=False,
            group_lengths=[2] * 3,
            block_structure=BlockStructure.resnet(),
            dim_change='id',
            bn_params=dict(),
-           dropout_params={'rate': 0.3},
-           large_input=None):
+           dropout_params={'rate': 0.3}):
     """
     A pre-activation resnet without the final global pooling and classification
     layers.
     :param x: input tensor
     :param base_width: number of output channels of layers in the first group
+    :param include_root_block: If True, includes the initial convolution followed by
+        max-pooling, if False excludes it.    
+    :param cifar_root_block: If True 3x3 instead of 7x7 convolution and max_pool 
+        omitted in root block. 
     :param group_lengths: numbers of blocks per group
     :param block_structure: a BlockStructure instance
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    if large_input is None:
-        large_input = (min(x.shape[i].value for i in [1, 2]) >= 128)
-    if large_input:
-        x = conv(x, 7, base_width, stride=2, bias=False)
-        x = max_pool(x, stride=2, ksize=3)
-    else:
-        x = conv(x, 3, base_width, bias=False)  # cifar
+    if include_root_block:
+        if cifar_root_block:
+            x = conv(x, 3, base_width, bias=False)
+        else:
+            x = conv(x, 7, base_width, stride=2, bias=False)
+            x = max_pool(x, stride=2, ksize=3)
+    base_width *= width_factor
     for i, length in enumerate(group_lengths):
         group_width = 2**i * base_width
         with tf.variable_scope(f'group{i}'):
@@ -553,12 +559,13 @@ def resnet(x,
 def densenet(
         x,
         base_width=12,
+        include_root_block=True,
+        cifar_root_block=False,
         group_lengths=[19] * 3,  # dense block sizes
         block_structure=BlockStructure.densenet(),
         compression=0.5,
         bn_params=dict(),
-        dropout_params={'rate': 0.3},
-        large_input=None):
+        dropout_params={'rate': 0.3}):
     """
     A densenet without the final global pooling and classification layers.
     :param x: input tensor
@@ -569,13 +576,12 @@ def densenet(
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
-    if large_input is None:
-        large_input = (min(x.shape[i].value for i in [1, 2]) >= 128)
-    if large_input:
-        x = conv(x, 7, base_width, stride=2, bias=False)
-        x = max_pool(x, stride=2, ksize=3)
-    else:
-        x = conv(x, 3, 2 * base_width, bias=False)  # cifar
+    if include_root_block:
+        if cifar_root_block:
+            x = conv(x, 3, 2 * base_width, bias=False)
+        else:
+            x = conv(x, 7, 2 * base_width, stride=2, bias=False)
+            x = max_pool(x, stride=2, ksize=3)
     for i, length in enumerate(group_lengths):
         if i > 0:
             x = densenet_transition(

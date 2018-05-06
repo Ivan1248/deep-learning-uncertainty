@@ -216,6 +216,11 @@ class TrainingComponents:
 
 
 class InferenceComponents:
+    # http://ethereon.github.io/netscope/#/editor
+    # https://github.com/shicai/DenseNet-Caffe
+    # https://github.com/KaimingHe/deep-residual-networks/tree/master/prototxt
+    # https://github.com/binLearning/caffe_toolkit
+    # https://github.com/tensorflow/models/tree/master/research/slim#pre-trained-models
 
     @staticmethod
     def resnet(input_shape,
@@ -223,16 +228,15 @@ class InferenceComponents:
                group_lengths,
                block_structure,
                dim_change,
-               large_input=None,
+               cifar_root_block,
+               width_factor=1,
                problem='clf',
                class_count=None):
         if problem in ['semseg', 'clf']:
             assert class_count is not None
-        if problem in ['semseg', 'regr'] and large_input is None:
-            large_input = False
         p = [
             'base_width', 'group_lengths', 'block_structure', 'dim_change',
-            'large_input'
+            'cifar_root_block'
         ]
         params = {k: v for k, v in locals().items() if k in p}
 
@@ -256,14 +260,14 @@ class InferenceComponents:
                  base_width,
                  group_lengths,
                  block_structure,
-                 large_input=None,
+                 cifar_root_block,
                  problem='clf',
                  class_count=None):
         if problem in ['semseg', 'clf']:
             assert class_count is not None
-        if problem in ['semseg', 'regr'] and large_input is None:
-            large_input = False
-        p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
+        p = [
+            'base_width', 'group_lengths', 'block_structure', 'cifar_root_block'
+        ]
         params = {k: v for k, v in locals().items() if k in p}
 
         def input_to_features(x, is_training, **kwargs):

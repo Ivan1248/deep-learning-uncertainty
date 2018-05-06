@@ -189,7 +189,7 @@ class HDDCachedDataset(Dataset):
                     n = (len(dataset) - 1) // buffer_size + 1  # ceil
                     chunks = [pickle.load(f) for i in trange(n)]
                     data = list(itertools.chain(*chunks))
-            except Exception as rx:                
+            except Exception as ex:                
                 self._print(ex)
                 self._print("Removing invalid hdd-cached dataset...")
                 os.remove(cache_path)

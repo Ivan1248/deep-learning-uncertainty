@@ -129,7 +129,7 @@ if cache_size_left > 0:
 # If normalized data is not already on disk, this will trigger normalization
 # statistics computation. Normalization statistics need to be computed before
 # parallelized DataLoader is used.
-(ds_train[0], ds_test[0])  # in case ds_test has not been cached 
+(ds_train[0], ds_test[0])  # in case ds_test has not been cached
 
 # Model
 
@@ -174,21 +174,24 @@ elif problem == 'semseg':
 ic_args = {
     'input_shape': ds_train[0][0].shape,
     'class_count': ds_train.info['class_count'],
-    'problem': problem,
+    'problem': problem
 }
 
-if args.net in ['dn', 'ldn']:
-    densenet_group_lengths = {
-        121: [6, 12, 24, 16],
-        169: [6, 12, 32, 32]
-    }[args.depth]
+if args.net != 'ldn':
+    ic_args['cifar_root_block'] = args.ds in ['cifar10', 'svhn', 'mozgalo'] \
+                                  or problem == 'semseg'
 
 if args.net == 'ldn':
     print(f'Ladder-DenseNet-{args.depth}')
+    group_lengths = {
+        121: [6, 12, 24, 16],  # base_width = 32
+        161: [6, 12, 36, 24],  # base_width = 48
+        169: [6, 12, 32, 32],  # base_width = 32
+    }[args.depth]
     ic = InferenceComponents.ladder_densenet(
         **ic_args,
         base_width=32,
-        group_lengths=densenet_group_lengths,
+        group_lengths=group_lengths,
         block_structure=BlockStructure.densenet(dropout_locations=[]))
 elif args.net == 'wrn':
     ic = StandardInferenceComponents.wide_resnet(
