@@ -44,10 +44,10 @@ class Dataset(torch.utils.data.Dataset):
     def cache_hdd_examplewise(self, directory):
         return ExamplewiseHDDCachedDataset(self, directory)
 
-    def permute(self):
-        indices = np.random.permutation(len(self))
+    def permute(self, seed=53):
+        indices = np.random.RandomState(seed=seed).permutation(len(self))
         ds = SubDataset(self, indices)
-        ds.name = self.name + "permute"
+        ds.name = self.name + "-permute"
         return ds
 
     def subset(self, indices):
@@ -83,26 +83,6 @@ class MappedDataset(Dataset):
         return len(self.dataset)
 
 
-class LRUCachedDataset(Dataset):
-
-    def __init__(self, dataset, max_cache_size=1000):
-        self.name = dataset.name + "-cache_lru"
-        self.dataset = dataset
-        self.info = self.dataset.info
-
-        @lru_cache(maxsize=max_cache_size)
-        def _cached_get(i):
-            return self.dataset[i]
-
-        self._cached_get = _cached_get
-
-    def __getitem__(self, idx):
-        return self._cached_get(idx)
-
-    def __len__(self):
-        return len(self.dataset)
-
-
 class CachedDataset(Dataset):
 
     def __init__(self, dataset, max_cache_size=np.inf):
@@ -125,6 +105,26 @@ class CachedDataset(Dataset):
 
     def __len__(self):
         return len(self.data if self.cached_all else self.dataset)
+
+
+class LRUCachedDataset(Dataset):
+
+    def __init__(self, dataset, max_cache_size=1000):
+        self.name = dataset.name + "-cache_lru"
+        self.dataset = dataset
+        self.info = self.dataset.info
+
+        @lru_cache(maxsize=max_cache_size)
+        def _cached_get(i):
+            return self.dataset[i]
+
+        self._cached_get = _cached_get
+
+    def __getitem__(self, idx):
+        return self._cached_get(idx)
+
+    def __len__(self):
+        return len(self.dataset)
 
 
 class HDDCachedDataset(Dataset):
