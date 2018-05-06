@@ -287,7 +287,8 @@ class InferenceComponents:
                         base_width=32,
                         group_lengths=[6, 12, 24, 16],
                         block_structure=layers.BlockStructure.densenet(
-                            dropout_locations=[])):
+                            dropout_locations=[]),
+                        problem='semseg'):
         p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
         params = {k: v for k, v in locals().items() if k in p}
 

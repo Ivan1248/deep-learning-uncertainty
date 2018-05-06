@@ -52,17 +52,17 @@ class Cifar10Dataset(Dataset):
             train_x = np.ndarray((0, h * w * ch), dtype=np.float32)
             train_y = []
             for i in range(1, 6):
-                subset = unpickle(os.path.join(data_dir, 'data_batch_%d' % i))
-                train_x = np.vstack((train_x, subset['data']))
-                train_y += subset['labels']
+                ds = unpickle(os.path.join(data_dir, 'data_batch_%d' % i))
+                train_x = np.vstack((train_x, ds['data']))
+                train_y += ds['labels']
             train_x = train_x.reshape((-1, ch, h, w)).transpose(0, 2, 3, 1)
             train_y = np.array(train_y, dtype=np.int32)
             self.x, self.y = train_x, train_y
         elif subset == 'test':
-            subset = unpickle(os.path.join(data_dir, 'test_batch'))
-            test_x = subset['data'].reshape((-1, ch, h, w)).transpose(
+            ds = unpickle(os.path.join(data_dir, 'test_batch'))
+            test_x = ds['data'].reshape((-1, ch, h, w)).transpose(
                 0, 2, 3, 1).astype(np.float32)
-            test_y = np.array(subset['labels'], dtype=np.int32)
+            test_y = np.array(ds['labels'], dtype=np.int32)
             self.x, self.y = test_x, test_y
         else:
             raise ValueError("The value of subset must be in {'train','test'}.")

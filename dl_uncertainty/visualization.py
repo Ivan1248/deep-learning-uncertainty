@@ -90,8 +90,6 @@ def view_semantic_segmentation(dataset, infer=None):
         cplab = clab if infer is None else colorify_label(
             infer(img) + 1, colors)
 
-        print([(np.max(x), np.min(x)) for x in [img_scaled01, clab, cplab]])
-
         comp = compose([img_scaled01, clab, cplab], format='0,0;2,0-2;1,0-1')
 
         bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
