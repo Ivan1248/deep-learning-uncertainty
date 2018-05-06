@@ -87,7 +87,7 @@ def get_cache_size(mem_B):
 
 
 Gi = 1024**3
-cache_mem = 14 * Gi
+cache_mem = 12 * Gi
 cache_size = get_cache_size(cache_mem)
 print(f"Cache size = {cache_size} examples ({cache_mem / Gi} GiB)")
 
@@ -100,7 +100,7 @@ class Normalizer:
     @classmethod
     def normalize(cls, x):  # TODO: fix multithreading problem
         if cls.mean is None:  # lazy
-            print("Computing dataset statistics")
+            print(f"Computing dataset statistics for {cls.ds.name}")
             cls.mean, cls.std = get_input_mean_std(tqdm(cls.ds))
         return ((x - cls.mean) / cls.std).astype(np.float32)
 
@@ -108,16 +108,17 @@ class Normalizer:
 ds_train = ds_train.map(Normalizer.normalize, 0)
 ds_test = ds_test.map(Normalizer.normalize, 0)
 
-# Caching
 cache_dir = f"{dirs.DATASETS}/{os.path.basename(dirs.DATASETS)}_cache"
 
 
 def cache(ds, cache_size):  # Data caching (HDD, RAM)
     if cache_size > len(ds):
-        ds = ds.cache_hdd(cache_dir)
+        return ds.cache_hdd(cache_dir)
     else:
-        ds = ds.cache_hdd_examplewise(cache_dir).cache(cache_size)
-    return ds
+        ds1, ds2 = ds.split(cache_size / len(ds))
+        ds1 = ds1.cache_hdd(cache_dir)
+        ds2 = ds2.cache_hdd_examplewise(cache_dir).cache(cache_size)
+        return ds1.join(ds2)
 
 
 ds_train = cache(ds_train, cache_size)
@@ -128,7 +129,7 @@ if cache_size_left > 0:
 # If normalized data is not already on disk, this will trigger normalization
 # statistics computation. Normalization statistics need to be computed before
 # parallelized DataLoader is used.
-ds_train[0]
+(ds_train[0], ds_test[0])  # in case ds_test has not been cached 
 
 # Model
 
@@ -230,7 +231,7 @@ train(
     ds_test,
     input_jitter=random_fliplr if problem == 'semseg' else augment_cifar,
     epoch_count=args.epochs,
-    data_loading_worker_count=8)
+    data_loading_worker_count=0)
 
 # Saving
 
