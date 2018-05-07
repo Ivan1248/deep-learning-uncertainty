@@ -60,8 +60,8 @@ class Cifar10Dataset(Dataset):
             self.x, self.y = train_x, train_y
         elif subset == 'test':
             ds = unpickle(os.path.join(data_dir, 'test_batch'))
-            test_x = ds['data'].reshape((-1, ch, h, w)).transpose(
-                0, 2, 3, 1).astype(np.float32)
+            test_x = ds['data'].reshape((-1, ch, h, w)) \
+                               .transpose(0, 2, 3, 1).astype(np.float32)
             test_y = np.array(ds['labels'], dtype=np.int32)
             self.x, self.y = test_x, test_y
         else:
@@ -126,20 +126,62 @@ class ICCV09Dataset(Dataset):
         self.info['class_count'] = len(self.info['class_names'])  # 8
         self.name = "ICCV09Dataset"
 
-    def _get_image(self, i):
-        img = _load_image(f"{self._images_dir}/{self._image_list[i]}.jpg")
-        return pad_to_shape(crop(img, self._shape), self._shape)
-
-    def _get_label(self, i):
-        path = f"{self._labels_dir}/{self._image_list[i]}.regions.txt"
-        label = np.loadtxt(path, dtype=np.int8)
-        return pad_to_shape(crop(label, self._shape), self._shape, value=-1)
-
     def __getitem__(self, idx):
-        return self._get_image(idx), self._get_label(idx)
+        name = self._image_list[idx]
+        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        img = pad_to_shape(crop(img, self._shape), self._shape)
+        lab = np.loadtxt(
+            f"{self._labels_dir}/{name}.regions.txt", dtype=np.int8)
+        lab = pad_to_shape(crop(lab, self._shape), self._shape, value=-1)
+        return img, lab
 
     def __len__(self):
         return len(self._image_list)
+
+
+class CamVidDataset(Dataset):
+    # https://github.com/alexgkendall/SegNet-Tutorial/tree/master/CamVid
+
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['train', 'val', 'test']
+
+        lines = file.read_all_lines(f'{data_dir}/{subset}.txt')
+        self._img_lab_list = [[
+            f"{data_dir}/{p.replace('/SegNet/CamVid/', '')}"
+            for p in line.split()
+        ] for line in lines]
+
+        self.info = {
+            'class_count':
+                11,
+            'class_names': [
+                'Sky', 'Building', 'Pole', 'Road', 'Pavement', 'Tree',
+                'SignSymbol', 'Fence', 'Car', 'Pedestrian', 'Bicyclist'
+            ],
+            'class_colors': [
+                (128, 128, 128),
+                (128, 0, 0),
+                (192, 192, 128),
+                (128, 64, 128),
+                (60, 40, 222),
+                (128, 128, 0),
+                (192, 128, 128),
+                (64, 64, 128),
+                (64, 0, 128),
+                (64, 64, 0),
+                (0, 128, 192),
+            ]
+        }
+        self.name = f"CamVid-{subset}"
+
+    def __getitem__(self, idx):
+        img, lab = map(_load_image, self._img_lab_list[i])
+        lab = lab.astype(np.int8)
+        lab[lab == 11] = -1
+        return img, lab
+
+    def __len__(self):
+        return len(self._img_lab_list)
 
 
 class VOC2012SegmentationDataset(Dataset):
@@ -160,17 +202,13 @@ class VOC2012SegmentationDataset(Dataset):
         self.info['class_count'] = len(self.info['class_names'])  # 21
         self.name = f"VOC2012Segmentation-{subset}"
 
-    def _get_image(self, i):
-        img = _load_image(f"{self._images_dir}/{self._image_list[i]}.jpg")
-        return pad_to_shape(img, [500] * 2)
-
-    def _get_label(self, i):
-        label = _load_image(f"{self._labels_dir}/{self._image_list[i]}.png")
-        label = label.astype(np.int8)
-        return pad_to_shape(label, [500] * 2, value=-1)  # -1 ok?
-
     def __getitem__(self, idx):
-        return self._get_image(idx), self._get_label(idx)
+        name = self._image_list[i]
+        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        img = pad_to_shape(img, [500] * 2)
+        lab = _load_image(f"{self._labels_dir}/{name}.png").astype(np.int8)
+        lab = pad_to_shape(label, [500] * 2, value=-1)  # -1 ok?
+        return img, lab
 
     def __len__(self):
         return len(self._image_list)
@@ -210,8 +248,6 @@ class CityscapesSegmentationDataset(Dataset):
             'class_names': [l.name for l in cslabels if l.trainId >= 0],
             'class_colors': [l.color for l in cslabels if l.trainId >= 0],
         }
-        assert self.info['class_count'] == len(self.info['class_names']), len(
-            self.info['class_names'])
         self.name = f"CityscapesSegmentation-{subset}"
 
         if downsampling_factor > 1:
@@ -219,28 +255,20 @@ class CityscapesSegmentationDataset(Dataset):
         if remove_hood:
             self.name += f"-removedhood"
 
-    def _get_image(self, i):
-        img = pimg.open(f"{self._images_dir}/{self._image_list[i]}")
+    def __getitem__(self, idx):
+        img = pimg.open(f"{self._images_dir}/{self._image_list[idx]}")
+        lab = pimg.open(f"{self._labels_dir}/{self._label_list[idx]}")
         if self._downsampling_factor > 1:
             img = img.resize(self._shape[::-1], pimg.BILINEAR)
-        img = np.array(img, dtype=np.uint8)
-        if self._remove_hood:
-            img = img[:self._shape[0] * 7 // 8, :, :]
-        return img
-
-    def _get_label(self, i):
-        lab = pimg.open(f"{self._labels_dir}/{self._label_list[i]}")
-        if self._downsampling_factor > 1:
             lab = lab.resize(self._shape[::-1], pimg.NEAREST)
+        img = np.array(img, dtype=np.uint8)
         lab = np.array(lab, dtype=np.int8)
         for id, lb in self._id_to_label:
             lab[lab == id] = lb
         if self._remove_hood:
+            img = img[:self._shape[0] * 7 // 8, :, :]
             lab = lab[:self._shape[0] * 7 // 8, :]
-        return lab
-
-    def __getitem__(self, idx):
-        return self._get_image(idx), self._get_label(idx)
+        return img, lab
 
     def __len__(self):
         return len(self._image_list)
