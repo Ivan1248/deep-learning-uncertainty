@@ -153,7 +153,7 @@ class Model(object):
         return self._sess.run(fetches, feed_dict)
 
     def _eval_str(self, cost: float, ev: list):
-        return f"cost {cost:.4f}, " + ", ".join([f"{k} {v:.4f}" for k, v in ev])
+        return f"loss {cost:.4f}, " + ", ".join([f"{k} {v:.4f}" for k, v in ev])
 
     def _log(self, text: str):
         timestr = datetime.datetime.now().strftime('%H:%M:%S')
