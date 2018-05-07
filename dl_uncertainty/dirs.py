@@ -6,7 +6,7 @@ def _find_in_ancestor(path_end):
     try:
         return fs.find_in_ancestor(__file__, path_end)
     except:
-        print("ERROR: dirs.py: Could not find '" + path_end + "'.")
+        print("dirs.py: Cannot find '" + path_end + "'.")
         return None
 
 
