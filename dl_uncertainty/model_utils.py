@@ -10,14 +10,15 @@ class StandardInferenceComponents:
                dim_change='id',
                **ic_kwargs):
         print(f'ResNet-{depth}-{base_width}')
+        normal, bottleneck = ([3, 3], [1, 1]), ([1, 3, 1], [1, 1, 4])
         group_lengths, ksizes, width_factors = {
-            18: ([2] * 4, [3, 3], [1, 1]),  # [1]
-            34: ([3, 4, 6, 3], [3, 3], [1, 1]),  # [1]
-            50: ([3, 4, 6, 3], [1, 3, 1], [1, 1, 4]),  # [1]
-            101: ([3, 4, 23, 3], [1, 3, 1], [1, 1, 4]),  # [1]
-            110: ([3, 4, 6, 3], [3, 3], [1, 1]),  # [2]
-            152: ([3, 8, 36, 3], [1, 3, 1], [1, 1, 4]),  # [1]
-            200: ([3, 24, 36, 3], [1, 3, 1], [1, 1, 4]),  # [2]
+            18: ([2] * 4, *normal),  # [1]
+            34: ([3, 4, 6, 3], *normal),  # [1]
+            50: ([3, 4, 6, 3], *bottleneck),  # [1]
+            101: ([3, 4, 23, 3], *bottleneck),  # [1]
+            110: ([3, 4, 6, 3], *normal),  # [2]
+            152: ([3, 8, 36, 3], *bottleneck),  # [1]
+            200: ([3, 24, 36, 3], *bottleneck),  # [2]
         }[depth]
         return InferenceComponents.resnet(
             **ic_kwargs,
@@ -70,16 +71,17 @@ class StandardInferenceComponents:
         if depth in depth_to_group_lengths:
             group_lengths = depth_to_group_lengths[depth]
         else:
-            group_count = 4
+            group_count = 3
             assert (depth - group_count - 1) % 3 == 0, \
                 f"invalid depth: (depth-group_count-1) must be divisible by 3"
             blocks_per_group = (depth - 5) // (group_count * len(ksizes))
-        
+            group_lengths = [blocks_per_group] * group_count
+
         return InferenceComponents.densenet(
             **ic_kwargs,
             cifar_root_block=cifar_root_block,
             base_width=base_width,
-            group_lengths=[blocks_per_group] * group_count,
+            group_lengths=group_lengths,
             block_structure=BlockStructure.densenet(
                 ksizes=ksizes, dropout_locations=dropout_locations))
 

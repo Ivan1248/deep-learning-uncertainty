@@ -10,9 +10,7 @@ from tqdm import tqdm
 from _context import dl_uncertainty
 
 from dl_uncertainty import dirs
-from dl_uncertainty.data import DataLoader
-from dl_uncertainty.data.datasets import ICCV09Dataset, VOC2012SegmentationDataset, CityscapesSegmentationDataset
-from dl_uncertainty.data.datasets import Cifar10Dataset, MozgaloRobustVisionChallengeDataset
+from dl_uncertainty.data import datasets, DataLoader
 from dl_uncertainty.data_utils import get_input_mean_std
 from dl_uncertainty.models import Model, ModelDef, InferenceComponent, TrainingComponent
 from dl_uncertainty.models import InferenceComponents, TrainingComponents, EvaluationMetrics
@@ -40,14 +38,14 @@ if args.ds in ['cifar10', 'svhn', 'mozgalo']:
     problem = 'clf'
     if args.ds == 'cifar10':
         ds_path = dirs.DATASETS + '/cifar-10-batches-py'
-        ds_train = Cifar10Dataset(ds_path, 'train')
+        ds_train = datasets.Cifar10Dataset(ds_path, 'train')
         if args.test:
-            ds_test = Cifar10Dataset(ds_path, 'test')
+            ds_test = datasets.Cifar10Dataset(ds_path, 'test')
         else:
             ds_train, ds_test = ds_train.permute().split(0.8)
     if args.ds == 'mozgalo':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
-        ds_train = MozgaloRobustVisionChallengeDataset(mozgalo_path, 'train')
+        ds_train = datasets.MozgaloRobustVisionChallengeDataset(mozgalo_path)
         ds_train = ds_train.permute()
         ds_train, ds_test = ds_train.split(0.8)
         if not args.test:
@@ -56,7 +54,7 @@ elif args.ds in ['cityscapes', 'voc2012', 'iccv09']:
     problem = 'semseg'
     if args.ds == 'cityscapes':
         ds_path = dirs.DATASETS + '/cityscapes'
-        load = lambda s: CityscapesSegmentationDataset(ds_path, s, \
+        load = lambda s: datasets.CityscapesSegmentationDataset(ds_path, s, \
             downsampling_factor=2, remove_hood=True)
         ds_train, ds_test = map(load, ['train', 'val'])
         if args.test:
@@ -64,7 +62,7 @@ elif args.ds in ['cityscapes', 'voc2012', 'iccv09']:
             ds_test = load('test')
     elif args.ds == 'voc2012':
         ds_path = dirs.DATASETS + '/VOC2012'
-        load = lambda s: VOC2012SegmentationDataset(ds_path, s)
+        load = lambda s: datasets.VOC2012SegmentationDataset(ds_path, s)
         if args.test:
             ds_train, ds_test = map(load, ['trainval', 'test'])
         else:
@@ -73,25 +71,12 @@ elif args.ds in ['cityscapes', 'voc2012', 'iccv09']:
         if args.test:
             assert False, "Test set not defined"
         ds_path = dirs.DATASETS + '/iccv09'
-        ds_train = ICCV09Dataset(dirs.DATASETS + '/iccv09')
+        ds_train = datasets.ICCV09Dataset(dirs.DATASETS + '/iccv09')
         ds_train, ds_test = ds_train.permute().split(0.8)
 
-# Cache size (must be computed before normalization because we want to cache normalized images)
+# Input preprocessing and data caching
 
-
-def get_cache_size(mem_B):
-    img, lab = ds_train[0]
-    img = img.astype(np.float32)
-    example_mem = (img.nbytes + np.array(lab).nbytes)
-    return mem_B // example_mem
-
-
-Gi = 1024**3
-cache_mem = 12 * Gi
-cache_size = get_cache_size(cache_mem)
-print(f"Cache size = {cache_size} examples ({cache_mem / Gi} GiB)")
-
-# Input preprocessing and caching
+raw_ds_train, raw_ds_test = ds_train, ds_test
 
 
 class Normalizer:
@@ -108,23 +93,56 @@ class Normalizer:
 ds_train = ds_train.map(Normalizer.normalize, 0)
 ds_test = ds_test.map(Normalizer.normalize, 0)
 
-cache_dir = f"{dirs.DATASETS}/{os.path.basename(dirs.DATASETS)}_cache"
+
+def get_cache_size(mem_B):
+    # raw_ds_train[0] instead of ds_train[0] because we don't want to compute
+    # normalization statistics if normalized data is already cached
+    img, lab = raw_ds_train[0]
+    img = img.astype(np.float32)
+    example_mem = (img.nbytes + np.array(lab).nbytes)
+    return int(mem_B // example_mem)
 
 
-def cache(ds, cache_size):  # Data caching (HDD, RAM)
-    if cache_size > len(ds):
-        return ds.cache_hdd(cache_dir)
-    else:
-        ds1, ds2 = ds.split(cache_size / len(ds))
-        ds1 = ds1.cache_hdd(cache_dir)
-        ds2 = ds2.cache_hdd_examplewise(cache_dir).cache(cache_size)
-        return ds1.join(ds2)
+class CacheManager:
+
+    def __init__(self, max_cache_size, cache_dir):
+        self.cache_max = max_cache_size
+        self.cache_left = max_cache_size
+        self.cache_dir = cache_dir
+
+    def cache(self, ds):  # caching (HDD, RAM)
+        if self.cache_left >= len(ds):
+            self.cache_left -= len(ds)
+            return ds.cache_hdd(self.cache_dir)
+        elif self.cache_left == 0:
+            return ds.cache_hdd_only(self.cache_dir)
+        else:
+            ds1, ds2 = ds.split(self.cache_left / len(ds))
+            self.cache_left = 0
+            ds1 = ds1.cache_hdd(self.cache_dir)
+            ds2 = ds2.cache_hdd_only(self.cache_dir)
+            return ds1.join(ds2)
+
+    @property
+    def cache_used(self):
+        return self.cache_max - self.cache_left
 
 
-ds_train = cache(ds_train, cache_size)
-cache_size_left = cache_size - len(ds_train)
-if cache_size_left > 0:
-    ds_test = cache(ds_test, cache_size_left)
+Gi = 1024**3
+cache_mem = 0 * Gi  # 16.529 - cityscapes-train, 19.3 cityscapes trainval
+cache_size = get_cache_size(cache_mem)  # number of examples to be kept in RAM
+print(f"Cache size limit = {cache_size} examples ({cache_mem / Gi} GiB)")
+
+cache_manager = CacheManager(
+    cache_size,
+    cache_dir=f"{dirs.DATASETS}/{os.path.basename(dirs.DATASETS)}_cache")
+
+ds_train = cache_manager.cache(ds_train)
+ds_test = cache_manager.cache(ds_test)
+
+cache_used = cache_manager.cache_used
+cache_used_mem = cache_mem * cache_used / (cache_size + 1e-5)
+print(f"Cache used = {cache_used} examples ({ cache_used_mem / Gi} GiB)")
 
 # If normalized data is not already on disk, this will trigger normalization
 # statistics computation. Normalization statistics need to be computed before
@@ -170,16 +188,16 @@ elif problem == 'semseg':
     elif args.net == 'ldn':
         tc = TrainingComponents.ladder_densenet(
             epoch_count=args.epochs, base_learning_rate=5e-4, batch_size=4)
+else:
+    assert False
 
+cifar_root_block = args.ds in ['cifar10', 'svhn', 'mozgalo']  # semseg?
 ic_args = {
     'input_shape': ds_train[0][0].shape,
     'class_count': ds_train.info['class_count'],
-    'problem': problem
+    'problem': problem,
+    'cifar_root_block': cifar_root_block
 }
-
-if args.net != 'ldn':
-    ic_args['cifar_root_block'] = args.ds in ['cifar10', 'svhn', 'mozgalo'] \
-                                  or problem == 'semseg'
 
 if args.net == 'ldn':
     print(f'Ladder-DenseNet-{args.depth}')
@@ -188,6 +206,7 @@ if args.net == 'ldn':
         161: [6, 12, 36, 24],  # base_width = 48
         169: [6, 12, 32, 32],  # base_width = 32
     }[args.depth]
+    ic_args.pop('cifar_root_block', None)
     ic = InferenceComponents.ladder_densenet(
         **ic_args,
         base_width=32,
@@ -203,13 +222,13 @@ elif args.net == 'rn':
     ic = StandardInferenceComponents.resnet(
         **ic_args,
         depth=args.depth,
-        base_width=args.base_width,
+        base_width=args.width,
         dropout_locations=[])
 elif args.net == 'dn':
     ic = StandardInferenceComponents.densenet(
         **ic_args,
         depth=args.depth,
-        base_width=args.base_width,
+        base_width=args.width,
         dropout_locations=[])
 else:
     assert False, f"invalid model name: {args.net}"
@@ -234,7 +253,7 @@ train(
     ds_test,
     input_jitter=random_fliplr if problem == 'semseg' else augment_cifar,
     epoch_count=args.epochs,
-    data_loading_worker_count=0)
+    data_loading_worker_count=4)
 
 # Saving
 

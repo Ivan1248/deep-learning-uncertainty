@@ -26,7 +26,7 @@ class Dataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def _print(self, *args, **kwargs):
-        print(f"{self.name}:", *args, **kwargs)
+        print(*args, f"({self.name})", **kwargs)
 
     def id(self):
         return IdDataset(self)
@@ -52,13 +52,13 @@ class Dataset(torch.utils.data.Dataset):
             return self.cache()
         return LRUCachedDataset(self, max_cache_size)
 
-    def cache_hdd(self, directory, buffer_size=100):
+    def cache_hdd(self, directory, chunk_size=100):
         # caches the whole dataset in RAM and on HDD as a single file
-        return HDDCachedDataset(self, directory, buffer_size)
+        return HDDCachedDataset(self, directory, chunk_size)
 
-    def cache_hdd_examplewise(self, directory):
+    def cache_hdd_only(self, directory):
         # caches the whole dataset on disk without keeping it in RAM
-        return ExamplewiseHDDCachedDataset(self, directory)
+        return OnlyHDDCachedDataset(self, directory)
 
     def permute(self, seed=53):
         indices = np.random.RandomState(seed=seed).permutation(len(self))
@@ -176,7 +176,7 @@ class LRUCachedDataset(Dataset):
 
 class HDDCachedDataset(Dataset):
 
-    def __init__(self, dataset, cache_dir, buffer_size=100):
+    def __init__(self, dataset, cache_dir, chunk_size=100):
         self.cache_dir = cache_dir
         self.name = dataset.name + "-cache_hdd"
         os.makedirs(cache_dir, exist_ok=True)
@@ -186,10 +186,10 @@ class HDDCachedDataset(Dataset):
             try:
                 self._print("Loading dataset cache from hdd...")
                 with open(cache_path, 'rb') as f:
-                    n = (len(dataset) - 1) // buffer_size + 1  # ceil
+                    n = (len(dataset) - 1) // chunk_size + 1  # ceil
                     chunks = [pickle.load(f) for i in trange(n)]
                     data = list(itertools.chain(*chunks))
-            except Exception as ex:                
+            except Exception as ex:
                 self._print(ex)
                 self._print("Removing invalid hdd-cached dataset...")
                 os.remove(cache_path)
@@ -201,7 +201,7 @@ class HDDCachedDataset(Dataset):
                 chunk = []
                 for x in data:
                     chunk.append(x)
-                    if len(chunk) >= buffer_size:
+                    if len(chunk) >= chunk_size:
                         yield chunk
                         chunk = []
                 yield chunk
@@ -221,12 +221,12 @@ class HDDCachedDataset(Dataset):
         return len(self.data)
 
 
-class ExamplewiseHDDCachedDataset(Dataset):
+class OnlyHDDCachedDataset(Dataset):
 
     def __init__(self, dataset, cache_dir):
         self.dataset = dataset
         self.info = dataset.info
-        self.name = dataset.name + "-cache_hdd_examplewise"
+        self.name = dataset.name + "-cache_hdd_only"
         self.cache_dir = f"{cache_dir}/{self.name}"
         os.makedirs(self.cache_dir, exist_ok=True)
 

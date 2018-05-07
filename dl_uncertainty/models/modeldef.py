@@ -235,7 +235,7 @@ class InferenceComponents:
         if problem in ['semseg', 'clf']:
             assert class_count is not None
         p = [
-            'base_width', 'group_lengths', 'block_structure', 'dim_change',
+            'base_width', 'width_factor', 'group_lengths', 'block_structure', 'dim_change',
             'cifar_root_block'
         ]
         params = {k: v for k, v in locals().items() if k in p}

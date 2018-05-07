@@ -29,7 +29,8 @@ def train(model: Model,
 
     model.training_step_event_handler = handle_step
 
-    ds_train_part = ds_train.permute().subset(np.arange(len(ds_val)))
+    ds_train_part, _ = ds_train.permute() \
+                               .split(min(0.2, len(ds_val) / len(ds_train)))
     ds_train = ds_train.map(input_jitter, 0)
 
     ds_train, ds_val, ds_train_part = [
