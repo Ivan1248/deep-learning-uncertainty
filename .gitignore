@@ -88,4 +88,4 @@ ENV/
 .vscode/
 
 # Specific
-/data
+/data/nets
