@@ -18,7 +18,7 @@ def _load_image(path):
     return np.array(pimg.open(path))
 
 
-# Datasets
+# Classification
 
 
 class SVHNDataset(Dataset):
@@ -29,7 +29,7 @@ class SVHNDataset(Dataset):
         data = sio.loadmat(subset + '_32x32.mat')
         self.x, self.y = data['X'], np.remainder(data['y'], 10)
         self.info = {'class_count': 10}
-        self.name = f"SVHNDataset-{subset}"
+        self.name = f"SVHN-{subset}"
 
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
@@ -67,7 +67,7 @@ class Cifar10Dataset(Dataset):
         else:
             raise ValueError("The value of subset must be in {'train','test'}.")
         self.info = {'class_count': 10}
-        self.name = f"Cifar10Dataset-{subset}"
+        self.name = f"Cifar10-{subset}"
 
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
@@ -76,15 +76,15 @@ class Cifar10Dataset(Dataset):
         return len(self.x)
 
 
-class MozgaloRobustVisionChallengeDataset(Dataset):
+class MozgaloRVCDataset(Dataset):
 
-    def __init__(self, data_dir, subset='train'):
+    def __init__(self, data_dir, subset='train', remove_bottom_half=False):
         assert subset in ['train']
 
+        self._shape = [1104, 600]
+        self._remove_bottom = remove_bottom_half
         train_dir = f"{data_dir}/train"
         class_names = sorted(map(os.path.basename, os.listdir(train_dir)))
-        assert len(class_names) == 25
-
         self._subset_dir = f"{data_dir}/{subset}"
         subset_class_names = sorted(
             map(os.path.basename, os.listdir(self._subset_dir)))
@@ -93,50 +93,29 @@ class MozgaloRobustVisionChallengeDataset(Dataset):
             for x in glob.glob(self._subset_dir + '/*/*')
         ]
 
-        self.info = {
-            'class_count': len(class_names),
-            'class_names': class_names
-        }
-        self.name = f"Cifar10Dataset-{subset}"
+        assert len(class_names) == 25
+        self.info = {'class_count': 25, 'class_names': class_names}
+        self.name = f"MozgaloRVC-{subset}"
+        if remove_bottom_half:
+            self.name += "-remove_bottom_half"
 
     def __getitem__(self, idx):
         example_name = self._image_list[idx]
         lab_str = os.path.dirname(example_name)
-        lab = self.info['class_names'].index(lab_str)
         img = _load_image(f"{self._subset_dir}/{example_name}")
-        return img, lab
-
-    def __len__(self):
-        return len(self._image_list)
-
-
-class ICCV09Dataset(Dataset):
-
-    def __init__(self, data_dir):  # TODO subset
-        self._shape = [240, 320]
-        self._images_dir = f'{data_dir}/images'
-        self._labels_dir = f'{data_dir}/labels'
-        self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
-
-        self.info = dict()
-        self.info['class_names'] = [
-            'sky', 'tree', 'road', 'grass', 'water', 'building', 'mountain',
-            'foreground object'
-        ]
-        self.info['class_count'] = len(self.info['class_names'])  # 8
-        self.name = "ICCV09Dataset"
-
-    def __getitem__(self, idx):
-        name = self._image_list[idx]
-        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        lab = self.info['class_names'].index(lab_str)
         img = pad_to_shape(crop(img, self._shape), self._shape)
-        lab = np.loadtxt(
-            f"{self._labels_dir}/{name}.regions.txt", dtype=np.int8)
         lab = pad_to_shape(crop(lab, self._shape), self._shape, value=-1)
+        if self._remove_bottom:
+            img = img[:self._shape[0] // 2, :, :]
+            lab = lab[:self._shape[0] // 2, :]
         return img, lab
 
     def __len__(self):
         return len(self._image_list)
+
+
+# Semantic segmentation
 
 
 class CamVidDataset(Dataset):
@@ -182,36 +161,6 @@ class CamVidDataset(Dataset):
 
     def __len__(self):
         return len(self._img_lab_list)
-
-
-class VOC2012SegmentationDataset(Dataset):
-
-    def __init__(self, data_dir, subset='train'):
-        assert subset in ['train', 'val', 'trainval', 'test']
-        sets_dir = f'{data_dir}/ImageSets/Segmentation'
-        self._images_dir = f'{data_dir}/JPEGImages'
-        self._labels_dir = f'{data_dir}/SegmentationClass'
-        self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
-        self.info = dict()
-        self.info['class_names'] = [
-            'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
-            'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
-            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
-            'tvmonitor'
-        ]
-        self.info['class_count'] = len(self.info['class_names'])  # 21
-        self.name = f"VOC2012Segmentation-{subset}"
-
-    def __getitem__(self, idx):
-        name = self._image_list[i]
-        img = _load_image(f"{self._images_dir}/{name}.jpg")
-        img = pad_to_shape(img, [500] * 2)
-        lab = _load_image(f"{self._labels_dir}/{name}.png").astype(np.int8)
-        lab = pad_to_shape(label, [500] * 2, value=-1)  # -1 ok?
-        return img, lab
-
-    def __len__(self):
-        return len(self._image_list)
 
 
 class CityscapesSegmentationDataset(Dataset):
@@ -268,6 +217,65 @@ class CityscapesSegmentationDataset(Dataset):
         if self._remove_hood:
             img = img[:self._shape[0] * 7 // 8, :, :]
             lab = lab[:self._shape[0] * 7 // 8, :]
+        return img, lab
+
+    def __len__(self):
+        return len(self._image_list)
+
+
+class ICCV09Dataset(Dataset):
+
+    def __init__(self, data_dir):  # TODO subset
+        self._shape = [240, 320]
+        self._images_dir = f'{data_dir}/images'
+        self._labels_dir = f'{data_dir}/labels'
+        self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
+
+        self.info = dict()
+        self.info['class_names'] = [
+            'sky', 'tree', 'road', 'grass', 'water', 'building', 'mountain',
+            'foreground object'
+        ]
+        self.info['class_count'] = len(self.info['class_names'])  # 8
+        self.name = "ICCV09"
+
+    def __getitem__(self, idx):
+        name = self._image_list[idx]
+        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        lab = np.loadtxt(
+            f"{self._labels_dir}/{name}.regions.txt", dtype=np.int8)
+        img = pad_to_shape(crop(img, self._shape), self._shape)
+        lab = pad_to_shape(crop(lab, self._shape), self._shape, value=-1)
+        return img, lab
+
+    def __len__(self):
+        return len(self._image_list)
+
+
+class VOC2012SegmentationDataset(Dataset):
+
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['train', 'val', 'trainval', 'test']
+        sets_dir = f'{data_dir}/ImageSets/Segmentation'
+        self._images_dir = f'{data_dir}/JPEGImages'
+        self._labels_dir = f'{data_dir}/SegmentationClass'
+        self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
+        self.info = dict()
+        self.info['class_names'] = [
+            'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
+            'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
+            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
+            'tvmonitor'
+        ]
+        self.info['class_count'] = len(self.info['class_names'])  # 21
+        self.name = f"VOC2012Segmentation-{subset}"
+
+    def __getitem__(self, idx):
+        name = self._image_list[i]
+        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        lab = _load_image(f"{self._labels_dir}/{name}.png").astype(np.int8)
+        img = pad_to_shape(img, [500] * 2)
+        lab = pad_to_shape(lab, [500] * 2, value=-1)  # -1 ok?
         return img, lab
 
     def __len__(self):

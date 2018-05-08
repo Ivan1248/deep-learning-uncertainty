@@ -32,7 +32,7 @@ print(args)
 # Dataset
 
 print("Setting up data loading...")
-if args.ds in ['cifar10', 'svhn', 'mozgalo']:
+if args.ds in ['cifar10', 'svhn', 'mozgalorvc']:
     problem = 'clf'
     if args.ds == 'cifar10':
         ds_path = dirs.DATASETS + '/cifar-10-batches-py'
@@ -41,9 +41,9 @@ if args.ds in ['cifar10', 'svhn', 'mozgalo']:
             ds_test = datasets.Cifar10Dataset(ds_path, 'test')
         else:
             ds_train, ds_test = ds_train.permute().split(0.8)
-    if args.ds == 'mozgalo':
+    if args.ds == 'mozgalorvc':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
-        ds_train = datasets.MozgaloRobustVisionChallengeDataset(mozgalo_path)
+        ds_train = datasets.MozgaloRVCDataset(mozgalo_path)
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not args.test:
             ds_train, ds_test = ds_train.split(0.8)
@@ -159,7 +159,7 @@ ic_args = {
     'problem': problem
 }
 
-cifar_root_block = args.ds in ['cifar10', 'svhn', 'mozgalo']  # semseg?
+cifar_root_block = args.ds in ['cifar10', 'svhn', 'mozgalorvc']  # semseg?
 
 if args.net == 'wrn':
     ic = StandardInferenceComponents.wide_resnet(
@@ -190,7 +190,7 @@ elif args.net == 'ldn':
         169: [6, 12, 32, 32],  # base_width = 32
     }[args.depth]
     ic = InferenceComponents.ladder_densenet(
-        ic_args, base_width=32, group_lengths=group_lengths, dropout_rate=0)
+        **ic_args, base_width=32, group_lengths=group_lengths, dropout_rate=0)
 else:
     assert False, f"invalid model name: {args.net}"
 
