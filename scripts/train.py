@@ -47,7 +47,7 @@ if args.ds in ['cifar10', 'svhn', 'mozgalo']:
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not args.test:
             ds_train, ds_test = ds_train.split(0.8)
-elif args.ds in ['cityscapes', 'voc2012',  'camvid', 'iccv09']:
+elif args.ds in ['cityscapes', 'voc2012', 'camvid', 'iccv09']:
     problem = 'semseg'
     if args.ds == 'cityscapes':
         ds_path = dirs.DATASETS + '/cityscapes'
@@ -92,7 +92,7 @@ ds_test = ds_test.map(normalizer.normalize, 0)
 # kept on disk.
 Gi = 1024**3
 cache_mem = 0 * Gi  # 16.529 - cityscapes-train, 19.3 cityscapes trainval
-cache_size = int(data_utils.example_size(raw_ds_train[0]) // cache_mem)
+cache_size = int(data_utils.example_size(raw_ds_train[0]) // (cache_mem + 1e-9))
 print(f"Cache size limit = {cache_size} examples ({cache_mem / Gi} GiB)")
 
 cache_assigner = data_utils.CacheAssigner(
@@ -158,11 +158,31 @@ ic_args = {
     'class_count': ds_train.info['class_count'],
     'problem': problem
 }
-if args.net != 'ldn':
-    ic_args['cifar_root_block'] = args.ds in ['cifar10', 'svhn',
-                                              'mozgalo']  # semseg?
 
-if args.net == 'ldn':
+cifar_root_block = args.ds in ['cifar10', 'svhn', 'mozgalo']  # semseg?
+
+if args.net == 'wrn':
+    ic = StandardInferenceComponents.wide_resnet(
+        ic_args,
+        depth=args.depth,
+        width_factor=args.width,
+        cifar_root_block=cifar_root_block,
+        dropout_locations=[] if args.nodropout else [0])
+elif args.net == 'rn':
+    ic = StandardInferenceComponents.resnet(
+        ic_args,
+        depth=args.depth,
+        base_width=args.width,
+        cifar_root_block=cifar_root_block,
+        dropout_locations=[])
+elif args.net == 'dn':
+    ic = StandardInferenceComponents.densenet(
+        ic_args,
+        depth=args.depth,
+        base_width=args.width,
+        cifar_root_block=cifar_root_block,
+        dropout_rate=0)
+elif args.net == 'ldn':
     print(f'Ladder-DenseNet-{args.depth}')
     group_lengths = {
         121: [6, 12, 24, 16],  # base_width = 32
@@ -170,28 +190,7 @@ if args.net == 'ldn':
         169: [6, 12, 32, 32],  # base_width = 32
     }[args.depth]
     ic = InferenceComponents.ladder_densenet(
-        **ic_args,
-        base_width=32,
-        group_lengths=group_lengths,
-        block_structure=BlockStructure.densenet(dropout_locations=[]))
-elif args.net == 'wrn':
-    ic = StandardInferenceComponents.wide_resnet(
-        **ic_args,
-        depth=args.depth,
-        width_factor=args.width,
-        dropout_locations=[] if args.nodropout else [0])
-elif args.net == 'rn':
-    ic = StandardInferenceComponents.resnet(
-        **ic_args,
-        depth=args.depth,
-        base_width=args.width,
-        dropout_locations=[])
-elif args.net == 'dn':
-    ic = StandardInferenceComponents.densenet(
-        **ic_args,
-        depth=args.depth,
-        base_width=args.width,
-        dropout_locations=[])
+        ic_args, base_width=32, group_lengths=group_lengths, dropout_rate=0)
 else:
     assert False, f"invalid model name: {args.net}"
 

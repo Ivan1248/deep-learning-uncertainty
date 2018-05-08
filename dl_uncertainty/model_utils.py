@@ -4,12 +4,15 @@ from .models import InferenceComponents, BlockStructure
 class StandardInferenceComponents:
 
     @staticmethod
-    def resnet(depth,
+    def resnet(ic_kwargs,
+               depth,
+               cifar_root_block,
                base_width=64,
                dropout_locations=[],
-               dim_change='id',
-               **ic_kwargs):
+               dim_change='id'):
         print(f'ResNet-{depth}-{base_width}')
+        for a in ['input_shape', 'class_count', 'problem']:
+            assert a in ic_kwargs
         normal, bottleneck = ([3, 3], [1, 1]), ([1, 3, 1], [1, 1, 4])
         group_lengths, ksizes, width_factors = {
             18: ([2] * 4, *normal),  # [1]
@@ -22,6 +25,7 @@ class StandardInferenceComponents:
         }[depth]
         return InferenceComponents.resnet(
             **ic_kwargs,
+            cifar_root_block=cifar_root_block,
             base_width=base_width,
             group_lengths=group_lengths,
             block_structure=BlockStructure.resnet(
@@ -31,12 +35,14 @@ class StandardInferenceComponents:
             dim_change=dim_change)
 
     @staticmethod
-    def wide_resnet(depth,
+    def wide_resnet(ic_kwargs,
+                    depth,
                     width_factor,
                     cifar_root_block,
                     dropout_locations=[],
-                    dim_change='proj',
-                    **ic_kwargs):
+                    dim_change='proj'):
+        for a in ['input_shape', 'class_count', 'problem']:
+            assert a in ic_kwargs
         print(f'WRN-{depth}-{width_factor}')
         zagoruyko_depth = depth
         group_count, ksizes = 3, [3, 3]
@@ -56,11 +62,10 @@ class StandardInferenceComponents:
             dim_change=dim_change)
 
     @staticmethod
-    def densenet(depth,
-                 base_width,
-                 cifar_root_block,
-                 dropout_locations=[],
-                 **ic_kwargs):
+    def densenet(ic_kwargs, depth, base_width, cifar_root_block,
+                 dropout_rate=0):  # 0.2 if data augmentation is not used
+        for a in ['input_shape', 'class_count', 'problem']:
+            assert a in ic_kwargs, a
         print(f'DenseNet-{depth}-{base_width}')
         ksizes = [1, 3]
         depth_to_group_lengths = {
@@ -74,27 +79,30 @@ class StandardInferenceComponents:
             group_count = 3
             assert (depth - group_count - 1) % 3 == 0, \
                 f"invalid depth: (depth-group_count-1) must be divisible by 3"
-            blocks_per_group = (depth - 5) // (group_count * len(ksizes))
+            blocks_per_group = (depth - group_count - 1) // \
+                               (group_count * len(ksizes))
             group_lengths = [blocks_per_group] * group_count
 
         return InferenceComponents.densenet(
             **ic_kwargs,
-            cifar_root_block=cifar_root_block,
             base_width=base_width,
             group_lengths=group_lengths,
-            block_structure=BlockStructure.densenet(
-                ksizes=ksizes, dropout_locations=dropout_locations))
+            cifar_root_block=cifar_root_block,
+            dropout_rate=dropout_rate,
+            block_structure=BlockStructure.densenet(ksizes=ksizes))
 
     @staticmethod
-    def ladder_densenet(depth, base_width, dropout_locations=[], **ic_kwargs):
+    def ladder_densenet(ic_kwargs, depth, base_width, dropout_rate=0):
+        for a in ['input_shape', 'class_count']:
+            assert a in ic_kwargs
         print(f'DenseNet-{depth}-{base_width}')
         group_count, ksizes = 3, [1, 3]
         assert (depth - group_count - 1) % 3 == 0, \
             f"invalid depth: (depth-group_count-1) must be divisible by 3"
         blocks_per_group = (depth - 5) // (group_count * len(ksizes))
-        ic = InferenceComponents.densenet(
+        ic = InferenceComponents.ladder_densenet(
             **ic_kwargs,
             base_width=base_width,
             group_lengths=[blocks_per_group] * group_count,
-            block_structure=BlockStructure.densenet(
-                ksizes=ksizes, dropout_locations=dropout_locations))
+            block_structure=BlockStructure.densenet(ksizes=ksizes),
+            dropout_rate=dropout_rate)

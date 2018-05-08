@@ -259,6 +259,11 @@ def dropout(x,
             is_training=None,
             feature_map_wise=False,
             **kwargs):
+    try:
+        if rate <= 1e-6:
+            return x
+    except:
+        pass
     active = active or is_training
     assert active is not None
     if feature_map_wise:  # TODO: remove True
@@ -370,6 +375,8 @@ class BlockStructure:
             raise ValueError(
                 "width_factors must be an integer or a list of equal length as ksizes"
             )
+        if dropout_locations == 'all':
+            dropout_locations = list(range(len(ksizes)))
         self.dropout_locations = dropout_locations
 
     @classmethod
@@ -387,7 +394,7 @@ class BlockStructure:
     def densenet(cls,
                  ksizes=[1, 3],
                  width_factors=[4, 1],
-                 dropout_locations=[0, 1]):
+                 dropout_locations='all'):
         return BlockStructure(**filter_dict(locals(), lambda k: k != 'cls'))
 
 
@@ -532,6 +539,8 @@ def resnet(x,
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
+    assert 'is_training' in bn_params
+    assert 'is_training' in dropout_params
     if include_root_block:
         if cifar_root_block:
             x = conv(x, 3, base_width, bias=False)
@@ -565,7 +574,7 @@ def densenet(
         block_structure=BlockStructure.densenet(),
         compression=0.5,
         bn_params=dict(),
-        dropout_params={'rate': 0.3}):
+        dropout_params={'rate': 0}):  # 0.2 if data augmentation is not used
     """
     A densenet without the final global pooling and classification layers.
     :param x: input tensor
@@ -576,6 +585,8 @@ def densenet(
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
+    assert 'is_training' in bn_params
+    assert 'is_training' in dropout_params
     if include_root_block:
         if cifar_root_block:
             x = conv(x, 3, 2 * base_width, bias=False)

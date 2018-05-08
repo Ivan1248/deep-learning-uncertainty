@@ -261,6 +261,7 @@ class InferenceComponents:
                  group_lengths,
                  block_structure,
                  cifar_root_block,
+                 dropout_rate,
                  problem='clf',
                  class_count=None):
         if problem in ['semseg', 'clf']:
@@ -275,7 +276,7 @@ class InferenceComponents:
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    **layers.default_arg(layers.densenet, 'dropout_params'),
+                    'rate':dropout_rate,
                     'is_training': is_training
                 })
 
@@ -290,8 +291,8 @@ class InferenceComponents:
                         class_count,
                         base_width=32,
                         group_lengths=[6, 12, 24, 16],
-                        block_structure=layers.BlockStructure.densenet(
-                            dropout_locations=[]),
+                        block_structure=layers.BlockStructure.densenet(),
+                        dropout_rate=0,
                         problem='semseg'):
         p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
         params = {k: v for k, v in locals().items() if k in p}
@@ -301,7 +302,7 @@ class InferenceComponents:
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    **layers.default_arg(layers.ladder_densenet, 'dropout_params'),
+                    'rate':dropout_rate,
                     'is_training': is_training
                 })
 
