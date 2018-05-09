@@ -1,0 +1,43 @@
+ResNet 50
+
+resnet/conv/weights:0
+resnet/group{0}/rb{1}/block/bn_relu{2}/batch_normalization/offset:0
+resnet/group{0}/rb{1}/block/bn_relu{2}/batch_normalization/scale:0
+resnet/group{0}/rb{1}/block/conv{2}/weights:0
+conv/weights:0
+conv/bias:0
+
+resnet/conv/weights:0
+      /group{0}/rb{1}/block
+                           /bn_relu{2}/batch_normalization/offset:0
+                                                          /scale:0
+                           /conv{2}/weights:0
+conv/weights:0
+    /bias:0
+
+
+DenseNet 121
+
+densenet/conv/weights:0
+densenet/db{0}/block{1}/bn_relu{2}/batch_normalization/offset:0
+densenet/db{0}/block{1}/bn_relu{2}/batch_normalization/scale:0
+densenet/db{0}/block{1}/conv{2}/weights:0
+densenet/transition{0}/bn_relu/batch_normalization/offset:0
+densenet/transition{0}/bn_relu/batch_normalization/scale:0
+densenet/transition{0}/conv/weights:0
+densenet/bn_relu/batch_normalization/offset:0
+densenet/bn_relu/batch_normalization/scale:0
+conv/weights:0
+conv/bias:0
+
+densenet/conv/weights:0
+        /db{0}/block{1}/bn_relu{2}/batch_normalization/offset:0
+                                                      /scale:0
+                       /conv{2}/weights:0
+        /transition{0}/bn_relu/batch_normalization/offset:0
+                                                  /scale:0
+                      /conv/weights:0
+        /bn_relu/batch_normalization/offset:0
+                                    /scale:0
+conv/weights:0
+    /bias:0
