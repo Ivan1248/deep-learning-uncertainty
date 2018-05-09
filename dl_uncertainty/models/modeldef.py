@@ -7,7 +7,7 @@ def global_pool_affine_logits_func(class_count):
 
     def f(h):
         h = tf.reduce_mean(h, axis=[1, 2], keep_dims=True)
-        h = layers.conv(h, 1, class_count, bias=True)
+        h = layers.conv(h, 1, class_count, bias=True, name='conv_logits')
         return tf.reshape(h, [-1, class_count])
 
     return f
@@ -16,7 +16,7 @@ def global_pool_affine_logits_func(class_count):
 def semseg_affine_resize_logits_func(class_count, spatial_shape):
 
     def f(h):
-        h = layers.conv(h, 1, class_count, bias=True)
+        h = layers.conv(h, 1, class_count, bias=True, name='conv_logits')
         return tf.image.resize_bilinear(h, spatial_shape)
 
     return f
@@ -193,7 +193,7 @@ class TrainingComponents:
 
     @staticmethod
     def ladder_densenet(epoch_count,
-                        base_learning_rate=5e-4,
+                        base_learning_rate=5e-4,  # 1e-4 pretrained
                         batch_size=4,
                         weight_decay=1e-4):
         p = ['base_width', 'group_lengths', 'block_structure', 'large_input']

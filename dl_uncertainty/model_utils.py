@@ -8,18 +8,18 @@ class StandardInferenceComponents:
                depth,
                cifar_root_block,
                base_width=64,
-               dropout_locations=[],
-               dim_change='id'):
+               dropout_locations=[]):
         print(f'ResNet-{depth}-{base_width}')
         for a in ['input_shape', 'class_count', 'problem']:
             assert a in ic_kwargs
-        normal, bottleneck = ([3, 3], [1, 1]), ([1, 3, 1], [1, 1, 4])
-        group_lengths, ksizes, width_factors = {
+        normal = ([3, 3], [1, 1], 'id')
+        bottleneck = ([1, 3, 1], [1, 1, 4], 'proj')  # last paragraph in [2]
+        group_lengths, ksizes, width_factors, dim_change = {
             18: ([2] * 4, *normal),  # [1]
             34: ([3, 4, 6, 3], *normal),  # [1]
+            110: ([3, 4, 6, 3], *normal),  # [2]
             50: ([3, 4, 6, 3], *bottleneck),  # [1]
             101: ([3, 4, 23, 3], *bottleneck),  # [1]
-            110: ([3, 4, 6, 3], *normal),  # [2]
             152: ([3, 8, 36, 3], *bottleneck),  # [1]
             200: ([3, 24, 36, 3], *bottleneck),  # [2]
         }[depth]
