@@ -16,20 +16,20 @@ class LazyNormalizer:
 
     def __init__(self, ds):
         self.ds = ds
-        self.mean, self.std = None, None  # TODO: make variables shared between processes
-        self._lock = multiprocessing.Lock()
-        self._initialization_access_count = 0
+        self.mean, self.std = get_input_mean_std([ds[0], ds[1]])
+        self.initialized = multiprocessing.Value('i', 0)
+        self.mean = multiprocessing.Array('f', self.mean)
+        self.std = multiprocessing.Array('f', self.std)
 
     def _initialize(self):
         print(f"Computing dataset statistics for {self.ds.name}")
-        self.mean, self.std = get_input_mean_std(tqdm(self.ds))
-        self._initialization_access_count += 1
-        assert self._initialization_access_count == 1
+        self.mean.value, self.std.value = get_input_mean_std(tqdm(self.ds))
 
     def normalize(self, x):
-        with self._lock:
-            if self.mean is None:  # lazy
+        with self.initialized.get_lock():
+            if not self.initialized.value:  # lazy
                 self._initialize()
+                self.initialized.value = True
         return ((x - self.mean) / self.std).astype(np.float32)
 
 
