@@ -7,7 +7,7 @@ import functools
 import numpy as np
 import tensorflow as tf
 
-from .variables import conv_weight_variable, bias_variable
+from .variables import conv_weight_variable, bias_variable, vector_variable
 
 
 def scoped(fun):
@@ -81,13 +81,13 @@ def split_batch(x, n: int):  # [nN,H,W,C]->[n,N,H,W,C]
 
 
 @scoped
-def add_biases(x, return_params=False):
-    b = bias_variable(x.shape[-1].value)
-    h = x + b
-    return (h, b) if return_params else h
+def add_bias(x):
+    return x + bias_variable(x.shape[-1].value, name='bias')
 
 
 # Convolution
+
+print_conv = False
 
 
 @scoped
@@ -110,7 +110,8 @@ def conv(x, ksize, width, stride=1, dilation=1, padding='SAME', bias=False):
         padding=padding)
     if bias:
         h += bias_variable(width)
-    print(x.shape[1:], h.shape[1:], h.name)
+    if print_conv:
+        print(h.name, x.shape[1:], h.shape[1:])
     return h
 
 
@@ -241,14 +242,9 @@ def batch_normalization(
     mean, var = tf.cond(moving, m_v_with_update,
                         lambda: (ema.average(m), ema.average(v)))
 
-    def get_var(name, value):
-        return tf.get_variable(
-            name,
-            shape=[x.shape[-1].value],
-            initializer=tf.constant_initializer(value))
-
-    offset = 0.0 if not offset else get_var('offset', 0.0)
-    scale = 1.0 if not scale else get_var('scale', 1.0)
+    get_var = lambda val, name: vector_variable(x.shape[-1].value, val, name)
+    offset = 0.0 if not offset else get_var(0.0, 'offset')
+    scale = 1.0 if not scale else get_var(1.0, 'scale')
 
     return tf.nn.batch_normalization(x, mean, var, offset, scale, var_epsilon)
 
@@ -342,7 +338,7 @@ def normal_noise(stddev):
 
 @scoped
 def bn_relu(x, bn_params=dict()):
-    x = batch_normalization(x, **bn_params)
+    x = batch_normalization(x, **bn_params, name='bn')
     return tf.nn.relu(x)
 
 
@@ -462,7 +458,8 @@ def residual_block(x,
         base_width=width,
         omit_first_bn_relu=skip_connection_needs_bn_relu,
         bn_params=bn_params,
-        dropout_params=dropout_params)
+        dropout_params=dropout_params,
+        name='block')
     s = _skip_connection(x, stride, r.shape[-1].value)
     return s + r
 
@@ -543,9 +540,9 @@ def resnet(x,
     assert 'is_training' in dropout_params
     if include_root_block:
         if cifar_root_block:
-            x = conv(x, 3, base_width, bias=False)
+            x = conv(x, 3, base_width, bias=False, name='conv_root')
         else:
-            x = conv(x, 7, base_width, stride=2, bias=False)
+            x = conv(x, 7, base_width, stride=2, bias=False, name='conv_root')
             x = max_pool(x, stride=2, ksize=3)
     base_width *= width_factor
     for i, length in enumerate(group_lengths):
@@ -560,8 +557,8 @@ def resnet(x,
                     dim_change=dim_change,
                     bn_params=bn_params,
                     dropout_params=dropout_params,
-                    name=f'block{j}')
-    return bn_relu(x, bn_params)
+                    name=f'rb{j}')
+    return bn_relu(x, bn_params, name="post_bn_relu")
 
 
 @scoped
@@ -589,9 +586,9 @@ def densenet(
     assert 'is_training' in dropout_params
     if include_root_block:
         if cifar_root_block:
-            x = conv(x, 3, 2 * base_width, bias=False)
+            x = conv(x, 3, 2 * base_width, bias=False, name='conv_root')
         else:
-            x = conv(x, 7, 2 * base_width, stride=2, bias=False)
+            x = conv(x, 7, 2 * base_width, stride=2, bias=False, name='conv_root')
             x = max_pool(x, stride=2, ksize=3)
     for i, length in enumerate(group_lengths):
         if i > 0:
@@ -608,8 +605,8 @@ def densenet(
             base_width=base_width,
             bn_params=bn_params,
             dropout_params=dropout_params,
-            name=f'dense_block{i}')
-    return bn_relu(x, bn_params)
+            name=f'db{i}')
+    return bn_relu(x, bn_params, name="post_bn_relu")
 
 
 @scoped
@@ -639,10 +636,10 @@ def ladder_densenet(
     def _split_dense_block(x):
         i = len(group_lengths) - 1
         l = group_lengths[i]
-        x = dense_block(x, length=l // 2, **db_params, name=f'dblock{i}a')
+        x = dense_block(x, length=l // 2, **db_params, name=f'db{i}a')
         skip = x
         x = avg_pool(x, 2)
-        x = dense_block(x, length=l - l // 2, **db_params, name=f'dblock{i}b')
+        x = dense_block(x, length=l - l // 2, **db_params, name=f'db{i}b')
         return x, skip
 
     @scoped
@@ -657,14 +654,14 @@ def ladder_densenet(
             x, 3, upsampling_block_width, bias=False, name=f'conv_blend{i}')
         return x
 
-    with tf.variable_scope('layer_in'):
-        x = conv(x, 7, 2 * base_width, stride=2, bias=False)
+    with tf.variable_scope('root'):
+        x = conv(x, 7, 2 * base_width, stride=2, bias=False, name='conv_root')
         x = bn_relu(x, bn_params)
         x = max_pool(x, 2)
 
     skips = []
     for i, length in enumerate(group_lengths[:-1]):
-        x = dense_block(x, length=length, **db_params, name=f'dblock{i}')
+        x = dense_block(x, length=length, **db_params, name=f'db{i}')
         skips.append(x)
         x = densenet_transition(x, **tr_params, name=f'transition{i}')
     x, skip = _split_dense_block(x)
