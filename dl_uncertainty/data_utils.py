@@ -1,5 +1,7 @@
 import numpy as np
+import multiprocessing
 from tqdm import tqdm
+import os
 
 # Normalization
 
@@ -14,11 +16,16 @@ class LazyNormalizer:
 
     def __init__(self, ds):
         self.ds, self.mean, self.std = ds, None, None
+        self._lock = multiprocessing.Lock()
+        self._a = 0
 
     def normalize(self, x):  # TODO: fix multithreading problem
-        if self.mean is None:  # lazy
-            print(f"Computing dataset statistics for {self.ds.name}")
-            self.mean, self.std = get_input_mean_std(tqdm(self.ds))
+        with self._lock:
+            if self.mean is None:  # lazy
+                print(f"Computing dataset statistics for {self.ds.name}")
+                self.mean, self.std = get_input_mean_std(tqdm(self.ds))
+                self._a += 1
+                assert self._a == 1
         return ((x - self.mean) / self.std).astype(np.float32)
 
 
