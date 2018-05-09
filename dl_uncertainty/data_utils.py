@@ -15,17 +15,21 @@ def get_input_mean_std(dataset):
 class LazyNormalizer:
 
     def __init__(self, ds):
-        self.ds, self.mean, self.std = ds, None, None
+        self.ds = ds
+        self.mean, self.std = None, None  # TODO: make variables shared between processes
         self._lock = multiprocessing.Lock()
-        self._a = 0
+        self._initialization_access_count = 0
 
-    def normalize(self, x):  # TODO: fix multithreading problem
+    def _initialize(self):
+        print(f"Computing dataset statistics for {self.ds.name}")
+        self.mean, self.std = get_input_mean_std(tqdm(self.ds))
+        self._initialization_access_count += 1
+        assert self._initialization_access_count == 1
+
+    def normalize(self, x):
         with self._lock:
             if self.mean is None:  # lazy
-                print(f"Computing dataset statistics for {self.ds.name}")
-                self.mean, self.std = get_input_mean_std(tqdm(self.ds))
-                self._a += 1
-                assert self._a == 1
+                self._initialize()
         return ((x - self.mean) / self.std).astype(np.float32)
 
 
@@ -41,7 +45,6 @@ def example_size(example):
 class CacheAssigner:
 
     def __init__(self, cache_dir, max_cache_size):
-        # if max_cache_size is 0
         self.cache_max = max_cache_size
         self.cache_left = max_cache_size
         self.cache_dir = cache_dir
