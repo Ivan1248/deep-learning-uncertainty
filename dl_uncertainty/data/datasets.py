@@ -105,10 +105,10 @@ class MozgaloRVCDataset(Dataset):
         img = _load_image(f"{self._subset_dir}/{example_name}")
         lab = self.info['class_names'].index(lab_str)
         img = pad_to_shape(crop(img, self._shape), self._shape)
-        lab = pad_to_shape(crop(lab, self._shape), self._shape, value=-1)
+        if len(img.shape) == 2:  # greyscale -> rgb
+            img = np.dstack([img] * 3)
         if self._remove_bottom:
             img = img[:self._shape[0] // 2, :, :]
-            lab = lab[:self._shape[0] // 2, :]
         return img, lab
 
     def __len__(self):
