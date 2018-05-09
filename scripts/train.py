@@ -43,7 +43,8 @@ if args.ds in ['cifar10', 'svhn', 'mozgalorvc']:
             ds_train, ds_test = ds_train.permute().split(0.8)
     if args.ds == 'mozgalorvc':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
-        ds_train = datasets.MozgaloRVCDataset(mozgalo_path)
+        ds_train = datasets.MozgaloRVCDataset(
+            mozgalo_path, remove_bottom_half=True)
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not args.test:
             ds_train, ds_test = ds_train.split(0.8)
@@ -77,6 +78,8 @@ elif args.ds in ['cityscapes', 'voc2012', 'camvid', 'iccv09']:
         ds_path = dirs.DATASETS + '/iccv09'
         ds_train = datasets.ICCV09Dataset(dirs.DATASETS + '/iccv09')
         ds_train, ds_test = ds_train.permute().split(0.8)
+else:
+    assert False, f"Invalid dataset name: {args.ds}"
 
 # Input normalization and data caching
 
@@ -92,7 +95,7 @@ ds_test = ds_test.map(normalizer.normalize, 0)
 # kept on disk.
 Gi = 1024**3
 cache_mem = 0 * Gi  # 16.529 - cityscapes-train, 19.3 cityscapes trainval
-cache_size = int(data_utils.example_size(raw_ds_train[0]) // (cache_mem + 1e-9))
+cache_size = int(cache_mem // data_utils.example_size(raw_ds_train[0]))
 print(f"Cache size limit = {cache_size} examples ({cache_mem / Gi} GiB)")
 
 cache_assigner = data_utils.CacheAssigner(
@@ -106,10 +109,9 @@ cache_used = cache_assigner.cache_used
 cache_used_mem = cache_mem * cache_used / (cache_size + 1e-5)
 print(f"Cache used = {cache_used} examples ({cache_used_mem / Gi} GiB)")
 
-# If normalized data is not already on disk, this will trigger normalization
-# statistics computation. Normalization statistics need to be computed before
-# parallelized DataLoader is used.
-(ds_train[0], ds_test[0])  # in case ds_test has not been cached
+print("Accessing all examples to make sure normalization statistics " +
+      "are computed before the process is forked in DataLoader...")
+[0 for ds in [ds_train, ds_test] for _ in tqdm(ds) if False]
 
 # Model
 
@@ -128,7 +130,9 @@ densenet_learning_rate_policy = {
 if problem == 'clf':
     tc = TrainingComponent(
         batch_size=64 if args.net == 'dn' else 128,
-        weight_decay=1e-4 if args.net == 'dn' else 5e-4,
+        weight_decay={'dn': 1e-4,
+                      'rn': 1e-4,
+                      'wrn': 5e-4}[args.net],
         loss='auto',
         optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
         learning_rate_policy=densenet_learning_rate_policy
@@ -137,9 +141,11 @@ elif problem == 'semseg':
     if args.net in ['rn', 'dn', 'wrn']:
         tc = TrainingComponent(
             batch_size=4,
-            weight_decay={'dn': 1e-4,
-                          'rn': 5e-4,
-                          'wrn': 5e-4}[args.net],
+            weight_decay={
+                'dn': 1e-4,  # ladder-densenet/voc2012/densenet.py
+                'rn': 1e-4,  # ladder-densenet/voc2012/resnet.py
+                'wrn': 5e-4
+            }[args.net],
             loss='auto',
             optimizer=lambda lr: tf.train.AdamOptimizer(lr),
             learning_rate_policy={
@@ -149,7 +155,9 @@ elif problem == 'semseg':
             }[args.net])
     elif args.net == 'ldn':
         tc = TrainingComponents.ladder_densenet(
-            epoch_count=args.epochs, base_learning_rate=5e-4, batch_size=4)
+            epoch_count=args.epochs,
+            base_learning_rate=5e-4,  # 1e-4 if pre-trained
+            batch_size=4)
 else:
     assert False
 
