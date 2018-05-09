@@ -70,6 +70,16 @@ class Model(object):
             self._log("Log file not found.")
         self._log("State loaded (" + str(self.epoch) + " epochs completed).")
 
+    def load_parameters(self, names_to_values):
+        from tqdm import tqdm
+        self._log("Loading parameters...")
+        with self._graph.as_default():
+            name_to_variable = {v.name: v for v in tf.global_variables()}
+            for name, value in tqdm(names_to_values.items()):
+                var = name_to_variable[name]
+                var.load(value, self._sess)
+        self._log("Parameters loaded...")
+
     def predict(self, inputs: list, outputs="output"):
         """
         :param outputs: string list of strings which can be a list like

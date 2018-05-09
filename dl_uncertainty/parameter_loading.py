@@ -102,16 +102,17 @@ def translate_resnet_variable_names(names: list):
 
 def get_resnet_parameters_from_checkpoint_file(checkpoint_file_path):
     drop_out_words = ['oving', 'Momentum', 'global_step']
+    drop_out_words += ['logits', 'bias']
     filters = [
         lambda x: not any(map(lambda d: d in x, drop_out_words)),
-        lambda x: 'bias' not in x or x == 'resnet_v2_50/logits/biases'
+        #lambda x: 'bias' not in x or x == 'resnet_v2_50/logits/biases',
     ]
 
     def filter_param_name(param_name):
         return all(map(lambda f: f(param_name), filters))
 
     param_name_to_array = get_parameters_from_checkpoint_file(
-        path, filter_param_name)
+        checkpoint_file_path, filter_param_name)
     new_names = translate_resnet_variable_names(param_name_to_array.keys())
     name_to_new_name = dict(zip(param_name_to_array.keys(), new_names))
     return {

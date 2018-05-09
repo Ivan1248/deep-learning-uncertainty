@@ -109,10 +109,6 @@ cache_used = cache_assigner.cache_used
 cache_used_mem = cache_mem * cache_used / (cache_size + 1e-5)
 print(f"Cache used = {cache_used} examples ({cache_used_mem / Gi} GiB)")
 
-print("Accessing all examples to make sure normalization statistics " +
-      "are computed before the process is forked in DataLoader...")
-[0 for ds in [ds_train, ds_test] for _ in tqdm(ds) if False]
-
 # Model
 
 print("Initializing model...")
@@ -166,8 +162,8 @@ ic_args = {
     'class_count': ds_train.info['class_count'],
     'problem': problem
 }
-
 cifar_root_block = args.ds in ['cifar10', 'svhn', 'mozgalorvc']  # semseg?
+cifar_root_block = False  # TODO: undo
 
 if args.net == 'wrn':
     ic = StandardInferenceComponents.wide_resnet(
@@ -211,6 +207,14 @@ model = Model(
     modeldef=ModelDef(ic, tc, evaluation_metrics),
     training_log_period=80,
     name="Model")
+"""
+from dl_uncertainty.ioutils.filesystem import find_in_ancestor
+from dl_uncertainty.parameter_loading import get_resnet_parameters_from_checkpoint_file
+imagenet_params_file = find_in_ancestor(
+    __file__, '/data/pretrained_parameters/resnetv2_50/resnet_v2_50.ckpt')
+names_to_params = get_resnet_parameters_from_checkpoint_file(imagenet_params_file)
+model.load_parameters(names_to_params)
+"""
 
 # Training
 
