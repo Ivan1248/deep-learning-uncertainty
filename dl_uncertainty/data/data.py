@@ -58,7 +58,7 @@ class Dataset(torch.utils.data.Dataset):
 
     def cache_hdd_only(self, directory):
         # caches the whole dataset on disk without keeping it in RAM
-        return OnlyHDDCachedDataset(self, directory)
+        return HDDOnlyCachedDataset(self, directory)
 
     def permute(self, seed=53):
         indices = np.random.RandomState(seed=seed).permutation(len(self))
@@ -82,6 +82,9 @@ class Dataset(torch.utils.data.Dataset):
             other = [other]
         name = f"concat[{self.name}," + ",".join(x.name for x in other) + "]"
         return Dataset(ConcatDataset([self] + other), self.info, name)
+
+
+# Dataset wrappers and proxies
 
 
 class IdDataset(Dataset):
@@ -141,7 +144,7 @@ class CachedDataset(Dataset):
         else:
             self.name = dataset.name + f"-cache_0_to_{cache_size-1}"
             self._print(
-                f"Caching {cache_size}/{len(dataset)} of the dataset...")
+                f"Caching {cache_size}/{len(dataset)} of the dataset in RAM...")
             self.data = [dataset[i] for i in trange(cache_size)]
             self.dataset = dataset
         self.info = dataset.info
@@ -184,17 +187,17 @@ class HDDCachedDataset(Dataset):
         data = None
         if os.path.exists(cache_path):
             try:
-                self._print("Loading dataset cache from hdd...")
+                self._print("Loading dataset cache from HDD...")
                 with open(cache_path, 'rb') as f:
                     n = (len(dataset) - 1) // chunk_size + 1  # ceil
                     chunks = [pickle.load(f) for i in trange(n)]
                     data = list(itertools.chain(*chunks))
             except Exception as ex:
                 self._print(ex)
-                self._print("Removing invalid hdd-cached dataset...")
+                self._print("Removing invalid HDD-cached dataset...")
                 os.remove(cache_path)
         if data is None:
-            self._print(f"Caching whole dataset...")
+            self._print(f"Caching whole dataset in RAM...")
             data = [x for x in tqdm(dataset)]
 
             def get_chunks(data):
@@ -206,10 +209,9 @@ class HDDCachedDataset(Dataset):
                         chunk = []
                 yield chunk
 
-            self._print("Saving dataset cache to hdd...")
+            self._print("Saving dataset cache to HDD...")
             with open(cache_path, 'wb') as f:
-                #pickle.dump(data, cache_file, protocol=4)
-                # examples pickled individually because of memory constraints
+                # examples pickled in chunks because of memory constraints
                 for x in tqdm(get_chunks(data)):
                     pickle.dump(x, f, protocol=4)
         self.data, self.info = data, dataset.info
@@ -221,7 +223,7 @@ class HDDCachedDataset(Dataset):
         return len(self.data)
 
 
-class OnlyHDDCachedDataset(Dataset):
+class HDDOnlyCachedDataset(Dataset):
 
     def __init__(self, dataset, cache_dir):
         self.dataset = dataset
