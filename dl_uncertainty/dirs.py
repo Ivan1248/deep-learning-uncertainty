@@ -12,4 +12,5 @@ def _find_in_ancestor(path_end):
 
 SAVED_NETS = _find_in_ancestor('data/nets')
 LOGS = _find_in_ancestor('data/logs')
-DATASETS = _find_in_ancestor('datasets')
+DATASETS = _find_in_ancestor('data/datasets')
+PRETRAINED = _find_in_ancestor('data/pretrained_parameters')
