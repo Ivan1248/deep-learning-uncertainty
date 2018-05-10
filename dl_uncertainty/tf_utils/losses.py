@@ -72,6 +72,36 @@ def gaussian_logit_expected_cross_entropy_loss(logits_means,
     return tf.reduce_mean(loss_samples, axis=0)
 
 
+def gaussian_logit_expected_probs_cross_entropy_loss(logits_means,
+                                                     logit_log_variances,
+                                                     labels,
+                                                     sample_count=50,
+                                                     reduce_mean=True,
+                                                     eps=1e-5):
+    """
+    NOTE: EQUIVALENT to eq. 11 or eq. 12 in https://arxiv.org/abs/1703.04977
+    TODO: check numerical stability and make it more stable as in eq. 12
+    :param logits: Tensor. N[HW]C
+    :param logit_log_variances: Tensor. N[HW]1
+    :param labels: Tensor. N[HW]C
+    """
+    stddevs = tf.exp(0.5 * logit_log_variances)
+
+    def sample_probs(*args):  # args are ignored
+        logits = tf.random_normal(
+            shape=logits_means.shape, mean=logits_means, stddev=stddevs)
+        return tf.nn.softmax(logits)
+
+    map_hack = tf.constant(0, shape=[sample_count], dtype=logits_means.dtype)
+    probs_samples = tf.map_fn(sample_probs, map_hack)
+    expected_probs = tf.reduce_mean(probs_samples)
+
+    class_count = logits_means.shape[-1].value
+    labels_oh = tf.one_hot(labels, class_count)
+    axis = None or reduce_mean and np.arange(1, len(labels_oh.shape))
+    return -tf.reduce_mean(tf.log(expected_probs + eps) * labels_oh, axis=axis)
+
+
 def temperature_uncertainty_cross_entropy_loss(logits, log_temperatures,
                                                labels):
     """
