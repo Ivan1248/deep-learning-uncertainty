@@ -5,6 +5,7 @@ from functools import reduce
 
 import numpy as np
 import tensorflow as tf
+from tqdm import tqdm
 
 from ..data import DataLoader
 from ..ioutils import file, console
@@ -71,7 +72,6 @@ class Model(object):
         self._log("State loaded (" + str(self.epoch) + " epochs completed).")
 
     def load_parameters(self, names_to_values):
-        from tqdm import tqdm
         self._log("Loading parameters...")
         with self._graph.as_default():
             name_to_variable = {v.name: v for v in tf.global_variables()}
@@ -127,7 +127,8 @@ class Model(object):
 
         for _ in range(epoch_count):
             self._log(f"Training: epoch {self.epoch:d} " +
-                      f"({len(data)} batches of size {self.batch_size})")
+                      f"({len(data)} batches of size {self.batch_size}, " +
+                      f"lr={self._sess.run(self.nodes.learning_rate):.2e})")
             for b, (inputs, labels) in enumerate(data):
                 ef = extra_fetches.values()
                 cost, extra = self._train_minibatch(inputs, labels, ef)
