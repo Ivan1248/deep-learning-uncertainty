@@ -52,10 +52,13 @@ class InferenceComponent:
 
             features_to_output = identity
 
-        def input_to_output(input, **kwargs):
+        def input_to_output(input, pre_logit_learning_rate_factor=1, **kwargs):
             features = input_to_features(input, **kwargs)
             additional_outputs = {'features': features}
             if problem in ['clf', 'semseg']:
+                if pre_logit_learning_rate_factor != 1:
+                    features = layers.amplify_gradient(
+                        features, pre_logit_learning_rate_factor)
                 logits = features_to_logits(features)
                 probs = logits_to_probs(logits)
                 output = tf.argmax(logits, -1, output_type=tf.int32)
@@ -77,6 +80,7 @@ class TrainingComponent:
                  loss='auto',
                  optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
                  learning_rate_policy=lambda epoch: 5e-2,
+                 pre_logit_learning_rate_factor=1,
                  training_post_step=None):
         self.batch_size = batch_size
         self.loss = loss
@@ -84,6 +88,7 @@ class TrainingComponent:
         self.learning_rate_policy = learning_rate_policy
         self.weight_decay = weight_decay
         self.training_post_step = training_post_step
+        self.pre_logit_learning_rate_factor = pre_logit_learning_rate_factor
 
     def initialize(self, problem):
         if self.loss == 'auto':
@@ -112,6 +117,7 @@ class ModelNodes:
             output,
             loss,
             training_step,
+            learning_rate,
             evaluation=dict(),
             additional_outputs=dict(),  # probs, logits, ...
             training_post_step=None):
@@ -120,6 +126,7 @@ class ModelNodes:
         self.outputs = {**additional_outputs, 'output': output}
         self.loss = loss
         self.training_step = training_step
+        self.learning_rate = learning_rate
         self.evaluation = evaluation
         self.training_post_step = training_post_step
 
@@ -145,7 +152,9 @@ class ModelDef():
 
         # Inference
         output, additional_outputs = ic.input_to_output(
-            input, is_training=is_training)
+            input,
+            is_training=is_training,
+            pre_logit_learning_rate_factor=tc.pre_logit_learning_rate_factor)
 
         # Label
         label = tf.placeholder(output.dtype, output.shape, name='label')
@@ -184,6 +193,7 @@ class ModelDef():
             output=output,
             loss=loss,
             training_step=training_step,
+            learning_rate=learning_rate,
             evaluation=evaluation,
             additional_outputs=additional_outputs)
 
@@ -192,10 +202,12 @@ class ModelDef():
 class TrainingComponents:
 
     @staticmethod
-    def ladder_densenet(epoch_count,
-                        base_learning_rate=5e-4,  # 1e-4 pretrained
-                        batch_size=4,
-                        weight_decay=1e-4):
+    def ladder_densenet(
+            epoch_count,
+            base_learning_rate=5e-4,  # 1e-4 pretrained
+            batch_size=4,
+            weight_decay=1e-4,
+            pre_logit_learning_rate_factor=1):
         p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
         params = {k: v for k, v in locals().items() if k in p}
 
@@ -212,7 +224,8 @@ class TrainingComponents:
             weight_decay=weight_decay,
             loss='auto',
             optimizer=lambda lr: tf.train.AdamOptimizer(lr),
-            learning_rate_policy=learning_rate_policy)
+            learning_rate_policy=learning_rate_policy,
+            pre_logit_learning_rate_factor=pre_logit_learning_rate_factor)
 
 
 class InferenceComponents:
@@ -235,17 +248,19 @@ class InferenceComponents:
         if problem in ['semseg', 'clf']:
             assert class_count is not None
         p = [
-            'base_width', 'width_factor', 'group_lengths', 'block_structure', 'dim_change',
-            'cifar_root_block'
+            'base_width', 'width_factor', 'group_lengths', 'block_structure',
+            'dim_change'
         ]
         params = {k: v for k, v in locals().items() if k in p}
 
         def input_to_features(x, is_training, **kwargs):
-            return layers.resnet(x,
+            x = layers.resnet_root_block(
+                x, base_width=base_width, cifar_type=cifar_root_block)
+            return layers.resnet_middle(x,
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    **layers.default_arg(layers.resnet, 'dropout_params'),
+                    **layers.default_arg(layers.resnet_middle, 'dropout_params'),
                     'is_training': is_training
                 })
 
@@ -266,17 +281,18 @@ class InferenceComponents:
                  class_count=None):
         if problem in ['semseg', 'clf']:
             assert class_count is not None
-        p = [
-            'base_width', 'group_lengths', 'block_structure', 'cifar_root_block'
-        ]
+        p = ['base_width', 'group_lengths', 'block_structure']
         params = {k: v for k, v in locals().items() if k in p}
 
         def input_to_features(x, is_training, **kwargs):
-            return layers.densenet(x,
+            x = layers.densenet_root_block(
+                x, base_width=base_width, cifar_type=cifar_root_block)
+            return layers.densenet_middle(
+                x,
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    'rate':dropout_rate,
+                    'rate': dropout_rate,
                     'is_training': is_training
                 })
 
@@ -293,16 +309,21 @@ class InferenceComponents:
                         group_lengths=[6, 12, 24, 16],
                         block_structure=layers.BlockStructure.densenet(),
                         dropout_rate=0,
-                        problem='semseg'):
-        p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
+                        problem='semseg',
+                        cifar_root_block=False):
+        p = [
+            'base_width', 'group_lengths', 'block_structure', 'large_input',
+            'cifar_root_block'
+        ]
         params = {k: v for k, v in locals().items() if k in p}
 
         def input_to_features(x, is_training, **kwargs):
-            return layers.ladder_densenet(x,
+            return layers.ladder_densenet(
+                x,
                 **params,
                 bn_params={'is_training': is_training},
                 dropout_params={
-                    'rate':dropout_rate,
+                    'rate': dropout_rate,
                     'is_training': is_training
                 })
 

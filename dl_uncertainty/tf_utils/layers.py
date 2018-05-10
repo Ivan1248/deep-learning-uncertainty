@@ -40,6 +40,19 @@ def filter_dict(d: dict, keys):
     return {k: v for k, v in d.items() if k in keys}
 
 
+# Gradient control
+
+
+def amplify_gradient(x, factor):
+    return factor * x + (1 - factor) * tf.stop_gradient(x)
+
+
+def amplify_gradient_for_subgraph(input, subgraph_func, factor):
+    input = amplify_gradient(input, 1 / factor)
+    input = subgraph_func(input)
+    return amplify_gradient(input, factor)
+
+
 # Slicing, joining, copying
 
 
@@ -512,25 +525,19 @@ def dense_block(x,
 
 
 @scoped
-def resnet(x,
-           base_width=16,
-           width_factor=1,
-           include_root_block=True,
-           cifar_root_block=False,
-           group_lengths=[2] * 3,
-           block_structure=BlockStructure.resnet(),
-           dim_change='id',
-           bn_params=dict(),
-           dropout_params={'rate': 0.3}):
+def resnet_middle(x,
+                  base_width=16,
+                  width_factor=1,
+                  group_lengths=[2] * 3,
+                  block_structure=BlockStructure.resnet(),
+                  dim_change='id',
+                  bn_params=dict(),
+                  dropout_params={'rate': 0.3}):
     """
-    A pre-activation resnet without the final global pooling and classification
-    layers.
+    A pre-activation resnet without the root block and final global pooling and 
+    classification layers.
     :param x: input tensor
     :param base_width: number of output channels of layers in the first group
-    :param include_root_block: If True, includes the initial convolution followed by
-        max-pooling, if False excludes it.    
-    :param cifar_root_block: If True 3x3 instead of 7x7 convolution and max_pool 
-        omitted in root block. 
     :param group_lengths: numbers of blocks per group
     :param block_structure: a BlockStructure instance
     :param bn_params: parameters for `batch_normalization`
@@ -538,12 +545,6 @@ def resnet(x,
     """
     assert 'is_training' in bn_params
     assert 'is_training' in dropout_params
-    if include_root_block:
-        if cifar_root_block:
-            x = conv(x, 3, base_width, bias=False, name='conv_root')
-        else:
-            x = conv(x, 7, base_width, stride=2, bias=False, name='conv_root')
-            x = max_pool(x, stride=2, ksize=3)
     base_width *= width_factor
     for i, length in enumerate(group_lengths):
         group_width = 2**i * base_width
@@ -562,18 +563,35 @@ def resnet(x,
 
 
 @scoped
-def densenet(
+def resnet_root_block(x, base_width=16, cifar_type=False):
+    """
+    A pre-activation resnet without the final global pooling and classification
+    layers.
+    :param x: input tensor
+    :param base_width: number of output channels
+    :param cifar_type: If True 3x3 instead of 7x7 convolution is used and 
+        max_pool is omitted. 
+    """
+    if cifar_type:
+        x = conv(x, 3, base_width, bias=False)
+    else:
+        x = conv(x, 7, base_width, stride=2, bias=False)
+        x = max_pool(x, stride=2, ksize=3)
+    return x
+
+
+@scoped
+def densenet_middle(
         x,
         base_width=12,
-        include_root_block=True,
-        cifar_root_block=False,
         group_lengths=[19] * 3,  # dense block sizes
         block_structure=BlockStructure.densenet(),
         compression=0.5,
         bn_params=dict(),
         dropout_params={'rate': 0}):  # 0.2 if data augmentation is not used
     """
-    A densenet without the final global pooling and classification layers.
+    A densenet without the root block anf final global pooling and 
+    classification layers.
     :param x: input tensor
     :param base_width: number of output channels of the first layer
     :param group_lengths: numbers of elementary blocks per dense block
@@ -584,12 +602,6 @@ def densenet(
     """
     assert 'is_training' in bn_params
     assert 'is_training' in dropout_params
-    if include_root_block:
-        if cifar_root_block:
-            x = conv(x, 3, 2 * base_width, bias=False, name='conv_root')
-        else:
-            x = conv(x, 7, 2 * base_width, stride=2, bias=False, name='conv_root')
-            x = max_pool(x, stride=2, ksize=3)
     for i, length in enumerate(group_lengths):
         if i > 0:
             x = densenet_transition(
@@ -610,6 +622,24 @@ def densenet(
 
 
 @scoped
+def densenet_root_block(x, base_width=16, cifar_type=False):
+    """
+    A pre-activation resnet without the final global pooling and classification
+    layers.
+    :param x: input tensor
+    :param base_width: 1/2 the number of output channels (densenet growth rate)
+    :param cifar_type: If True 3x3 instead of 7x7 convolution is used and 
+        max_pool is omitted. 
+    """
+    if cifar_type:
+        x = conv(x, 3, 2 * base_width, bias=False)
+    else:
+        x = conv(x, 7, 2 * base_width, stride=2, bias=False)
+        x = max_pool(x, stride=2, ksize=3)
+    return x
+
+
+@scoped
 def ladder_densenet(
         x,
         base_width=32,
@@ -618,7 +648,8 @@ def ladder_densenet(
         compression=0.5,
         upsampling_block_width=128,
         bn_params=dict(),
-        dropout_params={'rate': 0.2}):
+        dropout_params={'rate': 0.2},
+        cifar_root_block=False):
     """
     A densenet without the final global pooling and classification layers.
     :param x: input tensor
@@ -654,10 +685,7 @@ def ladder_densenet(
             x, 3, upsampling_block_width, bias=False, name=f'conv_blend{i}')
         return x
 
-    with tf.variable_scope('root'):
-        x = conv(x, 7, 2 * base_width, stride=2, bias=False, name='conv_root')
-        x = bn_relu(x, bn_params)
-        x = max_pool(x, 2)
+    x = densenet_root_block(x, base_width, cifar_type=cifar_root_block)
 
     skips = []
     for i, length in enumerate(group_lengths[:-1]):

@@ -3,6 +3,58 @@ import multiprocessing
 from tqdm import tqdm
 import os
 
+from . import dirs
+from .data import datasets
+
+# Datasets
+
+def get_dataset(name, trainval_test=False):
+    if name == 'cifar10':
+        ds_path = dirs.DATASETS + '/cifar-10-batches-py'
+        ds_train = datasets.Cifar10Dataset(ds_path, 'train')
+        if trainval_test:
+            ds_test = datasets.Cifar10Dataset(ds_path, 'test')
+        else:
+            ds_train, ds_test = ds_train.permute().split(0.8)
+    elif name == 'mozgalorvc':
+        mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
+        ds_train = datasets.MozgaloRVCDataset(
+            mozgalo_path, remove_bottom_half=True)
+        ds_train, ds_test = ds_train.permute().split(0.8)
+        if not trainval_test:
+            ds_train, ds_test = ds_train.split(0.8)
+    elif name == 'cityscapes':
+        ds_path = dirs.DATASETS + '/cityscapes'
+        load = lambda s: datasets.CityscapesSegmentationDataset(ds_path, s, \
+            downsampling_factor=2, remove_hood=True)
+        ds_train, ds_test = map(load, ['train', 'val'])
+        if trainval_test:
+            ds_train = ds_train.join(ds_test)
+            ds_test = load('test')
+    elif name == 'camvid':
+        ds_path = dirs.DATASETS + '/CamVid'
+        load = lambda s: datasets.CamVidDataset(ds_path, s)
+        ds_train, ds_test = map(load, ['train', 'val'])
+        if trainval_test:
+            ds_train = ds_train.join(ds_test)
+            ds_test = load('test')
+    elif name == 'voc2012':
+        ds_path = dirs.DATASETS + '/VOC2012'
+        load = lambda s: datasets.VOC2012SegmentationDataset(ds_path, s)
+        if trainval_test:
+            ds_train, ds_test = map(load, ['trainval', 'test'])
+        else:
+            ds_train, ds_test = map(load, ['train', 'val'])
+    elif name == 'iccv09':
+        if trainval_test:
+            assert False, "Test set not defined"
+        ds_path = dirs.DATASETS + '/iccv09'
+        ds_train = datasets.ICCV09Dataset(dirs.DATASETS + '/iccv09')
+        ds_train, ds_test = ds_train.permute().split(0.8)
+    else:
+        assert False, f"Invalid dataset name: {name}"
+    return ds_train, ds_test
+
 # Normalization
 
 
@@ -42,7 +94,7 @@ def example_size(example):
     return img.astype(np.float32).nbytes + np.array(lab).nbytes
 
 
-class CacheAssigner:
+class CacheSpaceAssigner:
 
     def __init__(self, cache_dir, max_cache_size):
         self.cache_max = max_cache_size
@@ -69,4 +121,4 @@ class CacheAssigner:
 
     @property
     def cache_used(self):
-        return self.cache_max - self.cache_left
+        return self.cache_max - self.cache_left    
