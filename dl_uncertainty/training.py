@@ -1,11 +1,21 @@
 import tensorflow as tf
 import numpy as np
+from tqdm import tqdm
 
 from .ioutils import console
 from .data import Dataset, DataLoader
 from .models import Model
 from . import dirs
 from .visualization import view_semantic_segmentation
+
+
+def get_hard_examples(model, ds):
+    print("Looking for hard examples...")
+    dl = DataLoader(ds, batch_size=model.batch_size, drop_last=False)
+    predictions = np.concatenate([model.predict(ims) for ims, _ in tqdm(dl)])
+    labels = np.concatenate([labs for _, labs in tqdm(dl)])
+    hard_indices = np.concatenate(np.argwhere(predictions != labels))
+    return ds.subset(hard_indices)
 
 
 def train(model: Model,
@@ -25,6 +35,10 @@ def train(model: Model,
             writer = tf.summary.FileWriter(dirs.LOGS, graph=model._sess.graph)
         elif text == 'd':
             view_semantic_segmentation(ds_view, lambda x: model.predict([x])[0])
+        elif text == 'h':
+            view_semantic_segmentation(
+                get_hard_examples(model, ds_view),
+                lambda x: model.predict([x])[0])
         return False
 
     model.training_step_event_handler = handle_step
@@ -33,7 +47,7 @@ def train(model: Model,
                                .split(min(0.2, len(ds_val) / len(ds_train)))
     ds_train = ds_train.map(input_jitter, 0)
 
-    ds_train, ds_val, ds_train_part = [
+    ds_train_loader, ds_val_loader, ds_train_part_loader = [
         DataLoader(
             ds,
             batch_size=model.batch_size,
@@ -42,8 +56,9 @@ def train(model: Model,
             drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
     ]
 
-    model.test(ds_val)
+    print(f"Starting training ({epoch_count} epochs)...")
+    model.test(ds_val_loader)
     for i in range(epoch_count):
-        model.train(ds_train, epoch_count=1)
-        model.test(ds_val, 'validation data')
-        model.test(ds_train_part, 'training data subset')
+        model.train(ds_train_loader, epoch_count=1)
+        model.test(ds_val_loader, 'validation data')
+        model.test(ds_train_part_loader, 'training data subset')

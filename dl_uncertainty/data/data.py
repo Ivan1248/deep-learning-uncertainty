@@ -1,5 +1,5 @@
 import os
-import pickle
+import secrets
 import pickle
 
 import numpy as np
@@ -14,8 +14,8 @@ from tqdm import tqdm, trange
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, data, info, name):
-        self.name = name
+    def __init__(self, data, info=dict(), name=None):
+        self.name = name or "Dataset" + secrets.token_hex(4)
         self.data = data
         self.info = info
 
@@ -69,12 +69,13 @@ class Dataset(torch.utils.data.Dataset):
     def subset(self, indices):
         return SubDataset(self, indices)
 
-    def split(self, proportion: float):
+    def split(self, proportion: float = None, position: int = None):
+        assert position or proportion
         indices = np.arange(len(self))
-        s = int(proportion * len(self) + 0.5)
-        dss = SubDataset(self, indices[:s]), SubDataset(self, indices[s:])
-        dss[0].name += f"_0_to_{s-1}"
-        dss[1].name += f"_{s}_to_end"
+        pos = position or round(proportion * len(self))
+        dss = SubDataset(self, indices[:pos]), SubDataset(self, indices[pos:])
+        dss[0].name += f"_0_to_{pos-1}"
+        dss[1].name += f"_{pos}_to_end"
         return dss
 
     def join(self, other):

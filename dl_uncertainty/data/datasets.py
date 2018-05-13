@@ -28,7 +28,7 @@ class SVHNDataset(Dataset):
         import scipy.io as sio
         data = sio.loadmat(subset + '_32x32.mat')
         self.x, self.y = data['X'], np.remainder(data['y'], 10)
-        self.info = {'class_count': 10, 'problem': 'clf'}
+        self.info = {'class_count': 10, 'problem_id': 'clf'}
         self.name = f"SVHN-{subset}"
 
     def __getitem__(self, idx):
@@ -66,7 +66,7 @@ class Cifar10Dataset(Dataset):
             self.x, self.y = test_x, test_y
         else:
             raise ValueError("The value of subset must be in {'train','test'}.")
-        self.info = {'class_count': 10, 'problem': 'clf'}
+        self.info = {'class_count': 10, 'problem_id': 'clf'}
         self.name = f"Cifar10-{subset}"
 
     def __getitem__(self, idx):
@@ -87,6 +87,7 @@ class MozgaloRVCDataset(Dataset):
 
         self._shape = [1104, 600]
         self._remove_bottom_proportion = remove_bottom_proportion
+        self._downsampling_factor = downsampling_factor
         train_dir = f"{data_dir}/train"
         class_names = sorted(map(os.path.basename, os.listdir(train_dir)))
         self._subset_dir = f"{data_dir}/{subset}"
@@ -101,11 +102,13 @@ class MozgaloRVCDataset(Dataset):
         self.info = {
             'class_count': 25,
             'class_names': class_names,
-            'problem': 'clf'
+            'problem_id': 'clf'
         }
         self.name = f"MozgaloRVC-{subset}"
         if remove_bottom_proportion:
             self.name += f"-remove_bottom_{remove_bottom_proportion:0.2f}"
+        if downsampling_factor > 1:
+            self.name += f"-downsample_{downsampling_factor}x"
 
     def __getitem__(self, idx):
         example_name = self._image_list[idx]
@@ -116,10 +119,11 @@ class MozgaloRVCDataset(Dataset):
         if len(img.shape) == 2:  # greyscale -> rgb
             img = np.dstack([img] * 3)
         if self._remove_bottom_proportion > 0:
-            a = int(img.shape[0]*(1-self._remove_bottom_proportion))
+            a = int(img.shape[0] * (1 - self._remove_bottom_proportion))
             img = img[:a, :, :]
-        if self.downsampling_factor>1:
-            img = resize(img, )
+        if self._downsampling_factor > 1:
+            h, w = (round(x / self._downsampling_factor) for x in img.shape[:2])
+            img = resize(img, (h, w)) #, anti_aliasing=True)
         return img, lab
 
     def __len__(self):
@@ -142,7 +146,7 @@ class CamVidDataset(Dataset):
         ] for line in lines]
 
         self.info = {
-            'problem':
+            'problem_id':
                 'semseg',
             'class_count':
                 11,
@@ -167,7 +171,7 @@ class CamVidDataset(Dataset):
         self.name = f"CamVid-{subset}"
 
     def __getitem__(self, idx):
-        img, lab = map(_load_image, self._img_lab_list[i])
+        img, lab = map(_load_image, self._img_lab_list[idx])
         lab = lab.astype(np.int8)
         lab[lab == 11] = -1
         return img, lab
@@ -206,7 +210,7 @@ class CityscapesSegmentationDataset(Dataset):
         ]
 
         self.info = {
-            'problem': 'semseg',
+            'problem_id': 'semseg',
             'class_count': 19,
             'class_names': [l.name for l in cslabels if l.trainId >= 0],
             'class_colors': [l.color for l in cslabels if l.trainId >= 0],
@@ -214,9 +218,9 @@ class CityscapesSegmentationDataset(Dataset):
         self.name = f"CityscapesSegmentation-{subset}"
 
         if downsampling_factor > 1:
-            self.name += f"-downsampled{downsampling_factor}x"
+            self.name += f"-downsample_{downsampling_factor}x"
         if remove_hood:
-            self.name += f"-removedhood"
+            self.name += f"-remove_hood"
 
     def __getitem__(self, idx):
         img = pimg.open(f"{self._images_dir}/{self._image_list[idx]}")
@@ -246,7 +250,7 @@ class ICCV09Dataset(Dataset):
         self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
 
         self.info = {
-            'problem':
+            'problem_id':
                 'semseg',
             'class_count':
                 8,
@@ -279,7 +283,7 @@ class VOC2012SegmentationDataset(Dataset):
         self._labels_dir = f'{data_dir}/SegmentationClass'
         self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
         self.info = {
-            'problem':
+            'problem_id':
                 'semseg',
             'class_count':
                 21,
@@ -293,7 +297,7 @@ class VOC2012SegmentationDataset(Dataset):
         self.name = f"VOC2012Segmentation-{subset}"
 
     def __getitem__(self, idx):
-        name = self._image_list[i]
+        name = self._image_list[idx]
         img = _load_image(f"{self._images_dir}/{name}.jpg")
         lab = _load_image(f"{self._labels_dir}/{name}.png").astype(np.int8)
         img = pad_to_shape(img, [500] * 2)

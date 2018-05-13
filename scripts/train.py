@@ -11,13 +11,15 @@ from dl_uncertainty import data_utils, model_utils
 from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_cifar
 from dl_uncertainty import parameter_loading
 
-# python train.py cifar10 wrn 28 10 --epochs 200 --test
-# python train.py cifar10 dn 100 12 --epochs 300 --test
-# python train.py cityscapes dn 121 32 --pretrained --epochs 30 --test
-# python train.py cityscapes rn 50 64 --pretrained --epochs 30 --test
-# python train.py cityscapes ldn 121 32 --pretrained --epochs 30 --test
-# python train.py mozgalorvc rn 50 64 --pretrained --epochs 30 --test
-# python train.py cifar10 rn 34 8 --epochs 200
+# Use "--test" only for training on "trainval" and testing "test".
+# CUDA_VISIBLE_DEVICES=0 python train.py
+#   cifar10 wrn 28 10 --epochs 200 --test
+#   cifar10 dn 100 12 --epochs 300 --test
+#   cifar10 rn 34 8   --epochs 200 --test
+#   cityscapes dn 121 32  --pretrained --epochs 30 --test
+#   cityscapes rn 50 64   --pretrained --epochs 30 --test
+#   cityscapes ldn 121 32 --pretrained --epochs 30 --test
+#   mozgalo rn 50 64 --pretrained --epochs 10 --test
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
@@ -26,7 +28,7 @@ parser.add_argument('depth', type=int)
 parser.add_argument('width', type=int)
 parser.add_argument('--test', action='store_true')
 parser.add_argument('--nodropout', action='store_true')  # for wrn
-parser.add_argument('--pretrained', action='store_true')  # for rn-50
+parser.add_argument('--pretrained', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 args = parser.parse_args()
 print(args)
@@ -35,17 +37,18 @@ print(args)
 
 print("Setting up data loading...")
 ds_train, ds_test = data_utils.get_dataset(args.ds, args.test)
-problem = ds_train.info['problem']
+problem_id = ds_train.info['problem_id']
 
 # Input normalization and data caching
 
+cache_dir = f"{dirs.CACHE}"
+
 print("Setting up data preprocessing...")
-normalizer = data_utils.LazyNormalizer(ds_train)
+normalizer = data_utils.LazyNormalizer(ds_train, cache_dir)
 ds_train = ds_train.map(normalizer.normalize, 0)
 ds_test = ds_test.map(normalizer.normalize, 0)
 
 print("Setting up data caching on HDD...")
-cache_dir = f"{dirs.DATASETS}/{os.path.basename(dirs.DATASETS)}_cache"
 ds_train = ds_train.cache_hdd_only(cache_dir)
 ds_test = ds_test.cache_hdd_only(cache_dir)
 
@@ -54,9 +57,9 @@ ds_test = ds_test.cache_hdd_only(cache_dir)
 print("Initializing model...")
 model = model_utils.get_model(
     net_name=args.net,
-    problem=problem,
+    problem_id=problem_id,
     epoch_count=args.epochs,
-    ds_name=args.ds,
+    ds_id=args.ds,
     ds_train=ds_train,
     depth=args.depth,
     width=args.width,  # width factor for WRN, base_width for others
@@ -79,7 +82,7 @@ training.train(
     model,
     ds_train,
     ds_test,
-    input_jitter=random_fliplr if problem == 'semseg' else augment_cifar,
+    input_jitter=augment_cifar if args.ds == 'cifar' else random_fliplr,
     epoch_count=args.epochs,
     data_loading_worker_count=4)
 

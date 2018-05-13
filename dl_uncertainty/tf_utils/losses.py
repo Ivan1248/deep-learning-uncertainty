@@ -23,6 +23,16 @@ def cross_entropy_loss(logits, labels, reduce_mean=True):
     return loss * (tf.size(labels) / label_count)  # N
 
 
+def cross_entropy_loss_p(probs, labels, reduce_mean=True):
+    class_count = probs.shape[-1].value
+    logits_oh = tf.one_hot(labels, class_count)
+    loss = -logits_oh * tf.log(probs)
+    label_count = tf.reduce_sum(logits_oh)  # TODO: make more efficient
+    if reduce_mean:
+        return tf.reduce_sum(loss) / label_count  # 1
+    return loss * (tf.size(labels) / label_count)  # N
+
+
 def class_distribution_weighted_cross_entropy_loss(logits,
                                                    labels,
                                                    class_distribution=None,

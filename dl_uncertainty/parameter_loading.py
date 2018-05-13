@@ -51,9 +51,9 @@ def get_resnet_parameters_from_checkpoint_file(checkpoint_file_path):
         checkpoint_file_path, filter_param_name)
 
     simple_replacements = {  # by priority
-        'resnet_v2_50/conv1': 'resnet/conv_root',
+        'resnet_v2_50/conv1': 'resnet_root_block/conv',
         'resnet_v2_50/logits': 'conv_logits',
-        'resnet_v2_50': 'resnet',
+        'resnet_v2_50': 'resnet_middle',
         'unit_1/bottleneck_v2/preact': 'rb0/bn_relu/bn',
         'bottleneck_v2/preact': 'block/bn_relu0/bn',
         'bottleneck_v2/shortcut': 'conv_skip',
