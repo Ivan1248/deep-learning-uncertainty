@@ -89,3 +89,4 @@ ENV/
 
 # Specific
 /data/nets
+/pytorch
