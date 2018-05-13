@@ -1,25 +1,27 @@
+import os
 import numpy as np
 import multiprocessing
 from tqdm import tqdm
-import os
+import pickle
 
 from . import dirs
 from .data import datasets
 
 # Datasets
 
+
 def get_dataset(name, trainval_test=False):
-    if name == 'cifar10':
+    if name == 'cifar':
         ds_path = dirs.DATASETS + '/cifar-10-batches-py'
         ds_train = datasets.Cifar10Dataset(ds_path, 'train')
         if trainval_test:
             ds_test = datasets.Cifar10Dataset(ds_path, 'test')
         else:
             ds_train, ds_test = ds_train.permute().split(0.8)
-    elif name == 'mozgalorvc':
+    elif name == 'mozgalo':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
         ds_train = datasets.MozgaloRVCDataset(
-            mozgalo_path, remove_bottom_half=True)
+            mozgalo_path, remove_bottom_proportion=2 / 3, downsampling_factor=4)
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not trainval_test:
             ds_train, ds_test = ds_train.split(0.8)
@@ -55,6 +57,7 @@ def get_dataset(name, trainval_test=False):
         assert False, f"Invalid dataset name: {name}"
     return ds_train, ds_test
 
+
 # Normalization
 
 
@@ -66,16 +69,31 @@ def get_input_mean_std(dataset):
 
 class LazyNormalizer:
 
-    def __init__(self, ds):
+    def __init__(self, ds, cache_dir=None):
         self.ds = ds
         self.mean, self.std = get_input_mean_std([ds[0], ds[1]])
         self.initialized = multiprocessing.Value('i', 0)
         self.mean = multiprocessing.Array('f', self.mean)
         self.std = multiprocessing.Array('f', self.std)
+        self.cache_dir = f"{cache_dir}/lazy-normalizer-cache/"
+        self.cache_path = f"{self.cache_dir}/{ds.name}.p"
 
     def _initialize(self):
-        print(f"Computing dataset statistics for {self.ds.name}")
-        self.mean.value, self.std.value = get_input_mean_std(tqdm(self.ds))
+        mean_std = None
+        if os.path.exists(self.cache_path):
+            try:
+                print(f"Loading dataset statistics for {self.ds.name}")
+                with open(self.cache_path, 'rb') as cache_file:
+                    mean_std = pickle.load(cache_file)
+            except:
+                os.remove(self.cache_path)
+        if mean_std is None:
+            print(f"Computing dataset statistics for {self.ds.name}")
+            mean_std = get_input_mean_std(tqdm(self.ds))
+            os.makedirs(self.cache_dir, exist_ok=True)
+            with open(f"{self.cache_path}", 'wb') as cache_file:
+                pickle.dump(mean_std, cache_file, protocol=4)
+        self.mean.value, self.std.value = mean_std
 
     def normalize(self, x):
         with self.initialized.get_lock():
@@ -121,4 +139,4 @@ class CacheSpaceAssigner:
 
     @property
     def cache_used(self):
-        return self.cache_max - self.cache_left    
+        return self.cache_max - self.cache_left
