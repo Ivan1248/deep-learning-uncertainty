@@ -132,7 +132,7 @@ Uncertainty in Deep Learning<y:LabelModel>
         <y:ShapeNode>
           <y:Geometry height="65.0" width="150.0" x="0.0" y="236.02103174603172"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
-          <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
+          <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="65.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">MacKay, 1992
 A Practical Bayesian Framework for Backprop Networks<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -3398,7 +3398,6 @@ Visual Information Theory<y:LabelModel>
       </data>
     </edge>
     <edge id="e122" source="n76" target="n77">
-      <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
@@ -3409,7 +3408,6 @@ Visual Information Theory<y:LabelModel>
       </data>
     </edge>
     <edge id="e123" source="n78" target="n79">
-      <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
