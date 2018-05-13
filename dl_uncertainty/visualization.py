@@ -49,7 +49,7 @@ class Viewer:
         self.name = name
 
     def display(self, dataset, mapping=lambda x: x):
-        mpl.use('wxAgg')
+        #mpl.use('wxAgg')
 
         i = 0
 
@@ -85,12 +85,20 @@ def view_semantic_segmentation(dataset, infer=None):
 
     def get_frame(datapoint):
         img, lab = datapoint
+        if np.shape(lab) == ():
+            lab = np.full(img.shape[:2], lab)
         img_scaled01 = (img - np.min(img)) / (np.max(img) - np.min(img))
+        black = img_scaled01 * 0
         clab = colorify_label(lab + 1, colors)
-        cplab = clab if infer is None else colorify_label(
-            infer(img) + 1, colors)
-
-        comp = compose([img_scaled01, clab, cplab], format='0,0;2,0-2;1,0-1')
+        if infer is not None:
+            pred = infer(img)
+            if np.shape(pred) == ():
+                pred = np.full(img.shape[:2], pred)
+            cpred = colorify_label(pred + 1, colors)
+            comp = compose(
+                [black, img_scaled01, clab, cpred], format='0,1;2,1-2;3,1-3')
+        else:
+            comp = compose([black, img_scaled01, clab], format='0,1;2,1-2')
 
         bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
         step = bar_height // len(colors)
