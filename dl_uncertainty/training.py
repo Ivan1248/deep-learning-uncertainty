@@ -25,8 +25,6 @@ def train(model: Model,
           epoch_count=200,
           data_loading_worker_count=0):
 
-    ds_view = ds_val
-
     def handle_step(i):
         text = console.read_line(impatient=True, discard_non_last=True)
         if text == 'q':
@@ -34,10 +32,10 @@ def train(model: Model,
         elif text == 's':
             writer = tf.summary.FileWriter(dirs.LOGS, graph=model._sess.graph)
         elif text == 'd':
-            view_semantic_segmentation(ds_view, lambda x: model.predict([x])[0])
+            view_semantic_segmentation(ds_val, lambda x: model.predict([x])[0])
         elif text == 'h':
             view_semantic_segmentation(
-                get_hard_examples(model, ds_view),
+                get_hard_examples(model, ds_val),
                 lambda x: model.predict([x])[0])
         return False
 

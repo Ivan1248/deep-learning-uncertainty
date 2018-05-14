@@ -3,63 +3,46 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from _context import dl_uncertainty
-from dl_uncertainty.data_utils import Cifar10Loader, OldDataset, MiniBatchReader
-from dl_uncertainty.visualization import compose, Viewer
-import dl_uncertainty.dirs as dirs
-from dl_uncertainty.training import train_cifar
-from dl_uncertainty.models import ResNet, BlockStructure
+
+from dl_uncertainty import dirs, training
+from dl_uncertainty import data_utils, model_utils
+from dl_uncertainty.data import DataLoader, Dataset
+from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_cifar
+from dl_uncertainty import parameter_loading
 
 print("Loading and preparing data")
-ds = Cifar10Loader.load('test')
-ds = ds.split(0, 4096)[0]
+_, ds = data_utils.get_dataset('cifar', trainval_test=True)
+ds = ds.permute().split(0, 4096)[0]
+ds.name = 'CIFAR-10-test[:4096]'
 
-images_ud = np.array(list(map(np.flipud, ds.images)))
-ds_ud = OldDataset(images_ud, ds.labels, ds.class_count)
+ds_ud = ds.map(np.flipud, 0)
+ds_rand = Dataset(data=np.random.randn(ds[0][0].shape), name='rand')
 
-images_rand = np.random.randn(images_ud.shape)
-ds_rand = OldDataset(images_rand, ds.labels, ds.class_count)
-
-dsid_to_ds = {'Cifar': ds, 'Cifar-UD': ds_ud, 'random': ds_rand}
+dsid_to_ds = {'CIFAR-10': ds, 'CIFAR-10-flipud': ds_ud, 'random': ds_rand}
 
 print("Loading model")
-# resnets
-zagoruyko_depth = 28
-zagoruyko_width = 10
-no_dropout = False
 
-group_count = 3
-ksizes = [3, 3]
-blocks_per_group = (zagoruyko_depth - 4) // (group_count * len(ksizes))
-print(f"group count: {group_count}, blocks per group: {blocks_per_group}")
-group_lengths = [blocks_per_group] * group_count
-model = ResNet(
-    input_shape=ds.input_shape,
-    class_count=ds.class_count,
-    batch_size=128,
-    learning_rate_policy={
-        'boundaries': [int(i + 0.5) for i in [60, 120, 160]],
-        'values': [1e-1 * 0.2**i for i in range(4)]
-    },
-    block_structure=BlockStructure.resnet(
-        ksizes=ksizes, dropout_locations=[] if no_dropout else [0]),
-    group_lengths=group_lengths,
-    base_width=zagoruyko_width * 16,
-    dim_change='proj',
-    weight_decay=5e-4,
-    training_log_period=60)
+model = model_utils.get_model(
+    net_name='wrn',
+    depth=28,
+    width=10,
+    problem='cls',
+    epoch_count=1,
+    ds_id='cifar',
+    ds_train=ds)
 
-saved_path = dirs.SAVED_MODELS + '/wrn-28-10-t--2018-01-23-19-13/ResNet'  # vanilla
+saved_path = dirs.SAVED_NETS + '/wrn-28-10-t--2018-01-23-19-13/ResNet'  # vanilla
 model.load_state(saved_path)
 
 print("Printing logit biases")
 with model._graph.as_default():
     vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
     logit_biases_var = list(
-        filter(lambda x: x.name == 'Conv/biases:0', vars))[0]
+        filter(lambda x: x.name == 'conv_logits/bias:0', vars))[0]
     logit_biases = model._sess.run(logit_biases_var)
     print("Logit biases:", logit_biases)
-    print("Logit biases sum:", np.sum(logit_biases))
-    print("Logit biases mean:", np.average(logit_biases))
+    print("Logit biases sum:", logit_biases.sum())
+    print("Logit biases mean:", logit_biases.mean())
 
 print("Collecting logit statistics")
 
@@ -68,11 +51,8 @@ def get_logit_value_statistics(ds, biases=0, stddevs=1):
     cost, ev = model.test(ds)
     values = {'logits': [], 'max': [], 'nonmax': [], 'sorted': []}
 
-    mbr = MiniBatchReader(ds, 128)
-
-    for _ in range(len(ds) // 128):
-        ims, labs = mbr.get_next_batch()
-        logitses = (model._run(model.nodes.logits, ims) - biases) / stddevs
+    for images, labels in DataLoader(ds, batch_size=model.batch_size):
+        logitses = (model._run(model.nodes.logits, images) - biases) / stddevs
         for logits in logitses:
             sorted_logits = np.sort(logits)[::-1]
             values['all'].append(logits)
@@ -133,7 +113,9 @@ r = (np.min(np.stack([v['nonmax'] for v in dsid_to_values.values()])),
 def hist(x, label):
     plt.hist(x, bins=40, range=r, alpha=0.5, label=label)
 
-for valkind, titlekind in [('max', 'Max'), ('nonmax','Non-max'), ('Any','all')]:
+
+for valkind, titlekind in [('max', 'Max'), ('nonmax', 'Non-max'), ('Any',
+                                                                   'all')]:
     for dsid, values in dsid_to_values.items():
         hist(values[valkind], dsid)
         hist(values[valkind], dsid)

@@ -13,6 +13,7 @@ def random_fliplr(im):
 
 
 def augment_cifar(im, max_padding=4):
+    shape = im.shape[:2]
     im = pad(im, max_padding)
-    im = random_crop(im, im.shape[:2])
+    im = random_crop(im, shape)
     return random_fliplr(im)

@@ -17,14 +17,11 @@ from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_c
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
 parser.add_argument('part', type=str)
-parser.add_argument('--augmentation', action='store_false')
+parser.add_argument('--augment', action='store_false')
 args = parser.parse_args()
-
-# Dataset
 
 ds_train, ds_val = data_utils.get_dataset(args.ds, trainval_test=False)
 ds_trainval, ds_test = data_utils.get_dataset(args.ds, trainval_test=True)
-ds_trainval = ds_train.join(ds_val)
 ds = {
     'train': ds_train,
     'val': ds_val,

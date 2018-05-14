@@ -16,9 +16,9 @@ from dl_uncertainty import parameter_loading
 #   cifar10 wrn 28 10 --epochs 200 --test
 #   cifar10 dn 100 12 --epochs 300 --test
 #   cifar10 rn 34 8   --epochs 200 --test
-#   cityscapes dn 121 32  --pretrained --epochs 30 --test
-#   cityscapes rn 50 64   --pretrained --epochs 30 --test
-#   cityscapes ldn 121 32 --pretrained --epochs 30 --test
+#   cityscapes dn 121 32  --pretrained --epochs 30
+#   cityscapes rn 50 64   --pretrained --epochs 30
+#   cityscapes ldn 121 32 --pretrained --epochs 30
 #   mozgalo rn 50 64 --pretrained --epochs 10 --test
 
 parser = argparse.ArgumentParser()
@@ -82,7 +82,7 @@ training.train(
     model,
     ds_train,
     ds_test,
-    input_jitter=augment_cifar if args.ds == 'cifar' else random_fliplr,
+    input_jitter={'cifar': augment_cifar}.get(args.ds, random_fliplr),
     epoch_count=args.epochs,
     data_loading_worker_count=4)
 
