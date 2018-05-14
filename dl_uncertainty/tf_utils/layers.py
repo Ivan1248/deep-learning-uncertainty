@@ -226,8 +226,8 @@ def batch_normalization(
         is_training=None,  # has no effect if mode is deffind
         offset=True,
         scale=True,
-        decay=0.95,
-        var_epsilon=1e-8,
+        decay=0.9,
+        var_epsilon=1e-5,
         scope: str = None):
     """
     Batch normalization with scaling that normalizes over all but the last
