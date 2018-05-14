@@ -13,9 +13,29 @@ from .data import Dataset
 from ..processing.shape import pad_to_shape, crop
 from ..ioutils import file
 
+# Helper functions
+
 
 def _load_image(path):
     return np.array(pimg.open(path))
+
+
+# Artificial datasets
+
+
+class WhiteNoiseDataset(Dataset):
+
+    def __init__(self, example_shape, size, seed=None):
+        self._shape = example_shape
+        self._rand = np.RandomState(seed=seed)
+        self._seeds = self._rand.random_integers(low=0, size=(size))
+
+    def __getitem__(self, idx):
+        self._rand.seed(self._seeds[idx])
+        return self._rand.randn(self._shape)
+
+    def __len__(self):
+        return len(self._seeds)
 
 
 # Classification
@@ -123,7 +143,7 @@ class MozgaloRVCDataset(Dataset):
             img = img[:a, :, :]
         if self._downsampling_factor > 1:
             h, w = (round(x / self._downsampling_factor) for x in img.shape[:2])
-            img = resize(img, (h, w)) #, anti_aliasing=True)
+            img = resize(img, (h, w))  #, anti_aliasing=True)
         return img, lab
 
     def __len__(self):
@@ -187,7 +207,7 @@ class CityscapesSegmentationDataset(Dataset):
                  subset='train',
                  downsampling_factor=1,
                  remove_hood=False):
-        assert subset in ['train', 'val', 'test']
+        assert subset in ['train', 'val', 'test']  # 'test' labels are invalid
         assert downsampling_factor >= 1
         from .cityscapes_labels import labels as cslabels
 

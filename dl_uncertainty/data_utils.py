@@ -21,7 +21,7 @@ def get_dataset(name, trainval_test=False):
     elif name == 'mozgalo':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
         ds_train = datasets.MozgaloRVCDataset(
-            mozgalo_path, remove_bottom_proportion=2 / 3, downsampling_factor=4)
+            mozgalo_path, remove_bottom_proportion=0.5, downsampling_factor=4)
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not trainval_test:
             ds_train, ds_test = ds_train.split(0.8)
@@ -48,11 +48,11 @@ def get_dataset(name, trainval_test=False):
         else:
             ds_train, ds_test = map(load, ['train', 'val'])
     elif name == 'iccv09':
-        if trainval_test:
-            assert False, "Test set not defined"
         ds_path = dirs.DATASETS + '/iccv09'
         ds_train = datasets.ICCV09Dataset(dirs.DATASETS + '/iccv09')
         ds_train, ds_test = ds_train.permute().split(0.8)
+        if not trainval_test:
+            ds_train, ds_test = ds_train.split(0.8)
     else:
         assert False, f"Invalid dataset name: {name}"
     return ds_train, ds_test
