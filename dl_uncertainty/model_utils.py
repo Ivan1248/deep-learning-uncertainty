@@ -3,6 +3,7 @@ import tensorflow as tf
 from .models import Model, ModelDef
 from .models import BlockStructure, TrainingComponent, EvaluationMetrics
 from .models import InferenceComponents, TrainingComponents
+from .evaluation import ClassificationEvaluator
 
 
 class StandardInferenceComponents:
@@ -182,7 +183,8 @@ def get_training_component(net_name,
             # NOTE/TODO?: 'dn' is here now, not up there
             return TrainingComponents.ladder_densenet(
                 epoch_count=epoch_count,
-                base_learning_rate=5e-4, # /10 77%, /50 79% /100
+                base_learning_rate=
+                5e-4,  # /10 77%, /50 resnet0.840 densenet0.841 /100 79.68
                 batch_size=batch_size,
                 weight_decay=weight_decay,
                 pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
@@ -208,7 +210,7 @@ def get_inference_component(
         'depth': depth,
         'cifar_root_block': ds_id in ['cifar', 'svhn'],
     }
-    if net_name in ['rn' 'dn', 'wrn']:
+    if net_name in ['rn', 'dn', 'wrn']:
         sic_args['base_width'] = base_width
 
     if net_name == 'wrn':
@@ -258,12 +260,7 @@ def get_model(
         base_width=None or net_name != 'wrn' and width,
         width_factor=None or net_name == 'wrn' and width)
 
-    evaluation_metrics = [EvaluationMetrics.accuracy]
-    if problem_id == 'semseg':
-        evaluation_metrics.append(
-            EvaluationMetrics.semantic_segementation(class_count))
-
     return Model(
-        modeldef=ModelDef(ic, tc, evaluation_metrics),
+        modeldef=ModelDef(ic, tc),
         training_log_period=len(ds_train) // tc.batch_size // 5,
-        name="Model")
+        accumulating_evaluator=ClassificationEvaluator(class_count))

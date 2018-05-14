@@ -390,11 +390,11 @@ class EvaluationMetrics:
                                 evaluation.accuracy)
 
     @staticmethod
-    def semantic_segementation(class_count,
-                               returns=['m_p', 'm_r', 'm_f1', 'm_iou']):
+    def semantic_segementation(class_count, returns=['mP', 'mR', 'mF1',
+                                                     'mIoU']):
 
         def func(labels, predictions):
-            return evaluation.evaluate_semantic_segmentation(
-                labels, predictions, class_count, returns)
+            return evaluation.multiclass_scores(labels, predictions,
+                                                class_count, returns)
 
         return EvaluationMetric(returns, ['label', 'output'], func)
