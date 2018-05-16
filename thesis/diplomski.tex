@@ -102,7 +102,7 @@ Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
 \begin{align}
 \dirac(\vec x)\coloneqq\prod_i\dirac(x_i) .
 \end{align}
-Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} po skupu mogućih ima vrijednost $1$. 
+Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} ima vrijednost $1$. 
 
 %npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
@@ -237,7 +237,7 @@ KL-divergencija će biti $0$ akko $\rvar x$ i $\rvar y$ imaju iste razdiobe. Ona
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{dkl-asymmetry}
-	\caption{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl{p}{q}$ (lijevo) ili $\Dkl{q}{p}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl{p}{q}$ (crveno) ili $\Dkl{q}{p}$ (zeleno). Optimalna aproksimirajuća razdioba lijevo ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Desno optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je rzmak između modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sličnija lijevoj. Slika je napravljena po uzoru na sliku~$3.6$ u \citet{Goodfellow:2016:DL}.}
+	\caption{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl{p}{q}$ (lijevo) ili $\Dkl{q}{p}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl{p}{q}$ (crveno) ili $\Dkl{q}{p}$ (zeleno). Optimalna aproksimirajuća razdioba lijevo ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Desno optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je razmak između modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sličnija lijevoj. Slika je napravljena po uzoru na sliku~3.6 u \citet{Goodfellow:2016:DL}.}
 	\label{fig:dkl-asymmetry}
 \end{figure}
 
@@ -579,7 +579,7 @@ footnotesize {\footnotesize \the\fontdimen6\font\newline % ex}
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
-	\caption{Homoskedaktički (lijevo) i heteroskedaktički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
+	\caption{Homoskedastički (lijevo) i heteroskedastički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
 	\label{fig:homoscedastic-heteroscedastic-noises}
 \end{figure}
 
