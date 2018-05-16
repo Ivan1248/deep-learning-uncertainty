@@ -27,8 +27,10 @@ class WhiteNoiseDataset(Dataset):
 
     def __init__(self, example_shape, size, seed=None):
         self._shape = example_shape
-        self._rand = np.RandomState(seed=seed)
-        self._seeds = self._rand.random_integers(low=0, size=(size))
+        self._rand = np.random.RandomState(seed=seed)
+        self._seeds = self._rand.random_integers(low=0, high=100, size=(size))
+        self.name = 'white_noise'
+        self.info = dict()
 
     def __getitem__(self, idx):
         self._rand.seed(self._seeds[idx])

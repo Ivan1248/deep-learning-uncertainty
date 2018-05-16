@@ -6,32 +6,55 @@ from _context import dl_uncertainty
 
 from dl_uncertainty import dirs, training
 from dl_uncertainty import data_utils, model_utils
+from dl_uncertainty.data_utils import get_cached_dataset_with_normalized_inputs
 from dl_uncertainty.data import DataLoader, Dataset
+from dl_uncertainty.data import datasets
 from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_cifar
+from dl_uncertainty.processing.shape import adjust_shape, pad_to_shape
 from dl_uncertainty import parameter_loading
 
 print("Loading and preparing data")
-_, ds = data_utils.get_dataset('cifar', trainval_test=True)
+_, ds = get_cached_dataset_with_normalized_inputs('cifar', trainval_test=True)
 ds = ds.permute().split(0, 4096)[0]
-ds.name = 'CIFAR-10-test[:4096]'
+input_shape = ds[0][0].shape
+
+
+def reshape(x):
+    return adjust_shape(x, input_shape)
+
 
 ds_ud = ds.map(np.flipud, 0)
-ds_rand = Dataset(data=np.random.randn(ds[0][0].shape), name='rand')
+ds_rand = datasets.WhiteNoiseDataset(
+    input_shape, size=1000, seed=53).map(lambda x: (x, -1))
+ds_mozg = get_cached_dataset_with_normalized_inputs('mozgalo')[0] \
+          .map(adjust_shape, 0)
+ds_camvid = get_cached_dataset_with_normalized_inputs('camvid')[0] \
+           .map(adjust_shape, 0)
 
-dsid_to_ds = {'CIFAR-10': ds, 'CIFAR-10-flipud': ds_ud, 'random': ds_rand}
+dsid_to_ds = {
+    'CIFAR-10': ds,
+    'CIFAR-10-UD': ds_ud,
+    'random': ds_rand,
+    'CamVid': ds_camvid
+}
 
 print("Loading model")
 
+#ds_id, net_name, depth, width = 'cifar', 'wrn', 28, 10
+#saved_path = dirs.SAVED_NETS + '/cifar-trainval/wrn-28-10/2018-04-28-1926/Model'
+
+ds_id, net_name, depth, width = 'mozgalo', 'rn', 18, 64
+saved_path = dirs.SAVED_NETS + '/mozgalo-trainval/rn-18-64-e10/2018-05-13-1747/Model'
+
 model = model_utils.get_model(
-    net_name='wrn',
-    depth=28,
-    width=10,
-    problem='cls',
+    net_name=net_name,
+    depth=depth,
+    width=width,
+    problem_id='clf',
     epoch_count=1,
-    ds_id='cifar',
+    ds_id=ds_id,
     ds_train=ds)
 
-saved_path = dirs.SAVED_NETS + '/wrn-28-10-t--2018-01-23-19-13/ResNet'  # vanilla
 model.load_state(saved_path)
 
 print("Printing logit biases")

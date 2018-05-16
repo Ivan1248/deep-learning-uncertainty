@@ -140,3 +140,23 @@ class CacheSpaceAssigner:
     @property
     def cache_used(self):
         return self.cache_max - self.cache_left
+
+
+# Cached dataset with normalized inputs
+
+
+def get_cached_dataset_with_normalized_inputs(name, trainval_test=False):
+    ds_train, ds_test = get_dataset(name, trainval_test)
+
+    cache_dir = f"{dirs.CACHE}"
+
+    print("Setting up data preprocessing...")
+    normalizer = LazyNormalizer(ds_train, cache_dir)
+    ds_train = ds_train.map(normalizer.normalize, 0)
+    ds_test = ds_test.map(normalizer.normalize, 0)
+
+    print("Setting up data caching on HDD...")
+    ds_train = ds_train.cache_hdd_only(cache_dir)
+    ds_test = ds_test.cache_hdd_only(cache_dir)
+
+    return ds_train, ds_test

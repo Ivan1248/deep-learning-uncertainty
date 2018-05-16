@@ -114,35 +114,36 @@ class Model(object):
     def train(self, data: DataLoader, epoch_count=1):
 
         def train_minibatch(inputs, labels, extra_fetches=[]):
-            fetches = [
-                self.nodes.training_step,
-                self.nodes.loss,
-            ] + list(extra_fetches)
+            fetches = [self.nodes.training_step, self.nodes.loss] + \
+                      list(extra_fetches)
             _, loss, *extra = self._run(
                 fetches, inputs, labels, is_training=True)
-            loss += loss
-            #evaluator.accumulate(labels, output)
             if self.nodes.training_post_step is not None:
                 self._sess.run(self.nodes.training_post_step)
             return loss, extra
 
-        def handle_step_completed(batch, loss):
+        def log_part_results(batch):
+            nonlocal losses
             ev = zip(self.ae_eval_names, self._sess.run(self.ae_evals))
+            loss = np.mean(losses)
             self._sess.run(self.ae_reset)
+            losses = []
             self._log(f" {self.epoch:3d}.{(b + 1):3d}: " +
                       f"{self._eval_str(loss, ev)}")
-        
+
+        losses = []
         self._sess.run(self.ae_reset)
         for _ in range(epoch_count):
             self._log(f"Training: epoch {self.epoch:d} " +
                       f"({len(data)} batches of size {self.batch_size}, " +
                       f"lr={self._sess.run(self.nodes.learning_rate):.2e})")
             for b, (inputs, labels) in enumerate(data):
-                loss, *_ = train_minibatch(
+                loss, _ = train_minibatch(
                     inputs, labels, extra_fetches=[self.ae_accum_batch])
+                losses.append(loss)
                 if (b + 1) % self.training_log_period == 0:
-                    end = handle_step_completed(b, loss) == 'q'
-                end = self.training_step_event_handler(b)
+                    log_part_results(b)
+                end = self.training_step_event_handler(b) == 'q'
             self._sess.run(self._increment_epoch)
             if end:
                 return False
@@ -164,25 +165,6 @@ class Model(object):
         ev = zip(self.ae_eval_names, self._sess.run(self.ae_evals))
         self._log(" " + self._eval_str(loss, ev))
         return loss, ev
-
-    def _test_old(self,
-                  data: DataLoader,
-                  extra_fetches: dict = dict(),
-                  test_name=None):
-        self._log('Testing%s...' %
-                  ("" if test_name is None else " (" + test_name + ")"))
-        cost_sum, extra_sum = 0, np.zeros(len(extra_fetches))
-        for inputs, labels in data:
-            fetches = [self.nodes.loss] + list(extra_fetches.values())
-            evals = self._run(fetches, inputs, labels, is_training=False)
-            cost, extra = evals[0], evals[1:]
-            cost_sum += cost
-            extra_sum += np.array(extra)
-        cost = cost_sum / len(data)
-        extra = extra_sum / len(data)
-        ev = list(zip(extra_fetches.keys(), extra))
-        self._log(" " + self._eval_str(cost, ev))
-        return cost, dict(ev)
 
     def _run(self, fetches: list, inputs, labels=None, is_training=None):
         feed_dict = {self.nodes.input: inputs}

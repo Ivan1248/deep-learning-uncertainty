@@ -11,46 +11,37 @@ from dl_uncertainty import data_utils, model_utils
 from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_cifar
 from dl_uncertainty import parameter_loading
 
-# Use "--test" only for training on "trainval" and testing "test".
+# Use "--trainval" only for training on "trainval" and testing "test".
 # CUDA_VISIBLE_DEVICES=0 python train.py
-#   cifar10 wrn 28 10 --epochs 200 --test
-#   cifar10 dn 100 12 --epochs 300 --test
-#   cifar10 rn 34 8   --epochs 200 --test
+# CUDA_VISIBLE_DEVICES=1 python train.py
+# CUDA_VISIBLE_DEVICES=2 python train.py
+#   cifar wrn 28 10 --epochs 200 --trainval
+#   cifar dn 100 12 --epochs 300 --trainval
+#   cifar rn 34 8   --epochs 200 --trainval
 #   cityscapes dn 121 32  --pretrained --epochs 30
 #   cityscapes rn 50 64   --pretrained --epochs 30
 #   cityscapes ldn 121 32 --pretrained --epochs 30
-#   mozgalo rn 50 64 --pretrained --epochs 10 --test
+#   mozgalo rn 50 64 --pretrained --epochs 10 --trainval
+#   mozgalo rn 18 64 --epochs 15 --trainval
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
 parser.add_argument('net', type=str)  # 'wrn' or 'dn'
 parser.add_argument('depth', type=int)
 parser.add_argument('width', type=int)
-parser.add_argument('--test', action='store_true')
+parser.add_argument('--trainval', action='store_true')
 parser.add_argument('--nodropout', action='store_true')  # for wrn
 parser.add_argument('--pretrained', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 args = parser.parse_args()
 print(args)
 
-# Dataset
+# Cached dataset with normalized inputs
 
 print("Setting up data loading...")
-ds_train, ds_test = data_utils.get_dataset(args.ds, args.test)
+ds_train, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
+    args.ds, trainval_test=args.trainval)
 problem_id = ds_train.info['problem_id']
-
-# Input normalization and data caching
-
-cache_dir = f"{dirs.CACHE}"
-
-print("Setting up data preprocessing...")
-normalizer = data_utils.LazyNormalizer(ds_train, cache_dir)
-ds_train = ds_train.map(normalizer.normalize, 0)
-ds_test = ds_test.map(normalizer.normalize, 0)
-
-print("Setting up data caching on HDD...")
-ds_train = ds_train.cache_hdd_only(cache_dir)
-ds_test = ds_test.cache_hdd_only(cache_dir)
 
 # Model
 
@@ -89,9 +80,12 @@ training.train(
 # Saving
 
 print("Saving...")
-train_set_name = 'trainval' if args.test else 'train'
-name = f'{args.net}-{args.depth}-{args.width}' + \
-       ('-nd' if args.nodropout else '')
+train_set_name = 'trainval' if args.trainval else 'train'
+name = f'{args.net}-{args.depth}-{args.width}'
+if args.nodropout:
+    name += '-nd'
+if args.pretrained:
+    name += '-pretrained'
 model.save_state(f'{dirs.SAVED_NETS}/{args.ds}-{train_set_name}/' +
                  f'{name}-e{args.epochs}/' +
                  f'{datetime.datetime.now():%Y-%m-%d-%H%M}')

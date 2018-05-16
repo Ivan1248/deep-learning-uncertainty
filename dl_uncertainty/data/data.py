@@ -25,8 +25,8 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.data)
 
-    def _print(self, *args, **kwargs):
-        print(*args, f"({self.name})", **kwargs)
+    def __add__(self, other):
+        return Dataset.join([self, other])
 
     def id(self):
         return IdDataset(self)
@@ -63,7 +63,7 @@ class Dataset(torch.utils.data.Dataset):
     def permute(self, seed=53):
         indices = np.random.RandomState(seed=seed).permutation(len(self))
         ds = SubDataset(self, indices)
-        ds.name = self.name + "-permute"
+        ds.name = self.name + f"-permute{seed}"
         return ds
 
     def subset(self, indices):
@@ -78,11 +78,14 @@ class Dataset(torch.utils.data.Dataset):
         dss[1].name += f"_{pos}_to_end"
         return dss
 
-    def join(self, other):
-        if type(other) is not list:
-            other = [other]
-        name = f"concat[{self.name}," + ",".join(x.name for x in other) + "]"
-        return Dataset(ConcatDataset([self] + other), self.info, name)
+    @staticmethod
+    def join(datasets, info=None):
+        info = info or datasets[0].info
+        name = f"concat[" + ",".join(x.name for x in datasets) + "]"
+        return Dataset(ConcatDataset(datasets), info, name)
+
+    def _print(self, *args, **kwargs):
+        print(*args, f"({self.name})", **kwargs)
 
 
 # Dataset wrappers and proxies

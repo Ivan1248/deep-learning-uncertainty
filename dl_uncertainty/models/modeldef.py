@@ -2,8 +2,6 @@ from collections import namedtuple
 
 import tensorflow as tf
 
-from . import inference_components
-
 from ..tf_utils import layers, losses, regularization, evaluation
 
 
@@ -109,7 +107,7 @@ class TrainingComponent:
         if type(loss) is str:
             assert self.loss in ['clf', 'semseg', 'regr']
             if self.loss in ['clf', 'semseg']:
-                self.loss = (['logits', 'label'], losses.cross_entropy_loss)
+                self.loss = (['logits', 'label'], losses.cross_entropy_loss) #losses.cross_entropy_loss) # NOTE: TODO: NOTE
             elif self.loss == 'regr':
                 self.loss = (['output', 'label'], losses.mean_squared_error)
         self.learning_rate_policy = learning_rate_policy
@@ -292,7 +290,7 @@ class InferenceComponents:
                  problem_id='clf',
                  class_count=None):
         if problem_id in ['semseg', 'clf']:
-            assert class_count is not None
+            assert class_count
         p = ['base_width', 'group_lengths', 'block_structure']
         params = {k: v for k, v in locals().items() if k in p}
 
@@ -324,8 +322,7 @@ class InferenceComponents:
                         problem_id='semseg',
                         cifar_root_block=False):
         p = [
-            'base_width', 'group_lengths', 'block_structure', 'large_input',
-            'cifar_root_block'
+            'base_width', 'group_lengths', 'block_structure', 'cifar_root_block'
         ]
         params = {k: v for k, v in locals().items() if k in p}
 
@@ -361,7 +358,7 @@ class TrainingComponents:
     @staticmethod
     def ladder_densenet(
             epoch_count,
-            base_learning_rate=5e-4,  # 1e-4 pretrained
+            base_learning_rate=5e-4,  # 1e-4 pretrained part
             batch_size=4,
             weight_decay=1e-4,
             pre_logits_learning_rate_factor=1):

@@ -269,7 +269,7 @@ def dropout(x,
             feature_map_wise=False,
             **kwargs):
     try:
-        if rate <= 1e-6:
+        if rate <= 1e-5:
             return x
     except:
         pass
@@ -416,7 +416,6 @@ def block(x,
           bn_params=dict(),
           dropout_params=dict()):
     struct = structure
-
     for i, (ksize, wf) in enumerate(zip(struct.ksizes, struct.width_factors)):
         if not omit_first_bn_relu:
             x = bn_relu(x, bn_params, name=f'bn_relu{i}')
@@ -483,11 +482,11 @@ def densenet_transition(x,
                         pool_func=avg_pool,
                         bn_params=dict(),
                         dropout_params={'rate': 0}):
-    """ Densenet transition layer without dropoout """
+    """ Densenet transition layer """
     x = bn_relu(x, bn_params)
-    width = int(x.shape[-1].value * compression)
+    width = int(x.shape[-1].value * compression)  # floor (page 4.)
     x = conv(x, 1, width, bias=False)
-    if 'rate' in dropout_params.keys() and dropout_params['rate'] != 0:
+    if 'rate' in dropout_params.keys() and dropout_params['rate'] >= 1e-6:
         x = dropout(x, **dropout_params)
     x = pool_func(x, stride=2)
     return x
@@ -495,7 +494,7 @@ def densenet_transition(x,
 
 @scoped
 def dense_block(x,
-                length=6,
+                length,
                 block_structure=BlockStructure.densenet(),
                 base_width=12,
                 bn_params=dict(),
@@ -583,8 +582,8 @@ def resnet_root_block(x, base_width=16, cifar_type=False):
 @scoped
 def densenet_middle(
         x,
-        base_width=12,
-        group_lengths=[19] * 3,  # dense block sizes
+        base_width,
+        group_lengths,  # dense block sizes
         block_structure=BlockStructure.densenet(),
         compression=0.5,
         bn_params=dict(),

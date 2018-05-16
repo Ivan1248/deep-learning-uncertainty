@@ -21,13 +21,14 @@ class StandardInferenceComponents:
         normal = ([3, 3], [1, 1], 'id')
         bottleneck = ([1, 3, 1], [1, 1, 4], 'proj')  # last paragraph in [2]
         group_lengths, ksizes, width_factors, dim_change = {
-            18: ([2] * 4, *normal),  # [1]
-            34: ([3, 4, 6, 3], *normal),  # [1]
-            110: ([3, 4, 6, 3], *normal),  # [2]
-            50: ([3, 4, 6, 3], *bottleneck),  # [1]
-            101: ([3, 4, 23, 3], *bottleneck),  # [1]
-            152: ([3, 8, 36, 3], *bottleneck),  # [1]
-            200: ([3, 24, 36, 3], *bottleneck),  # [2]
+            18: ([2] * 4, *normal),  # [1] bw 64
+            34: ([3, 4, 6, 3], *normal),  # [1] bw 64
+            110: ([18] * 3, *normal),  # [1] bw 16
+            50: ([3, 4, 6, 3], *bottleneck),  # [1] bw 64
+            101: ([3, 4, 23, 3], *bottleneck),  # [1] bw 64
+            152: ([3, 8, 36, 3], *bottleneck),  # [1] bw 64
+            164: ([18] * 3, *bottleneck),  # [1] bw 16
+            200: ([3, 24, 36, 3], *bottleneck),  # [2] bw 64
         }[depth]
         return InferenceComponents.resnet(
             **ic_kwargs,
@@ -153,7 +154,7 @@ def get_training_component(net_name,
             optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
             learning_rate_policy=densenet_learning_rate_policy
             if net_name == 'dn' else resnet_learning_rate_policy,
-            pre_logits_learning_rate_factor=5e-3 if pretrained else 1)
+            pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
     elif problem_id == 'semseg':
         batch_size = {
             'cityscapes': 4,
@@ -183,8 +184,7 @@ def get_training_component(net_name,
             # NOTE/TODO?: 'dn' is here now, not up there
             return TrainingComponents.ladder_densenet(
                 epoch_count=epoch_count,
-                base_learning_rate=
-                5e-4,  # /10 77%, /50 resnet0.840 densenet0.841 /100 79.68
+                base_learning_rate=5e-4,
                 batch_size=batch_size,
                 weight_decay=weight_decay,
                 pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
@@ -201,32 +201,29 @@ def get_inference_component(
         depth=None,  # all
         base_width=None,  # rn, dn, ldn
         width_factor=None):  # wrn
-    ic_args = {
-        'input_shape': input_shape,
-        'class_count': class_count,
-        'problem_id': problem_id,
-    }
     sic_args = {
+        'ic_kwargs': {
+            'input_shape': input_shape,
+            'class_count': class_count,
+            'problem_id': problem_id,
+        },
         'depth': depth,
         'cifar_root_block': ds_id in ['cifar', 'svhn'],
     }
-    if net_name in ['rn', 'dn', 'wrn']:
+    if net_name in ['rn', 'dn']:
         sic_args['base_width'] = base_width
 
     if net_name == 'wrn':
         return StandardInferenceComponents.wide_resnet(
-            ic_args,
-            **sic_args,
-            width_factor=width_factor,
-            dropout_locations=[0])
+            **sic_args, width_factor=width_factor, dropout_locations=[0])
     elif net_name == 'rn':
         return StandardInferenceComponents.resnet(
-            ic_args, **sic_args, dropout_locations=[])
+            **sic_args, dropout_locations=[])
     elif net_name == 'dn':
-        return StandardInferenceComponents.densenet(ic_args, **sic_args)
+        return StandardInferenceComponents.densenet(**sic_args)
     elif net_name == 'ldn':
         # pretrained: 30 epochs cityscapes, 100 epochs voc2012
-        return StandardInferenceComponents.ladder_densenet(ic_args, **sic_args)
+        return StandardInferenceComponents.ladder_densenet(**sic_args)
     else:
         assert False, f"invalid model name: {net_name}"
 
