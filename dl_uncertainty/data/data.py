@@ -26,20 +26,23 @@ class Dataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __add__(self, other):
-        return Dataset.join([self, other])
+        return self.join(other)
 
-    def id(self):
+    def identity(self):
         return IdDataset(self)
 
     def test(self, callback):
         return TestDataset(self, callback)
 
-    def map(self, func=lambda x: x, component=None):
+    def map(self, func=lambda x: x, component=None, func_name=None, info=None):
         if component is not None:
             f = func  # to avoid lambda capturing itself
             func = lambda x: tuple(
                     f(c) if i == component else c for i, c in enumerate(x))
-        return MappedDataset(self, func)
+        ds = MappedDataset(self, func, func_name)
+        if info is not None:
+            ds.info = info
+        return ds
 
     def cache(self, max_cache_size=np.inf):
         # caches the dataset in RAM (partially or wholly)
@@ -69,6 +72,9 @@ class Dataset(torch.utils.data.Dataset):
     def subset(self, indices):
         return SubDataset(self, indices)
 
+    def repeat(self, number_of_repeats):
+        return RepeatedDataset(self, number_of_repeats)
+
     def split(self, proportion: float = None, position: int = None):
         assert position or proportion
         indices = np.arange(len(self))
@@ -78,8 +84,10 @@ class Dataset(torch.utils.data.Dataset):
         dss[1].name += f"_{pos}_to_end"
         return dss
 
-    @staticmethod
-    def join(datasets, info=None):
+    def join(self, other, info=None):
+        if type(other) is not list:
+            other = [other]
+        datasets = [self] + other
         info = info or datasets[0].info
         name = f"concat[" + ",".join(x.name for x in datasets) + "]"
         return Dataset(ConcatDataset(datasets), info, name)
@@ -123,8 +131,9 @@ class TestDataset(Dataset):
 
 class MappedDataset(Dataset):
 
-    def __init__(self, dataset, func=lambda x: x):
-        self.name = dataset.name + "-map"
+    def __init__(self, dataset, func=lambda x: x, func_name=None):
+        func_name = func_name or 'map'
+        self.name = dataset.name + f"-{func_name}"
         self.dataset = dataset
         self.info = self.dataset.info
         self._func = func
@@ -268,6 +277,24 @@ class SubDataset(Dataset):
 
     def __len__(self):
         return len(self.indices)
+
+
+class RepeatedDataset(Dataset):
+
+    def __init__(self, dataset, number_of_repeats):
+        self.name = dataset.name + f"-repeat{number_of_repeats}"
+        self.dataset = dataset
+        self.length =len(self.dataset) * number_of_repeats
+        self.number_of_repeats = number_of_repeats
+        self.info = self.dataset.info
+
+    def __getitem__(self, idx):
+        if idx < 0 or idx >= self.length:
+            raise IndexError(idx)
+        return self.dataset[idx % len(self.dataset)]
+
+    def __len__(self):
+        return self.length
 
 
 # DataLoader

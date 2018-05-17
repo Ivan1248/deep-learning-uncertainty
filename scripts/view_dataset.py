@@ -1,6 +1,4 @@
-import os
 import argparse
-import datetime
 
 import numpy as np
 
@@ -25,7 +23,7 @@ ds_trainval, ds_test = data_utils.get_dataset(args.ds, trainval_test=True)
 ds = {
     'train': ds_train,
     'val': ds_val,
-    'trainval': ds_train.join(ds_val),
+    'trainval': ds_train + ds_val,
     'test': ds_test
 }[args.part]
 

@@ -31,14 +31,14 @@ def get_dataset(name, trainval_test=False):
             downsampling_factor=2, remove_hood=True)
         ds_train, ds_test = map(load, ['train', 'val'])
         if trainval_test:
-            ds_train = ds_train.join(ds_test)
+            ds_train = ds_train + ds_test
             ds_test = load('test')
     elif name == 'camvid':
         ds_path = dirs.DATASETS + '/CamVid'
         load = lambda s: datasets.CamVidDataset(ds_path, s)
         ds_train, ds_test = map(load, ['train', 'val'])
         if trainval_test:
-            ds_train = ds_train.join(ds_test)
+            ds_train = ds_train + ds_test
             ds_test = load('test')
     elif name == 'voc2012':
         ds_path = dirs.DATASETS + '/VOC2012'
@@ -130,7 +130,7 @@ class CacheSpaceAssigner:
             self.cache_left = 0
             ds1 = ds1.cache_hdd(self.cache_dir)
             ds2 = ds2.cache_hdd_only(self.cache_dir)
-            return ds1.join(ds2)
+            return ds1 + ds2
 
     def cache_ram_only(self, ds):  # caching (HDD, RAM)
         assert self.cache_left >= len(ds), \
