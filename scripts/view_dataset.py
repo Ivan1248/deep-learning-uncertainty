@@ -15,7 +15,7 @@ from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_c
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
 parser.add_argument('part', type=str)
-parser.add_argument('--augment', action='store_false')
+parser.add_argument('--augment', action='store_true')
 args = parser.parse_args()
 
 ds_train, ds_val = data_utils.get_dataset(args.ds, trainval_test=False)
@@ -27,6 +27,9 @@ ds = {
     'test': ds_test
 }[args.part]
 
+if args.augment:
+    ds = ds.map(data_utils.get_augmentation_func(ds))
+
 problem_id = ds.info['problem_id']
 
-visualization.view_semantic_segmentation(ds)
+visualization.view_semantic_segmentation(ds, infer=lambda x: ds[0][1])

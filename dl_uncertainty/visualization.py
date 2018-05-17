@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import skimage
+from functools import lru_cache
 
 
 def get_color_palette(n, cmap='jet'):
@@ -9,7 +10,7 @@ def get_color_palette(n, cmap='jet'):
     return [np.array(cmap(i / (n - 1))[:3]) for i in range(n)]
 
 
-def fuse_images(im1, im2, a):
+def fuse_images(im1, im2, a=0.5):
     return a * im1 + (1 - a) * im2
 
 
@@ -21,7 +22,14 @@ def colorify_label(lab, colors):
     return plab
 
 
-def compose(images, format='0,0;1,0-1'):
+def compose(images_in_array):
+    if type(images_in_array[0]) is not list:
+        images_in_array = [images_in_array]
+    rows = [np.concatenate(row, axis=1) for row in images_in_array]
+    return np.concatenate(rows, axis=0)
+
+
+def compose_old(images, format='0,0;1,0-1'):
     if format is None:
         return np.concatenate(
             [np.concatenate([im for im in row], 1) for row in images], 0)
@@ -75,30 +83,43 @@ class Viewer:
 
 
 def view_semantic_segmentation(dataset, infer=None):
-    if False and 'class_colors' in dataset.info:
+    if 'class_colors' in dataset.info:
         colors = list(map(np.array, dataset.info['class_colors']))
         if np.max(np.array(colors)) > 1:
-            colors = [c / 255 for c in colors]
+            colors = [(c % 256) / 255 * 0.99 + 0.01 for c in colors]
     else:
         colors = get_color_palette(dataset.info['class_count'])
     colors = [np.zeros(3)] + list(map(np.array, colors))  # unknown black
+    for c in colors:
+        print(c)
+
+    @lru_cache(maxsize=1000)
+    def get_class_representative(label):  # classification
+        for x, y in dataset:
+            if y == label:
+                return x
+
+    def scale01(img):
+        return (img - np.min(img)) / (np.max(img) - np.min(img))
 
     def get_frame(datapoint):
         img, lab = datapoint
-        if np.shape(lab) == ():
-            lab = np.full(img.shape[:2], lab)
-        img_scaled01 = (img - np.min(img)) / (np.max(img) - np.min(img))
-        black = img_scaled01 * 0
-        clab = colorify_label(lab + 1, colors)
+        classification = np.shape(lab) == ()
+        lab_full = np.full(img.shape[:2], lab) if classification else lab
+        img_scal = scale01(img)
+        black = img_scal * 0
+        clab = colorify_label(lab_full + 1, colors)
+        label_img = scale01(get_class_representative(datapoint[1])) \
+                    if classification else fuse_images(img_scal, clab)
+        comp_arr = [[img_scal, black], [label_img, clab]]
         if infer is not None:
             pred = infer(img)
-            if np.shape(pred) == ():
-                pred = np.full(img.shape[:2], pred)
-            cpred = colorify_label(pred + 1, colors)
-            comp = compose(
-                [black, img_scaled01, clab, cpred], format='0,1;2,1-2;3,1-3')
-        else:
-            comp = compose([black, img_scaled01, clab], format='0,1;2,1-2')
+            pred_full = np.full(img.shape[:2], pred) if classification else pred
+            cpred = colorify_label(pred_full + 1, colors)
+            pred_img = scale01(get_class_representative(pred)) \
+                    if classification else fuse_images(img_scal, cpred)
+            comp_arr.append([pred_img, cpred])
+        comp = compose(comp_arr)
 
         bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
         step = bar_height // len(colors)
@@ -106,6 +127,42 @@ def view_semantic_segmentation(dataset, infer=None):
         for i in range(len(colors)):
             bar[i * step:(i + 1) * step, 1:] = len(colors) - 1 - i
         bar = colorify_label(bar, colors)
-        return compose([comp, bar], format='0,1')
+
+        return compose([comp, bar])
 
     return Viewer().display(dataset, get_frame)
+
+
+def parse_log(log_lines):
+    read = False
+    curves = dict()
+    for line in log_lines:
+        if read:
+            read = False
+            evals = re.findall("(\w+[=\s]\d.\d+)", line, re.IGNORECASE)
+            evals = map(lambda x: re.split('[=\s]', x), evals)
+            for name, value in evals:
+                curves[name] = curves.get(name, []) + [float(value)]
+        else:
+            read = re.search("Testing(?:\.\.\.| \(validation)", line,
+                             re.IGNORECASE) is not None
+    return {k: np.array(v) for k, v in curves.items()}
+
+
+def plot_curves(curves):
+    #plt.yticks(np.arange(0, 0.51, 0.05))
+    #axes.set_xlim([0, 200])
+    plt.figure()
+    axes = plt.gca()
+    axes.set_ylim([0, 1])
+    axes.grid(color='0.9', linestyle='-', linewidth=1)
+    for name, curve in curves.items():
+        plt.plot(curve, label=name, linewidth=1)
+    plt.xlabel("broj završenih epoha")
+    plt.legend()
+    plt.show()
+
+
+def plot_curves_from_log_lines(log_lines):
+    curves = parse_log(log_lines)
+    plot_curves(curves)
