@@ -107,7 +107,7 @@ class TrainingComponent:
         if type(loss) is str:
             assert self.loss in ['clf', 'semseg', 'regr']
             if self.loss in ['clf', 'semseg']:
-                self.loss = (['logits', 'label'], losses.cross_entropy_loss) #losses.cross_entropy_loss) # NOTE: TODO: NOTE
+                self.loss = (['logits', 'label'], losses.cross_entropy_loss)
             elif self.loss == 'regr':
                 self.loss = (['output', 'label'], losses.mean_squared_error)
         self.learning_rate_policy = learning_rate_policy
@@ -362,13 +362,11 @@ class TrainingComponents:
             batch_size=4,
             weight_decay=1e-4,
             pre_logits_learning_rate_factor=1):
-        p = ['base_width', 'group_lengths', 'block_structure', 'large_input']
-        params = {k: v for k, v in locals().items() if k in p}
 
         def learning_rate_policy(epoch):
             return tf.train.polynomial_decay(
                 base_learning_rate,
-                global_step=epoch,
+                global_step=epoch-1, # epochs start at 1
                 decay_steps=epoch_count,
                 end_learning_rate=0,
                 power=1.5)

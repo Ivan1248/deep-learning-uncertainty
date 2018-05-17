@@ -1,9 +1,12 @@
+import datetime
+
 import tensorflow as tf
 
 from .models import Model, ModelDef
 from .models import BlockStructure, TrainingComponent, EvaluationMetrics
 from .models import InferenceComponents, TrainingComponents
 from .evaluation import ClassificationEvaluator
+from . import dirs, parameter_loading
 
 
 class StandardInferenceComponents:
@@ -121,14 +124,13 @@ class StandardInferenceComponents:
 
 
 def get_training_component(net_name,
-                           problem_id,
+                           ds_train,
                            epoch_count,
-                           ds_id=None,
                            pretrained=False):
     base_learning_rate = {
         'clf': 1e-1,
         'semseg': 1e-4
-    }[problem_id]  # semseg 5e-4
+    }[ds_train.info['problem_id']]  # semseg 5e-4
     resnet_learning_rate_policy = {
         'boundaries': [
             int(i * epoch_count / 200 + 0.5) for i in [60, 120, 160]
@@ -140,6 +142,8 @@ def get_training_component(net_name,
         'values': [base_learning_rate * 0.1**i for i in range(3)]
     }
 
+    problem_id = ds_train.info['problem_id']
+    ds_id = ds_train.info['id']
     if problem_id == 'clf':
         if ds_id in ['cifar', 'svhn']:
             batch_size = 64 if net_name == 'dn' else 128
@@ -194,21 +198,18 @@ def get_training_component(net_name,
 
 def get_inference_component(
         net_name,
-        problem_id,
-        ds_id,
-        input_shape,
-        class_count=None,
+        ds_train,
         depth=None,  # all
         base_width=None,  # rn, dn, ldn
         width_factor=None):  # wrn
     sic_args = {
         'ic_kwargs': {
-            'input_shape': input_shape,
-            'class_count': class_count,
-            'problem_id': problem_id,
+            'input_shape': ds_train[0][0].shape,
+            'class_count': ds_train.info['class_count'],
+            'problem_id': ds_train.info['problem_id'],
         },
         'depth': depth,
-        'cifar_root_block': ds_id in ['cifar', 'svhn'],
+        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
     }
     if net_name in ['rn', 'dn']:
         sic_args['base_width'] = base_width
@@ -230,34 +231,75 @@ def get_inference_component(
 
 def get_model(
         net_name,
-        problem_id,
-        epoch_count,
-        ds_id,
         ds_train,
         depth=None,
         width=None,  # width factor for WRN, base_width for others
-        pretrained=False):
-
-    class_count = ds_train.info['class_count']
+        pretrained=False,
+        epoch_count=0):
 
     tc = get_training_component(
         net_name=net_name,
-        problem_id=problem_id,
+        ds_train=ds_train,
         epoch_count=epoch_count,
-        ds_id=ds_id,
         pretrained=pretrained)
 
     ic = get_inference_component(
         net_name=net_name,
-        problem_id=problem_id,
-        ds_id=ds_id,
-        input_shape=ds_train[0][0].shape,
-        class_count=class_count,
+        ds_train=ds_train,
         depth=depth,  # all
         base_width=None or net_name != 'wrn' and width,
         width_factor=None or net_name == 'wrn' and width)
 
-    return Model(
+    ae = ClassificationEvaluator(ds_train.info['class_count'])
+
+    model = Model(
         modeldef=ModelDef(ic, tc),
         training_log_period=len(ds_train) // tc.batch_size // 5,
-        accumulating_evaluator=ClassificationEvaluator(class_count))
+        accumulating_evaluator=ae)
+
+    if pretrained:
+        print("Loading pretrained parameters...")
+        if net_name == 'rn' and depth == 50:
+            names_to_params = parameter_loading.get_resnet_parameters_from_checkpoint_file(
+                f'{dirs.PRETRAINED}/resnetv2_50/resnet_v2_50.ckpt')
+        elif net_name == 'dn' and depth == 121:
+            names_to_params = parameter_loading.get_densenet_parameters_from_checkpoint_file(
+                f'{dirs.PRETRAINED}/densenet_121/tf-densenet121.ckpt')
+        else:
+            assert False, "Pretrained parameters not available."
+        model.load_parameters(names_to_params)
+
+    return model
+
+
+def save_trained_model(model,
+                       ds_id,
+                       net_name,
+                       epoch_count,
+                       dropout=None,
+                       pretrained=None,
+                       saved_nets_dir=dirs.SAVED_NETS):
+    if dropout:
+        net_name += '-do'
+    if pretrained:
+        net_name += '-pretrained'
+    model.save_state(f'{saved_nets_dir}/{ds_id}/' +
+                     f'{net_name}-e{epoch_count}/' +
+                     f'{datetime.datetime.now():%Y-%m-%d-%H%M}')
+
+
+def load_trained_model(model,
+                       ds_id,
+                       net_name,
+                       epoch_count,
+                       date_code,
+                       dropout=None,
+                       pretrained=None,
+                       saved_nets_dir=dirs.SAVED_NETS):
+    if dropout:
+        net_name += '-do'
+    if pretrained:
+        net_name += '-pretrained'
+    model.load_state(f'{saved_nets_dir}/{ds_id}/' +
+                     f'{net_name}-e{epoch_count}/' +
+                     f'{date_code}/Model')

@@ -12,6 +12,10 @@ def random_fliplr(im):
     return np.fliplr(im) if np.random.rand() < .5 else im
 
 
+def random_fliplr_with_label(im_lab):
+    return tuple(map(np.fliplr, im_lab)) if np.random.rand() < .5 else im_lab
+
+
 def augment_cifar(im, max_padding=4):
     shape = im.shape[:2]
     im = pad(im, max_padding)

@@ -47,13 +47,7 @@ ds_id, net_name, depth, width = 'mozgalo', 'rn', 18, 64
 saved_path = dirs.SAVED_NETS + '/mozgalo-trainval/rn-18-64-e10/2018-05-13-1747/Model'
 
 model = model_utils.get_model(
-    net_name=net_name,
-    depth=depth,
-    width=width,
-    problem_id='clf',
-    epoch_count=1,
-    ds_id=ds_id,
-    ds_train=ds)
+    net_name=net_name, ds_train=ds, depth=depth, width=width)
 
 model.load_state(saved_path)
 

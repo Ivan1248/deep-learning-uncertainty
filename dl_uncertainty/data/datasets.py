@@ -25,12 +25,14 @@ def _load_image(path):
 
 class WhiteNoiseDataset(Dataset):
 
-    def __init__(self, example_shape, size, seed=None):
+    def __init__(self, example_shape, size, uniform=False, seed=None):
         self._shape = example_shape
         self._rand = np.random.RandomState(seed=seed)
         self._seeds = self._rand.random_integers(low=0, high=100, size=(size))
         self.name = 'white_noise'
-        self.info = dict()
+        if uniform:
+            self.name += 'uniform'
+        self.info = {'id': 'noise'}
 
     def __getitem__(self, idx):
         self._rand.seed(self._seeds[idx])
@@ -50,7 +52,7 @@ class SVHNDataset(Dataset):
         import scipy.io as sio
         data = sio.loadmat(subset + '_32x32.mat')
         self.x, self.y = data['X'], np.remainder(data['y'], 10)
-        self.info = {'class_count': 10, 'problem_id': 'clf'}
+        self.info = {'id': 'svhn', 'class_count': 10, 'problem_id': 'clf'}
         self.name = f"SVHN-{subset}"
 
     def __getitem__(self, idx):
@@ -88,7 +90,7 @@ class Cifar10Dataset(Dataset):
             self.x, self.y = test_x, test_y
         else:
             raise ValueError("The value of subset must be in {'train','test'}.")
-        self.info = {'class_count': 10, 'problem_id': 'clf'}
+        self.info = {'id': 'cifar', 'class_count': 10, 'problem_id': 'clf'}
         self.name = f"Cifar10-{subset}"
 
     def __getitem__(self, idx):
@@ -122,6 +124,7 @@ class MozgaloRVCDataset(Dataset):
 
         assert len(class_names) == 25
         self.info = {
+            'id': 'mozgalo',
             'class_count': 25,
             'class_names': class_names,
             'problem_id': 'clf'
@@ -168,6 +171,8 @@ class CamVidDataset(Dataset):
         ] for line in lines]
 
         self.info = {
+            'id':
+                'camvid',
             'problem_id':
                 'semseg',
             'class_count':
@@ -232,6 +237,7 @@ class CityscapesSegmentationDataset(Dataset):
         ]
 
         self.info = {
+            'id': 'cityscapes',
             'problem_id': 'semseg',
             'class_count': 19,
             'class_names': [l.name for l in cslabels if l.trainId >= 0],
@@ -272,6 +278,8 @@ class ICCV09Dataset(Dataset):
         self._image_list = [x[:-4] for x in os.listdir(self._images_dir)]
 
         self.info = {
+            'id':
+                'iccv09',
             'problem_id':
                 'semseg',
             'class_count':
@@ -305,6 +313,8 @@ class VOC2012SegmentationDataset(Dataset):
         self._labels_dir = f'{data_dir}/SegmentationClass'
         self._image_list = file.read_all_lines(f'{sets_dir}/{subset}.txt')
         self.info = {
+            'id':
+                'voc2012',
             'problem_id':
                 'semseg',
             'class_count':

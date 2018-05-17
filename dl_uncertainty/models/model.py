@@ -24,6 +24,7 @@ class Model(object):
                  name="Model"):
         self.name = name
 
+        self.modeldef = modeldef
         self.batch_size = modeldef.training_component.batch_size
 
         self.accumulating_evaluator = accumulating_evaluator
@@ -96,16 +97,26 @@ class Model(object):
                 var.load(value, self._sess)
         self._log("Parameters loaded...")
 
-    def predict(self, inputs: list, outputs="output"):
+    def predict(self, inputs, single_input=False, outputs="output"):
         """
+        :inputs: a batch or a single input. If the input is a single example
+            outputs will not have a the batch dimension either.
         :param outputs: string list of strings which can be a list like
             ["output", "probs", "logits", "uncertainty"]
         """
+        if single_input:
+            inputs = [inputs]
         if type(outputs) is str:
             fetches = self.nodes.outputs[outputs]
         if type(outputs) is list:
             fetches = [self.nodes.outputs[o] for o in outputs]
-        return self._run(fetches, inputs, None, False)
+        ret = self._run(fetches, inputs, None, is_training=False)
+        if single_input:
+            if type(outputs) is str:  # single output
+                return ret[0]
+            else:
+                return tuple(r[0] for r in ret)
+        return ret
 
     @property
     def epoch(self):
@@ -122,29 +133,30 @@ class Model(object):
                 self._sess.run(self.nodes.training_post_step)
             return loss, extra
 
-        def log_part_results(batch):
+        def log_part_results(b):
             nonlocal losses
             ev = zip(self.ae_eval_names, self._sess.run(self.ae_evals))
             loss = np.mean(losses)
             self._sess.run(self.ae_reset)
             losses = []
-            self._log(f" {self.epoch:3d}.{(b + 1):3d}: " +
+            self._log(f" {self.epoch:3d}.{b:3d}: " +
                       f"{self._eval_str(loss, ev)}")
 
         losses = []
         self._sess.run(self.ae_reset)
         for _ in range(epoch_count):
+            self._sess.run(self._increment_epoch)
             self._log(f"Training: epoch {self.epoch:d} " +
                       f"({len(data)} batches of size {self.batch_size}, " +
                       f"lr={self._sess.run(self.nodes.learning_rate):.2e})")
             for b, (inputs, labels) in enumerate(data):
+                b = b + 1
                 loss, _ = train_minibatch(
                     inputs, labels, extra_fetches=[self.ae_accum_batch])
                 losses.append(loss)
-                if (b + 1) % self.training_log_period == 0:
+                if b % self.training_log_period == 0:
                     log_part_results(b)
                 end = self.training_step_event_handler(b) == 'q'
-            self._sess.run(self._increment_epoch)
             if end:
                 return False
 
@@ -166,7 +178,7 @@ class Model(object):
         self._log(" " + self._eval_str(loss, ev))
         return loss, ev
 
-    def _run(self, fetches: list, inputs, labels=None, is_training=None):
+    def _run(self, fetches, inputs, labels=None, is_training=None):
         feed_dict = {self.nodes.input: inputs}
         if labels is not None:
             feed_dict[self.nodes.label] = np.array(labels)

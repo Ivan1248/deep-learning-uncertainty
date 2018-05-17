@@ -1,15 +1,11 @@
-import os
 import argparse
-import datetime
 
 import numpy as np
 from tqdm import trange
 
 from _context import dl_uncertainty
 
-from dl_uncertainty import dirs, training
-from dl_uncertainty import data_utils, model_utils
-from dl_uncertainty.visualization import view_semantic_segmentation
+from dl_uncertainty import data_utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
@@ -22,7 +18,6 @@ print(args)
 print("Setting up data loading...")
 ds_train, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
     args.ds, trainval_test=args.trainval)
-problem_id = ds_train.info['problem_id']
 
 # Model
 

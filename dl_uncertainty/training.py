@@ -13,15 +13,20 @@ def get_hard_examples(model, ds):
     print("Looking for hard examples...")
     dl = DataLoader(ds, batch_size=model.batch_size, drop_last=False)
     predictions = np.concatenate([model.predict(ims) for ims, _ in tqdm(dl)])
-    labels = np.concatenate([labs for _, labs in tqdm(dl)])
-    hard_indices = np.concatenate(np.argwhere(predictions != labels))
+    labels = np.concatenate([labs for _, labs in dl])
+    hard_mask = predictions != labels
+    if len(labels.shape) > 1:
+        hard_mask = hard_mask.mean(axis=np.arange(1, len(labels.shape)))
+    hard_indices = np.concatenate(np.argwhere(hard_mask))
+    for i in hard_indices:
+        print(i)
     return ds.subset(hard_indices)
 
 
 def train(model: Model,
           ds_train: Dataset,
           ds_val: Dataset,
-          input_jitter=None,
+          jitter=None,
           epoch_count=200,
           data_loading_worker_count=0):
 
@@ -33,6 +38,9 @@ def train(model: Model,
             writer = tf.summary.FileWriter(dirs.LOGS, graph=model._sess.graph)
         elif text == 'd':
             view_semantic_segmentation(ds_val, lambda x: model.predict([x])[0])
+        elif text == 'dt':
+            view_semantic_segmentation(ds_train,
+                                       lambda x: model.predict([x])[0])
         elif text == 'h':
             view_semantic_segmentation(
                 get_hard_examples(model, ds_val),
@@ -43,13 +51,14 @@ def train(model: Model,
 
     ds_train_part, _ = ds_train.permute() \
                                .split(min(0.2, len(ds_val) / len(ds_train)))
-    ds_train = ds_train.map(input_jitter, 0)
+    ds_train = ds_train.map(jitter)
 
     ds_train_loader, ds_val_loader, ds_train_part_loader = [
         DataLoader(
             ds,
             batch_size=model.batch_size,
-            shuffle=True,
+            shuffle=
+            False,  # NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:
             num_workers=data_loading_worker_count,
             drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
     ]

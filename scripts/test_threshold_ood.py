@@ -10,16 +10,16 @@ from dl_uncertainty import dirs, training
 from dl_uncertainty import data_utils, model_utils
 from dl_uncertainty.visualization import view_semantic_segmentation
 
+from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, aupr
+
 # Use "--trainval" only for training on "trainval" and testing "test".
-# CUDA_VISIBLE_DEVICES=0 python test.py
-# CUDA_VISIBLE_DEVICES=1 python test.py
-# CUDA_VISIBLE_DEVICES=2 python test.py
+# CUDA_VISIBLE_DEVICES=0 python train_ood.py
+# CUDA_VISIBLE_DEVICES=1 python train_ood.py
+# CUDA_VISIBLE_DEVICES=2 python train_ood.py
 #   cifar wrn 28 10
 #   cifar dn 100 12
 #   cifar rn 34 8
 #   cityscapes dn 121 32  /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/dn-121-32-pretrained-e30/2018-05-16-1623/Model
-#   cityscapes rn 50 64
-#   cityscapes ldn 121 32
 #   mozgalo rn 50 64
 #   mozgalo rn 18 64
 
@@ -31,16 +31,15 @@ parser.add_argument('width', type=int)
 parser.add_argument('saved_path', type=str)
 parser.add_argument('--trainval', action='store_true')
 parser.add_argument('--test_on_training_set', action='store_true')
-parser.add_argument('--display', action='store_true')
-parser.add_argument('--hard', action='store_true')  # display hard exampels
 args = parser.parse_args()
 print(args)
-
-assert not args.hard or args.hard and args.display
 
 # Cached dataset with normalized inputs
 
 print("Setting up data loading...")
+datasets = {id: data_utils.get_cached_dataset_with_normalized_inputs(
+    args.ds, trainval_test=args.trainval) for id in ['cifar', 'mozgalo', '']}
+
 ds_train, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
     args.ds, trainval_test=args.trainval)
 
@@ -51,11 +50,14 @@ model = model_utils.get_model(
     net_name=args.net, ds_train=ds_train, depth=args.depth, width=args.width)
 model.load_state(args.saved_path)
 
-if args.display or args.hard:
-    ds_disp = ds_train if args.test_on_training_set else ds_test
-    if args.hard:
-        ds_disp = training.get_hard_examples(model, ds_disp)
-    view_semantic_segmentation(ds_disp, lambda x: model.predict([x])[0])
-else:
-    model.test(DataLoader(ds_train, model.batch_size), "Training set")
-    model.test(DataLoader(ds_test, model.batch_size), "Test set")
+
+def get_misclassification_example(xy):
+    x, y = xy
+    logits, output = model.predict(x, outputs=['logits', 'output'])
+    return logits, int(output == y)
+
+
+ds_test_logits = ds_test.map(get_misclassification_example)
+
+def roc(ds, thresholds):
+    pass
