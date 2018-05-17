@@ -6,7 +6,7 @@ from .ioutils import console
 from .data import Dataset, DataLoader
 from .models import Model
 from . import dirs
-from .visualization import view_semantic_segmentation
+from .visualization import view_semantic_segmentation, plot_curves_from_log_lines
 
 
 def get_hard_examples(model, ds):
@@ -41,6 +41,8 @@ def train(model: Model,
         elif text == 'dt':
             view_semantic_segmentation(ds_train,
                                        lambda x: model.predict([x])[0])
+        elif text == 'dc':
+            plot_curves_from_log_lines(model.log)
         elif text == 'h':
             view_semantic_segmentation(
                 get_hard_examples(model, ds_val),
@@ -57,8 +59,7 @@ def train(model: Model,
         DataLoader(
             ds,
             batch_size=model.batch_size,
-            shuffle=
-            False,  # NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:NOTE:TODO:
+            shuffle=True,
             num_workers=data_loading_worker_count,
             drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
     ]
