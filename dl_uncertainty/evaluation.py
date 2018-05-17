@@ -95,26 +95,28 @@ class ClassificationEvaluator(AccumulatingEvaluator):
         with tf.control_dependencies([cm_batch]):
             return tf.assign_add(self.cm, cm_batch)
 
-    def evaluate(self, returns=['A', 'mP', 'mR', 'mF1', 'mIoU']):
+    def evaluate(self, returns=['A', 'mIoU']):  # 'mP', 'mR', 'mF1',
         # Computes macro-averaged classification evaluation metrics based on the
         # accumulated confusion matrix and clears the confusion matrix.
         cm = self.cm[1:, 1:]
         tp = tf.diag_part(cm)
-        actual_pos = tf.reduce_sum(cm, axis=1)
-        pos = tf.reduce_sum(cm, axis=0)
-        fp = pos - tp
+        actual_pos = tf.reduce_sum(cm, axis=1)  #  tp+fn
+        pred_pos = tf.reduce_sum(cm, axis=0)  # tp+fp
+        fp = pred_pos - tp
+        tn = tf.reduce_sum(tp) - tp
         with np.errstate(divide='ignore', invalid='ignore'):
-            P = tp / pos
-            R = tp / actual_pos
+            P = tp / pred_pos
+            R = tp / actual_pos  # TPR, sensitivity
             F1 = 2 * P * R / (P + R)
             IoU = tp / (actual_pos + fp)
+            TNR = fp / (fp + tn)  # for binary classification
             tp_nonzero = tf.not_equal(tp, 0)  #
-            P, R, F1, IoU = [
+            P, R, F1, IoU, TNR = [
                 tf.where(tp_nonzero, x, tf.cast(tp, tf.float64))
-                for x in [P, R, F1, IoU]
+                for x in [P, R, F1, IoU, TNR]
             ]
         mP, mR, mF1, mIoU = map(tf.reduce_mean, [P, R, F1, IoU])
-        A = tf.reduce_sum(tp) / tf.reduce_sum(pos)
+        A = tf.reduce_sum(tp) / tf.reduce_sum(pred_pos)
         loc = locals()
         return dict([(x, loc[x]) for x in returns])
 
