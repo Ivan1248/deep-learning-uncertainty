@@ -7,7 +7,7 @@ from ..tf_utils import layers, losses, regularization, evaluation
 
 def global_pool_affine_logits_func(class_count):
 
-    def f(h):
+    def f(h, **k):
         h = tf.reduce_mean(h, axis=[1, 2], keep_dims=True)
         h = layers.conv(h, 1, class_count, bias=True, name='conv_logits')
         return tf.reshape(h, [-1, class_count])
@@ -17,7 +17,7 @@ def global_pool_affine_logits_func(class_count):
 
 def semseg_affine_logits_func(class_count):
 
-    def f(h):
+    def f(h, **k):
         return layers.conv(h, 1, class_count, bias=True, name='conv_logits')
 
     return f
@@ -25,7 +25,7 @@ def semseg_affine_logits_func(class_count):
 
 def semseg_affine_resized_logits_func(class_count, spatial_shape):
 
-    def f(h):
+    def f(h, **k):
         h = layers.conv(h, 1, class_count, bias=True, name='conv_logits')
         return tf.image.resize_bilinear(h, spatial_shape)
 
@@ -45,22 +45,54 @@ def clf_input_to_output_func(input_to_features,
                              features_to_logits=None,
                              logits_to_probs=None,
                              class_count=None):
+    """
+    Creates a function that maps the network input to a single output tensor.
+    :param input_to_features: a function that returns 1 or more tensors.
+    :param features_to_logits: a function that returns 1 or more tensors. argmax
+        of the first of the returned values is taken as the classification 
+        output. Default: global pooling followed by a 1x1 convolution.
+    :param logits_to_probs: a function that maps 1 logits tensor to 1 probs 
+        tensor. Default: tf.nn.softmax.
+    :param class_count: needs to be given if features_to_logits is None.
+    """
     assert features_to_logits or class_count
     if features_to_logits is None:
         features_to_logits = global_pool_affine_logits_func(class_count)
-    if logits_to_probs is None:
-        logits_to_probs = tf.nn.softmax
+    logits_to_probs = logits_to_probs or tf.nn.softmax
 
     def input_to_output(input, pre_logits_learning_rate_factor=1, **kwargs):
+        """
+        Maps input to a single output tensor.
+        :param pre_logits_learning_rate_factor: int or list[int]. A number
+            learning rate is to be multiplied by for the pre-trained (pre-logit)
+            part of the network. If input_to_features returns a list, it is
+            applied only on the first tensor's subgraph.
+        :param kwargs: additional arguments to be supplied to input_to_features
+        and features_to_logits (bn_params, do_params, ...).
+        """
         features = input_to_features(input, **kwargs)
         additional_outputs = {'features': features}
-        if pre_logits_learning_rate_factor != 1:
+
+        if type(features) in [list, tuple]:
+            features = list(features)
+            features[0] = layers.amplify_gradient(
+                features[0], pre_logits_learning_rate_factor)
+        else:
             features = layers.amplify_gradient(features,
                                                pre_logits_learning_rate_factor)
-        logits = features_to_logits(features)
-        probs = logits_to_probs(logits)
-        output = tf.argmax(logits, -1, output_type=tf.int32)
-        additional_outputs.update({'logits': logits, 'probs': probs})
+
+        all_logits = features_to_logits(features, **kwargs)
+        if type(all_logits) not in [list, tuple]:
+            all_logits = [all_logits]
+        all_probs = list(map(logits_to_probs, all_logits))
+
+        output = tf.argmax(all_logits[0], -1, output_type=tf.int32)
+        additional_outputs.update({
+            'logits': all_logits[0],
+            'probs': all_probs[0],
+            'all_logits': all_logits,
+            'all_probs': all_probs,
+        })
         return output, additional_outputs
 
     return input_to_output
@@ -69,17 +101,18 @@ def clf_input_to_output_func(input_to_features,
 def semseg_input_to_output_func(input_shape,
                                 input_to_features,
                                 features_to_logits=None,
+                                logits_to_probs=None,
                                 class_count=None,
                                 resize_probs=False):
     assert features_to_logits or class_count
     if features_to_logits is None:
         if resize_probs:
             features_to_logits = semseg_affine_logits_func(class_count)
-            logits_to_probs = semseg_affine_resized_probs_func(input_shape[0:2])
+            logits_to_probs = logits_to_probs or \
+                              semseg_affine_resized_probs_func(input_shape[0:2])
         else:
             features_to_logits = semseg_affine_resized_logits_func(
                 class_count, input_shape[0:2])
-            logits_to_probs = tf.nn.softmax
     return clf_input_to_output_func(input_to_features, features_to_logits,
                                     logits_to_probs)
 
@@ -181,7 +214,7 @@ class ModelDef:
 
         if tc.weight_decay > 0:
             w_vars = filter(lambda x: 'weights' in x.name,
-                            tf.global_variables())
+                            tf.global_variables())      
             loss += tc.weight_decay * regularization.l2_regularization(w_vars)
 
         # Optimization
@@ -226,16 +259,18 @@ class InferenceComponents:
             input_to_features,
             features_to_logits=None,  # clf, semseg
             features_to_output=None,  # regr
-            logits_to_probs=tf.nn.softmax,
+            logits_to_probs=None,
             resize_probs=False,  # semseg
             class_count=None):  # clf, semseg
         kwargs = dict()
         if problem_id == 'clf':
             f_ito = clf_input_to_output_func
+            kwargs['logits_to_probs'] = logits_to_probs
         if problem_id == 'semseg':
             f_ito = semseg_input_to_output_func
             kwargs['resize_probs'] = resize_probs
             kwargs['input_shape'] = input_shape
+            kwargs['logits_to_probs'] = logits_to_probs
         input_to_output = f_ito(
             input_to_features=input_to_features,
             features_to_logits=features_to_logits,
@@ -341,7 +376,7 @@ class InferenceComponents:
             return layers.ladder_densenet_logits(
                 pre_logits,
                 pre_logits_aux,
-                image_shape=input_shape[1:3],
+                image_shape=input_shape[0:2],
                 class_count=class_count,
                 bn_params={'is_training': is_training})
 
@@ -366,7 +401,7 @@ class TrainingComponents:
         def learning_rate_policy(epoch):
             return tf.train.polynomial_decay(
                 base_learning_rate,
-                global_step=epoch-1, # epochs start at 1
+                global_step=epoch - 1,  # epochs start at 1
                 decay_steps=epoch_count,
                 end_learning_rate=0,
                 power=1.5)
@@ -374,8 +409,8 @@ class TrainingComponents:
         return TrainingComponent(
             batch_size=batch_size,
             weight_decay=weight_decay,
-            loss='semseg',
-            optimizer=lambda lr: tf.train.AdamOptimizer(lr),
+            loss=(['logits', 'label'], losses.cross_entropy_loss),
+            optimizer=tf.train.AdamOptimizer,
             learning_rate_policy=learning_rate_policy,
             pre_logits_learning_rate_factor=pre_logits_learning_rate_factor)
 
