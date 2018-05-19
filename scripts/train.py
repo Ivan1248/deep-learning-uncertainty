@@ -11,18 +11,21 @@ from dl_uncertainty import data_utils, model_utils
 from dl_uncertainty.processing.data_augmentation import random_fliplr_with_label, augment_cifar
 from dl_uncertainty import parameter_loading
 
-# Use "--trainval" only for training on "trainval" and testing "test".
-# CUDA_VISIBLE_DEVICES=0 python train.py
-# CUDA_VISIBLE_DEVICES=1 python train.py
-# CUDA_VISIBLE_DEVICES=2 python train.py
-#   cifar wrn 28 10 --epochs 200 --trainval
-#   cifar dn 100 12 --epochs 300 --trainval
-#   cifar rn 34 8   --epochs 200 --trainval
-#   cityscapes dn 121 32  --pretrained --epochs 30
-#   cityscapes rn 50 64   --pretrained --epochs 30
-#   cityscapes ldn 121 32 --pretrained --epochs 30
-#   mozgalo rn 50 64 --pretrained --epochs 10 --trainval
-#   mozgalo rn 18 64 --epochs 15 --trainval
+""" 
+Use "--trainval" only for training on "trainval" and testing "test".
+CUDA_VISIBLE_DEVICES=0 python train.py
+CUDA_VISIBLE_DEVICES=1 python train.py
+CUDA_VISIBLE_DEVICES=2 python train.py
+  cifar wrn 28 10 --epochs 200 --trainval
+  cifar dn 100 12 --epochs 300 --trainval
+  cifar rn 34 8   --epochs 200 --trainval
+  cifar rn 164 16   --epochs 200 --trainval
+  cityscapes dn 121 32  --epochs 30 --pretrained
+  cityscapes rn 50 64   --epochs 30 --pretrained
+  cityscapes ldn 121 32 --epochs 30 --pretrained
+  mozgalo rn 50 64 --pretrained --epochs 15 --trainval
+  mozgalo rn 18 64 --epochs 12 --trainval
+"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
@@ -58,18 +61,12 @@ model = model_utils.get_model(
 # Training
 
 print("Starting training and validation loop...")
-if args.ds in ['cifar']:
-    jitter = lambda xy: (augment_cifar(xy[0]), xy[0])
-elif ds_train.info['problem_id'] == 'semseg':
-    jitter = random_fliplr_with_label
-else:
-    jitter = lambda x: x
 
 training.train(
     model,
     ds_train,
     ds_test,  # 25
-    jitter=jitter,
+    jitter=data_utils.get_augmentation_func(ds_train),
     epoch_count=args.epochs,
     data_loading_worker_count=4)
 

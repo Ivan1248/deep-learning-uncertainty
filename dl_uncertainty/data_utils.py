@@ -6,6 +6,7 @@ import pickle
 
 from . import dirs
 from .data import datasets
+from .processing.data_augmentation import random_fliplr_with_label, augment_cifar
 
 # Datasets
 
@@ -160,3 +161,15 @@ def get_cached_dataset_with_normalized_inputs(name, trainval_test=False):
     ds_test = ds_test.cache_hdd_only(cache_dir)
 
     return ds_train, ds_test
+
+
+# Augmentation
+
+
+def get_augmentation_func(dataset):
+    if dataset.info['id'] in ['cifar']:
+        return lambda xy: (augment_cifar(xy[0]), xy[1])
+    elif dataset.info['problem_id'] == 'semseg':
+        return random_fliplr_with_label
+    else:
+        return lambda x: x
