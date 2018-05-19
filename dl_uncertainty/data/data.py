@@ -28,6 +28,12 @@ class Dataset(torch.utils.data.Dataset):
     def __add__(self, other):
         return self.join(other)
 
+    def __str__(self):
+        return f"Dataset(name={self.name}, info={self.info})"
+
+    def __repr__(self):
+        return str(self)
+
     def identity(self):
         return IdDataset(self)
 
@@ -284,7 +290,7 @@ class RepeatedDataset(Dataset):
     def __init__(self, dataset, number_of_repeats):
         self.name = dataset.name + f"-repeat{number_of_repeats}"
         self.dataset = dataset
-        self.length =len(self.dataset) * number_of_repeats
+        self.length = len(self.dataset) * number_of_repeats
         self.number_of_repeats = number_of_repeats
         self.info = self.dataset.info
 

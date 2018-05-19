@@ -123,10 +123,7 @@ class StandardInferenceComponents:
             dropout_rate=0)
 
 
-def get_training_component(net_name,
-                           ds_train,
-                           epoch_count,
-                           pretrained=False):
+def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
     base_learning_rate = {
         'clf': 1e-1,
         'semseg': 1e-4
@@ -177,7 +174,7 @@ def get_training_component(net_name,
                 batch_size=batch_size,
                 weight_decay=weight_decay,
                 loss=problem_id,
-                optimizer=lambda lr: tf.train.AdamOptimizer(lr),
+                optimizer=tf.train.AdamOptimizer,
                 learning_rate_policy={
                     'dn': densenet_learning_rate_policy,
                     'rn': resnet_learning_rate_policy,
@@ -211,7 +208,7 @@ def get_inference_component(
         'depth': depth,
         'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
     }
-    if net_name in ['rn', 'dn']:
+    if net_name in ['rn', 'dn', 'ldn']:
         sic_args['base_width'] = base_width
 
     if net_name == 'wrn':
@@ -262,8 +259,11 @@ def get_model(
         if net_name == 'rn' and depth == 50:
             names_to_params = parameter_loading.get_resnet_parameters_from_checkpoint_file(
                 f'{dirs.PRETRAINED}/resnetv2_50/resnet_v2_50.ckpt')
-        elif net_name == 'dn' and depth == 121:
+        elif net_name == 'dn' and depth == 121 and width == 32:
             names_to_params = parameter_loading.get_densenet_parameters_from_checkpoint_file(
+                f'{dirs.PRETRAINED}/densenet_121/tf-densenet121.ckpt')
+        elif net_name == 'ldn' and depth == 121 and width == 32:
+            names_to_params = parameter_loading.get_ladder_densenet_parameters_from_checkpoint_file(
                 f'{dirs.PRETRAINED}/densenet_121/tf-densenet121.ckpt')
         else:
             assert False, "Pretrained parameters not available."
@@ -301,5 +301,4 @@ def load_trained_model(model,
     if pretrained:
         net_name += '-pretrained'
     model.load_state(f'{saved_nets_dir}/{ds_id}/' +
-                     f'{net_name}-e{epoch_count}/' +
-                     f'{date_code}/Model')
+                     f'{net_name}-e{epoch_count}/' + f'{date_code}/Model')

@@ -9,7 +9,7 @@ def accuracy(labels, predictions):
     return tf.reduce_sum(equal) / tf.reduce_sum(not_ignored)
 
 
-def multiclass_scores(labels,
+def dprecated_invalid_multiclass_scores(labels,
                       predictions,
                       class_count,
                       returns=['mP', 'mR', 'mF1', 'mIoU']):

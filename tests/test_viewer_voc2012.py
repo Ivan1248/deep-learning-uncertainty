@@ -6,12 +6,10 @@ import numpy as np
 from _context import dl_uncertainty
 from dl_uncertainty.data.datasets import load_voc2012_segmentation
 from dl_uncertainty.dirs import DATASETS
-import dl_uncertainty.visualization as vis
-
+from dl_uncertainty.utils.visualization import view_semantic_segmentation
 
 voc = load_voc2012_segmentation(f"{DATASETS}/VOC2012", 'train')
 assert voc.images[0].shape[0] == 500
 print(np.unique(voc.labels))
 
-vis.view_semantic_segmentation(voc)
-
+view_semantic_segmentation(voc)

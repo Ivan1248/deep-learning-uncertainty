@@ -10,7 +10,7 @@ from dl_uncertainty.data_utils import get_cached_dataset_with_normalized_inputs
 from dl_uncertainty.data import DataLoader, Dataset
 from dl_uncertainty.data import datasets
 from dl_uncertainty.processing.data_augmentation import random_fliplr, augment_cifar
-from dl_uncertainty.processing.shape import adjust_shape, pad_to_shape
+from dl_uncertainty.processing.shape import center_to_shape, pad_to_shape
 from dl_uncertainty import parameter_loading
 
 print("Loading and preparing data")
@@ -20,16 +20,16 @@ input_shape = ds[0][0].shape
 
 
 def reshape(x):
-    return adjust_shape(x, input_shape)
+    return center_to_shape(x, input_shape)
 
 
 ds_ud = ds.map(np.flipud, 0)
 ds_rand = datasets.WhiteNoiseDataset(
     input_shape, size=1000, seed=53).map(lambda x: (x, -1))
 ds_mozg = get_cached_dataset_with_normalized_inputs('mozgalo')[0] \
-          .map(adjust_shape, 0)
+          .map(center_to_shape, 0)
 ds_camvid = get_cached_dataset_with_normalized_inputs('camvid')[0] \
-           .map(adjust_shape, 0)
+           .map(center_to_shape, 0)
 
 dsid_to_ds = {
     'CIFAR-10': ds,

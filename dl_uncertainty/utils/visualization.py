@@ -90,8 +90,6 @@ def view_semantic_segmentation(dataset, infer=None):
     else:
         colors = get_color_palette(dataset.info['class_count'])
     colors = [np.zeros(3)] + list(map(np.array, colors))  # unknown black
-    for c in colors:
-        print(c)
 
     @lru_cache(maxsize=1000)
     def get_class_representative(label):  # classification
@@ -133,22 +131,6 @@ def view_semantic_segmentation(dataset, infer=None):
     return Viewer().display(dataset, get_frame)
 
 
-def parse_log(log_lines):
-    read = False
-    curves = dict()
-    for line in log_lines:
-        if read:
-            read = False
-            evals = re.findall("(\w+[=\s]\d.\d+)", line, re.IGNORECASE)
-            evals = map(lambda x: re.split('[=\s]', x), evals)
-            for name, value in evals:
-                curves[name] = curves.get(name, []) + [float(value)]
-        else:
-            read = re.search("Testing(?:\.\.\.| \(validation)", line,
-                             re.IGNORECASE) is not None
-    return {k: np.array(v) for k, v in curves.items()}
-
-
 def plot_curves(curves):
     #plt.yticks(np.arange(0, 0.51, 0.05))
     #axes.set_xlim([0, 200])
@@ -161,8 +143,3 @@ def plot_curves(curves):
     plt.xlabel("broj završenih epoha")
     plt.legend()
     plt.show()
-
-
-def plot_curves_from_log_lines(log_lines):
-    curves = parse_log(log_lines)
-    plot_curves(curves)

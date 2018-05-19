@@ -8,7 +8,8 @@ from _context import dl_uncertainty
 from dl_uncertainty.data import DataLoader
 from dl_uncertainty import dirs, training
 from dl_uncertainty import data_utils, model_utils
-from dl_uncertainty.visualization import view_semantic_segmentation
+from dl_uncertainty.utils.visualization import view_semantic_segmentation
+from dl_uncertainty.processing.shape import fill_to_shape
 
 from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, aupr
 
@@ -37,8 +38,18 @@ print(args)
 # Cached dataset with normalized inputs
 
 print("Setting up data loading...")
-datasets = {id: data_utils.get_cached_dataset_with_normalized_inputs(
-    args.ds, trainval_test=args.trainval) for id in ['cifar', 'mozgalo', '']}
+datasets = {
+    id: data_utils.get_cached_dataset_with_normalized_inputs(
+        args.ds, trainval_test=args.trainval)[1]
+    for id in ['cifar', 'mozgalo', 'camvid']
+}
+
+ds = datasets[args.ds]
+del datasets[args.ds]
+
+shape = ds[0][0].shape
+for k, v in datasets:
+    datasets[k] = v.map(lambda x: fill_to_shape(x, shape), 0)
 
 ds_train, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
     args.ds, trainval_test=args.trainval)
@@ -58,6 +69,7 @@ def get_misclassification_example(xy):
 
 
 ds_test_logits = ds_test.map(get_misclassification_example)
+
 
 def roc(ds, thresholds):
     pass

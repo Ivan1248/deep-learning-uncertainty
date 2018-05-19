@@ -44,6 +44,8 @@ def filter_dict(d: dict, keys):
 
 
 def amplify_gradient(x, factor):
+    if factor == 1:
+        return x
     return factor * x + (1 - factor) * tf.stop_gradient(x)
 
 
@@ -647,7 +649,7 @@ def ladder_densenet(
         compression=0.5,
         upsampling_block_width=128,
         bn_params=dict(),
-        dropout_params={'rate': 0.2},
+        dropout_params={'rate': 0},  # or 0.2
         cifar_root_block=False):
     """
     A densenet without the final global pooling and classification layers.
@@ -663,13 +665,13 @@ def ladder_densenet(
         ['block_structure', 'base_width', 'bn_params', 'dropout_params'])
     tr_params = filter_dict(locals(), ['compression', 'bn_params'])
 
-    def _split_dense_block(x):
+    def _split_dense_block(x, length):
         i = len(group_lengths) - 1
-        l = group_lengths[i]
-        x = dense_block(x, length=l // 2, **db_params, name=f'db{i}a')
+        lengths = length // 2, length - length // 2
+        x = dense_block(x, length=lengths[0], **db_params, name=f'db{i}a')
         skip = x
         x = avg_pool(x, 2)
-        x = dense_block(x, length=l - l // 2, **db_params, name=f'db{i}b')
+        x = dense_block(x, length=lengths[1], **db_params, name=f'db{i}b')
         return x, skip
 
     @scoped
@@ -684,6 +686,7 @@ def ladder_densenet(
             x, 3, upsampling_block_width, bias=False, name=f'conv_blend{i}')
         return x
 
+    # DenseNet start
     x = densenet_root_block(x, base_width, cifar_type=cifar_root_block)
 
     skips = []
@@ -691,7 +694,7 @@ def ladder_densenet(
         x = dense_block(x, length=length, **db_params, name=f'db{i}')
         skips.append(x)
         x = densenet_transition(x, **tr_params, name=f'transition{i}')
-    x, skip = _split_dense_block(x)
+    x, skip = _split_dense_block(x, group_lengths[-1])
     skips.append(x)
 
     with tf.variable_scope('head'):
@@ -710,11 +713,11 @@ def ladder_densenet(
 
 def ladder_densenet_logits(pre_logits, pre_logits_aux, image_shape, class_count,
                            bn_params):
-    logitses = []
+    all_logits = []
     for i, x in enumerate([pre_logits, pre_logits_aux]):
         with tf.variable_scope(f'logits{i}'):
             x = bn_relu(x, bn_params)  # no bn in the original code
-            x = conv(x, 1, class_count, bias=True)
+            x = conv(x, 1, class_count, bias=True) # 3x3? ne pomaže puno 
             logits = tf.image.resize_bilinear(x, image_shape)
-            logitses.append(logits)
-    return logitses[0], logitses[1]
+            all_logits.append(logits)
+    return all_logits[0], all_logits[1]
