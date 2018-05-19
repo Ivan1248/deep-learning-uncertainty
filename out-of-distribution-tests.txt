@@ -1,0 +1,7 @@
+cifar
+tinyimagenet
+mozgalo
+svhn
+camvid
+iccv09
+cityscapes
