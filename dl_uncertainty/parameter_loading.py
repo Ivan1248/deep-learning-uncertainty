@@ -140,7 +140,6 @@ def get_ladder_densenet_parameters_from_checkpoint_file(checkpoint_file_path):
     simple_replacements = [  # by priority
         ('densenet_root_block', 'ladder_densenet/densenet_root_block'),
         ('densenet_middle', 'ladder_densenet'),
-        ('post_bn_relu', 'head/bn_relu_bottleneck'),
     ]
     generic_replacements = [
         (r'db3/block([0-7])/', ['db3a/block{}/', lambda x: x]),
@@ -155,20 +154,3 @@ def get_ladder_densenet_parameters_from_checkpoint_file(checkpoint_file_path):
         name_to_new_name[n]: param_name_to_array[n]
         for n in param_name_to_array.keys()
     }
-
-
-def test():
-    from . import dirs
-
-    param_name_to_array = get_resnet_parameters_from_checkpoint_file(
-        f'{dirs.PRETRAINED}/resnetv2_50/resnet_v2_50.ckpt')
-
-    #for n in param_name_to_array.keys():
-    #    print(n, param_name_to_array[n])
-
-    param_name_to_array = get_densenet_parameters_from_checkpoint_file(
-        f'{dirs.PRETRAINED}/densenet_121/tf-densenet121.ckpt')
-
-    for n in param_name_to_array.keys():
-        #print(n, param_name_to_array[n])
-        print(n)

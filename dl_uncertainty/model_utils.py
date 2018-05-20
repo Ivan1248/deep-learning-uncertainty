@@ -3,7 +3,7 @@ import datetime
 import tensorflow as tf
 
 from .models import Model, ModelDef
-from .models import BlockStructure, TrainingComponent, EvaluationMetrics
+from .models import BlockStructure, TrainingComponent
 from .models import InferenceComponents, TrainingComponents
 from .evaluation import ClassificationEvaluator
 from . import dirs, parameter_loading
@@ -16,8 +16,9 @@ class StandardInferenceComponents:
             ic_kwargs,
             depth,
             cifar_root_block,
-            base_width=64,  # for all models?
-            dropout_locations=[]):
+            base_width,  # for all models?
+            dropout):
+        assert not dropout
         print(f'ResNet-{depth}-{base_width}')
         for a in ['input_shape', 'class_count', 'problem_id']:
             assert a in ic_kwargs
@@ -49,7 +50,7 @@ class StandardInferenceComponents:
                     depth,
                     width_factor,
                     cifar_root_block,
-                    dropout_locations=[],
+                    dropout,
                     dim_change='proj'):
         for a in ['input_shape', 'class_count', 'problem_id']:
             assert a in ic_kwargs
@@ -68,12 +69,12 @@ class StandardInferenceComponents:
             width_factor=width_factor,
             group_lengths=[blocks_per_group] * group_count,
             block_structure=BlockStructure.resnet(
-                ksizes=ksizes, dropout_locations=dropout_locations),
+                ksizes=ksizes, dropout_locations=[0] if dropout else []),
             dim_change=dim_change)
 
     @staticmethod
     def densenet(ic_kwargs, depth, base_width, cifar_root_block,
-                 dropout_rate=0):  # 0.2 if data augmentation is not used
+                 dropout):  # 0.2 if data augmentation is not used
         for a in ['input_shape', 'class_count', 'problem_id']:
             assert a in ic_kwargs, a
         print(f'DenseNet-{depth}-{base_width}')
@@ -98,14 +99,14 @@ class StandardInferenceComponents:
             base_width=base_width,
             group_lengths=group_lengths,
             cifar_root_block=cifar_root_block,
-            dropout_rate=dropout_rate,
-            block_structure=BlockStructure.densenet(ksizes=ksizes))
+            block_structure=BlockStructure.densenet(ksizes=ksizes),
+            dropout_rate=0.2 if dropout else 0)
 
     @staticmethod
     def ladder_densenet(ic_kwargs,
                         depth,
                         base_width,
-                        dropout_rate=0,
+                        dropout,
                         cifar_root_block=False):
         print(f'Ladder-DenseNet-{depth}')
         for a in ['input_shape', 'class_count']:
@@ -120,48 +121,43 @@ class StandardInferenceComponents:
             base_width=32,
             cifar_root_block=cifar_root_block,
             group_lengths=group_lengths,
-            dropout_rate=0)
+            dropout_rate=0.2 if dropout else 0)
 
 
 def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
-    base_learning_rate = {
-        'clf': 1e-1,
-        'semseg': 1e-4
-    }[ds_train.info['problem_id']]  # semseg 5e-4
-    resnet_learning_rate_policy = {
-        'boundaries': [
-            int(i * epoch_count / 200 + 0.5) for i in [60, 120, 160]
-        ],
-        'values': [base_learning_rate * 0.2**i for i in range(4)]
-    }
-    densenet_learning_rate_policy = {
-        'boundaries': [int(i * epoch_count / 100 + 0.5) for i in [50, 75]],
-        'values': [base_learning_rate * 0.1**i for i in range(3)]
-    }
-
-    problem_id = ds_train.info['problem_id']
-    ds_id = ds_train.info['id']
+    problem_id, ds_id = ds_train.info['problem_id'], ds_train.info['id']
     if problem_id == 'clf':
+        base_learning_rate = 1e-1
+        resnet_learning_rate_policy = {
+            'boundaries': [
+                int(i * epoch_count / 200 + 0.5) for i in [60, 120, 160]
+            ],
+            'values': [base_learning_rate * 0.2**i for i in range(4)]
+        }
+        densenet_learning_rate_policy = {
+            'boundaries': [int(i * epoch_count / 100 + 0.5) for i in [50, 75]],
+            'values': [base_learning_rate * 0.1**i for i in range(3)]
+        }
         if ds_id in ['cifar', 'svhn']:
             batch_size = 64 if net_name == 'dn' else 128
         elif ds_id == 'mozgalo':
             batch_size = 32 if net_name == 'dn' else 64
         return TrainingComponent(
             batch_size=batch_size,
+            loss=problem_id,
             weight_decay={'dn': 1e-4,
                           'rn': 1e-4,
                           'wrn': 5e-4}[net_name],
-            loss=problem_id,
             optimizer=lambda lr: tf.train.MomentumOptimizer(lr, 0.9),
             learning_rate_policy=densenet_learning_rate_policy
             if net_name == 'dn' else resnet_learning_rate_policy,
-            pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
+            pretrained_lr_factor=1 / 5 if pretrained else 1)
     elif problem_id == 'semseg':
         batch_size = {
             'cityscapes': 4,
             'voc2012': 4,
+            'camvid': 8,
             'iccv09': 16,
-            'camvid': 16
         }[ds_id]
         weight_decay = {
             'ldn': 1e-4,  # ladder-densenet/voc2012/densenet.py
@@ -169,26 +165,12 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             'rn': 1e-4,  # ladder-densenet/voc2012/resnet.py
             'wrn': 5e-4
         }[net_name]
-        if net_name in []:
-            return TrainingComponent(
-                batch_size=batch_size,
-                weight_decay=weight_decay,
-                loss=problem_id,
-                optimizer=tf.train.AdamOptimizer,
-                learning_rate_policy={
-                    'dn': densenet_learning_rate_policy,
-                    'rn': resnet_learning_rate_policy,
-                    'wrn': resnet_learning_rate_policy,
-                }[net_name],
-                pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
-        elif net_name in ['ldn', 'dn', 'rn', 'wrn']:
-            # NOTE/TODO?: 'dn' is here now, not up there
-            return TrainingComponents.ladder_densenet(
-                epoch_count=epoch_count,
-                base_learning_rate=5e-4,
-                batch_size=batch_size,
-                weight_decay=weight_decay,
-                pre_logits_learning_rate_factor=1 / 5 if pretrained else 1)
+        return TrainingComponents.ladder_densenet(
+            epoch_count=epoch_count,
+            base_learning_rate=5e-4,
+            batch_size=batch_size,
+            weight_decay=weight_decay,
+            pretrained_lr_factor=1 / 5 if pretrained else 1)
     else:
         assert False
 
@@ -196,9 +178,12 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
 def get_inference_component(
         net_name,
         ds_train,
-        depth=None,  # all
-        base_width=None,  # rn, dn, ldn
-        width_factor=None):  # wrn
+        depth: int,
+        base_width: int = None,  # rn, dn, ldn
+        width_factor: int = None,
+        dropout=False):  # wrn
+    assert bool(base_width) == (net_name in ['rn', 'dn', 'ldn'])
+    assert bool(width_factor) == (net_name == 'wrn')
     sic_args = {
         'ic_kwargs': {
             'input_shape': ds_train[0][0].shape,
@@ -207,16 +192,16 @@ def get_inference_component(
         },
         'depth': depth,
         'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
+        'dropout': dropout,
     }
     if net_name in ['rn', 'dn', 'ldn']:
         sic_args['base_width'] = base_width
 
     if net_name == 'wrn':
         return StandardInferenceComponents.wide_resnet(
-            **sic_args, width_factor=width_factor, dropout_locations=[0])
+            **sic_args, width_factor=width_factor)
     elif net_name == 'rn':
-        return StandardInferenceComponents.resnet(
-            **sic_args, dropout_locations=[])
+        return StandardInferenceComponents.resnet(**sic_args)
     elif net_name == 'dn':
         return StandardInferenceComponents.densenet(**sic_args)
     elif net_name == 'ldn':
@@ -226,13 +211,13 @@ def get_inference_component(
         assert False, f"invalid model name: {net_name}"
 
 
-def get_model(
-        net_name,
-        ds_train,
-        depth=None,
-        width=None,  # width factor for WRN, base_width for others
-        pretrained=False,
-        epoch_count=0):
+def get_model(net_name,
+              ds_train,
+              depth,
+              width,
+              pretrained=False,
+              epoch_count=None):
+    # width: width factor for WRN, base_width for others
 
     tc = get_training_component(
         net_name=net_name,

@@ -1,5 +1,5 @@
-from ..tf_utils.layers import BlockStructure
+from .tf_utils.layers import BlockStructure
 
 from .model import Model
 from .modeldef import ModelDef, InferenceComponent, TrainingComponent 
-from .modeldef import TrainingComponents, InferenceComponents, EvaluationMetrics
+from .modeldef import TrainingComponents, InferenceComponents

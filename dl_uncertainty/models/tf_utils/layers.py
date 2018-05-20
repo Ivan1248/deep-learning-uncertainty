@@ -9,6 +9,8 @@ import tensorflow as tf
 
 from .variables import conv_weight_variable, bias_variable, vector_variable
 
+# Helper functions (private)
+
 
 def scoped(fun):
 
@@ -49,7 +51,7 @@ def amplify_gradient(x, factor):
     return factor * x + (1 - factor) * tf.stop_gradient(x)
 
 
-def amplify_gradient_for_subgraph(input, subgraph_func, factor):
+def amplify_gradient_for_subgraph(subgraph_func, input, factor):
     input = amplify_gradient(input, 1 / factor)
     input = subgraph_func(input)
     return amplify_gradient(input, factor)
@@ -183,19 +185,31 @@ def conv_transp(x, ksize, output_shape, stride=1, padding='SAME', bias=False):
     return h
 
 
+@scoped
+def convex_combination(x, r, scope: str = None):
+    # TODO: improve initialization and constraining
+    a = tf.get_variable('a', [1], initializer=tf.constant_initializer(0.99))
+    constrain_a = tf.assign(a, tf.clip_by_value(a, 0, 1))
+
+    def a_with_update():
+        with tf.control_dependencies([constrain_a]):
+            return tf.identity(a)
+
+    a = a_with_update()  # TODO: use constraint in tf.variable_scope instead
+    return a * x + (1 - a) * r
+
+
 # Pooling
 
 
 def max_pool(x, stride, ksize=None, padding='SAME'):
-    if ksize is None:
-        ksize = stride
+    ksize = ksize or stride
     return tf.nn.max_pool(x, [1, ksize, ksize, 1], [1, stride, stride, 1],
                           padding)
 
 
 def avg_pool(x, stride, ksize=None, padding='SAME'):
-    if ksize is None:
-        ksize = stride
+    ksize = ksize or stride
     return tf.nn.avg_pool(x, [1, ksize, ksize, 1], [1, stride, stride, 1],
                           padding)
 
@@ -218,14 +232,14 @@ def resize_bilinear(x, factor):
     return x if factor == 1 else tf.image.resize_bilinear(x, shape)
 
 
-# Special
+# Special (batch normalization and stochastic layers)
 
 
 @scoped
 def batch_normalization(
         x,
         mode=None,
-        is_training=None,  # has no effect if mode is deffind
+        is_training=None,  # has no effect if mode is defined
         offset=True,
         scale=True,
         decay=0.9,
@@ -270,30 +284,13 @@ def dropout(x,
             is_training=None,
             feature_map_wise=False,
             **kwargs):
-    try:
-        if rate <= 1e-5:
-            return x
-    except:
-        pass
+    if type(rate) in [float, int] and rate <= 1e-5:
+        return x
     active = active or is_training
     assert active is not None
     if feature_map_wise:  # TODO: remove True
         kwargs = {**kwargs, 'noise_shape': [x.shape[0], 1, 1, x.shape[3]]}
     return tf.layers.dropout(x, rate, **kwargs, training=active)
-
-
-@scoped
-def convex_combination(x, r, scope: str = None):
-    # TODO: improve initialization and constraining
-    a = tf.get_variable('a', [1], initializer=tf.constant_initializer(0.99))
-    constrain_a = tf.assign(a, tf.clip_by_value(a, 0, 1))
-
-    def a_with_update():
-        with tf.control_dependencies([constrain_a]):
-            return tf.identity(a)
-
-    a = a_with_update()  # TODO: use constraint in tf.variable_scope instead
-    return a * x + (1 - a) * r
 
 
 @scoped
@@ -305,7 +302,7 @@ def sample(fn,
            backprop=True,
            use_tf_loop=True):
     """
-    Sampling of a stochastic operation. NOTE: unfortunately doesn't work if 
+    Sampling of a stochastic operation. NOTE: it unfortunately doesn't work if 
     there are variables defined inside fn.
     :param fn: function. Stochastic operation to be sampled.
     :param x: Tensor. Input.
@@ -526,44 +523,6 @@ def dense_block(x,
 
 
 @scoped
-def resnet_middle(x,
-                  base_width=16,
-                  width_factor=1,
-                  group_lengths=[2] * 3,
-                  block_structure=BlockStructure.resnet(),
-                  dim_change='id',
-                  bn_params=dict(),
-                  dropout_params={'rate': 0.3}):
-    """
-    A pre-activation resnet without the root block and final global pooling and 
-    classification layers.
-    :param x: input tensor
-    :param base_width: number of output channels of layers in the first group
-    :param group_lengths: numbers of blocks per group
-    :param block_structure: a BlockStructure instance
-    :param bn_params: parameters for `batch_normalization`
-    :param dropout_params: parameters for `dropout`
-    """
-    assert 'is_training' in bn_params
-    assert 'is_training' in dropout_params
-    base_width *= width_factor
-    for i, length in enumerate(group_lengths):
-        group_width = 2**i * base_width
-        with tf.variable_scope(f'group{i}'):
-            for j in range(length):
-                x = residual_block(
-                    x,
-                    structure=block_structure,
-                    stride=1 + int(i > 0 and j == 0),
-                    width=group_width,
-                    dim_change=dim_change,
-                    bn_params=bn_params,
-                    dropout_params=dropout_params,
-                    name=f'rb{j}')
-    return bn_relu(x, bn_params, name="post_bn_relu")
-
-
-@scoped
 def resnet_root_block(x, base_width=16, cifar_type=False):
     """
     A pre-activation resnet without the final global pooling and classification
@@ -582,44 +541,44 @@ def resnet_root_block(x, base_width=16, cifar_type=False):
 
 
 @scoped
-def densenet_middle(
-        x,
-        base_width,
-        group_lengths,  # dense block sizes
-        block_structure=BlockStructure.densenet(),
-        compression=0.5,
-        bn_params=dict(),
-        dropout_params={'rate': 0}):  # 0.2 if data augmentation is not used
+def resnet_middle(x,
+                  base_width=16,
+                  width_factor=1,
+                  group_lengths=[2] * 3,
+                  block_structure=BlockStructure.resnet(),
+                  dim_change='id',
+                  bn_params=dict(),
+                  dropout_params={'rate': 0},
+                  pretrained_lr_factor=1):
     """
-    A densenet without the root block anf final global pooling and 
+    A pre-activation resnet without the root block and final global pooling and 
     classification layers.
     :param x: input tensor
-    :param base_width: number of output channels of the first layer
-    :param group_lengths: numbers of elementary blocks per dense block
+    :param base_width: number of output channels of layers in the first group
+    :param group_lengths: numbers of blocks per group
     :param block_structure: a BlockStructure instance
-    :param compression: float from 0 to 1. transition layer compression
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
     """
     assert 'is_training' in bn_params
     assert 'is_training' in dropout_params
+    base_width *= width_factor
+    x = amplify_gradient(x, 1 / pretrained_lr_factor)
     for i, length in enumerate(group_lengths):
-        if i > 0:
-            x = densenet_transition(
-                x,
-                compression,
-                bn_params=bn_params,
-                dropout_params=dropout_params,
-                name=f'transition{i-1}')
-        x = dense_block(
-            x,
-            length=length,
-            block_structure=block_structure,
-            base_width=base_width,
-            bn_params=bn_params,
-            dropout_params=dropout_params,
-            name=f'db{i}')
-    return bn_relu(x, bn_params, name="post_bn_relu")
+        group_width = 2**i * base_width
+        with tf.variable_scope(f'group{i}'):
+            for j in range(length):
+                x = residual_block(
+                    x,
+                    structure=block_structure,
+                    stride=1 + int(i > 0 and j == 0),
+                    width=group_width,
+                    dim_change=dim_change,
+                    bn_params=bn_params,
+                    dropout_params=dropout_params,
+                    name=f'rb{j}')
+    x = bn_relu(x, bn_params, name="post_bn_relu")
+    return amplify_gradient(x, pretrained_lr_factor)
 
 
 @scoped
@@ -641,6 +600,50 @@ def densenet_root_block(x, base_width=16, cifar_type=False):
 
 
 @scoped
+def densenet_middle(
+        x,
+        base_width,
+        group_lengths,  # dense block sizes
+        block_structure=BlockStructure.densenet(),
+        compression=0.5,
+        bn_params=dict(),
+        dropout_params={'rate': 0},  # 0.2 if data augmentation is not used
+        pretrained_lr_factor=1):
+    """
+    A densenet without the root block and final global pooling and 
+    classification layers.
+    :param x: input tensor
+    :param base_width: number of output channels of the first layer
+    :param group_lengths: numbers of elementary blocks per dense block
+    :param block_structure: a BlockStructure instance
+    :param compression: float from 0 to 1. transition layer compression
+    :param bn_params: parameters for `batch_normalization`
+    :param dropout_params: parameters for `dropout`
+    """
+    assert 'is_training' in bn_params
+    assert 'is_training' in dropout_params
+    x = amplify_gradient(x, 1 / pretrained_lr_factor)
+    for i, length in enumerate(group_lengths):
+        if i > 0:
+            x = densenet_transition(
+                x,
+                compression,
+                bn_params=bn_params,
+                dropout_params=dropout_params,
+                name=f'transition{i-1}')
+        x = dense_block(
+            x,
+            length=length,
+            block_structure=block_structure,
+            base_width=base_width,
+            bn_params=bn_params,
+            dropout_params=dropout_params,
+            name=f'db{i}')
+    x = bn_relu(x, bn_params, name="post_bn_relu")
+    return amplify_gradient(x, pretrained_lr_factor)
+
+
+@scoped
 def ladder_densenet(
         x,
         base_width=32,
@@ -650,9 +653,10 @@ def ladder_densenet(
         upsampling_block_width=128,
         bn_params=dict(),
         dropout_params={'rate': 0},  # or 0.2
-        cifar_root_block=False):
+        cifar_root_block=False,
+        pretrained_lr_factor=1):
     """
-    A densenet without the final global pooling and classification layers.
+    A Ladder-DenseNet up to pre-logits layers.
     :param x: input tensor
     :param base_width: number of output channels of the first layer
     :param group_lengths: numbers of elementary blocks per dense block
@@ -663,16 +667,8 @@ def ladder_densenet(
     """
     db_params = filter_dict(locals(), \
         ['block_structure', 'base_width', 'bn_params', 'dropout_params'])
-    tr_params = filter_dict(locals(), ['compression', 'bn_params'])
-
-    def _split_dense_block(x, length):
-        i = len(group_lengths) - 1
-        lengths = length // 2, length - length // 2
-        x = dense_block(x, length=lengths[0], **db_params, name=f'db{i}a')
-        skip = x
-        x = avg_pool(x, 2)
-        x = dense_block(x, length=lengths[1], **db_params, name=f'db{i}b')
-        return x, skip
+    tr_params = filter_dict(locals(),
+                            ['compression', 'bn_params', 'dropout_params'])
 
     @scoped
     def blend_up(x, skip):
@@ -687,22 +683,29 @@ def ladder_densenet(
         return x
 
     # DenseNet start
+    x = amplify_gradient(x, 1 / pretrained_lr_factor)
     x = densenet_root_block(x, base_width, cifar_type=cifar_root_block)
 
+    # DenseNet bloks with the 4-th being split in the middle with avg. pooling
     skips = []
     for i, length in enumerate(group_lengths[:-1]):
         x = dense_block(x, length=length, **db_params, name=f'db{i}')
-        skips.append(x)
+        skips.append(amplify_gradient(x, pretrained_lr_factor))
         x = densenet_transition(x, **tr_params, name=f'transition{i}')
-    x, skip = _split_dense_block(x, group_lengths[-1])
-    skips.append(x)
+    i, length = len(group_lengths) - 1, group_lengths[-1]
+    x = dense_block(x, length=length // 2, **db_params, name=f'db{i}a')
+    skips.append(amplify_gradient(x, pretrained_lr_factor))
+    x = avg_pool(x, 2)
+    x = dense_block(x, length=length - length // 2, **db_params, name=f'db{i}b')
+    x = amplify_gradient(x, pretrained_lr_factor)
 
     with tf.variable_scope('head'):
-        x = bn_relu(x, bn_params, name='bn_relu_bottleneck')
-        x = conv(x, 1, 512, bias=False, name='conv_bottleneck')
-        x = bn_relu(x, bn_params, name='bn_relu_context')
-        x = conv(x, 3, 128, dilation=2, bias=False, name='conv_context')
+        x = bn_relu(x, bn_params, name='bottleneck/bn_relu')
+        x = conv(x, 1, 512, bias=False, name='bottleneck/conv')
+        x = bn_relu(x, bn_params, name='context/bn_relu')
+        x = conv(x, 3, 128, dilation=2, bias=False, name='context/conv')
 
+        # The upsampling path
         pre_logits_aux = x
         for i, skip in reversed(list(enumerate(skips))):
             x = blend_up(x, skip, name=f'blend{i}')
@@ -717,7 +720,7 @@ def ladder_densenet_logits(pre_logits, pre_logits_aux, image_shape, class_count,
     for i, x in enumerate([pre_logits, pre_logits_aux]):
         with tf.variable_scope(f'logits{i}'):
             x = bn_relu(x, bn_params)  # no bn in the original code
-            x = conv(x, 1, class_count, bias=True) # 3x3? ne pomaže puno 
+            x = conv(x, 1, class_count, bias=True)  # 3x3? ne pomaže puno
             logits = tf.image.resize_bilinear(x, image_shape)
             all_logits.append(logits)
     return all_logits[0], all_logits[1]
