@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-def parse_log(log_lines):
+def parse_log(log_lines, subset='val'):
     read = False
     curves = dict()
     for line in log_lines:
@@ -12,6 +12,6 @@ def parse_log(log_lines):
             for name, value in evals:
                 curves[name] = curves.get(name, []) + [float(value)]
         else:
-            read = re.search("Testing(?:\.\.\.| \(validation)", line,
+            read = re.search(f"Testing(?:\.\.\.| \({subset})", line,
                              re.IGNORECASE) is not None
     return {k: np.array(v) for k, v in curves.items()}

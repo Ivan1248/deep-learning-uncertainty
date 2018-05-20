@@ -27,27 +27,34 @@ def get_hard_examples(model, ds):
 def train(model: Model,
           ds_train: Dataset,
           ds_val: Dataset,
+          epoch_count,
           jitter=None,
-          epoch_count=200,
           data_loading_worker_count=0):
 
     def handle_step(i):
-        text = console.read_line(impatient=True, discard_non_last=True)
-        if text == 'q':
-            return True
-        elif text == 's':
-            writer = tf.summary.FileWriter(dirs.LOGS, graph=model._sess.graph)
-        elif text == 'd':
-            view_semantic_segmentation(ds_val, lambda x: model.predict([x])[0])
-        elif text == 'dt':
-            view_semantic_segmentation(ds_train,
-                                       lambda x: model.predict([x])[0])
-        elif text == 'dc':
-            plot_curves(parse_log(model.log))
-        elif text == 'h':
-            view_semantic_segmentation(
-                get_hard_examples(model, ds_val),
-                lambda x: model.predict([x])[0])
+        try:
+            text = console.read_line(impatient=True, discard_non_last=True)
+            if text == 'q':
+                return True
+            elif text == 's':
+                writer = tf.summary.FileWriter(
+                    dirs.LOGS, graph=model._sess.graph)
+            elif text == 'd':
+                view_semantic_segmentation(ds_val,
+                                           lambda x: model.predict([x])[0])
+            elif text == 'dt':
+                view_semantic_segmentation(ds_train,
+                                           lambda x: model.predict([x])[0])
+            elif text == 'p':
+                plot_curves(parse_log(model.log))
+            elif text == 'pt':
+                plot_curves(parse_log(model.log, 'train'))
+            elif text == 'h':
+                view_semantic_segmentation(
+                    get_hard_examples(model, ds_val),
+                    lambda x: model.predict([x])[0])
+        except Exception as ex:
+            print(ex)
         return False
 
     model.training_step_event_handler = handle_step

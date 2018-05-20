@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from _context import dl_uncertainty
 
-from dl_uncertainty.tf_utils.losses import cross_entropy_loss, weighted_cross_entropy_loss
+from dl_uncertainty.models.tf_utils.losses import cross_entropy_loss, weighted_cross_entropy_loss
 
 logits_np = np.array([[[1, 2], [1, 3], [1, 2.0]]])
 labels_np = np.array([[-1, 0, 1]])

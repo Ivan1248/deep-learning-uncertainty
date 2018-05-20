@@ -31,7 +31,7 @@ parser.add_argument('width', type=int)
 parser.add_argument('saved_path', type=str)
 parser.add_argument('--trainval', action='store_true')
 parser.add_argument('--test_on_training_set', action='store_true')
-parser.add_argument('--display', action='store_true')
+parser.add_argument('--view', action='store_true')
 parser.add_argument('--hard', action='store_true')  # display hard exampels
 args = parser.parse_args()
 print(args)
