@@ -56,6 +56,7 @@ model = model_utils.get_model(
     depth=args.depth,
     width=args.width,  # width factor for WRN, base_width for others
     epoch_count=args.epochs,
+    dropout=args.dropout,
     pretrained=args.pretrained)
 
 # Training
@@ -73,7 +74,11 @@ training.train(
 # Saving
 
 print("Saving...")
-name_addition = f"-{args.name_addition}" if args.name_addition else ""
+name_addition = ""
+if args.dropout:
+    name_addition += "-dropout"
+if args.name_addition:
+    name_addition += f"-{args.name_addition}"
 model_utils.save_trained_model(
     model,
     ds_id=ds_train.info['id'] + ('-trainval' if args.trainval else '-train'),

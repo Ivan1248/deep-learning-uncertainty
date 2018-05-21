@@ -3,25 +3,18 @@ import datetime
 import tensorflow as tf
 
 from .models import Model, ModelDef
-from .models import BlockStructure, TrainingComponent
-from .models import InferenceComponents, TrainingComponents
+from .models import BlockStructure, InferenceComponent
+from .models import Layers, TrainingComponents
 from .evaluation import ClassificationEvaluator
 from . import dirs, parameter_loading
 
 
-class StandardInferenceComponents:
+class StandardInputToFeatures:
 
     @staticmethod
-    def resnet(
-            ic_kwargs,
-            depth,
-            cifar_root_block,
-            base_width,  # for all models?
-            dropout):
+    def resnet(depth, cifar_root_block, base_width, dropout):
         assert not dropout
         print(f'ResNet-{depth}-{base_width}')
-        for a in ['input_shape', 'class_count', 'problem_id']:
-            assert a in ic_kwargs
         normal = ([3, 3], [1, 1], 'id')
         bottleneck = ([1, 3, 1], [1, 1, 4], 'proj')  # last paragraph in [2]
         group_lengths, ksizes, width_factors, dim_change = {
@@ -34,26 +27,22 @@ class StandardInferenceComponents:
             164: ([18] * 3, *bottleneck),  # [1] bw 16
             200: ([3, 24, 36, 3], *bottleneck),  # [2] bw 64
         }[depth]
-        return InferenceComponents.resnet(
-            **ic_kwargs,
-            cifar_root_block=cifar_root_block,
+        return Layers.InputToFeatures.resnet(
             base_width=base_width,
             group_lengths=group_lengths,
             block_structure=BlockStructure.resnet(
                 ksizes=ksizes,
-                dropout_locations=dropout_locations,
+                dropout_locations=[0] if dropout else [],
                 width_factors=width_factors),
-            dim_change=dim_change)
+            dim_change=dim_change,
+            cifar_root_block=cifar_root_block)
 
     @staticmethod
-    def wide_resnet(ic_kwargs,
-                    depth,
+    def wide_resnet(depth,
                     width_factor,
                     cifar_root_block,
                     dropout,
                     dim_change='proj'):
-        for a in ['input_shape', 'class_count', 'problem_id']:
-            assert a in ic_kwargs
         print(f'WRN-{depth}-{width_factor}')
         zagoruyko_depth = depth
         group_count, ksizes = 3, [3, 3]
@@ -62,21 +51,18 @@ class StandardInferenceComponents:
         depth = blocks_per_group * group_depth + 4
         assert zagoruyko_depth == depth, \
             f"Invalid depth = {zagoruyko_depth} != {depth} = zagoruyko_depth"
-        return InferenceComponents.resnet(
-            **ic_kwargs,
-            cifar_root_block=cifar_root_block,
+        return Layers.InputToFeatures.resnet(
             base_width=16,
-            width_factor=width_factor,
             group_lengths=[blocks_per_group] * group_count,
             block_structure=BlockStructure.resnet(
                 ksizes=ksizes, dropout_locations=[0] if dropout else []),
-            dim_change=dim_change)
+            width_factor=width_factor,
+            dim_change=dim_change,
+            cifar_root_block=cifar_root_block)
 
     @staticmethod
-    def densenet(ic_kwargs, depth, base_width, cifar_root_block,
+    def densenet(depth, base_width, cifar_root_block,
                  dropout):  # 0.2 if data augmentation is not used
-        for a in ['input_shape', 'class_count', 'problem_id']:
-            assert a in ic_kwargs, a
         print(f'DenseNet-{depth}-{base_width}')
         ksizes = [1, 3]
         depth_to_group_lengths = {
@@ -93,35 +79,79 @@ class StandardInferenceComponents:
             blocks_per_group = (depth - group_count - 1) // \
                                (group_count * len(ksizes))
             group_lengths = [blocks_per_group] * group_count
-
-        return InferenceComponents.densenet(
-            **ic_kwargs,
+        return Layers.InputToFeatures.densenet(
             base_width=base_width,
             group_lengths=group_lengths,
-            cifar_root_block=cifar_root_block,
             block_structure=BlockStructure.densenet(ksizes=ksizes),
+            cifar_root_block=cifar_root_block,
             dropout_rate=0.2 if dropout else 0)
 
     @staticmethod
-    def ladder_densenet(ic_kwargs,
-                        depth,
-                        base_width,
-                        dropout,
-                        cifar_root_block=False):
+    def ladder_densenet(depth, base_width, dropout, cifar_root_block=False):
         print(f'Ladder-DenseNet-{depth}')
-        for a in ['input_shape', 'class_count']:
-            assert a in ic_kwargs
         group_lengths = {
             121: [6, 12, 24, 16],  # base_width = 32
             161: [6, 12, 36, 24],  # base_width = 48
             169: [6, 12, 32, 32],  # base_width = 32
         }[depth]
-        return InferenceComponents.ladder_densenet(
-            **ic_kwargs,
+        return Layers.InputToFeatures.ladder_densenet(
             base_width=32,
             cifar_root_block=cifar_root_block,
             group_lengths=group_lengths,
             dropout_rate=0.2 if dropout else 0)
+
+
+def get_inference_component(
+        net_name,
+        ds_train,
+        depth: int,
+        dropout: bool,
+        base_width: int = None,  # rn, dn, ldn
+        width_factor: int = None):
+    assert net_name in ['rn', 'wrn', 'dn', 'ldn']
+    assert bool(base_width) == (net_name in ['rn', 'dn', 'ldn'])
+    assert bool(width_factor) == (net_name == 'wrn')
+
+    problem_id = ds_train.info['problem_id']
+    input_shape = ds_train[0][0].shape
+    spatial_shape = input_shape[:2]
+
+    layers = []
+
+    # input to features
+    in_fe = StandardInputToFeatures
+    in_fe_args = {
+        'depth': depth,
+        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
+        'dropout': dropout,
+    }
+    if net_name in ['rn', 'dn', 'ldn']:
+        in_fe_args['base_width'] = base_width
+    input_to_features_layer = {
+        'rn': in_fe.resnet,
+        'wrn': lambda **k: in_fe.wide_resnet(**k, width_factor=width_factor),
+        'dn': in_fe.densenet,
+        'ldn': in_fe.ladder_densenet,
+    }[net_name]
+    layers.append(input_to_features_layer(**in_fe_args))
+
+    # features to output
+    fe_lo = Layers.FeaturesToLogits
+    if problem_id in ['clf', 'semseg']:
+        class_count = ds_train.info['class_count']
+        if (problem_id, net_name) == ('semseg', 'ldn'):
+            layers.append(fe_lo.ladder_densenet(class_count, spatial_shape))
+            layers.append(lambda x, **k: (x[0], {}))  # extract main logits
+        elif problem_id == 'semseg':
+            layers.append(
+                fe_lo.standard_segmentation(class_count, spatial_shape))
+        else:
+            layers.append(fe_lo.standard_classification(class_count))
+        layers.append(Layers.LogitsToOutput.standard())
+    else:
+        assert False, "Not implemented"
+
+    return InferenceComponent(input_shape, Layers.sequence(layers))
 
 
 def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
@@ -142,7 +172,7 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             batch_size = 64 if net_name == 'dn' else 128
         elif ds_id == 'mozgalo':
             batch_size = 32 if net_name == 'dn' else 64
-        return TrainingComponent(
+        return TrainingComponents.standard(
             batch_size=batch_size,
             loss=problem_id,
             weight_decay={'dn': 1e-4,
@@ -172,52 +202,25 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             weight_decay=weight_decay,
             pretrained_lr_factor=1 / 5 if pretrained else 1)
     else:
-        assert False
-
-
-def get_inference_component(
-        net_name,
-        ds_train,
-        depth: int,
-        base_width: int = None,  # rn, dn, ldn
-        width_factor: int = None,
-        dropout=False):  # wrn
-    assert bool(base_width) == (net_name in ['rn', 'dn', 'ldn'])
-    assert bool(width_factor) == (net_name == 'wrn')
-    sic_args = {
-        'ic_kwargs': {
-            'input_shape': ds_train[0][0].shape,
-            'class_count': ds_train.info['class_count'],
-            'problem_id': ds_train.info['problem_id'],
-        },
-        'depth': depth,
-        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
-        'dropout': dropout,
-    }
-    if net_name in ['rn', 'dn', 'ldn']:
-        sic_args['base_width'] = base_width
-
-    if net_name == 'wrn':
-        return StandardInferenceComponents.wide_resnet(
-            **sic_args, width_factor=width_factor)
-    elif net_name == 'rn':
-        return StandardInferenceComponents.resnet(**sic_args)
-    elif net_name == 'dn':
-        return StandardInferenceComponents.densenet(**sic_args)
-    elif net_name == 'ldn':
-        # pretrained: 30 epochs cityscapes, 100 epochs voc2012
-        return StandardInferenceComponents.ladder_densenet(**sic_args)
-    else:
-        assert False, f"invalid model name: {net_name}"
+        assert False, "Not implemented"
 
 
 def get_model(net_name,
               ds_train,
               depth,
               width,
+              dropout,
               pretrained=False,
               epoch_count=None):
     # width: width factor for WRN, base_width for others
+
+    ic = get_inference_component(
+        net_name=net_name,
+        ds_train=ds_train,
+        depth=depth,  # all
+        base_width=None or net_name != 'wrn' and width,
+        width_factor=None or net_name == 'wrn' and width,
+        dropout=dropout)
 
     tc = get_training_component(
         net_name=net_name,
@@ -225,14 +228,11 @@ def get_model(net_name,
         epoch_count=epoch_count,
         pretrained=pretrained)
 
-    ic = get_inference_component(
-        net_name=net_name,
-        ds_train=ds_train,
-        depth=depth,  # all
-        base_width=None or net_name != 'wrn' and width,
-        width_factor=None or net_name == 'wrn' and width)
-
-    ae = ClassificationEvaluator(ds_train.info['class_count'])
+    problem_id = ds_train.info['problem_id']
+    if problem_id in ['clf', 'semseg']:
+        ae = ClassificationEvaluator(ds_train.info['class_count'])
+    else:
+        assert False, "Not implemented"
 
     model = Model(
         modeldef=ModelDef(ic, tc),

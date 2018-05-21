@@ -480,7 +480,7 @@ def densenet_transition(x,
                         compression: float = 0.5,
                         pool_func=avg_pool,
                         bn_params=dict(),
-                        dropout_params={'rate': 0}):
+                        dropout_params=dict()):
     """ Densenet transition layer """
     x = bn_relu(x, bn_params)
     width = int(x.shape[-1].value * compression)  # floor (page 4.)
@@ -497,7 +497,7 @@ def dense_block(x,
                 block_structure=BlockStructure.densenet(),
                 base_width=12,
                 bn_params=dict(),
-                dropout_params={'rate': 0.2}):
+                dropout_params=dict()):
     """
     A generic dense block.
     :param x: input tensor
@@ -607,7 +607,7 @@ def densenet_middle(
         block_structure=BlockStructure.densenet(),
         compression=0.5,
         bn_params=dict(),
-        dropout_params={'rate': 0},  # 0.2 if data augmentation is not used
+        dropout_params=dict(),  # 0.2 if data augmentation is not used
         pretrained_lr_factor=1):
     """
     A densenet without the root block and final global pooling and 
@@ -652,7 +652,7 @@ def ladder_densenet(
         compression=0.5,
         upsampling_block_width=128,
         bn_params=dict(),
-        dropout_params={'rate': 0},  # or 0.2
+        dropout_params=dict(),  # or 0.2
         cifar_root_block=False,
         pretrained_lr_factor=1):
     """
@@ -715,7 +715,7 @@ def ladder_densenet(
 
 
 def ladder_densenet_logits(pre_logits, pre_logits_aux, image_shape, class_count,
-                           bn_params):
+                           bn_params):  # TODO: dropout
     all_logits = []
     for i, x in enumerate([pre_logits, pre_logits_aux]):
         with tf.variable_scope(f'logits{i}'):

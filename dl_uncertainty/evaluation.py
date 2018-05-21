@@ -33,7 +33,7 @@ class DummyAccumulatingEvaluator(AccumulatingEvaluator):
     def evaluate(self):
         return []
 
-    def reset():
+    def reset(self):
         pass
 
 
