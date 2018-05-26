@@ -87,6 +87,22 @@ ENV/
 # vscode
 .vscode/
 
+# LaTeX
+.aux
+.out
+.toc
+.synctex.gz
+.acn
+.bbl
+.blg
+.dvi
+.glo
+.ist
+.log
+.pytxcode
+.slo
+.stn
+.xdy
+
 # Specific
 /data/nets
-/pytorch
