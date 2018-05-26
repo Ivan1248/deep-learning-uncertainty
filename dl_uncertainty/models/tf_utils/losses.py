@@ -18,7 +18,7 @@ def cross_entropy_loss(logits, labels, reduce_mean=True):
     loss = tf.nn.softmax_cross_entropy_with_logits_v2(
         logits=logits, labels=labels_oh)  # M
     nonignored_labels = tf.cast(tf.greater_equal(labels, 0), tf.float32)
-    loss = loss * nonignored_labels # NOTE: IMPORTANT
+    loss = loss * nonignored_labels  # NOTE: IMPORTANT
     label_count = tf.reduce_sum(nonignored_labels)
     if reduce_mean:
         return tf.reduce_sum(loss) / label_count
@@ -51,11 +51,9 @@ def cross_entropy_loss_p(probs, labels, reduce_mean=True):  # TODO: fix
     return loss * (tf.size(labels) / label_count)  # N
 
 
-def class_distribution_weighted_cross_entropy_loss(logits,
-                                                   labels,
-                                                   class_distribution=None,
-                                                   eps=1e-3,
-                                                   reduce_mean=True):  # TODO: fix
+def class_distribution_weighted_cross_entropy_loss(
+        logits, labels, class_distribution=None, eps=1e-3,
+        reduce_mean=True):  # TODO: fix
     class_count = logits.shape[-1].value
     if len(logits.shape) > 2:
         logits = tf.reshape(logits, [-1, class_count])

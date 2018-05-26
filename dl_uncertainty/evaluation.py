@@ -63,7 +63,7 @@ class ClassificationEvaluator(AccumulatingEvaluator):
                                 'mIoU']):  # 'mP', 'mR', 'mF1'
         # Computes macro-averaged classification evaluation metrics based on the
         # accumulated confusion matrix and clears the confusion matrix.
-        cm = self.cm[1:, 1:]
+        cm = self.cm[1:, 1:]  # ignore ignored class
         actual_pos = tf.reduce_sum(cm, axis=1)  #  tp+fn
         pred_pos = tf.reduce_sum(cm, axis=0)  # tp+fp
         tp = tf.diag_part(cm)
@@ -108,7 +108,6 @@ class NumPyClassificationEvaluator(AccumulatingEvaluator):
     def evaluate(self, returns=['A', 'mP', 'mR', 'mF1', 'mIoU']):
         # Computes macro-averaged classification evaluation metrics based on the
         # accumulated confusion matrix and clears the confusion matrix.
-        assert self.active
         tp = np.diag(self.cm)
         actual_pos = self.cm.sum(axis=1)
         pos = self.cm.sum(axis=0)
