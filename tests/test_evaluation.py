@@ -72,7 +72,7 @@ def eval_semantic_segmentation(pred_labels, gt_labels):
 
 class_count = 20
 labels = np.arange(class_count)
-evaluator = ClassificationEvaluator(class_count)
+evaluator = NumPyClassificationEvaluator(class_count)
 
 N = 10000
 targ = np.random.random_integers(low=0, high=class_count - 1, size=(10000))
