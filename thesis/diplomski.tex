@@ -72,7 +72,7 @@ Ovaj odjeljak daje kratak i matematički ne potpuno precizan pregled nekih od os
 
 \subsection{Slučajne varijable i razdiobe}
 
-Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je ostvarenje neke vrijednosti iz prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili, kraće, $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\mid R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
+Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili, kraće, $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
 \begin{align*}
 P_{\rvar x} \colon \set X &\to \intcc{0,1} \\
 x &\mapsto \P(\rvar x=x)
@@ -90,11 +90,11 @@ za koju vrijedi
 \end{align}
 za svaki $\set A\subset\set X$.
 
-Funkciju gustoće vjerojatnosti možemo smatrati i \emph{poopćenom funkcijom}\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da gustoćom prikazujemo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
+Funkciju gustoće vjerojatnosti možemo smatrati i \emph{poopćenom funkcijom}\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da funkcijom gustoće predstavljamo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
 \begin{align} \label{eq:dirac-density}
 p_{\rvar x}(x)=\sum_{x'\in\set X} \P(\rvar x=x) \dirac(x-x')  \text{,}
 \end{align}
-gdje je $\set X$ skup mogućih vrijednosti varijable $\rvar x$, a $\delta$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
+gdje je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, a $\delta$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
 \begin{align*}
 \delta(x)=\lim_{\sigma\to 0}\frac{1}{\sqrt{2\pi}\sigma}\exp\del{\frac{x^2}{2\sigma^2}}.
 \end{align*}
@@ -130,7 +130,7 @@ p(x_1,..,x_n)
 &= p(x_1)\prod_{i=2\bidot n}p(x_i\mid x_1,..,x_{i-1})  \text{.}
 \end{align}
 
-\emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $p(x) = \p(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ skup mogućih vrijednosti slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
+\emph{Marginalna vjerojatnost} slučajne varijable $\rvar x$ je $p(x) = \p(\rvar x=x,\rvar y\in\set Y)$, gdje je $\set Y$ prostor elementarnih događaja slučajne varijable $\rvar y$. Izraženo gustoćom vjerojatnosti (\emph{pravilo zbroja}):
 \begin{align}
 p(x) = \int_{\set Y} p(x,y)\dif y = \int_{\set Y} p(x\mid y)p(y)\dif y \text{.}
 \end{align}
@@ -162,9 +162,6 @@ p(x,y\mid z) = p(x\mid z)p(y\mid z),
 \end{align}
 Isto tako, slučajne varijable $\rvar x$ i $\rvar y$ koje su nezavisne mogu biti \emph{uvjetno zavisne} uz ostvarenje neke slučajne varijable $\rvar z$. Općenito, dvije slučajne varijable ne moraju biti ni uvjetno zavisne ni uvjetno nezavisne jer neki ishodi treće slučajne varijable mogu utjecati na njihovu zavisnost, a neki ne.
 
-
-
-
 \subsection{Očekivanje, varijanca i kovarijanca}
 
 \emph{Očekivanje} (prvi moment) slučajne varijable definirano je ovako:
@@ -175,7 +172,7 @@ gdje se integrira po prostoru elementarnih događaja. Još se označava ovako: $
 \begin{align}
 \E_{x\sim\rvar x} f(x) \coloneqq \E f(\rvar x) = \int f(x)p(x)\dif x \text{.}
 \end{align}
-Ako je po oznaci jasno o kojoj se slučanoj varijabli radi, možemo kraće pisati $\E_{\rvar x} f(x)$. Očekivanje ima svojstvo linearnosti:
+Ako je po oznaci jasno o kojoj se slučajnoj varijabli radi, možemo kraće pisati $\E_{\rvar x} f(x)$. Očekivanje ima svojstvo linearnosti:
 \begin{align}
 \E\sbr{\alpha f(\rvar x)+\beta g(\rvar x)} = \alpha\E f(\rvar x)+\beta\E g(\rvar x) \text{.}
 \end{align}
@@ -201,6 +198,28 @@ Drugi korijen varijance je standardna devijacija $\sigma_{\rvar x}$.
 \Cov\del{\rvec x}_{\sbr{i,j}} = \Cov\del{\ind{\rvec x}{i}, \ind{\rvec x}{j}} \text{.}
 \end{align}
 Dijagonalni elementi te matrice su $\Cov\del{\rvec x}_{\sbr{i,i}} = \D\ind{\rvec x}{i}$.
+
+\subsection{Transformacije slučajnih varijabli}
+
+Neka je odnos između slučajnih varijabli $\rvar x$ i $\rvar y$ definiran deterministički funkcijom $f$: $\rvar y = f(\rvar x)$. 
+
+Ako su $\rvar x$ i $\rvar y$ diskretne slučajne varijable, onda je razdioba slučajne varijable $\rvar y$ definirana ovako:
+\begin{align}
+	P_{\rvar y}(y) = \sum_{x\colon f(x)=y} P_\rvar{x}(x) .
+\end{align} 
+Ako su $\rvar x$ i $\rvar y$ kontinuirane slučajne varijable s vrijednostima iz $\R$, može se pokazati \citep{Elezovic:2007:VSSV} da vrijedi
+% TODO: provjeriti \citep{Elezovic:2007:VSSV}
+\begin{align}
+p_{\rvar y}(y) = p_\rvar{x}(x) \envert{\od{x}{y}} .
+\end{align} 
+To se može poopćiti i na vektore. Onda je $p_{\rvec y}(\vec y)=\envert{\det\pd{\vec x}{\vec y}}$ \citep{Murphy:2012:MLPP}.
+
+%Neka je $c_{\rvar x}(x) := \int_{-\infty}^{x} p_{\rvar x}(x') \dif{x'}$.
+%Vrijednosti iz intervala $\intoo{x, x+\epsilon}$ na kojem je $f$ monotono rastuća preslikavaju se u interval $\intoo{f(x), f(x+\epsilon)}$ (granice su obrnute ako je monotono padajuća) i vrijedi $c_{\rvar x}(x+\epsilon)-c_{\rvar x}(x) = c_{\rvar y}(f(x)+\epsilon)-c_{\rvar y}(f(x))$.
+
+\subsection{Neke od bitnijih razdioba}
+
+\subsubsection{Centralni granični teorem}
 
 \subsection{Teorija informacije}
 
@@ -245,6 +264,8 @@ KL-divergencija će biti $0$ akko $\rvar x$ i $\rvar y$ imaju iste razdiobe. Ona
 
 
 \subsection{Monte Carlo aproksimacija}
+
+
 
 
 \section{Nadzirano strojno učenje}
@@ -293,6 +314,16 @@ TODO
 
 \citet{Murray:2005:NEBOR} % MLPP! 5.3.1 Bayesian Occam’s razor
 
+
+\subsection{Evaluacijske mjere}
+
+klasifikacija, odnos mF1 i mIoU
+%https://www.wolframalpha.com/input/?i=z+%3D+2%2F(1%2Fx%2B1%2Fy)+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
+%https://www.wolframalpha.com/input/?i=z+%3D+1%2F(1%2Fx%2B1%2Fy-1)+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
+%https://www.wolframalpha.com/input/?i=z+%3D+2%2F(1%2Fx%2B1%2Fy)%2F(1%2F(1%2Fx%2B1%2Fy-1))+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
+%https://www.wolframalpha.com/input/?i=z+%3D+2%2F(1%2Fx%2B1%2Fy)-(1%2F(1%2Fx%2B1%2Fy-1))+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
+% IoU i F1 su ekvivalnetne mjera ako se radi mikro usrednjavanje, 
+%https://stats.stackexchange.com/questions/273537/f1-dice-score-vs-iou
 
 \section{Procjena parametara i zaključivanje kod probabilističkih modela}
 
@@ -365,7 +396,7 @@ Maksimizacijom aposteriorne vjerojatnosti dobivaju se parametri
 \end{equation}
 Ovdje nije potrebno normalizirati aposteriornu vjerojatnost izračunavanjem \emph{marginalne izglednosti} (engl. \textit{marginal likelihood}, \textit{evidence}) $p(\set{D})$ u nazivniku na desnoj strani jednadžbe~\eqref{eq:posterior-bayes} jer ona ne ovisi $\vec\theta$, nego samo o modelu $\set H$. Odabirom uniformne apriorne razdiobe MAP-procjenitelj postaje ekvivalentan ML-procjenitelju.
 
-Poželjno je da $p(\set{D}\mid\vec\theta)$ i $p(\vec\theta)$ kao funkcije parametra $\vec\theta$ imaju takav oblik da njihov umnožak ima sličan oblik i može se analitički izračunati. Ako $p(\rvec\theta)$ i $p(\rvec\theta\mid\set D)$ imaju isti algebarski oblik definiran nekim parametrima, nazivaju se \emph{konjugatnim razdiobama} \citep{Snajder:2014:SU}.
+Poželjno je da $p(\set{D}\mid\vec\theta)$ i $p(\vec\theta)$ kao funkcije parametra $\vec\theta$ imaju takav oblik da njihov umnožak ima sličan oblik i može se analitički izračunati. Ako $p(\rvec\theta)$ i $p(\rvec\theta\mid\set D)$ imaju isti algebarski oblik definiran nekim parametrima, nazivaju se \emph{konjugatne razdiobe} \citep{Snajder:2014:SU}.
 % TODO ^^
 
 \subsection{Bayesovski procjenitelj i zaključivanje}

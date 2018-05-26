@@ -28,18 +28,18 @@
 
 % Objekti
 \glsgroup{o}{Objekti}
-{Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama. Za svaku vrstu objekta mogu se koristiti i latinska i grčka slova.}
+{Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi (tenzori) velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama. Za svaku vrstu objekta mogu se koristiti i latinska i grčka slova.}
 \glsentm{o}{var}{a,\,A,\,\theta}		{Varijabla (najčešće skalar)}
 \glsentm{o}{vec}{\vec a,\,\vec\theta}	{Vektor ili niz (najčešće vektor stupac)}
-\glsentm{o}{mat}{\mat A,\,\mat\Theta}	{Matrica ili višedimensionalni niz}
+\glsentm{o}{mat}{\mat A,\,\mat\Theta}	{Matrica ili višedimenzionalni niz}
 \glsentm{o}{set}{\set A}	{Skup ili multiskup}
 \glsentm{o}{const}{\const a,\,\const A,\,\const\theta}{Konstanta}
 \glsentm{o}{cvec}{\cvec a,\,\cvec\theta}{Konstanta vektor ili niz}
-\glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}{Konstanta matrica ili višedimensionalni niz}
+\glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}{Konstanta matrica ili višedimenzionalni niz}
 \glsentm{o}{cset}{\cset A,\,\cset\Theta}{Kostanta skup}
 \glsentm{o}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta}{Slučajna varijabla}
 \glsentm{o}{rvec}{\rvec a,\,\rvec\theta}{Slučajni vektor ili niz}
-\glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}{Slučajna matrica ili višedimensionalni niz}
+\glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}{Slučajna matrica ili višedimenzionalni niz}
 \glsentm{o}{rset}{\rset A}{Slučajni skup ili multiskup}
 
 % Konstante
@@ -53,8 +53,8 @@
 \glsgroup{sn}{Skupovi i nizovi}{}
 \glsentm{sn}{range}{a\bidot b} 			{Kraći zapis za $a,..,b$}
 \glsentm{sn}{setrange}{\cbr{a\bidot b}} {Skup cijelih brojeva od $a$ do $b$}
-\glsentm{sn}{setdefn}{\cbr{a_i\mid i=1\bidot n},\,\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}{Skup s $n$ elemenata}
-\glsentm{sn}{setdefset}{\cbr{f(a)\mid P(a)},\, \cbr{f(a)}_{P(a)},\, \cbr{f(a)}_{a}}{Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$ koji može biti implicitan ili neodređen}
+\glsentm{sn}{setdefn}{\cbr{a_i\colon i=1\bidot n},\,\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}{Skup s $n$ elemenata}
+\glsentm{sn}{setdefset}{\cbr{f(a)\colon P(a)},\, \cbr{f(a)}_{P(a)},\, \cbr{f(a)}_{a}}{Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$ koji može biti implicitan ili neodređen}
 \glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}}{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
 \glsentm{sn}{intoo}{\intoo{a,b}}		{Otvoreni interval}
 \glsentm{sn}{intcc}{\intcc{a,b}}		{Zatvoreni interval}
@@ -79,7 +79,7 @@
 \glsentm{l}{matinv}{\mat A^{-1}}			{Inverz matrice}
 \glsentm{l}{transp}{\mat A^\transpose}	{Transponiranje}
 \glsentm{l}{diag}{\diag\del{\vec{a}}}		{Dijagonalna matrica kojoj dijagonalu čini vektor $\vec a$}
-\glsentm{l}{det}{\envert{\mat{A}}}		{Determinanta matrice $\mat A$}
+\glsentm{l}{det}{\det\mat{A}}		{Determinanta matrice $\mat A$}
 \glsentm{l}{vecnorm}{\enVert{\vec a}_p}	{$\const L^p$-norma vektora $\vec a$}
 \glsentm{l}{matnorm}{\enVert{\mat A}_p}	{Matrična $\const L^p$-norma matrice $\mat A$}
 \glsentm{l}{frobnorm}{\enVert{\mat A}_\const{F}}	{Frobeniusova norma matrice $\mat A$}
@@ -90,7 +90,7 @@
 \glsentm{d}{pd}{\pd{y}{x}} 				{Parcijalna derivacija $y$ po $x$}
 \glsentm{d}{grad}{\nabla_{\vec x}{y}} 	{Gradijent $y$ po $\vec x$}
 \glsentm{d}{gradmat}{\nabla_{\mat X}{y}}	{Gradijent $y$ po $\mat X$}
-\glsentm{d}{jacobi}{\pd{\vec y}{\vec x}} 	{Jakobijan $\mat J\in \R^{m\times n}$ za $\vec y\in\R^m$ i $\vec x\in\R^n$}
+\glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\mat J_{\vec x\mapsto\vec y},\,\mat J} 	{Jakobijan iz $\R^{m\times n}$ za $\vec y\in\R^m$ i $\vec x\in\R^n$}
 \glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$}
 \glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ poznat iz konteksta}
 
@@ -123,9 +123,9 @@
 \glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}}		{Kullback-Leiblerova divergencija}
 
 % Ostalo
-\glsgroup{f}{Funkcije i operatori}{}
+\glsgroup{f}{Ostale oznake}{}
 \glsentm{f}{func}{\funcdef{f}{\set A}{\set B}} {Funkcija s domenom $\set A$ i kodomenom $\set B$}
 \glsentm{f}{funcdef}{x\mapsto g(x)} {Definicija funkcije; funkcija koja preslikava $x$ iz domene u $g(x)$ iz kodomene}
+\glsentm{f}{card}{\envert{\set A}}	{Kardinalitet skupa $\set A$}
 \glsentm{f}{dirac}{\dirac\del{\cdot}}	{Diracova delta}
 \glsentm{f}{doublebracket}{\enbbracket{\cdot}} {Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
-
