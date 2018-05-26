@@ -9,7 +9,7 @@ from .evaluation import ClassificationEvaluator
 from . import dirs, parameter_loading
 
 
-class StandardInputToFeatures:
+class StandardFeatureExtractors:
 
     @staticmethod
     def resnet(depth, cifar_root_block, base_width, dropout):
@@ -27,7 +27,7 @@ class StandardInputToFeatures:
             164: ([18] * 3, *bottleneck),  # [1] bw 16
             200: ([3, 24, 36, 3], *bottleneck),  # [2] bw 64
         }[depth]
-        return Layers.InputToFeatures.resnet(
+        return Layers.Features.resnet(
             base_width=base_width,
             group_lengths=group_lengths,
             block_structure=BlockStructure.resnet(
@@ -51,7 +51,7 @@ class StandardInputToFeatures:
         depth = blocks_per_group * group_depth + 4
         assert zagoruyko_depth == depth, \
             f"Invalid depth = {zagoruyko_depth} != {depth} = zagoruyko_depth"
-        return Layers.InputToFeatures.resnet(
+        return Layers.Features.resnet(
             base_width=16,
             group_lengths=[blocks_per_group] * group_count,
             block_structure=BlockStructure.resnet(
@@ -79,7 +79,7 @@ class StandardInputToFeatures:
             blocks_per_group = (depth - group_count - 1) // \
                                (group_count * len(ksizes))
             group_lengths = [blocks_per_group] * group_count
-        return Layers.InputToFeatures.densenet(
+        return Layers.Features.densenet(
             base_width=base_width,
             group_lengths=group_lengths,
             block_structure=BlockStructure.densenet(ksizes=ksizes),
@@ -94,11 +94,11 @@ class StandardInputToFeatures:
             161: [6, 12, 36, 24],  # base_width = 48
             169: [6, 12, 32, 32],  # base_width = 32
         }[depth]
-        return Layers.InputToFeatures.ladder_densenet(
+        return Layers.Features.ladder_densenet(
             base_width=32,
             cifar_root_block=cifar_root_block,
             group_lengths=group_lengths,
-            dropout_rate=0.2 if dropout else 0)
+            dropout_rate=0.1 if dropout else 0)
 
 
 def get_inference_component(
@@ -106,6 +106,7 @@ def get_inference_component(
         ds_train,
         depth: int,
         dropout: bool,
+        aleatoric_uncertainty=False,
         base_width: int = None,  # rn, dn, ldn
         width_factor: int = None):
     assert net_name in ['rn', 'wrn', 'dn', 'ldn']
@@ -113,45 +114,53 @@ def get_inference_component(
     assert bool(width_factor) == (net_name == 'wrn')
 
     problem_id = ds_train.info['problem_id']
-    input_shape = ds_train[0][0].shape
-    spatial_shape = input_shape[:2]
 
     layers = []
+    add = layers.append
 
     # input to features
-    in_fe = StandardInputToFeatures
-    in_fe_args = {
+    sfe = StandardFeatureExtractors
+    sfe_args = {
         'depth': depth,
-        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn'],
+        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn', 'tinyimagenet'],
         'dropout': dropout,
     }
     if net_name in ['rn', 'dn', 'ldn']:
-        in_fe_args['base_width'] = base_width
+        sfe_args['base_width'] = base_width
     input_to_features_layer = {
-        'rn': in_fe.resnet,
-        'wrn': lambda **k: in_fe.wide_resnet(**k, width_factor=width_factor),
-        'dn': in_fe.densenet,
-        'ldn': in_fe.ladder_densenet,
+        'rn': sfe.resnet,
+        'wrn': lambda **k: sfe.wide_resnet(**k, width_factor=width_factor),
+        'dn': sfe.densenet,
+        'ldn': sfe.ladder_densenet,
     }[net_name]
-    layers.append(input_to_features_layer(**in_fe_args))
+    add(input_to_features_layer(**sfe_args))
 
-    # features to output
-    fe_lo = Layers.FeaturesToLogits
-    if problem_id in ['clf', 'semseg']:
-        class_count = ds_train.info['class_count']
-        if (problem_id, net_name) == ('semseg', 'ldn'):
-            layers.append(fe_lo.ladder_densenet(class_count, spatial_shape))
-            layers.append(lambda x, **k: (x[0], {}))  # extract main logits
-        elif problem_id == 'semseg':
-            layers.append(
-                fe_lo.standard_segmentation(class_count, spatial_shape))
+    # logits
+    class_count = ds_train.info['class_count']
+    if (problem_id, net_name) == ('semseg', 'ldn'):
+        add(Layers.Logits.segmentation_multi(class_count))
+        add(lambda x, **k: (x[0], {}))  # extract main logits
+    elif problem_id == 'semseg':
+        if aleatoric_uncertainty:
+            add(Layers.Logits.segmentation_gaussian(class_count))
         else:
-            layers.append(fe_lo.standard_classification(class_count))
-        layers.append(Layers.LogitsToOutput.standard())
+            add(Layers.Logits.segmentation(class_count))
+    elif problem_id in 'clf':
+        assert not aleatoric_uncertainty, "Not implemented"
+        add(Layers.Logits.classification(class_count))
     else:
-        assert False, "Not implemented"
+        assert False, f"Not avaliable: problem_id={problem_id}, net_name={net_name}"
+    
+    # output
+    if problem_id in ['semseg', 'clf']:
+        if aleatoric_uncertainty:
+            add(Layers.Output.argmax_and_probs_from_gaussian_logits())
+        else:
+            add(Layers.Output.argmax_and_probs_from_logits())
+        add(Layers.ProbsUncertainty.entropy())
+        add(Layers.pull_node('output'))
 
-    return InferenceComponent(input_shape, Layers.sequence(layers))
+    return InferenceComponent(Layers.sequence(layers))
 
 
 def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
@@ -182,7 +191,7 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             learning_rate_policy=densenet_learning_rate_policy
             if net_name == 'dn' else resnet_learning_rate_policy,
             pretrained_lr_factor=1 / 5 if pretrained else 1)
-    elif problem_id == 'semseg':
+    elif problem_id == 'semseg':  # TODO: loss for non ladder-densenet
         batch_size = {
             'cityscapes': 4,
             'voc2012': 4,
@@ -200,7 +209,8 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             base_learning_rate=5e-4,
             batch_size=batch_size,
             weight_decay=weight_decay,
-            pretrained_lr_factor=1 / 5 if pretrained else 1)
+            pretrained_lr_factor=1 / 5 if pretrained else 1,
+            loss_weights=[0.7, 0.3] if net_name == 'ldn' else [1])
     else:
         assert False, "Not implemented"
 

@@ -2,6 +2,7 @@ import tensorflow as tf
 
 from .tf_utils import layers, losses
 from .modeldef import TrainingComponent
+from ..utils.collections import UnoverwritableDict
 
 # Inference
 
@@ -43,24 +44,35 @@ def semseg_probs_func(shape=None):
 class Layers:
 
     @staticmethod
-    def dummy(x, **k):
+    def dummy(x, **c):
         # k is a dictionary containing graph nodes and/or parameters
         y = x
         return y, {}  # the main output, and optional auxiliary outputs
 
     @staticmethod
-    def sequence(layer_func_sequence):
+    def pull_node(node):
 
-        def total_func(x, **k):
-            k = {**k}
-            for f in layer_func_sequence:
-                x, additional = f(x, **k)
-                k.update(additional)
-            return x, k
+        def total_func(_, **c):
+            if type(node) in [list, tuple]:
+                return type(node)(c[n] for n in node), {}
+
+            return c[node], {}
 
         return total_func
 
-    class InputToFeatures:
+    @staticmethod
+    def sequence(layer_funcs):
+
+        def total_func(x, **c):
+            c_local = UnoverwritableDict(c)
+            for f in layer_funcs:
+                x, additional = f(x, **c_local)
+                c_local.update(additional)
+            return x, {k: v for k, v in c_local.items() if k not in c}
+
+        return total_func
+
+    class Features:
         # http://ethereon.github.io/netscope/#/editor
         # https://github.com/shicai/DenseNet-Caffe
         # https://github.com/KaimingHe/deep-residual-networks/tree/master/prototxt
@@ -81,7 +93,8 @@ class Layers:
             ]
             params = {k: v for k, v in locals().items() if k in p}
 
-            def input_to_features(x, is_training, pretrained_lr_factor, **k):
+            def input_to_features(x, is_training, dropout_active,
+                                  pretrained_lr_factor, **k):
                 x = layers.resnet_root_block(
                     x, base_width=base_width, cifar_type=cifar_root_block)
                 features = layers.resnet_middle(
@@ -90,7 +103,7 @@ class Layers:
                     bn_params={'is_training': is_training},
                     dropout_params={
                         'rate': dropout_rate,
-                        'is_training': is_training
+                        'active': dropout_active
                     },
                     pretrained_lr_factor=pretrained_lr_factor)
                 return features, {'features': features}
@@ -103,7 +116,8 @@ class Layers:
             p = ['base_width', 'group_lengths', 'block_structure']
             params = {k: v for k, v in locals().items() if k in p}
 
-            def input_to_features(x, is_training, pretrained_lr_factor, **k):
+            def input_to_features(x, is_training, dropout_active,
+                                  pretrained_lr_factor, **k):
                 x = layers.densenet_root_block(
                     x, base_width=base_width, cifar_type=cifar_root_block)
                 features = layers.densenet_middle(
@@ -112,7 +126,7 @@ class Layers:
                     bn_params={'is_training': is_training},
                     dropout_params={
                         'rate': dropout_rate,
-                        'is_training': is_training
+                        'active': dropout_active
                     },
                     pretrained_lr_factor=pretrained_lr_factor)
                 return features, {'features': features}
@@ -131,110 +145,183 @@ class Layers:
             ]
             params = {k: v for k, v in locals().items() if k in p}
 
-            def input_to_features(x, is_training, pretrained_lr_factor, **k):
+            def input_to_features(x, is_training, dropout_active,
+                                  pretrained_lr_factor, **k):
                 features = layers.ladder_densenet(
                     x,
                     **params,
                     bn_params={'is_training': is_training},
                     dropout_params={
                         'rate': dropout_rate,
-                        'is_training': is_training
+                        'active': dropout_active
                     },
                     pretrained_lr_factor=pretrained_lr_factor)
                 return features, {'features': features}
 
             return input_to_features
 
-    class FeaturesToLogits:
-
-        @classmethod
-        def standard_generic(cls, problem_id, class_count, shape):
-            if problem_id == 'clf':
-                return cls.standard_classification(class_count)
-            elif problem_id == 'semseg':
-                return cls.standard_segmentation(class_count, class_count)
+    class Logits:
 
         @staticmethod
-        def standard_classification(class_count):  # TODO: dropout
+        def classification(class_count, logits_name='logits'):
 
-            def f(h, **k):
+            def f(h, **c):
                 h = tf.reduce_mean(
                     h, axis=[1, 2], keep_dims=True)  # global pooling
                 h = layers.conv(
-                    h, 1, class_count, bias=True, name='conv_logits')
+                    h, 1, class_count, bias=True, name='logits/conv')
                 logits = tf.reshape(h, [-1, class_count])
-                return logits, {'logits': logits}
+                return logits, {logits_name: logits}
 
             return f
 
         @staticmethod
-        def standard_segmentation(class_count, shape=None):  # TODO: dropout
+        def segmentation(class_count, resize=True, logits_name='logits'):
 
-            def f(h, **k):
+            def f(h, **c):
                 logits = layers.conv(
-                    h, 1, class_count, bias=True, name='conv_logits')
-                if shape:
-                    logits = tf.image.resize_bilinear(logits, shape[:2])
-                return logits, {'logits': logits}
+                    h, 1, class_count, bias=True, name='logits/conv')
+                if resize:
+                    logits = tf.image.resize_bilinear(logits, c['image_shape'])
+                return logits, {logits_name: logits}
 
             return f
 
         @staticmethod
-        def ladder_densenet(class_count, shape):  # TODO: dropout
+        def segmentation_multi(class_count, resize=True, shape=None):
 
-            def features_to_logits(all_pre_logits, is_training, **k):
-                pre_logits, pre_logits_aux = all_pre_logits
-                all_logits = layers.ladder_densenet_logits(
-                    pre_logits,
-                    pre_logits_aux,
-                    image_shape=shape[0:2],
-                    class_count=class_count,
-                    bn_params={'is_training': is_training})
+            def f(all_pre_logits, **c):
+                # Accepts multiple feature tensors as the first parameter and
+                # context **k. Returns (resized) logits for each feature tensor.
+                all_logits = []
+                for i, x in enumerate(all_pre_logits):
+                    logits = layers.conv(
+                        x, 1, class_count, bias=True, name=f'logits{i}/conv')
+                    if resize:
+                        logits = tf.image.resize_bilinear(
+                            logits, c['image_shape'])
+                    all_logits.append(logits)
                 return all_logits, {
-                    'all_logits': all_logits,
-                    'logits': all_logits[0]
+                    'logits': all_logits[0],
+                    'all_logits': all_logits
                 }
 
-            return features_to_logits
-
-    class LogitsToOutput:
+            return f
 
         @staticmethod
-        def standard():
+        def segmentation_gaussian(class_count, shape=None, sample_count=50):
 
-            def logits_to_output(x, **k):
+            def f(h, **c):
+                logits = layers.conv(
+                    h, 1, class_count * 2, bias=True, name='logits/conv')
+                if shape:
+                    logits = tf.image.resize_bilinear(logits, shape)
+
+                logits_mean = logits[..., :class_count]  # NHWC
+                logits_logvar = logits[..., class_count:]  # NHWC
+                logits_var = tf.exp(logits_logvar)
+                logits_std = tf.sqrt(logits_var)
+                # TODO: try log(1+exp(logits[..., class_count:])) for logits_std
+
+                samp_shape = tf.concatenate(
+                    [sample_count, tf.shape(logits_logvar)])
+                noise = tf.random.normal(samp_shape)  # nNHWC
+                logits_samples = logits_mean + noise * logits_std  # nNHWC
+
+                return logits_samples, {
+                    'logits_mean': logits_mean,
+                    'logits_logvar': logits_logvar,
+                    'logits_var': logits_var,
+                    'logits_std': logits_std,
+                    'logits_samples': logits_samples
+                }
+
+            return f
+
+    class Output:
+
+        @staticmethod
+        def argmax_and_probs_from_logits(output_name='output',
+                                         probs_name='probs'):
+
+            def logits_to_output(x, **c):
                 output = tf.argmax(x, axis=-1, output_type=tf.int32)
-                return output, {'probs': tf.nn.softmax(x), 'output': output}
+                probs = tf.nn.softmax(x)
+                return output, {output_name: output, probs_name: probs}
 
             return logits_to_output
 
-    class InputToOutput:
+        @staticmethod
+        def argmax_and_probs_from_gaussian_logits(
+                logits_samples_name='logits_samples',
+                output_name='output',
+                probs_name='probs'):
+
+            def f(_, **c):
+                logits_samples = c[logits_samples_name]
+                probs_samples = tf.nn.softmax(logits_samples)
+                probs = tf.reduce_mean(probs_samples, 0)
+                output = tf.argmax(probs, -1)
+                return probs, {output_name: output, probs_name: probs}
+
+            return f
+
+    class ProbsUncertainty:
 
         @staticmethod
-        def standard_classification(input_to_features,
-                                    features_to_logits=None,
-                                    class_count=None):
-            assert features_to_logits or class_count
-            features_to_logits = features_to_logits or \
-                Layers.FeaturesToLogits.standard_classification(class_count)
-            return Layers.sequence([
-                input_to_features, features_to_logits,
-                Layers.LogitsToOutput.standard()
-            ])
+        def entropy(probs_name='probs'):
+
+            def f(_, **c):
+                p = c[probs_name]
+                pe = tf.reduce_sum(-p * tf.log(p), axis=-1)
+                return pe, {f'{probs_name}_entropy': pe}
+
+            return f
+
+    class Loss:
 
         @staticmethod
-        def standard_segmentation(input_to_features,
-                                  features_to_logits=None,
-                                  class_count=None,
-                                  output_shape=None):
-            assert features_to_logits or class_count and output_shape
-            features_to_logits = features_to_logits or \
-                Layers.FeaturesToLogits.standard_segmentation(class_count, output_shape)
-            return Layers.InputToOutput.standard_classification(
-                input_to_features, features_to_logits, class_count)
+        def cross_entropy_loss():
+            return lambda logits, label, **k: losses.cross_entropy_loss(logits, label)
 
+        @staticmethod
+        def cross_entropy_loss_gaussian_logits_temporary(sample_count=50):
 
-# Training
+            def loss(_, logits_samples, label, **c):
+                probs = tf.reduce_mean(tf.nn.softmax(logits_samples), 0)
+                loss = -probs * tf.log(probs)
+
+            return loss
+
+        @staticmethod
+        def cross_entropy_loss_gaussian_logits():
+
+            def loss(_, logits_samples, label, **c):
+                sample_count = logits_samples.shape[0]
+                class_count = logits_samples.shape[-1]
+                logits_samples = tf.reshape(logits_samples,
+                                            [sample_count, -1, class_count])
+                label = tf.reshape(label, [1, -1])
+                logsumexp_logits_samples = \
+                    tf.log(tf.reduce_sum(tf.exp(logits_samples), -1))
+                true_class_logits = tf.gather_nd(logits_samples, label)
+                loss = tf.exp(true_class_logits - logsumexp_logits_samples)
+                loss = tf.reduce_mean(loss, axis=0)
+                loss = tf.reduce_mean(tf.log(loss))
+
+            return loss
+
+        @staticmethod
+        def cross_entropy_loss_multi(weights):
+
+            def loss(all_logits, label, **c):
+                if type(all_logits) not in [list, tuple]:
+                    all_logits = [all_logits]
+                assert len(all_logits) == len(weights)
+                return sum(w * losses.cross_entropy_loss(lg, label)
+                           for w, lg in zip(weights, all_logits))
+
+            return loss
 
 
 def standard_loss(problem_id):
@@ -277,7 +364,7 @@ class TrainingComponents:
 
     @staticmethod
     def ladder_densenet(epoch_count, base_learning_rate, batch_size,
-                        weight_decay, pretrained_lr_factor):
+                        weight_decay, pretrained_lr_factor, loss_weights):
 
         def learning_rate_policy(epoch):
             return tf.train.polynomial_decay(
@@ -289,7 +376,8 @@ class TrainingComponents:
 
         return TrainingComponents.standard(
             batch_size=batch_size,
-            loss='semseg',
+            loss=(Layers.Loss.cross_entropy_loss_multi(loss_weights),
+                  ['all_logits', 'label']),
             weight_decay=weight_decay,
             optimizer=tf.train.AdamOptimizer,
             learning_rate_policy=learning_rate_policy,

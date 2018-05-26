@@ -1,8 +1,10 @@
+import os
+from functools import lru_cache
+
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import skimage
-from functools import lru_cache
 
 
 def get_color_palette(n, cmap='jet'):
@@ -12,6 +14,10 @@ def get_color_palette(n, cmap='jet'):
 
 def fuse_images(im1, im2, a=0.5):
     return a * im1 + (1 - a) * im2
+
+
+def scale01(img):
+    return (img - np.min(img)) / (np.max(img) - np.min(img))
 
 
 def colorify_label(lab, colors):
@@ -61,6 +67,14 @@ class Viewer:
 
         i = 0
 
+        def get_images(i):
+            from tqdm import tqdm
+
+            dataset[len(dataset) - 1]
+
+            images = mapping(dataset[i])
+            return images if type(images) is list else [images]
+
         def on_press(event):
             nonlocal i
             if event.key == 'left':
@@ -71,18 +85,69 @@ class Viewer:
                 plt.close(event.canvas.figure)
                 return
             i = i % len(dataset)
-            imgplot.set_data(mapping(dataset[i]))
+
+            images = get_images(i)
+            for axim, im in zip(aximgs, images):
+                axim.set_data(im)
             fig.canvas.set_window_title(str(i) + "-" + self.name)
             fig.canvas.draw()
 
-        fig, ax = plt.subplots()
+        images = get_images(0)
+        subplot_count = len(images)
+
+        nrows = int(subplot_count**0.5)
+        ncols = int(subplot_count // nrows + 0.5)
+
+        fig, axes = plt.subplots(nrows, ncols)
+        if subplot_count == 1:
+            axes = [axes]
+        else:
+            axes = axes.flat[:subplot_count]
         fig.canvas.mpl_connect('key_press_event', on_press)
         fig.canvas.set_window_title(self.name)
-        imgplot = ax.imshow(mapping(dataset[0]))
+        plot = lambda ax, im: ax.imshow(scale01(im)) if len(im.shape) == 3 else ax.imshow(im)
+        aximgs = [plot(ax, im) for ax, im in zip(axes, images)]
+        from mpl_toolkits.axes_grid1 import make_axes_locatable
+        for ax, axim in zip(axes, aximgs):
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes('right', size='5%', pad=0.05)
+            fig.colorbar(axim, cax=cax, orientation='vertical')
         plt.show()
 
 
-def view_semantic_segmentation(dataset, infer=None):
+def view_predictions_2(dataset, infer=None, save_dir=None):
+    if 'class_colors' in dataset.info:
+        colors = list(map(np.array, dataset.info['class_colors']))
+        if np.max(np.array(colors)) > 1:
+            colors = [(c % 256) / 255 * 0.99 + 0.01 for c in colors]
+    else:
+        colors = get_color_palette(dataset.info['class_count'])
+    colors = [np.zeros(3)] + list(map(np.array, colors))  # unknown black
+
+    def get_frame(datapoint):
+
+        def process(pred):
+            if np.issubdtype(pred.dtype, np.float):
+                return pred
+            else:
+                return colorify_label(pred + 1, colors)
+
+        img, lab = datapoint
+        return [scale01(img)] + list(map(process, [lab] + list(infer(img))))
+
+    if save_dir is not None:
+        from skimage.io import imsave
+        from tqdm import tqdm
+        print("Saving predictions")
+
+        os.makedirs(save_dir, exist_ok=True)
+        for i, d in enumerate(tqdm(dataset)):
+            imsave(f'{save_dir}/p{i}.png', get_frame(d))
+
+    return Viewer().display(dataset, get_frame)
+
+
+def view_predictions(dataset, infer=None, save_dir=None):
     if 'class_colors' in dataset.info:
         colors = list(map(np.array, dataset.info['class_colors']))
         if np.max(np.array(colors)) > 1:
@@ -97,26 +162,35 @@ def view_semantic_segmentation(dataset, infer=None):
             if y == label:
                 return x
 
-    def scale01(img):
-        return (img - np.min(img)) / (np.max(img) - np.min(img))
-
     def get_frame(datapoint):
         img, lab = datapoint
         classification = np.shape(lab) == ()
-        lab_full = np.full(img.shape[:2], lab) if classification else lab
         img_scal = scale01(img)
         black = img_scal * 0
-        clab = colorify_label(lab_full + 1, colors)
-        label_img = scale01(get_class_representative(datapoint[1])) \
-                    if classification else fuse_images(img_scal, clab)
-        comp_arr = [[img_scal, black], [label_img, clab]]
-        if infer is not None:
-            pred = infer(img)
-            pred_full = np.full(img.shape[:2], pred) if classification else pred
-            cpred = colorify_label(pred_full + 1, colors)
+        comp_arr = [[img_scal, black]]
+
+        def add_prediction(pred):
+            pred_disp = np.full(img.shape[:2], pred) if classification else pred
+            if np.issubdtype(pred_disp.dtype, np.float):
+                shape = list(pred_disp.shape) + [3]
+                pred_disp = np.repeat(pred_disp, 3, axis=-1)
+                pred_disp = np.reshape(pred_disp, shape)
+                pred_disp = scale01(pred_disp)
+            else:
+                pred_disp = colorify_label(pred_disp + 1, colors)
             pred_img = scale01(get_class_representative(pred)) \
-                    if classification else fuse_images(img_scal, cpred)
-            comp_arr.append([pred_img, cpred])
+                    if classification else fuse_images(img_scal, pred_disp)
+            comp_arr.append([pred_img, pred_disp])
+
+        add_prediction(lab)
+
+        if infer is not None:
+            preds = infer(img)
+            if type(preds) not in [list, tuple]:
+                preds = [preds]
+            for pred in preds:
+                add_prediction(pred)
+
         comp = compose(comp_arr)
 
         bar_width, bar_height = comp.shape[1] // 10, comp.shape[0]
@@ -127,6 +201,15 @@ def view_semantic_segmentation(dataset, infer=None):
         bar = colorify_label(bar, colors)
 
         return compose([comp, bar])
+
+    if save_dir is not None:
+        from skimage.io import imsave
+        from tqdm import tqdm
+        print("Saving predictions")
+
+        os.makedirs(save_dir, exist_ok=True)
+        for i, d in enumerate(tqdm(dataset)):
+            imsave(f'{save_dir}/p{i}.png', get_frame(d))
 
     return Viewer().display(dataset, get_frame)
 

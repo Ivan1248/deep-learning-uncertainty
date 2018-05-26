@@ -42,12 +42,19 @@ class Model(object):
             self._increment_epoch = tf.assign(
                 self._epoch, self._epoch + 1, name='increment_epoch')
             self._is_training = tf.placeholder(tf.bool, name='is_training')
+            self._mc_dropout = tf.placeholder(
+                tf.bool, shape=(), name='mc_dropout')
+            self._dropout_active = tf.logical_or(self._is_training,
+                                                 self._mc_dropout)
 
-            self.nodes = modeldef.build_graph(self._epoch, self._is_training)
+            self.nodes = modeldef.build_graph(
+                epoch=self._epoch,
+                is_training=self._is_training,
+                dropout_active=self._dropout_active)
 
             self.accumulating_evaluator = self.accumulating_evaluator()
             self.ae_accum_batch = self.accumulating_evaluator.accumulate_batch(
-                self.nodes.label, self.nodes.outputs['output'])
+                self.nodes['label'], self.nodes['output'])
             ae_evals = self.accumulating_evaluator.evaluate()
             self.ae_eval_names = list(ae_evals.keys())
             self.ae_evals = list(ae_evals.values())
@@ -97,27 +104,6 @@ class Model(object):
                 var.load(value, self._sess)
         self._log("Parameters loaded...")
 
-    def predict(self, inputs, single_input=False, outputs="output"):
-        """
-        :inputs: a batch or a single input. If the input is a single example
-            outputs will not have a the batch dimension either.
-        :param outputs: string list of strings which can be a list like
-            ["output", "probs", "logits", "uncertainty"]
-        """
-        if single_input:
-            inputs = [inputs]
-        if type(outputs) is str:
-            fetches = self.nodes.outputs[outputs]
-        if type(outputs) is list:
-            fetches = [self.nodes.outputs[o] for o in outputs]
-        ret = self._run(fetches, inputs, None, is_training=False)
-        if single_input:
-            if type(outputs) is str:  # single output
-                return ret[0]
-            else:
-                return tuple(r[0] for r in ret)
-        return ret
-
     @property
     def epoch(self):
         return self._sess.run(self._epoch)
@@ -125,12 +111,12 @@ class Model(object):
     def train(self, data: DataLoader, epoch_count=1):
 
         def train_minibatch(inputs, labels, extra_fetches=[]):
-            fetches = [self.nodes.training_step, self.nodes.loss] + \
+            fetches = [self.nodes['training_step'], self.nodes['loss']] + \
                       list(extra_fetches)
             _, loss, *extra = self._run(
                 fetches, inputs, labels, is_training=True)
-            if self.nodes.training_post_step is not None:
-                self._sess.run(self.nodes.training_post_step)
+            if 'training_post_step' in self.nodes:
+                self._sess.run(self.nodes['training_post_step'])
             return loss, extra
 
         def log_part_results(b):
@@ -148,7 +134,7 @@ class Model(object):
             self._sess.run(self._increment_epoch)
             self._log(f"Training: epoch {self.epoch:d} " +
                       f"({len(data)} batches of size {self.batch_size}, " +
-                      f"lr={self._sess.run(self.nodes.learning_rate):.2e})")
+                      f"lr={self._sess.run(self.nodes['learning_rate']):.2e})")
             for b, (inputs, labels) in enumerate(data):
                 b = b + 1
                 loss, _ = train_minibatch(
@@ -160,31 +146,137 @@ class Model(object):
             if end:
                 return False
 
-    def test(self, data: DataLoader, test_name=None):
-        self._log('Testing%s...' %
-                  ("" if test_name is None else " (" + test_name + ")"))
+    def test(self, data: DataLoader, test_name=None, mc_dropout=False):
+        if mc_dropout:
+            return self._test_mc_dropout(data, test_name)
+        test_name = test_name or "?"
+        self._log(f'Testing ({test_name})...')
         loss_sum = 0
         self._sess.run(self.ae_reset)
         for inputs, labels in data:
-            fetches = [
-                self.nodes.loss, self.nodes.outputs['output'],
-                self.ae_accum_batch
-            ]
-            loss, output, _ = self._run(
-                fetches, inputs, labels, is_training=False)
+            fetches = [self.nodes['loss'], self.ae_accum_batch]
+            loss, _ = self._run(fetches, inputs, labels, is_training=False)
             loss_sum += loss
         loss = loss_sum / len(data)
         ev = zip(self.ae_eval_names, self._sess.run(self.ae_evals))
         self._log(" " + self._eval_str(loss, ev))
         return loss, ev
 
-    def _run(self, fetches, inputs, labels=None, is_training=None):
-        feed_dict = {self.nodes.input: inputs}
+    def predict(self,
+                inputs,
+                single_input=False,
+                outputs="output",
+                mc_dropout=False):
+        """
+        :inputs: a batch or a single input. If the input is a single example
+            outputs will not have a the batch dimension either.
+        :param outputs: string list of strings which can be a list like
+            ["output", "probs", "logits", "uncertainty"]
+        """
+        if mc_dropout:
+            return self._predict_mc_dropout(inputs, single_input, outputs)
+        if single_input:
+            inputs = [inputs]
+        if type(outputs) is str:
+            outputs = [outputs]
+        ret = self._predict(inputs, outputs)
+        if single_input:
+            ret = tuple(r[0] for r in ret)
+        return ret
+
+    def _run(self,
+             fetches,
+             inputs,
+             labels=None,
+             is_training=None,
+             mc_dropout=False):
+        feed_dict = {self.nodes['input']: inputs}
         if labels is not None:
-            feed_dict[self.nodes.label] = np.array(labels)
+            feed_dict[self.nodes['label']] = np.array(labels)
         if self._is_training is not None:
             feed_dict[self._is_training] = is_training
+        feed_dict[self._mc_dropout] = mc_dropout
         return self._sess.run(fetches, feed_dict)
+
+    def _predict(self, inputs, outputs):
+        fetches = [self.nodes[o] for o in outputs]
+        return self._run(fetches, inputs, None, is_training=False)
+
+    def _sample_logits_and_probs(self, inputs, sample_count):
+        fetches = [self.nodes['logits'], self.nodes['probs']]
+        probs_logits_pairs = [
+            self._run(fetches, inputs, is_training=False, mc_dropout=True)
+            for _ in range(sample_count)
+        ]
+        return tuple(np.array(x) for x in zip(*probs_logits_pairs))
+
+    def _sample_probs(self, inputs, sample_count):
+        fetches = [self.nodes['probs']]
+        return np.array([
+            self._run(fetches, inputs, is_training=False, mc_dropout=True)[0]
+            for _ in range(sample_count)
+        ])
+
+    def _test_mc_dropout(self,
+                         data: DataLoader,
+                         test_name=None,
+                         sample_count=50):
+        from ..evaluation import NumPyClassificationEvaluator
+        ev = None
+        test_name = test_name or "?"
+        self._log(f'Testing (MC-dropout {sample_count}) ({test_name})...')
+        for inputs, labels in data:
+            sampled_probs = self._sample_probs(inputs, sample_count)
+            probs = sampled_probs.mean(axis=0)
+            del sampled_probs
+            if ev is None:
+                ev = NumPyClassificationEvaluator(class_count=probs.shape[-1])
+            pred = np.argmax(probs, axis=-1)
+            ev.accumulate(labels, pred)
+        evals = ev.evaluate()
+        ev.reset()
+        self._log(" " + self._eval_str(-1, evals))
+        return -1, ev
+
+    def _predict_mc_dropout(self,
+                            inputs,
+                            single_input=False,
+                            outputs="output",
+                            sample_count=50):
+        if single_input:
+            inputs = [inputs]
+        if type(outputs) is str:
+            outputs = [outputs]
+        NP = ['probs', 'output', 'probs_entropy', 'pred_logits_var']
+        for o in outputs:
+            assert o in NP
+        sampled_logits, sampled_probs = self._sample_logits_and_probs(
+            inputs, sample_count)
+        probs = sampled_probs.mean(0)
+        del sampled_probs
+        output = np.argmax(probs, -1)
+
+        #pred_logits_var = (probs * sampled_logits.var(0)).mean(-1)
+
+        if single_input:
+            probs = probs[0]
+            output = output[0]
+        
+        ret = {'probs': probs}
+        if 'output' in outputs:
+            ret['output'] = output
+        if 'probs_entropy' in outputs:
+            ret['probs_entropy'] = (-probs * np.log(probs)).sum(axis=-1)
+        if 'pred_logits_var' in outputs:
+            mask = np.eye(probs.shape[-1], dtype=np.bool)[output]
+            pred_logits_samples = np.reshape(sampled_logits[:, mask],
+                                             sampled_logits.shape[:-1])
+            pred_logits_var = pred_logits_samples.var(0)
+            del pred_logits_samples
+            if single_input:
+                pred_logits_var = pred_logits_var[0]
+            ret['pred_logits_var'] = pred_logits_var
+        return [ret[o] for o in outputs]
 
     def _eval_str(self, loss: float, ev):
         if type(ev) is dict:

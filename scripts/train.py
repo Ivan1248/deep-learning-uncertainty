@@ -22,24 +22,25 @@ CUDA_VISIBLE_DEVICES=2 python train.py
   cityscapes dn  121 32 --epochs 30 --pretrained
   cityscapes rn   50 64 --epochs 30 --pretrained
   cityscapes ldn 121 32 --epochs 30 --pretrained
+  camvid ldn 121 32 --epochs 30 --trainval --pretrained
   mozgalo rn 50 64 --pretrained --epochs 15 --trainval
   mozgalo rn 18 64 --epochs 12 --trainval
 """
 
 parser = argparse.ArgumentParser()
 parser.add_argument('ds', type=str)
-parser.add_argument('net', type=str)  # 'wrn' or 'dn'
+parser.add_argument('net', type=str)
 parser.add_argument('depth', type=int)
 parser.add_argument('width', type=int)
 parser.add_argument('--trainval', action='store_true')
-parser.add_argument('--dropout', action='store_true')  # for wrn
+parser.add_argument('--dropout', action='store_true')
+parser.add_argument('--mcdropout', action='store_true')
 parser.add_argument('--pretrained', action='store_true')
+parser.add_argument('--randomcrop', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 parser.add_argument('--name_addition', required=False, default="", type=str)
 args = parser.parse_args()
 print(args)
-
-assert not args.dropout, "Not implemented"
 
 # Cached dataset with normalized inputs
 
@@ -56,27 +57,37 @@ model = model_utils.get_model(
     depth=args.depth,
     width=args.width,  # width factor for WRN, base_width for others
     epoch_count=args.epochs,
-    dropout=args.dropout,
+    dropout=args.dropout or args.mcdropout,
     pretrained=args.pretrained)
 
 # Training
 
 print("Starting training and validation loop...")
-
+jitter = data_utils.get_augmentation_func(ds_train)
+train_kwargs = {}
+if args.randomcrop:
+    from dl_uncertainty.processing.data_augmentation import random_crop_with_label
+    shape = [ds_train[0][0].shape[0]] * 2
+    jitter = lambda xy: random_crop_with_label(xy, shape)
+    train_kwargs['jitter_name'] = "random_crop"
 training.train(
     model,
     ds_train,
     ds_test,  # 25
     epoch_count=args.epochs,
-    jitter=data_utils.get_augmentation_func(ds_train),
-    data_loading_worker_count=4)
+    jitter=jitter,
+    mc_dropout=args.mcdropout,
+    data_loading_worker_count=4,
+    **train_kwargs)
 
 # Saving
 
 print("Saving...")
 name_addition = ""
-if args.dropout:
+if args.dropout or args.mcdropout:
     name_addition += "-dropout"
+if args.randomcrop:
+    name_addition += "-randomcrop"
 if args.name_addition:
     name_addition += f"-{args.name_addition}"
 model_utils.save_trained_model(

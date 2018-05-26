@@ -190,12 +190,8 @@ def convex_combination(x, r, scope: str = None):
     # TODO: improve initialization and constraining
     a = tf.get_variable('a', [1], initializer=tf.constant_initializer(0.99))
     constrain_a = tf.assign(a, tf.clip_by_value(a, 0, 1))
-
-    def a_with_update():
-        with tf.control_dependencies([constrain_a]):
-            return tf.identity(a)
-
-    a = a_with_update()  # TODO: use constraint in tf.variable_scope instead
+    with tf.control_dependencies([constrain_a]):
+        a = tf.identity(a)  # TODO: use constraint in tf.variable_scope instead
     return a * x + (1 - a) * r
 
 
@@ -217,18 +213,18 @@ def avg_pool(x, stride, ksize=None, padding='SAME'):
 # Rescaling
 
 
-def _get_resized_shape(x, factor):
+def _get_rescaled_shape(x, factor):
     return (np.array([d.value
                       for d in x.shape[1:3]]) * factor + 0.5).astype(np.int)
 
 
 def rescale_nearest_neighbor(x, factor):
-    shape = _get_resized_shape(x, factor)
+    shape = _get_rescaled_shape(x, factor)
     return x if factor == 1 else tf.image.resize_nearest_neighbor(x, shape)
 
 
-def resize_bilinear(x, factor):
-    shape = _get_resized_shape(x, factor)
+def rescale_bilinear(x, factor):
+    shape = _get_rescaled_shape(x, factor)
     return x if factor == 1 else tf.image.resize_bilinear(x, shape)
 
 
@@ -249,8 +245,8 @@ def batch_normalization(
     Batch normalization with scaling that normalizes over all but the last
     dimension of x.
     :param x: input tensor.
-    :param mode: Tensor or str. 'moving' or 'fixed' (TODO or 'accumulation' -- not 
-        implemented).
+    :param mode: Tensor or str. 'moving' or 'fixed' (TODO or 'accumulation' -- 
+        not implemented).
     :param is_training: Tensor or bool. Has no effect if mode is defined,
         otherwise mode is 'moving' if True and 'fixed' if False.
     :param offset: Tensor or bool. Add learned offset to the output.
@@ -278,19 +274,12 @@ def batch_normalization(
     return tf.nn.batch_normalization(x, mean, var, offset, scale, var_epsilon)
 
 
-def dropout(x,
-            rate,
-            active=None,
-            is_training=None,
-            feature_map_wise=False,
-            **kwargs):
-    if type(rate) in [float, int] and rate <= 1e-5:
+def dropout(x, rate, active=None, feature_map_wise=False, **kwargs):
+    if rate <= 1e-5:
         return x
-    active = active or is_training
-    assert active is not None
     if feature_map_wise:  # TODO: remove True
-        kwargs = {**kwargs, 'noise_shape': [x.shape[0], 1, 1, x.shape[3]]}
-    return tf.layers.dropout(x, rate, **kwargs, training=active)
+        kwargs = {**kwargs, 'noise_shape': [tf.shape(x)[0], 1, 1, x.shape[3]]}
+    return tf.layers.dropout(x, rate=rate, **kwargs, training=active)
 
 
 @scoped
@@ -414,8 +403,8 @@ def block(x,
           omit_first_bn_relu=False,
           bn_params=dict(),
           dropout_params=dict()):
-    struct = structure
-    for i, (ksize, wf) in enumerate(zip(struct.ksizes, struct.width_factors)):
+    s = structure
+    for i, (ksize, wf) in enumerate(zip(s.ksizes, s.width_factors)):
         if not omit_first_bn_relu:
             x = bn_relu(x, bn_params, name=f'bn_relu{i}')
         omit_first_bn_relu = False
@@ -426,7 +415,7 @@ def block(x,
             stride=stride if i == 0 else 1,
             bias=False,
             name=f'conv{i}')
-        if i in struct.dropout_locations:
+        if i in s.dropout_locations:
             x = dropout(x, **dropout_params)
     return x
 
@@ -485,7 +474,7 @@ def densenet_transition(x,
     x = bn_relu(x, bn_params)
     width = int(x.shape[-1].value * compression)  # floor (page 4.)
     x = conv(x, 1, width, bias=False)
-    if 'rate' in dropout_params.keys() and dropout_params['rate'] >= 1e-6:
+    if dropout_params.get('rate', 0) >= 1e-6:
         x = dropout(x, **dropout_params)
     x = pool_func(x, stride=2)
     return x
@@ -501,8 +490,8 @@ def dense_block(x,
     """
     A generic dense block.
     :param x: input tensor
-    :param size: number of elementary blocks
-    :param block_structure: a BlockStructure instance
+    :param length: number of elementary blocks
+    :param block_structure: a BlockStructure instance for elementary blocks
     :param base_width: number of output channels of an elementary block
     :param bn_params: parameters for `batch_normalization`
     :param dropout_params: parameters for `dropout`
@@ -561,7 +550,7 @@ def resnet_middle(x,
     :param dropout_params: parameters for `dropout`
     """
     assert 'is_training' in bn_params
-    assert 'is_training' in dropout_params
+    assert 'active' in dropout_params and 'rate' in dropout_params
     base_width *= width_factor
     x = amplify_gradient(x, 1 / pretrained_lr_factor)
     for i, length in enumerate(group_lengths):
@@ -621,7 +610,7 @@ def densenet_middle(
     :param dropout_params: parameters for `dropout`
     """
     assert 'is_training' in bn_params
-    assert 'is_training' in dropout_params
+    assert 'active' in dropout_params and 'rate' in dropout_params
     x = amplify_gradient(x, 1 / pretrained_lr_factor)
     for i, length in enumerate(group_lengths):
         if i > 0:
@@ -651,6 +640,7 @@ def ladder_densenet(
         block_structure=BlockStructure.densenet(dropout_locations=[1]),
         compression=0.5,
         upsampling_block_width=128,
+        baseline=False,
         bn_params=dict(),
         dropout_params=dict(),  # or 0.2
         cifar_root_block=False,
@@ -670,17 +660,19 @@ def ladder_densenet(
     tr_params = filter_dict(locals(),
                             ['compression', 'bn_params', 'dropout_params'])
 
+    def bn_relu_conv_dropout(x, ksize, width, dilation=1, name=None):
+        x = bn_relu(x, bn_params)  # TODO name
+        x = conv(x, ksize, width, bias=False, dilation=dilation, name=name)
+        return dropout(x, **dropout_params)
+
     @scoped
     def blend_up(x, skip):
-        x = tf.image.resize_bilinear(x, [d.value for d in skip.shape[1:3]])
-        skip = bn_relu(skip, bn_params)  # TODO name
-        skip = conv(
-            skip, 1, x.shape[-1].value, bias=False, name=f'conv_bottleneck{i}')
+        x = tf.image.resize_bilinear(x, tf.shape(skip)[1:3])
+        skip = bn_relu_conv_dropout(
+            skip, 1, x.shape[-1].value, name=f'conv_bottleneck{i}')
         x = tf.concat([x, skip], axis=3)
-        x = bn_relu(x, bn_params)
-        x = conv(
-            x, 3, upsampling_block_width, bias=False, name=f'conv_blend{i}')
-        return x
+        return bn_relu_conv_dropout(
+            x, 3, upsampling_block_width, name=f'conv_blend{i}')
 
     # DenseNet start
     x = amplify_gradient(x, 1 / pretrained_lr_factor)
@@ -700,27 +692,16 @@ def ladder_densenet(
     x = amplify_gradient(x, pretrained_lr_factor)
 
     with tf.variable_scope('head'):
-        x = bn_relu(x, bn_params, name='bottleneck/bn_relu')
-        x = conv(x, 1, 512, bias=False, name='bottleneck/conv')
-        x = bn_relu(x, bn_params, name='context/bn_relu')
-        x = conv(x, 3, 128, dilation=2, bias=False, name='context/conv')
+        x = bn_relu_conv_dropout(x, 1, 128 * 4, name='bottleneck/conv')
+        x = bn_relu_conv_dropout(x, 3, 128, dilation=2, name='context/conv')
+
+        if baseline:
+            return bn_relu(x)
 
         # The upsampling path
-        pre_logits_aux = x
+        pre_logits_aux = bn_relu(x, bn_params)  # no bn in the original code
         for i, skip in reversed(list(enumerate(skips))):
             x = blend_up(x, skip, name=f'blend{i}')
-        pre_logits = x
+        pre_logits = bn_relu(x, bn_params)
 
         return pre_logits, pre_logits_aux
-
-
-def ladder_densenet_logits(pre_logits, pre_logits_aux, image_shape, class_count,
-                           bn_params):  # TODO: dropout
-    all_logits = []
-    for i, x in enumerate([pre_logits, pre_logits_aux]):
-        with tf.variable_scope(f'logits{i}'):
-            x = bn_relu(x, bn_params)  # no bn in the original code
-            x = conv(x, 1, class_count, bias=True)  # 3x3? ne pomaže puno
-            logits = tf.image.resize_bilinear(x, image_shape)
-            all_logits.append(logits)
-    return all_logits[0], all_logits[1]
