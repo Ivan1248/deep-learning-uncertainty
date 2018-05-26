@@ -4,7 +4,6 @@ import pickle
 import PIL.Image as pimg
 import numpy as np
 from skimage.transform import resize
-from tqdm import tqdm
 import torch.utils.data
 from functools import lru_cache
 
@@ -155,6 +154,56 @@ class MozgaloRVCDataset(Dataset):
         return len(self._image_list)
 
 
+class TinyImageNet(Dataset):
+
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['train', 'val', 'test']
+
+        with open(f"{data_dir}/wnids.txt") as fs:
+            class_names = [l.strip() for l in fs.readlines()]
+        subset_dir = f"{data_dir}/{subset}"
+
+        self._examples = []
+
+        if subset == 'train':
+            for i, class_name in enumerate(class_names):
+                images_dir = f"{subset_dir}/{class_name}/images"
+                for im in os.listdir(images_dir):
+                    self._examples.append((f"{images_dir}/{im}", i))
+        elif subset == 'val':
+            with open(f"{subset_dir}/val_annotations.txt") as fs:
+                im_labs = [l.split()[:2] for l in fs.readlines()]
+                images_dir = f"{subset_dir}/images"
+                for im, lab in im_labs:
+                    lab = class_names.index(lab)
+                    self._examples.append((f"{images_dir}/{im}", lab))
+        elif subset == 'test':
+            images_dir = f"{subset_dir}/images"
+            self._examples = [(f"{images_dir}/{im}", -1)
+                              for im in os.listdir(images_dir)]
+
+        self.info = {
+            'id': 'tinyimagenet',
+            'class_count': 200,
+            'class_names': class_names,
+            'problem_id': 'clf'
+        }
+        self.name = f"TinyImageNet-{subset}"
+
+    def _load_image(self, path):
+        im = _load_image(path)
+        if len(im.shape) == 2:
+            im = np.reshape(np.repeat(im, 3, axis=-1), list(im.shape) + [3])
+        return im
+
+    def __getitem__(self, idx):
+        img_path, lab = self._examples[idx]
+        return self._load_image(img_path), lab
+
+    def __len__(self):
+        return len(self._examples)
+
+
 # Semantic segmentation
 
 
@@ -267,6 +316,71 @@ class CityscapesSegmentationDataset(Dataset):
 
     def __len__(self):
         return len(self._image_list)
+
+
+class WildDashSegmentationDataset(Dataset):
+
+    def __init__(self, data_dir, subset='val', downsampling_factor=1):
+        assert subset in ['val', 'bench', 'both']  # 'test' labels are invalid
+        assert downsampling_factor >= 1
+        from .cityscapes_labels import labels as cslabels
+
+        self._subset = subset
+
+        self._downsampling_factor = downsampling_factor
+        self._shape = np.array([1070, 1920]) // downsampling_factor
+
+        self._IMG_SUFFIX = "0.png"
+        self._LAB_SUFFIX = "0_labelIds.png"
+        self._id_to_label = [(l.id, l.trainId) for l in cslabels]
+
+        self._images_dir = f'{data_dir}/wd_{subset}_01'
+        self._image_names = [
+            os.path.relpath(x, start=self._images_dir)[:-5]
+            for x in glob.glob(self._images_dir + f'/*{self._IMG_SUFFIX}')
+        ]
+        class_count = 19
+        self.info = {
+            'id': 'wilddash',
+            'problem_id': 'semseg',
+            'class_count': class_count,
+            'class_names': [l.name for l in cslabels if l.trainId >= 0],
+            'class_colors': [l.color for l in cslabels if l.trainId >= 0],
+        }
+        self.name = f"WildDashSegmentation-{subset}"
+
+        self._blank_label = np.full(list(self._shape), -1, dtype=np.int8)
+
+        if downsampling_factor > 1:
+            self.name += f"-downsample_{downsampling_factor}x"
+
+    def __getitem__(self, idx):
+        path_prefix = f"{self._images_dir}/{self._image_names[idx]}"
+        img = pimg.open(f"{path_prefix}{self._IMG_SUFFIX}")
+        if self._downsampling_factor > 1:
+            img = img.resize(self._shape[::-1], pimg.BILINEAR)
+        img = np.array(img, dtype=np.uint8)
+        if len(img.shape) == 2:
+            shape = list(img.shape) + [3]
+            img = np.reshape(np.repeat(img, 3, axis=-1), shape)
+        if img.shape[-1] > 3:
+            img = img[:, :, :3]
+
+        if self._subset == 'bench':
+            lab = self._blank_label
+        else:
+            lab = pimg.open(f"{path_prefix}{self._LAB_SUFFIX}")
+            if self._downsampling_factor > 1:
+                lab = lab.resize(self._shape[::-1], pimg.NEAREST)
+            lab = np.array(lab, dtype=np.int8)
+
+        for id, lb in self._id_to_label:
+            lab[lab == id] = lb
+
+        return img, lab
+
+    def __len__(self):
+        return len(self._image_names)
 
 
 class ICCV09Dataset(Dataset):

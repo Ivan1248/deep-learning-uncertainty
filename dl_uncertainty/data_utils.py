@@ -19,6 +19,20 @@ def get_dataset(name, trainval_test=False):
             ds_test = datasets.Cifar10Dataset(ds_path, 'test')
         else:
             ds_train, ds_test = ds_train.permute().split(0.8)
+    elif name == 'tinyimagenet':
+        ds_path = dirs.DATASETS + '/tiny-imagenet-200'
+        ds_train = datasets.TinyImageNet(ds_path, 'train')
+        ds_test = datasets.TinyImageNet(ds_path, 'val')
+        if trainval_test:
+            ds_train = ds_train + ds_test
+            ds_test = datasets.TinyImageNet(ds_path, 'test')
+    elif name == 'svhn':
+        ds_path = dirs.DATASETS + '/tiny-imagenet-200'
+        ds_train = datasets.TinyImageNet(ds_path, 'train')
+        ds_test = datasets.TinyImageNet(ds_path, 'val')
+        if trainval_test:
+            ds_train = ds_train + ds_test
+            ds_test = datasets.TinyImageNet(ds_path, 'test')
     elif name == 'mozgalo':
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
         ds_train = datasets.MozgaloRVCDataset(
@@ -34,6 +48,11 @@ def get_dataset(name, trainval_test=False):
         if trainval_test:
             ds_train = ds_train + ds_test
             ds_test = load('test')
+    elif name == 'wilddash':
+        assert not trainval_test
+        ds_path = dirs.DATASETS + '/wilddash'
+        load = lambda s: datasets.WildDashSegmentationDataset(ds_path, s, downsampling_factor=2)
+        return tuple(map(load, ['val', 'bench']))
     elif name == 'camvid':
         ds_path = dirs.DATASETS + '/CamVid'
         load = lambda s: datasets.CamVidDataset(ds_path, s)
@@ -167,7 +186,7 @@ def get_cached_dataset_with_normalized_inputs(name, trainval_test=False):
 
 
 def get_augmentation_func(dataset):
-    if dataset.info['id'] in ['cifar']:
+    if dataset.info['id'] in ['cifar', 'tinyimagenet']:
         return lambda xy: (augment_cifar(xy[0]), xy[1])
     elif dataset.info['problem_id'] == 'semseg':
         return random_fliplr_with_label
