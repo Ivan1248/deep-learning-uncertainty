@@ -88,21 +88,21 @@ ENV/
 .vscode/
 
 # LaTeX
-.aux
-.out
-.toc
-.synctex.gz
-.acn
-.bbl
-.blg
-.dvi
-.glo
-.ist
-.log
-.pytxcode
-.slo
-.stn
-.xdy
+thesis/*.aux
+thesis/*.out
+thesis/*.toc
+thesis/*.synctex.gz
+thesis/*.acn
+thesis/*.bbl
+thesis/*.blg
+thesis/*.dvi
+thesis/*.glo
+thesis/*.ist
+thesis/*.log
+thesis/*.pytxcode
+thesis/*.slo
+thesis/*.stn
+thesis/*.xdy
 
 # Specific
 /data/nets
