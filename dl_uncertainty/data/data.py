@@ -50,6 +50,13 @@ class Dataset(torch.utils.data.Dataset):
             ds.info = info
         return ds
 
+    def batch(drop_last=True):
+        assert drop_last, "Not implemented"
+        assert False, "TODO"
+
+    def unbatch():
+        assert False, "TODO"
+
     def cache(self, max_cache_size=np.inf):
         # caches the dataset in RAM (partially or wholly)
         return CachedDataset(self, max_cache_size)
@@ -155,8 +162,8 @@ class CachedDataset(Dataset):
 
     def __init__(self, dataset, max_cache_size=np.inf):
         cache_size = min(len(dataset), max_cache_size)
-        self.cached_all = cache_size == len(dataset)
-        if self.cached_all:
+        self.cache_all = cache_size == len(dataset)
+        if self.cache_all:
             self.name = dataset.name + "-cache"
             self._print("Caching whole dataset...")
             self.data = [x for x in tqdm(dataset)]
@@ -169,11 +176,11 @@ class CachedDataset(Dataset):
         self.info = dataset.info
 
     def __getitem__(self, idx):
-        cache_hit = self.cached_all or idx < len(self.data)
+        cache_hit = self.cache_all or idx < len(self.data)
         return (self.data if cache_hit else self.dataset)[idx]
 
     def __len__(self):
-        return len(self.data if self.cached_all else self.dataset)
+        return len(self.data if self.cache_all else self.dataset)
 
 
 class LRUCachedDataset(Dataset):
@@ -306,6 +313,10 @@ class RepeatedDataset(Dataset):
 # DataLoader
 
 
+def tuple_collate(batch):
+    return tuple(map(np.array, zip(*batch)))
+
+
 class DataLoader(torch.utils.data.DataLoader):
 
     def __init__(self,
@@ -314,13 +325,10 @@ class DataLoader(torch.utils.data.DataLoader):
                  shuffle=False,
                  num_workers=0,
                  drop_last=False):
-
-        collate_fn = lambda batch: tuple(map(np.array, zip(*batch)))
-
         super().__init__(
             dataset,
             batch_size=batch_size,
             shuffle=shuffle,
             num_workers=num_workers,
             drop_last=drop_last,
-            collate_fn=collate_fn)
+            collate_fn=tuple_collate)

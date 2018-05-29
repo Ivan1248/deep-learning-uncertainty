@@ -68,11 +68,17 @@ def get_dataset(name, trainval_test=False):
         else:
             ds_train, ds_test = map(load, ['train', 'val'])
     elif name == 'iccv09':
-        ds_path = dirs.DATASETS + '/iccv09'
         ds_train = datasets.ICCV09Dataset(dirs.DATASETS + '/iccv09')
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not trainval_test:
             ds_train, ds_test = ds_train.split(0.8)
+    elif name == 'isun':
+        ds_path = dirs.DATASETS + '/iSUN'
+        load = lambda s: datasets.ISUNDataset(ds_path, s)
+        ds_train, ds_test = map(load, ['training', 'validation'])
+        if trainval_test:
+            ds_train = ds_train + ds_test
+            ds_test = load('testing')
     else:
         assert False, f"Invalid dataset name: {name}"
     return ds_train, ds_test
@@ -167,19 +173,14 @@ class CacheSpaceAssigner:
 
 def get_cached_dataset_with_normalized_inputs(name, trainval_test=False):
     ds_train, ds_test = get_dataset(name, trainval_test)
-
+    dss = (ds_train, ds_test)
     cache_dir = f"{dirs.CACHE}"
-
     print("Setting up data preprocessing...")
     normalizer = LazyNormalizer(ds_train, cache_dir)
-    ds_train = ds_train.map(normalizer.normalize, 0)
-    ds_test = ds_test.map(normalizer.normalize, 0)
-
+    dss = map(lambda ds: ds.map(normalizer.normalize, 0), dss)
     print("Setting up data caching on HDD...")
-    ds_train = ds_train.cache_hdd_only(cache_dir)
-    ds_test = ds_test.cache_hdd_only(cache_dir)
-
-    return ds_train, ds_test
+    dss = map(lambda ds: ds.cache_hdd_only(cache_dir), dss)
+    return tuple(dss)
 
 
 # Augmentation

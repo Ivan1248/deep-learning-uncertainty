@@ -6,6 +6,7 @@ import numpy as np
 from skimage.transform import resize
 import torch.utils.data
 from functools import lru_cache
+from scipy.io import loadmat
 
 from .data import Dataset
 
@@ -15,8 +16,19 @@ from ..ioutils import file
 # Helper functions
 
 
-def _load_image(path):
-    return np.array(pimg.open(path))
+def _to_rgb(img):
+    if len(img.shape) == 2:
+        img = np.dstack([img] * 3)
+    elif img.shape[-1] > 3:
+        img = img[:, :, :3]
+    return img
+
+
+def _load_image(path, force_rgb=True):
+    img = np.array(pimg.open(path))
+    if force_rgb:
+        img = _to_rgb(img)
+    return img
 
 
 # Artificial datasets
@@ -24,7 +36,7 @@ def _load_image(path):
 
 class WhiteNoiseDataset(Dataset):
 
-    def __init__(self, example_shape, size, uniform=False, seed=None):
+    def __init__(self, example_shape, size, uniform=False, seed=53):
         self._shape = example_shape
         self._rand = np.random.RandomState(seed=seed)
         self._seeds = self._rand.random_integers(low=0, high=100, size=(size))
@@ -35,7 +47,7 @@ class WhiteNoiseDataset(Dataset):
 
     def __getitem__(self, idx):
         self._rand.seed(self._seeds[idx])
-        return self._rand.randn(self._shape)
+        return self._rand.randn(*self._shape)
 
     def __len__(self):
         return len(self._seeds)
@@ -140,8 +152,6 @@ class MozgaloRVCDataset(Dataset):
         img = _load_image(f"{self._subset_dir}/{example_name}")
         lab = self.info['class_names'].index(lab_str)
         img = pad_to_shape(crop(img, self._shape), self._shape)
-        if len(img.shape) == 2:  # greyscale -> rgb
-            img = np.dstack([img] * 3)
         if self._remove_bottom_proportion > 0:
             a = int(img.shape[0] * (1 - self._remove_bottom_proportion))
             img = img[:a, :, :]
@@ -190,15 +200,9 @@ class TinyImageNet(Dataset):
         }
         self.name = f"TinyImageNet-{subset}"
 
-    def _load_image(self, path):
-        im = _load_image(path)
-        if len(im.shape) == 2:
-            im = np.reshape(np.repeat(im, 3, axis=-1), list(im.shape) + [3])
-        return im
-
     def __getitem__(self, idx):
         img_path, lab = self._examples[idx]
-        return self._load_image(img_path), lab
+        return _load_image(img_path), lab
 
     def __len__(self):
         return len(self._examples)
@@ -360,11 +364,7 @@ class WildDashSegmentationDataset(Dataset):
         if self._downsampling_factor > 1:
             img = img.resize(self._shape[::-1], pimg.BILINEAR)
         img = np.array(img, dtype=np.uint8)
-        if len(img.shape) == 2:
-            shape = list(img.shape) + [3]
-            img = np.reshape(np.repeat(img, 3, axis=-1), shape)
-        if img.shape[-1] > 3:
-            img = img[:, :, :3]
+        img = _to_rgb(img)
 
         if self._subset == 'bench':
             lab = self._blank_label
@@ -452,3 +452,32 @@ class VOC2012SegmentationDataset(Dataset):
 
     def __len__(self):
         return len(self._image_list)
+
+
+# Other
+
+
+class ISUNDataset(Dataset):
+    # https://github.com/matthias-k/pysaliency/blob/master/pysaliency/external_datasets.py
+    # TODO: labels
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['training', 'validation', 'testing']
+        self._images_dir = f'{data_dir}/images'
+
+        data_file = f'{data_dir}/{subset}.mat'
+        data = loadmat(data_file)[subset]
+        self._image_names = [d[0] for d in data['image'][:, 0]]
+
+        self.info = {
+            'id': 'iSUN',
+            'problem_id': None,
+        }
+        self.name = f"iSUN-{subset}"
+
+    def __getitem__(self, idx):
+        name = self._image_names[idx]
+        img = _load_image(f"{self._images_dir}/{name}.jpg")
+        return img, None
+
+    def __len__(self):
+        return len(self._image_names)
