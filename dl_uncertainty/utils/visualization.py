@@ -68,12 +68,15 @@ class Viewer:
         i = 0
 
         def get_images(i):
-            from tqdm import tqdm
-
-            dataset[len(dataset) - 1]
-
             images = mapping(dataset[i])
             return images if type(images) is list else [images]
+
+        def show(i):
+            images = get_images(i)
+            for axim, im in zip(aximgs, images):
+                axim.set_data(im)
+            fig.canvas.set_window_title(str(i) + "-" + self.name)
+            fig.canvas.draw()
 
         def on_press(event):
             nonlocal i
@@ -85,12 +88,7 @@ class Viewer:
                 plt.close(event.canvas.figure)
                 return
             i = i % len(dataset)
-
-            images = get_images(i)
-            for axim, im in zip(aximgs, images):
-                axim.set_data(im)
-            fig.canvas.set_window_title(str(i) + "-" + self.name)
-            fig.canvas.draw()
+            show(i)
 
         images = get_images(0)
         subplot_count = len(images)
@@ -105,7 +103,13 @@ class Viewer:
             axes = axes.flat[:subplot_count]
         fig.canvas.mpl_connect('key_press_event', on_press)
         fig.canvas.set_window_title(self.name)
-        plot = lambda ax, im: ax.imshow(scale01(im)) if len(im.shape) == 3 else ax.imshow(im)
+
+        def make_valid(im):
+            if np.min(im) < 0 or np.max(im) > 0:
+                return scale01(im)
+            return im
+
+        plot = lambda ax, im: ax.imshow(make_valid(im)) if len(im.shape) == 3 else ax.imshow(im)
         aximgs = [plot(ax, im) for ax, im in zip(axes, images)]
         from mpl_toolkits.axes_grid1 import make_axes_locatable
         for ax, axim in zip(axes, aximgs):
@@ -113,6 +117,7 @@ class Viewer:
             cax = divider.append_axes('right', size='5%', pad=0.05)
             fig.colorbar(axim, cax=cax, orientation='vertical')
         plt.show()
+        show(0)
 
 
 def view_predictions_2(dataset, infer=None, save_dir=None):
@@ -178,8 +183,12 @@ def view_predictions(dataset, infer=None, save_dir=None):
                 pred_disp = scale01(pred_disp)
             else:
                 pred_disp = colorify_label(pred_disp + 1, colors)
-            pred_img = scale01(get_class_representative(pred)) \
-                    if classification else fuse_images(img_scal, pred_disp)
+
+            def _get_class_representative():
+                cr = get_class_representative(pred)
+                return black if cr is None else scale01(cr)
+            pred_img = _get_class_representative() if classification \
+                  else fuse_images(img_scal, pred_disp)
             comp_arr.append([pred_img, pred_disp])
 
         add_prediction(lab)
