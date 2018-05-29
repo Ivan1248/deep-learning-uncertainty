@@ -72,7 +72,7 @@ Ovaj odjeljak daje kratak i matematički ne potpuno precizan pregled nekih od os
 
 \subsection{Slučajne varijable i razdiobe}
 
-Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili, kraće, $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
+Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti neke slučajne varijable još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
 \begin{align*}
 P_{\rvar x} \colon \set X &\to \intcc{0,1} \\
 x &\mapsto \P(\rvar x=x)
@@ -112,7 +112,7 @@ Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rva
 
 Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Dvije slučajne varijable, i ako imaju istu razdiobu, ne moraju biti iste jer se mogu razlikovati po odnosima s drugim slučajnim varijablama.
 
-Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $\p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se u izrazima koristiti samo elementarni događaji. Npr. $x$ će skraćeno označavati $\cbr{\rvar x=x}$ kada je jasno po slovu o kojoj se slučajnoj varijabli radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer svaki događaj je elementarni događaj neke slučajne varijable oblika $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila koja vrijede za sve slučajne varijable.
+Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emph{združenu razdiobu} $\p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se izrazi pravila vjerojatnosti odnositi samo na elemntarne događaje. Npr. $x, y$ će skraćeno označavati $\cbr{\rvar x=x, \rvar y=y}$ kada je jasno po slovima o kojim se slučajnim varijablama radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer za svaki događaj možemo definirati indikatorsku slučajnu varijablu kojoj je taj događaj elementarni događaj: $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila.
 
 \emph{Uvjetna vjerojatnost} je vjerojatnost nekog događaja ako je poznato da se neki drugi događaj ostvario. Ovako je definirana uvjetna vjerojatnost događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$:
 \begin{align} \label{eq:uvjetna-vj}
@@ -137,7 +137,7 @@ p(x) = \int_{\set Y} p(x,y)\dif y = \int_{\set Y} p(x\mid y)p(y)\dif y \text{.}
 
 Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar x_1\sim\mathcal A$, $\rvar x_2\sim\mathcal A$ i $\rvar y\sim\mathcal B$, ne mora vrijediti $\p(\rvar x_1, \rvar y) = \p(\rvar x_2, \rvar y)$.
 
-Rastavljanjem lijeve strane jednadžbe~\ref{eq:pravilo-umnoska} na umnožak $p(x\mid y)p(y)$ dobivamo \emph{Bayesovo pravilo}:
+Rastavljanjem lijeve strane jednadžbe~\eqref{eq:pravilo-umnoska} na umnožak $p(x\mid y)p(y)$ dobivamo \emph{Bayesovo pravilo}:
 \begin{align}
 p(x\mid y) = \frac{p(y\mid x)p(x)}{p(y)} \text{,}
 \end{align}
@@ -199,15 +199,13 @@ Drugi korijen varijance je standardna devijacija $\sigma_{\rvar x}$.
 \end{align}
 Dijagonalni elementi te matrice su $\Cov\del{\rvec x}_{\sbr{i,i}} = \D\ind{\rvec x}{i}$.
 
-\subsection{Transformacije slučajnih varijabli}
+\subsection{Funkcije slučajnih varijabli}
 
-Neka je odnos između slučajnih varijabli $\rvar x$ i $\rvar y$ definiran deterministički funkcijom $f$: $\rvar y = f(\rvar x)$. 
-
-Ako su $\rvar x$ i $\rvar y$ diskretne slučajne varijable, onda je razdioba slučajne varijable $\rvar y$ definirana ovako:
+Neka je odnos između slučajnih varijabli $\rvar x$ i $\rvar y$ definiran deterministički funkcijom $f$: $\rvar y = f(\rvar x)$.  Ako su $\rvar x$ i $\rvar y$ diskretne slučajne varijable, onda je razdioba slučajne varijable $\rvar y$ definirana ovako:
 \begin{align}
 	P_{\rvar y}(y) = \sum_{x\colon f(x)=y} P_\rvar{x}(x) .
 \end{align} 
-Ako su $\rvar x$ i $\rvar y$ kontinuirane slučajne varijable s vrijednostima iz $\R$, može se pokazati \citep{Elezovic:2007:VSSV} da vrijedi
+Ako su $\rvar x$ i $\rvar y$ kontinuirane slučajne varijable s vrijednostima iz $\R$ i $f$ je injektivna, može se pokazati \citep{Elezovic:2007:VSSV} da vrijedi
 % TODO: provjeriti \citep{Elezovic:2007:VSSV}
 \begin{align}
 p_{\rvar y}(y) = p_\rvar{x}(x) \envert{\od{x}{y}} .
@@ -217,9 +215,57 @@ To se može poopćiti i na vektore. Onda je $p_{\rvec y}(\vec y)=\envert{\det\pd
 %Neka je $c_{\rvar x}(x) := \int_{-\infty}^{x} p_{\rvar x}(x') \dif{x'}$.
 %Vrijednosti iz intervala $\intoo{x, x+\epsilon}$ na kojem je $f$ monotono rastuća preslikavaju se u interval $\intoo{f(x), f(x+\epsilon)}$ (granice su obrnute ako je monotono padajuća) i vrijedi $c_{\rvar x}(x+\epsilon)-c_{\rvar x}(x) = c_{\rvar y}(f(x)+\epsilon)-c_{\rvar y}(f(x))$.
 
-\subsection{Neke od bitnijih razdioba}
+Neka je $\rvar z$ zbroj slučajnih varijabli $\rvar x$ i $\rvar y$. Onda vrijedi
+\begin{align}
+	p_{\rvar z}(z) = \int p_{\rvar x,\rvar y}(x, z-x)\dif x.
+\end{align}
+Ako su $\rvar x$ i $\rvar y$ nezavisne, onda to postaje konvolucija:
+\begin{align}
+p_{\rvar z}(z) = \int p_{\rvar x}(x)p_{\rvar y}(z-x)\dif x \eqqcolon (p_{\rvar x}*p_{\rvar y})(z).
+\end{align}
+\subsection{Primjeri razdioba}
 
-\subsubsection{Centralni granični teorem}
+\emph{Bernoullijeva razdioba} je binarna razdioba s prostorom elementarnih događaja koji je obično $\{0,1\}$. Ona je onda određena parametrom $\mu\in\intcc{0,1}$ i ima ova svojstva:
+\begin{align}
+	P(x) &= \mu \enbbracket{x=1} + (1-\mu) \enbbracket{x=0} = \mu^x(1-\mu)^{1-x}, \\
+	\E \rvar x &= \mu, \\
+	\D \rvar x &= \mu(1-\mu).
+\end{align}
+
+\emph{Kategorička razdioba} je poopćenje Bernoullijeve razdiobe na konačan prostor elementarnih događaja koji može imati više od 2 vrijednosti. Ako prostor elementarnih događaja ima kardinalitet $n$, razdioba je određena vektorom $\vec p\in\intcc{0,1}^{n-1}$ za koji vrijedi $\sum_i p_{\sbr{i}}\leq 1$. Prostor elementarnih događaja ne mora biti skup $\cbr{1\bidot n}$ pa je kategorička razdioba najopćenitija diskretna razdioba nad konačnim skupom elementarnih događaja.
+
+\emph{Eksponencijalna razdioba} je kontinuirana razdioba s domenom $\R_{\geq0}$. Ona je definirana parametrom $\lambda\in\R_{>0}$ ili $\beta=\lambda^{-1}$ i ima ova svojstva:
+\begin{align}
+p(x) &=  \lambda\exp(-\lambda x) \\
+\E \rvar x &= \lambda^{-1}, \\
+\D \rvar x &= \lambda^{-2}.
+\end{align}
+
+\emph{Laplaceova razdioba} je kontinuirana razdioba definirana parametrima $\beta\in\R_{>0}$ i $\mu \in \R$ i ima ova svojstva:
+\begin{align}
+p(x) &= \frac{1}{2\beta}\exp\del{-\frac{\envert{x}}{\beta}} \\
+\E \rvar x &= \mu, \\
+\D \rvar x &= \beta^2.
+\end{align}
+
+\emph{Gaussova razdioba} ili \emph{normalna razdioba} je kontinuirana razdioba definirana parametrima $\mu\in\R$ i $\sigma \in \R_{>0}$ i ima ova svojstva:
+\begin{align}
+p(x) &=  \frac{1}{\sqrt{2\pi\sigma^2}}\exp\del{\frac{\del{x-\mu}^2}{2\sigma^2}} \\
+\E \rvar x &= \mu, \\
+\D \rvar x &= \sigma^2.
+\end{align}
+Neka je $\rvar z_n = \frac{\sum_{i=1}^n \del{\rvar x_i-\mu}}{\sigma\sqrt{n}}$ normalizirani zbroj $n$ nezavisnih slučanih varijabli $\rvar x_i$ koje imaju jednaku razdiobu s očekivanjem $\mu$ i varijancom $\sigma^2$. Prema centralnom graničnom teoremu, $\rvar z_n$ u razdiobi konvergira prema Gaussovoj razdiobi kada $n\to\infty$, tj.
+\begin{align}
+\lim_{n\to\infty} \P(\rvar z_n<z) = \int_{-\infty}^{z} p_{\mathcal{N}(0,1)}(z')\dif{z'}.
+\end{align}
+To je detaljnije objašnjeno i dokazano npr. u \citep{Elezovic:2007:VSSV}. Centralni granični teorem je ilustriran na slici~\ref{fig:clt}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{clt}
+	\caption{Ilustracija centralnog graničnog teorema. Grafovi za različite brojeve pribrojnika $n$ prikazuju funkcije gustoće vjerojatnosti normaliziranih zbrojeva nezavisnih slučajnih varijabli s razdiobom prikazanom prvim grafom. Zadnji graf prikazuje funkciju gustoće Gaussove razdiobe s očekivanjem $0$ i varijancom $1$.}
+	\label{fig:clt}
+\end{figure}
 
 \subsection{Teorija informacije}
 
@@ -239,34 +285,44 @@ Entropija kontinuirane slučajne varijable je beskonačna. Ako se u izrazu \eqre
 
 Kao mjera razlike između dviju razdioba često se koristi \emph{Kullback-Leiblerova divergencija} (KL-divergencija) ili \emph{relativna entropija}:
 \begin{align}
-	\Dkl{\rvar x}{\rvar y} &= \E_{\rvar x}\sbr{\I(\rvar y=x) - \I(\rvar x=x)} \\
+	\Dkl{\rvar x}{\rvar y} &\coloneqq \E_{\rvar x}\sbr{\I(\rvar y=x) - \I(\rvar x=x)} \\
 	&= \E_{\rvar x} \log_b\frac{P_{\rvar x}(x)}{P_{\rvar y}(x)} \label{eq:dkl}
 \end{align}
 Ona je uvijek pozitivna i mjeri koliko simbola više se u prosjeku koristi ako se opaža razdioba $\P(\rvar x)$, a događaji se kodiraju kodom optimalnim za razdiobu $\P(\rvar y)$, što se bolje vidi ako se ovako izrazi:
 \begin{align}
-\Dkl{\rvar x}{\rvar y} = \E_{\rvar x}\I(\rvar y=x) - \H(\rvar x).
+\Dkl{\rvar x}{\rvar y} = \H_{\rvar y}(\rvar x) - \H(\rvar x),
 \end{align}
-Prvi član na desnoj strani ove jednadžbe je \emph{unakrsna entropija}\footnote{Najčešće se koristi oznaka $\H(\rvar x,\rvar y)$, ali ista oznaka se koristi i za entropiju združene slučajne varijable $(\rvar x,\rvar y)$. Po uzoru na $\citet{Olah:2015:VIT}$, ovdje koristimo oznaku $\H_{\rvar y}(\rvar x)$.}:
+gdje prvi član na desnoj strani jednadžbe označava \emph{unakrsnu entropiju}:
 \begin{align}
 \H_{\rvar y}(\rvar x)\coloneqq \E_{\rvar x}\I(\rvar y=x) = -\E_{\rvar x}\log_b P_{\rvar y}(x).
 \end{align}
+Za unakrsnu entropiju se često koristi oznaka $\H(\rvar x,\rvar y)$, ali ista oznaka se koristi i za entropiju združene slučajne varijable $(\rvar x,\rvar y)$. Po uzoru na \citet{Olah:2015:VIT}, ovdje koristimo oznaku $\H_{\rvar y}(\rvar x)$.
 
 KL-divergencija će biti $0$ akko $\rvar x$ i $\rvar y$ imaju iste razdiobe. Ona, kao ni unakrsna entropija, nije simetrična (slika~\ref{fig:dkl-asymmetry}), tj. općenito $\Dkl{\rvar x}{\rvar y}\neq\Dkl{\rvar y}{\rvar x}$ i $\H_{\rvar y}(\rvar x)\neq\H_{\rvar x}(\rvar y)$. KL-divergencija je izrazom \eqref{eq:dkl} definirana i za kontinuirane slučajne varijable ako se funkcije vjerojatnosti zamijene funkcijama gustoće vjerojatnosti. Ona divergira kada postoji $x$ za koji $P_{\rvar x}(x)>0$ i $P_{\rvar y}(x)=0$ ili, u slučaju kontinuiranih razdioba, $p_{\rvar x}(x)>0$ i $p_{\rvar y}(x)=0$.
+
+\emph{Međusobna informacija} je mjera zavisnosti između slučajnih varijabli. Definirana je ovako:
+\begin{align}
+\I\del{\rvar x;\rvar y} \coloneqq \E_{\rvar x, \rvar y} \log_b\frac{P_{\rvar x, \rvar y}(x, y)}{P_{\rvar x}(x)P_{\rvar y}(y)},
+\label{eq:mutinf}
+\end{align}
+a može se i na ove načine izraziti:
+\begin{align}
+\I(\rvar x;\rvar y)
+&= \H(\rvar x)+\H(\rvar y)-\H(\rvar x, \rvar y) \\
+&= \H(\rvar x)-\H(\rvar x\mid \rvar y) \\ 
+&= \H(\rvar y)-\H(\rvar y\mid\rvar x).
+\label{eq:mutinf2}
+\end{align}
+Ako su $\rvar x$ i $\rvar y$ nezavisne, njihova međusobna informacija će biti $0$. Ako npr. postoji surjekcija $f$ tako da $\rvar y=f(\rvar x)$, tj. poznavanje ishoda varijable $\rvar x$ jednoznačno određuje ishod varijable $\rvar y$, onda $\H(\rvar y\mid\rvar x)=0$ i $\I(\rvar x;\rvar y) = \H(\rvar y)$. Ako je $f$ bijekcija, onda $\I(\rvar x;\rvar y) = \H(\rvar x) = \H(\rvar y)$.
+
+% TODO: slike: http://colah.github.io/posts/2015-09-Visual-Information/
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{dkl-asymmetry}
-	\caption{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl{p}{q}$ (lijevo) ili $\Dkl{q}{p}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl{p}{q}$ (crveno) ili $\Dkl{q}{p}$ (zeleno). Optimalna aproksimirajuća razdioba lijevo ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Desno optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je razmak između modova razdiobe $p$ malo manji, i desna razdioba $q^*$ bi pokrila oba moda i bila sličnija lijevoj. Slika je napravljena po uzoru na sliku~3.6 u \citet{Goodfellow:2016:DL}.}
+	\caption{Asimetričnost KL-divergencije. $p$ je fiksna razdioba (funkcija gustoće), a $q*$ je Gaussova razdioba koja ju aproksimira minimizacijom KL-divergencije $\Dkl{q}{p}$ (lijevo) ili $\Dkl{p}{q}$ (desno). U donjem retku grafovi prikazuju podintegralne funkcije odgovarajućih KL-divergencija. Kod njih zbrojevi predznačenih površina obojanih područja odgovaraju KL-divergencijama $\Dkl{q}{p}$ (zeleno) ili $\Dkl{p}{q}$ (crveno). Optimalna aproksimirajuća razdioba desno ima veliku gustoću gdje god razdioba $p$ ima veliku gustoću. Lijevo optimalna aproksimirajuća razdioba nema veliku gustoću gdje razdioba $p$ nema veliku gustoću. Da je razmak između komponenata razdiobe $p$ malo manji, i lijeva razdioba $q^*$ bi pokrila oba moda i bila sličnija desnoj. Slika je napravljena po uzoru na sliku~3.6 u \citet{Goodfellow:2016:DL}.}
 	\label{fig:dkl-asymmetry}
 \end{figure}
-
-\subsection{Probabilistički grafički modeli}
-
-
-\subsection{Monte Carlo aproksimacija}
-
-
-
 
 \section{Nadzirano strojno učenje}
 
@@ -339,7 +395,7 @@ Ako kao parametre takve funkcije uzmemo \emph{uzorak}, tj. skup slučajnih varij
 \begin{align}
 \hat{\rvar\theta}=f(\rset D) \text{.}
 \end{align}
-Takva slučajna varijabla naziva se \emph{statistika}. Ako je $\theta$ nepoznati parametar razdiobe $p(\rvar x)=\mathcal{D}$, onda kažemo da je ta statistika $\hat{\rvar\theta}$ \emph{procjenitelj} parametra $\theta$, a njena opažena vrijednost $\hat{\theta}$ \emph{procjena} parametra $\theta$.
+Takva slučajna varijabla naziva se \emph{statistika}. Ako je $\theta$ nepoznati parametar razdiobe $p(\rvar x)=\mathcal{D}$, onda kažemo da je ta statistika $\hat{\rvar\theta}$ \emph{procjenitelj} parametra $\theta$, a njen ishod $\hat{\theta}$ \emph{procjena} parametra $\theta$.
 
 \subsection{Svojstva i pogreška procjenitelja}
 
@@ -401,7 +457,7 @@ Poželjno je da $p(\set{D}\mid\vec\theta)$ i $p(\vec\theta)$ kao funkcije parame
 
 \subsection{Bayesovski procjenitelj i zaključivanje}
 
-Prethodno opisani procjenitelji daju točkastu procjenu parametara i ne izražavaju nesigurnost procjene kojoj uzrok može biti npr. nedovoljna količina podataka ili šum u podacima za učenje. \emph{bayesovski procjenitelj} kao procjenu daje razdiobu nad hipotezama $p(\rvec\theta\mid\set D)$ za koju je integriranjem po svim mogućim parametrima potrebno izračunati marginalnu izglednost $p(\set{D})=\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif {\vec\theta'}$ iz nazivnika na desnoj strani jednadžbe~\eqref{eq:posterior-inference}. 
+Prethodno opisani procjenitelji daju točkastu procjenu parametara i ne izražavaju nesigurnost procjene kojoj uzrok može biti npr. nedovoljna količina podataka ili šum u podacima za učenje. \emph{bayesovski procjenitelj} kao procjenu daje razdiobu nad hipotezama $p(\rvec\theta\mid\set D)$ za koju je integriranjem po svim mogućim parametrima potrebno izračunati marginalnu izglednost $p(\set{D})=\int p(\set{D}\mid\vec\theta')p(\vec\theta')\dif{\vec\theta'}$ iz nazivnika na desnoj strani jednadžbe~\eqref{eq:posterior-inference}. 
 
 Kod složenijih modela često ne možemo odabrati konjugatnu apriornu razdiobu, a i funkcija izglednosti je sama po sebi već dovoljno složena da se, neovisno o apriornoj razdiobi, marginalna izglednost $p(\set{D})$ ne može ni analitički ni numerički traktabilno računati. 
 
@@ -489,6 +545,28 @@ Kod opisanih modela koji uključuju apriorno znanje, regularizacijskom članu uz
 \subsection{Bayesovski modeli}
 
 DL 3.14
+
+\section{Monte Carlo aproksimacija}
+
+Ovaj odjeljak temelji se na \cite{Goodfellow:2016:DL}.
+
+\emph{Monte Carlo aproksimacija} je postupak procjenjivanja vrijednosti koje se mogu izraziti kao očekivanje neke funkcije neke slučajne varijable na temelju uzoraka. Ponekad nije moguće analitički ili numerički traktabilno ili efikasno izračunati neki zbroj ili integral. Ako se on može ovako izraziti:
+\begin{align}
+s = \sum_x p(x)f(x) = \E f(\rvar x)
+\end{align}
+ili
+\begin{align}
+s = \int p(x)f(x)\dif x= \E f(\rvar x),
+\end{align}
+on se može procijeniti uzorkovanjem:
+\begin{align}
+\hat{\rvar s}_n = \frac{1}{n}\sum_{i=1}^n f(\rvar x_i).
+\end{align}
+Procjenitelj $\hat{\rvar s}_n$ je nepristran ako su $\rvar x_i$ nezavisne i imaju istu razdiobu kao $\rvar x$ i valjan ako su varijance $f(\rvar x_i)$ ograničene. Vrijedi $\D\hat{\rvar s}_n = \frac{1}{n} \D f(\rvar x)$.
+
+
+U širem smislu, postupci \textit{Monte Carlo} obuhvaćaju i generiranje uzoraka slučajne varijable čije se očekivanje procjenjuje.
+
 
 
 \section{Aproksimacija razdioba i aproksimacijsko zaključivanje}

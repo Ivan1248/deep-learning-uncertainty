@@ -45,9 +45,12 @@
 % Konstante
 \glsgroup{k}{Konstante}{}
 \glsentm{k}{emptyset}{\cbr{}} 			{Prazni skup}
-\glsentm{k}{nul}{\cvec 0}				{Nul-vektor}
+\glsentm{k}{nulvek}{\cvec 0}			{Nul-vektor}
+\glsentm{k}{kanvek}{\cvec e_i}			{$i$-ti vektor kanonske baze}
+\glsentm{k}{jedvek}{\cvec 1}			{Zbroj svih vektora kanonske baze}
 \glsentm{k}{mati}{\cmat I,\,\cmat I_n}	{Matrica identiteta (s $n$ redaka i stupaca)}
 \glsentm{k}{cset}{\N,\Z,\R,\C}			{Poznati skup}
+\glsentm{k}{Rpos}{\R_{\geq 0},\,\R_{> 0}} {Skup nenegativnih/pozitivnih realnih brojeva}
 
 % Skupovi i nizovi
 \glsgroup{sn}{Skupovi i nizovi}{}
@@ -102,7 +105,8 @@
 \glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
 \glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
 \glsentm{vi}{distr}{\distrib{A},\,p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
-\glsentm{vi}{event}{\cbr{R(\rvar a)}} {Događaj koji uključuje slučajnu varijablu $\rvar a$, gdje je $R$ neki predikat}
+\glsentm{vi}{event}{\set A}{Događaj}
+\glsentm{vi}{eventpred}{\cbr{R(\rvar a)}} {Događaj definiran predikatorm slučajne varijable $\rvar a$}
 \glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
 \glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
 \glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$: $P_{\rvar a}(a)=\P(\rvar a= a)$}
@@ -118,14 +122,17 @@
 \glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
 \glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
-\glsentm{vi}{Ent}{\const{H}(\rvar a)}			{Shannonova entropija}
-\glsentm{vi}{CEnt}{\const{H}_{\rvar b}(\rvar a)} {Unakrsna entropija}
-\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}}		{Kullback-Leiblerova divergencija}
+\glsentm{vi}{I}{\I(\set A)}			{Sadržaj informacije događaja $\set A$}
+\glsentm{vi}{H}{\H(\rvar a)}			{Shannonova entropija}
+\glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
+\glsentm{vi}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
+\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija}
 
 % Ostalo
 \glsgroup{f}{Ostale oznake}{}
 \glsentm{f}{func}{\funcdef{f}{\set A}{\set B}} {Funkcija s domenom $\set A$ i kodomenom $\set B$}
 \glsentm{f}{funcdef}{x\mapsto g(x)} {Definicija funkcije; funkcija koja preslikava $x$ iz domene u $g(x)$ iz kodomene}
+\glsentm{f}{conv}{f*g}	{Konvolucija funkcija $f$ i $g$}
 \glsentm{f}{card}{\envert{\set A}}	{Kardinalitet skupa $\set A$}
 \glsentm{f}{dirac}{\dirac\del{\cdot}}	{Diracova delta}
 \glsentm{f}{doublebracket}{\enbbracket{\cdot}} {Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
