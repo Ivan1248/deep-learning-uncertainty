@@ -163,59 +163,65 @@ class Layers:
     class Logits:
 
         @staticmethod
-        def classification(class_count, logits_name='logits'):
+        def classification(class_count):
+            # supports auxiliary logits
 
-            def f(h, **c):
-                h = tf.reduce_mean(
-                    h, axis=[1, 2], keep_dims=True)  # global pooling
-                h = layers.conv(
-                    h, 1, class_count, bias=True, name='logits/conv')
-                logits = tf.reshape(h, [-1, class_count])
-                return logits, {logits_name: logits}
+            def f(pre_logits, **c):
 
-            return f
+                def to_logits(i_pre_logits):
+                    i, pl = i_pre_logits
+                    h = tf.reduce_mean(pl, axis=[1, 2], keep_dims=True)
+                    h = layers.conv(
+                        h, 1, class_count, bias=True, name=f'logits{i}/conv')
+                    return tf.reshape(h, [-1, class_count])
 
-        @staticmethod
-        def segmentation(class_count, resize=True, logits_name='logits'):
-
-            def f(h, **c):
-                logits = layers.conv(
-                    h, 1, class_count, bias=True, name='logits/conv')
-                if resize:
-                    logits = tf.image.resize_bilinear(logits, c['image_shape'])
-                return logits, {logits_name: logits}
+                if type(pre_logits) in [list, tuple]:
+                    logits = type(pre_logits)(
+                        map(to_logits, enumerate(pre_logits)))
+                    return logits, {'logits': logits[0], 'all_logits': logits}
+                else:
+                    logits = to_logits(('', pre_logits))
+                    return logits, {'logits': logits}
 
             return f
 
         @staticmethod
-        def segmentation_multi(class_count, resize=True, shape=None):
+        def segmentation(class_count, resize=True):
+            # supports auxiliary logits
 
-            def f(all_pre_logits, **c):
-                # Accepts multiple feature tensors as the first parameter and
-                # context **k. Returns (resized) logits for each feature tensor.
-                all_logits = []
-                for i, x in enumerate(all_pre_logits):
+            def f(pre_logits, **c):
+
+                def to_logits(i_pre_logits):
+                    i, pl = i_pre_logits
                     logits = layers.conv(
-                        x, 1, class_count, bias=True, name=f'logits{i}/conv')
+                        pl, 1, class_count, bias=True, name=f'logits{i}/conv')
                     if resize:
                         logits = tf.image.resize_bilinear(
                             logits, c['image_shape'])
-                    all_logits.append(logits)
-                return all_logits, {
-                    'logits': all_logits[0],
-                    'all_logits': all_logits
-                }
+                    return logits
+
+                if type(pre_logits) in [list, tuple]:
+                    logits = type(pre_logits)(
+                        map(to_logits, enumerate(pre_logits)))
+                    return logits, {'logits': logits[0], 'all_logits': logits}
+                else:
+                    logits = to_logits(('', pre_logits))
+                    return logits, {'logits': logits}
 
             return f
 
         @staticmethod
-        def segmentation_gaussian(class_count, shape=None, sample_count=50):
+        def segmentation_gaussian(class_count, resize=True, sample_count=50):
 
-            def f(h, **c):
+            def f(pre_logits, **c):
                 logits = layers.conv(
-                    h, 1, class_count * 2, bias=True, name='logits/conv')
-                if shape:
-                    logits = tf.image.resize_bilinear(logits, shape)
+                    pre_logits,
+                    1,
+                    class_count * 2,
+                    bias=True,
+                    name='logits/conv')
+                if resize:
+                    logits = tf.image.resize_bilinear(logits, c['image_shape'])
 
                 logits_mean = logits[..., :class_count]  # NHWC
                 logits_logvar = logits[..., class_count:]  # NHWC
@@ -223,9 +229,9 @@ class Layers:
                 logits_std = tf.sqrt(logits_var)
                 # TODO: try log(1+exp(logits[..., class_count:])) for logits_std
 
-                samp_shape = tf.concatenate(
-                    [sample_count, tf.shape(logits_logvar)])
-                noise = tf.random.normal(samp_shape)  # nNHWC
+                samples_shape = tf.concatenate(
+                    [sample_count, tf.shape(logits_std)])
+                noise = tf.random.normal(samples_shape)  # nNHWC
                 logits_samples = logits_mean + noise * logits_std  # nNHWC
 
                 return logits_samples, {
@@ -241,28 +247,24 @@ class Layers:
     class Output:
 
         @staticmethod
-        def argmax_and_probs_from_logits(output_name='output',
-                                         probs_name='probs'):
+        def argmax_and_probs_from_logits():
 
             def logits_to_output(x, **c):
                 output = tf.argmax(x, axis=-1, output_type=tf.int32)
                 probs = tf.nn.softmax(x)
-                return output, {output_name: output, probs_name: probs}
+                return output, {'output': output, 'probs': probs}
 
             return logits_to_output
 
         @staticmethod
-        def argmax_and_probs_from_gaussian_logits(
-                logits_samples_name='logits_samples',
-                output_name='output',
-                probs_name='probs'):
+        def argmax_and_probs_from_gaussian_logits():
 
             def f(_, **c):
-                logits_samples = c[logits_samples_name]
+                logits_samples = c['logits_samples']
                 probs_samples = tf.nn.softmax(logits_samples)
                 probs = tf.reduce_mean(probs_samples, 0)
                 output = tf.argmax(probs, -1)
-                return probs, {output_name: output, probs_name: probs}
+                return probs, {'output': output, 'probs': probs}
 
             return f
 
