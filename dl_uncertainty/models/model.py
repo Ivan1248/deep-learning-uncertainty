@@ -177,12 +177,16 @@ class Model(object):
             return self._predict_mc_dropout(inputs, single_input, outputs)
         if single_input:
             inputs = [inputs]
-        if type(outputs) is str:
-            outputs = [outputs]
-        ret = self._predict(inputs, outputs)
-        if single_input:
-            ret = tuple(r[0] for r in ret)
-        return ret
+        multiple_output_types = type(outputs) is not str
+        if multiple_output_types:
+            outputs = self._predict(inputs, outputs)
+            if single_input:
+                outputs = tuple(r[0] for r in outputs)
+        else:
+            outputs = self._predict(inputs, [outputs])[0]
+            if single_input:
+                outputs = outputs[0]
+        return outputs
 
     def _run(self,
              fetches,
@@ -261,7 +265,7 @@ class Model(object):
         if single_input:
             probs = probs[0]
             output = output[0]
-        
+
         ret = {'probs': probs}
         if 'output' in outputs:
             ret['output'] = output
