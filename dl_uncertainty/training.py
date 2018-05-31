@@ -19,8 +19,6 @@ def get_hard_examples(model, ds):
     if len(labels.shape) > 1:
         hard_mask = hard_mask.mean(axis=np.arange(1, len(labels.shape)))
     hard_indices = np.concatenate(np.argwhere(hard_mask))
-    for i in hard_indices:
-        print(i)
     return ds.subset(hard_indices)
 
 
@@ -83,5 +81,6 @@ def train(model: Model,
         model.train(ds_train_loader, epoch_count=1)
         model.test(ds_val_loader, 'validation data')
         model.test(ds_train_part_loader, 'training data subset')
-    model.test(ds_val_loader, 'validation data', mc_dropout=True)
-    model.test(ds_train_part_loader, 'training data subset', mc_dropout=True)
+    if mc_dropout:   
+        model.test(ds_val_loader, 'validation data', mc_dropout=True)
+        model.test(ds_train_part_loader, 'training data subset', mc_dropout=True)
