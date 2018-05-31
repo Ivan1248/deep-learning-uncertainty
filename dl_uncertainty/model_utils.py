@@ -61,8 +61,8 @@ class StandardFeatureExtractors:
             cifar_root_block=cifar_root_block)
 
     @staticmethod
-    def densenet(depth, base_width, cifar_root_block,
-                 dropout):  # 0.2 if data augmentation is not used
+    def densenet(depth, base_width, cifar_root_block, dropout):
+        # dropout if no data augmentation
         print(f'DenseNet-{depth}-{base_width}')
         ksizes = [1, 3]
         depth_to_group_lengths = {
@@ -121,9 +121,12 @@ def get_inference_component(
     # input to features
     sfe = StandardFeatureExtractors
     sfe_args = {
-        'depth': depth,
-        'cifar_root_block': ds_train.info['id'] in ['cifar', 'svhn', 'tinyimagenet'],
-        'dropout': dropout,
+        'depth':
+            depth,
+        'cifar_root_block':
+            ds_train.info['id'] in ['cifar', 'svhn', 'tinyimagenet'],
+        'dropout':
+            dropout,
     }
     if net_name in ['rn', 'dn', 'ldn']:
         sfe_args['base_width'] = base_width
@@ -150,7 +153,7 @@ def get_inference_component(
         add(Layers.Logits.classification(class_count))
     else:
         assert False, f"Not avaliable: problem_id={problem_id}, net_name={net_name}"
-    
+
     # output
     if problem_id in ['semseg', 'clf']:
         if aleatoric_uncertainty:
