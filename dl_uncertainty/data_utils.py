@@ -33,10 +33,23 @@ def get_dataset(name, trainval_test=False):
         if trainval_test:
             ds_train = ds_train + ds_test
             ds_test = datasets.TinyImageNet(ds_path, 'test')
-    elif name == 'mozgalo':
+    elif name.startswith('mozgalo'):
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
         ds_train = datasets.MozgaloRVCDataset(
             mozgalo_path, remove_bottom_proportion=0.5, downsampling_factor=4)
+        if name.startswith('mozgaloood'):
+            test_labels = [0, 6, 12, 18, 24]
+            filt_ood_test = lambda xy: xy[1] in test_labels
+            filt_ood_train = lambda xy: xy[1] not in test_labels
+            if name[7:] == 'ood':
+                return ds_train.filter(filt_ood_train), \
+                       ds_train.filter(filt_ood_test)
+            else:
+                if name[7:] == 'oodtest':
+                    filt = filt_ood_test
+                elif name[7:] == 'oodtrain':
+                    filt = filt_ood_train
+                ds_train = ds_train.filter(filt)
         ds_train, ds_test = ds_train.permute().split(0.8)
         if not trainval_test:
             ds_train, ds_test = ds_train.split(0.8)

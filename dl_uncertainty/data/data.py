@@ -1,6 +1,7 @@
 import os
 import secrets
 import pickle
+import base64
 
 import numpy as np
 import torch.utils.data
@@ -40,14 +41,28 @@ class Dataset(torch.utils.data.Dataset):
     def test(self, callback):
         return TestDataset(self, callback)
 
-    def map(self, func=lambda x: x, component=None, func_name=None, info=None):
+    def map(self,
+            func=lambda x: x,
+            component=None,
+            func_name=None,
+            new_info=None):
         if component is not None:
             f = func  # to avoid lambda capturing itself
             func = lambda x: tuple(
                     f(c) if i == component else c for i, c in enumerate(x))
         ds = MappedDataset(self, func, func_name)
-        if info is not None:
-            ds.info = info
+        if new_info is not None:
+            ds.info = new_info
+        return ds
+
+    def filter(self, func=lambda x: x, func_name=None, new_info=None):
+        self._print("Filtering dataset...")
+        indices = np.array([i for i, d in enumerate(tqdm(self)) if func(d)])
+        subset_hash = hash(tuple(indices)) % 16**5
+        func_name = f'_{func_name}' if func_name else ''
+        ds = SubDataset(self, indices, f'-filter{func_name}_{subset_hash:x}')
+        if new_info is not None:
+            ds.info = new_info
         return ds
 
     def batch(drop_last=True):
@@ -78,9 +93,7 @@ class Dataset(torch.utils.data.Dataset):
 
     def permute(self, seed=53):
         indices = np.random.RandomState(seed=seed).permutation(len(self))
-        ds = SubDataset(self, indices)
-        ds.name = self.name + f"-permute{seed}"
-        return ds
+        return SubDataset(self, indices, f"-permute{seed}")
 
     def subset(self, indices):
         return SubDataset(self, indices)
@@ -279,8 +292,8 @@ class HDDOnlyCachedDataset(Dataset):
 
 class SubDataset(Dataset):
 
-    def __init__(self, dataset, indices):
-        self.name = dataset.name + "-sub"
+    def __init__(self, dataset, indices, name_addition='-sub'):
+        self.name = dataset.name + name_addition
         self.dataset = dataset
         self.indices = indices
         self.info = self.dataset.info
