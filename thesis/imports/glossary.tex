@@ -95,30 +95,32 @@
 \glsentm{d}{gradmat}{\nabla_{\mat X}{y}}	{Gradijent $y$ po $\mat X$}
 \glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\mat J_{\vec x\mapsto\vec y},\,\mat J} 	{Jakobijan iz $\R^{m\times n}$ za $\vec y\in\R^m$ i $\vec x\in\R^n$}
 \glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$}
-\glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ poznat iz konteksta}
+\glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ implicitan}
 
 % Teorija vjerojatnosti i teorija informacije
 \glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
-{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. Funkcija gustoće vjerojatnosti se može napisati još na 2 načina. Najkraći zapis je $p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}(a)$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
+{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (koja može biti poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Gustoća vjerojatnosti se još kraće može zapisati $\p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. Isto tako, vjerojatnost elementarnog događaja se može zapisati $\P(a)$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
 %TODO move to new page if too high
-\glsentm{vi}{rvar}{\rvar a}{Slučajna varijabla}
 \glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
 \glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
-\glsentm{vi}{distr}{\distrib{A},\,p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
+\glsentm{vi}{indep}{\rvar a\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su nezavisne}}
+\glsentm{vi}{dep}{\rvar a\not\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su zavisne}}
+\glsentm{vi}{condindep}{\rvar a\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno nezavisne uz poznat ishod slučajne varijable $\rvar c$}}
+\glsentm{vi}{conddep}{\rvar a\not\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno zavisne uz poznat ishod slučajne varijable $\rvar c$}}
+\glsentm{vi}{distr}{p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
 \glsentm{vi}{event}{\set A}{Događaj}
 \glsentm{vi}{eventpred}{\cbr{R(\rvar a)}} {Događaj definiran predikatorm slučajne varijable $\rvar a$}
 \glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
 \glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
-\glsentm{vi}{pmf}{P_{\rvar a}(a),\,P(a)} {Funkcija vjerojatnosti slučajne varijable $\rvar a$: $P_{\rvar a}(a)=\P(\rvar a= a)$}
-\glsentm{vi}{probdens}{\p(\rvar a= a)} {Gustoća vjerojatnosti događaja $\rvar a=a$}
-\glsentm{vi}{pdf}{p_{\rvar a}(a),\,p(a)} {Funkcija gustoće vjerojatosti slučajne varijable $\rvar a$}
-\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,p(a\mid b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a= a\mid\rvar b= b}$; $p_{\rvar a\mid b}(a)=\p(\rvar a= a\mid\rvar b= b)$}
-\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,p(a,b)} {Gustoća vjerojatnosti za događaj $\cbr{\rvar a= a,\rvar b= b}$; $p_{\rvar a,\rvar b}(a,b)=\p(\rvar a= a,\rvar b= b)$}
-\glsentm{vi}{hasdistrib}{\rvar a \sim \distrib A,\, \p(\rvar a)=\distrib A} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $\distrib{A}$}}
+\glsentm{vi}{probel}{\P(\rvar a= a),\,P_{\rvar a}(a),\,\P(a)} {Vjerojatnost događaja $\cbr{\rvar a=a}$}
+\glsentm{vi}{probdens}{\p(\rvar a= a),\,p_{\rvar a}(a),\,\p(a)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a}$}
+\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,\p(a\mid b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a\mid\rvar b=b}$}
+\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,\p(a,b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a,\rvar b=b}$}
+\glsentm{vi}{hasdistrib}{\rvar a \sim q,\, \p(\rvar a)=q} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $q$}}
 \glsentm{vi}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
-\glsentm{vi}{fromdistrib}{a\sim\distrib A} {\textit{$a$ se izvlači iz razidobe $\distrib{A}$}}
+\glsentm{vi}{fromdistrib}{a\sim q} {\textit{$a$ se izvlači iz razidiobe $q$}}
 \glsentm{vi}{fromrvar}{a\sim \rvar a,\,a\sim \p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $\p(\rvar a)$}}
-\glsentm{vi}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a}f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
+\glsentm{vi}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a} f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
 \glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
@@ -127,6 +129,13 @@
 \glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
 \glsentm{vi}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
 \glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija}
+
+\glsgroup{g}{Grafovi}{}
+\glsentm{g}{pa}{\pa_G(a)}	{Skup čvorova koji su roditelji čvora $a$ u usmjerenom acikličkom grafu $G$}
+\glsentm{g}{ch}{\ch_G(a)}	{Skup čvorova koji su djeca čvora $a$ u usmjerenom acikličkom grafu $G$}
+\glsentm{g}{pred}{\pred_G(a)}	{Skup čvorova koji su prethodnici čvora $a$ u usmjerenom acikličkom grafu $G$}
+\glsentm{g}{succ}{\succ_G(a)}	{Skup čvorova koji su nasljednici čvora $a$ u usmjerenom acikličkom grafu $G$}
+
 
 % Ostalo
 \glsgroup{f}{Ostale oznake}{}

@@ -1,19 +1,31 @@
 \usepackage{tikz} 					% dijagrami
-  \tikzset{>=latex}
-  \usepackage{pgfplots}
-	  \pgfplotsset{every axis/.append style={
-	  		axis x line=middle,    	% put the x axis in the middle
-	  		axis y line=middle,    	% put the y axis in the middle
-	  		axis line style={->},  	% arrows on the axis
-	  		xlabel={$x$},          	% default put x on x-axis
-	  		ylabel={$y$},          	% default put y on y-axis
-	  		samples=100,
-	  		axis equal,
-	  	}} % axis style
-	\usetikzlibrary{fit}
+\usepackage{pgfplots}
+\usetikzlibrary{fit,automata,arrows,positioning,calc,petri,topaths,arrows.meta}
 	
-\usetikzlibrary{automata,arrows,positioning,calc}
-\usetikzlibrary{arrows,%
-	petri,%
-	topaths}%
-	
+\pgfplotsset{every axis/.append style={
+		axis x line=middle,    	% put the x axis in the middle
+		axis y line=middle,    	% put the y axis in the middle
+		axis line style={->},  	% arrows on the axis
+		xlabel={$x$},          	% default put x on x-axis
+		ylabel={$y$},          	% default put y on y-axis
+		samples=100,
+		axis equal,
+}} % axis style
+
+\tikzset{
+	>={Triangle[length=2.5mm,width=1.75mm]},
+	dagconn/.style={arrows=->, black, thick},
+}
+\tikzstyle{node} = [circle, minimum size=10mm, thick, draw=black, node distance=12mm]
+\tikzstyle{greynode} = [node, fill=black!5]
+% https://github.com/jluttine/tikz-bayesnet
+\tikzstyle{wrap} = [inner sep=0pt, fit=#1]
+\tikzstyle{plate} = [draw, rectangle, rounded corners=0.25ex, thick, fit=#1]
+\tikzstyle{caption} = [font=\footnotesize, node distance=0]
+\tikzstyle{plate caption} = [caption, node distance=0, inner sep=0pt,
+below left=5pt and 0pt of #1.south east]
+\newcommand{\plate}[4][]{
+	\node[wrap=#3] (#2-wrap) {};
+	\node[plate caption=#2-wrap] (#2-caption) {#4};
+	\node[plate=(#2-wrap)(#2-caption), #1] (#2) {};
+}
