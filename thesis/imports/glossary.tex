@@ -1,5 +1,7 @@
 \usepackage[symbols,nopostdot,nonumberlist,section]{glossaries-extra}
 
+%\renewcommand{\glossarypreamble}{\footnotesize}
+
 \newglossarystyle{supergroup}{%
 	\setglossarystyle{super}%
 	\renewcommand*{\glsgroupskip}{}%
@@ -124,17 +126,20 @@
 \glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
 \glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
+%\glsentm{vi}{unif}{\mathcal{U}(\set A)} {Uniformna razdioba nad skupom $\set A$}
 \glsentm{vi}{I}{\I(\set A)}			{Sadržaj informacije događaja $\set A$}
-\glsentm{vi}{H}{\H(\rvar a)}			{Shannonova entropija}
-\glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
+\glsentm{vi}{entropy}{\H(\rvar a)}			{Entropija}
 \glsentm{vi}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
-\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija}
+\glsentm{vi}{mutinf}{\I(\rvar a,\rvar b)}	  {Međusobna informacija}
+\glsentm{vi}{condent}{\H(\rvar a\mid\rvar b)} {Uvjetna entropija}
+\glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
+\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija (relativna entropija)}
 
 \glsgroup{g}{Grafovi}{}
-\glsentm{g}{pa}{\pa_G(a)}	{Skup čvorova koji su roditelji čvora $a$ u usmjerenom acikličkom grafu $G$}
-\glsentm{g}{ch}{\ch_G(a)}	{Skup čvorova koji su djeca čvora $a$ u usmjerenom acikličkom grafu $G$}
-\glsentm{g}{pred}{\pred_G(a)}	{Skup čvorova koji su prethodnici čvora $a$ u usmjerenom acikličkom grafu $G$}
-\glsentm{g}{succ}{\succ_G(a)}	{Skup čvorova koji su nasljednici čvora $a$ u usmjerenom acikličkom grafu $G$}
+\glsentm{g}{pa}{\pa_G(a)}	{Skup čvorova roditelja čvora $a$ u grafu $G$}
+\glsentm{g}{ch}{\ch_G(a)}	{Skup čvorova djece čvora $a$ u grafu $G$}
+\glsentm{g}{pred}{\pred_G(a)}	{Skup čvorova prethodnika čvora $a$ u grafu $G$}
+\glsentm{g}{succ}{\succ_G(a)}	{Skup čvorova nasljednika čvora $a$ u grafu $G$}
 
 
 % Ostalo

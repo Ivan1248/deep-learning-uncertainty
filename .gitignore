@@ -103,6 +103,8 @@ thesis/*.pytxcode
 thesis/*.slo
 thesis/*.stn
 thesis/*.xdy
+thesis/*.lof
+thesis/*.lot
 
 # Specific
 /data/nets

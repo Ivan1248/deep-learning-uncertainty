@@ -80,7 +80,7 @@
 \renewcommand{\H}{\mathrm{H}}
 \newcommand{\h}{\mathrm{h}}
 \newcommand{\I}{\mathrm{I}}
-\DeclareMathOperator*{\Dklsym}{D_{\mathrm{KL}}}
+\newcommand{\Dist}{\mathrm{D}}  % D is for dispersion
 \renewcommand{\dif}{\mathrm{d}}
 
 \newcommand{\pa}{\mathrm{pa}}
@@ -104,7 +104,7 @@
 
 % special
 \newcommand{\funcdef}[3]{#1 \colon #2 \to #3}
-\newcommand{\Dkl}[2]{\Dklsym\del{#1\;\middle\|\;#2}}
+\newcommand{\Dkl}[2]{\Dist_\mathrm{KL}\del{#1\;\middle\|\;#2}}
 \newcommand{\C}{\cset{C}}
 \newcommand{\R}{\cset{R}}
 \newcommand{\Z}{\cset{Z}}
@@ -112,7 +112,11 @@
 \newcommand{\dirac}{\delta}
 \newcommand{\ind}[2]{#1_{\sbr{#2}}}
 
+%\let\mid\relax
+%\newcommand{\mid}{\;|\;}  % spaces around not reduced in index
+\newcommand{\midmid}{\;\middle|\;}
+
 % operators
 \newcommand{\bidot}{\mkern1.5mu{..}\mkern1.5mu}
-\newcommand\sheq{\mkern1.5mu{=}\mkern1.5mu}
+%\newcommand\sheq{\mkern1.5mu{=}\mkern1.5mu}
 %\renewcommand{\dots}{...}

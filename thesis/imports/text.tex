@@ -9,7 +9,6 @@
 \usepackage{indentfirst}	 % uvlačenje prvog ulomka
 \setlength{\parskip}{0.5em}	 % razmak između ulomaka
 
-
 \usepackage{listings}  % listings
 \renewcommand{\lstlistingname}{Ispis}
 
@@ -35,3 +34,10 @@
 
 \let\emph\relax
 \DeclareTextFontCommand{\emph}{\bfseries}
+
+\newtheorem{theorem}{Teorem}[section]
+\newtheorem{definition}{Definicija}[section]
+
+\usepackage{enumitem}  % \begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+
+
