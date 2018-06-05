@@ -62,16 +62,18 @@ primjena na semantičkoj segmentaciji i procjeni dubine
 
 
 
-\chapter{Teorija vjerojatnosti i teorija informacije}
+\chapter{Osnovni pojmovi}
+
+
+\section{Teorija vjerojatnosti}
 
 Jako važan pojam u strojnom učenju je nesigurnost ili neizvjesnost. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje nesigurnosti pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
 
 Postoje dvije glavne interpretacije vjerojatnosti \citep{Murphy:2012:MLPP}. Jedna je \emph{frekventistička interpretacija} prema kojoj vjerojatnosti predstavljaju učestalosti različitih događaja ako se pokus ponavlja velik broj puta. Druga je \emph{bayesovska interpretacija} prema kojoj vjerojatnost izražava našu nesigurnost o ishodu pokusa. 
  
-Ovo poglavlje daje kratak i matematički ne potpuno precizan pregled nekih od osnovnih pojmova i pravila vezanih uz vjerojatnost. Na strukturu ovog poglavlja imaju utjecaj \cite{Goodfellow:2016:DL,Murphy:2012:MLPP}.
+Ovo poglavlje daje kratak i matematički ne potpuno precizan pregled nekih od osnovnih pojmova i pravila vezanih uz vjerojatnost. Na strukturu ovog poglavlja imaju utjecaj \citet{Goodfellow:2016:DL,Murphy:2012:MLPP}.
 
-
-\section{Slučajne varijable i razdiobe}
+\subsection{Slučajne varijable i razdiobe}
 
 Neizvjesnost neke pojave modeliramo \emph{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emph{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti neke slučajne varijable još se naziva i \emph{prostor elementarnih događaja}. \emph{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost $\P(\cbr{\rvar x = x})$ ili $\P(\rvar x = x)$. \emph{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
 \begin{align*}
@@ -109,8 +111,7 @@ Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} im
 
 Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će radi kratkoće riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
 
-
-\section{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
+\subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
 Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Dvije slučajne varijable, i ako imaju istu razdiobu, ne moraju biti iste jer se mogu razlikovati po odnosima s drugim slučajnim varijablama.
 
@@ -149,8 +150,7 @@ Rastavljanjem lijeve strane jednadžbe~\eqref{eq:pravilo-umnoska} na umnožak $\
 \end{align}
 gdje se nazivnik integrira po svim vrijednostima.
 
-
-\section{Nezavisnost, uvjetna nezavisnost i uvjetna zavisnost}
+\subsection{Nezavisnost, uvjetna nezavisnost i uvjetna zavisnost}
 
 Kada su dvije slučajne varijable $\rvar x$ i $\rvar y$ \emph{zavisne}, što se označava $\rvar x\not\perp\rvar y$, znanje o ishodu jedne utječe na znanje o ishodu druge, tj. uvjetna razdioba $\p\del{\rvar x\mid\rvar y = y}$ ovisi o ishodu $y$. \textit{Znanje o ishodu} ne mora značiti da je ishod poznat. Dovoljna je promjena znanja o razdiobi koja može biti posljedica opažanja neke treće slučajne varijable. Slučajne varijable $\rvar x$ i $\rvar y$ su \emph{nezavisne}, što se označava $\rvar x\perp\rvar y$, akko za svaki par $(x, y)$ vrijedi
 \begin{align}
@@ -173,8 +173,7 @@ Slučajne varijable $\rvar x$ i $\rvar y$, koje mogu biti zavisne, su uz znanje 
 
 Isto tako, slučajne varijable $\rvar x$ i $\rvar y$ koje su nezavisne mogu biti \emph{uvjetno zavisne} uz znanje o ishodu neke slučajne varijable $\rvar z$. Općenito, dvije slučajne varijable ne moraju biti ni uvjetno zavisne ni uvjetno nezavisne jer neki ishodi treće slučajne varijable mogu utjecati na njihovu zavisnost, a neki ne. Također se može govoriti i o zavisnosti ili nezavisnosti pojedinih događaja.
 
-
-\section{Očekivanje, varijanca i kovarijanca}
+\subsection{Očekivanje, varijanca i kovarijanca}
 
 \emph{Očekivanje} (prvi moment) slučajne varijable definirano je ovako:
 \begin{align}
@@ -211,8 +210,7 @@ Drugi korijen varijance je standardna devijacija $\sigma_{\rvar x}$.
 \end{align}
 Dijagonalni elementi te matrice su $\Cov\del{\rvec x}_{\sbr{i,i}} = \D\ind{\rvec x}{i}$.
 
-
-\section{Funkcije slučajnih varijabli}
+\subsection{Funkcije slučajnih varijabli}
 
 Neka je odnos između slučajnih varijabli $\rvar x$ i $\rvar y$ definiran funkcijom $f$ koja ishode jedne slučajne varijable deterministički preslikava u ishode druge, što se označava ovako: $\rvar y = f(\rvar x)$.  Ako su $\rvar x$ i $\rvar y$ diskretne slučajne varijable, onda je razdioba slučajne varijable $\rvar y$ definirana ovako:
 \begin{align}
@@ -236,8 +234,7 @@ Ako su $\rvar x$ i $\rvar y$ nezavisne, onda to postaje konvolucija:
 p_{\rvar z}(z) = \int p_{\rvar x}(x)p_{\rvar y}(z-x)\dif x \eqqcolon (p_{\rvar x}*p_{\rvar y})(z) \text{.}
 \end{align}
 
-
-\section{Primjeri razdioba}
+\subsection{Primjeri razdioba}
 
 \emph{Bernoullijeva razdioba} je binarna razdioba s prostorom elementarnih događaja koji je obično $\{0,1\}$. Ona je onda određena parametrom $\mu\in\intcc{0,1}$ i ima ova svojstva:
 \begin{align}
@@ -355,7 +352,7 @@ gdje je
 \centering
 \begin{tikzpicture}
 \draw[thick] (0,10.5ex) rectangle (5,14ex) node[pos=.5] {$\H(\rvar x)$};
-	
+
 \draw[thick] (0,7ex) rectangle (3,10.5ex) node[pos=.5] {$\H(\rvar x\mid\rvar y)$};	
 \draw[thick] (3,7ex) rectangle (5,10.5ex) node[pos=.5] {$\I(\rvar x,\rvar y)$};
 \draw[thick] (5,7ex) rectangle (8,10.5ex) node[pos=.5] {$\H(\rvar y\mid\rvar x)$};	
@@ -366,6 +363,62 @@ gdje je
 \caption{Odnosi informacijsko-teorijskih veličina dviju slučajnih varijabli.}
 \label{fig:entropije}
 \end{figure}
+
+
+\section{Optimizacija temeljena na gradijentu}
+
+U ovom odjeljku su opisani osnovni optimizacijski algoritmi temeljeni na gradijentu. Oni su bitni u strojnom učenju (poglavlje \ref{chap:nsu}), posebno u dubokom učenju (poglavlje \ref{chap:dukm}). Izvedeni algoritmi koji se primjenjuju u dubokom učenju opisani su u pododjeljku \ref{subsec:dukn-u-optimizacijski-algoritmi}.
+
+Neka je $\funcdef{f}{\R^n}{\R}$ funkcija čiji minumom želimo naći s obziroma na parametre $\vec x$. Ona se u okolini točke $\vec x$, ako je dovoljno (beskonačno) puta derivabilna može izraziti Taylorovim redom:
+\begin{align}
+f(\vec x+\vec d) = f(\vec x) + \pd{}{\vec x}f(\vec x)\vec d + \frac{1}{2}\vec d^\tp{\tfrac{\partial^2y}{\partial\vec x\partial\vec x^\tp}}{\vec x}f(\vec x)\vec d + \cdots \text{.}
+\end{align}
+S drugačijim oznakama:
+\begin{align} \label{eq:taylorov-red}
+f(\vec x+\vec d) = f(\vec x) + \nabla_{\vec x}f(\vec x)^\tp\vec d + \frac{1}{2}\vec d^\tp\mat H_f(\vec x)\vec d + \cdots \text{.}
+\end{align}
+
+\subsection{Gradijentni spust}
+
+Ako je $\vec d$ ima malu normu, funkciju $f$ u okoline neke točke možemo dobro aproksimirati s prvih nekoliko članova Taylorovog reda. \emph{Gradijentni spust} je optimizacijski algoritam koji koristi linearnu aproksimaciju i iterativnim ažuriranjem parametara u smjeru gradijenta (\textit{najstrmijem} smjeru) traži minimum. Iteracija gradijentnog spusta ima ovakav oblik:
+\begin{align}
+\vec x_{i+1} = \vec x_i - \eta\nabla_{\vec x}f(\vec x_i) \text{,}
+\end{align}
+gdje je $i$ redni broj iteracije, a $\eta$ \emph{veličina koraka} (\emph{stopa učenja} kod strojnog učenja) koja može biti konstanta ili može ovisiti o broju iteracije $i$. Neka $\vec g=\nabla_{\vec x}f(\vec x)$ i $\mat H=\mat H_f(\vec x)$. Za dovoljno mal $\eta$
+\begin{align} \label{eq:grad-delta-approx}
+f(\vec x-\eta\vec g) \approx f(\vec x) - \eta\vec g^\tp\vec g - \frac{1}{2}\eta^2\vec g^\tp\mat H\vec g
+\end{align}
+Uz neke blage uvjete koje mora zadovoljavati $f$ i dovoljno mal $\eta$, gradijentni spust konvergira, tj. proizvoljno se blizu približi nekom lokalnom minimumu (ili stacionarnoj točki koja nije lokalni minimum, gdje $\nabla_{\vec x}f(\vec x)=\cvec 0$) ovisno o $\eta$. Jedan blagi uvjet može biti \emph{Lipschitz kontinuiranost} funkcije $f$ ili njene derivacije \citep{Goodfellow:2016:DL}. Funkcija $f$ je Lipschitz kontinuirana ako postoji konstanta $\lambda$ za koju za svaki par $(\vec x,\vec y)$ vrijedi:
+\begin{align}
+\envert{f(\vec x)-f(\vec y)} < \lambda\enVert{\vec x-\vec y} \text{.}
+\end{align}
+Najmanji takav $\lambda$ naziva se \emph{Lipschitzova konstanta}.
+
+\subsection{Postupci drugog reda}
+
+Ovaj pododjeljak se temelji na \citet{Goodfellow:2016:DL}.
+
+Ako koristimo kvadratnu aproksimaciju~\eqref{eq:grad-delta-approx}, možemo pokušati pronaći optimalni $\eta$ koji ju minimizira. $\eta$ za koji $\pd{}{\eta}f(\vec x-\eta\vec g)=0$ će, ako $\vec g^\tp\mat H\vec g>0$ dati minimum u smjeru gradijenta kvadratne aproksimacije funkcije $f$ u točki $\vec x$. Dobije se:
+\begin{align}
+\eta = \frac{\vec g^\tp \vec g}{\vec g^\tp\mat H\vec g} \text{.}
+\end{align}
+Ako je $\funcdef{f}{\R^n}{\R}$ konveksna (pozitivno definitna) kvadratna funkcija, izmijenjeni algoritam gradijentnog spusta, koji ovako određuje veličinu koraka, minimum pronalazi u najviše $n$ koraka. 
+
+Postupak drugog reda koji se ne ograničava na pomake u smjeru gradijenta je \emph{Newton-Raphsonov postupak}. Deriviranjem desne strane jednadžbe~\eqref{eq:taylorov-red} po $\vec d$ i izjednačavanjem s $\cvec 0$ dobiva se:
+\begin{align}
+\cvec 0 = \nabla_{\vec x}f(\vec x)^\tp + \vec d^\tp\mat H_f(\vec x) + \cdots \text{.}
+\end{align}
+Uz kvadratnu aproksimaciju i kraće oznake $\vec g=\nabla_{\vec x}f(\vec x)$ i $\mat H=\mat H_f(\vec x)$: $\mat H\vec d = \vec g$. Slijedi da je pomak $\vec d$ koji daje stacionarnu točku aproksimacije
+\begin{align}
+\vec d = \mat H^{-1}\vec g \text{.}
+\end{align}
+Za nekvadratne funkcije, koje imaju pozitivno definitnu Hesseovu matricu u svakoj točki, može se iterativno primjenjivati
+\begin{align}
+\vec x_{i+1} = \vec x_i - \eta\mat H_f(\vec x_i)\nabla_{\vec x}f(\vec x_i)
+\end{align}
+s $\eta<1$.
+
+
 
 
 
@@ -423,7 +476,7 @@ Jednadžba~\eqref{eq:pgm-pravilo-umnoska} onda prelazi u
 \label{eq:pgm-pravilo-umnoska}
 \end{align} 
 To omogućuje primjenu efikasnijih algoritama za zaključivanje \citep{Murphy:2012:MLPP}.
-Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između triju slučajnih varijabli povezanih zavisnostima koje mogu biti dio većeg grafa. Oni su detaljnije objašnjeni npr. u \cite{Bishop:2006:PRML} i \cite{Alpaydin:2014:IML}. 
+Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između triju slučajnih varijabli povezanih zavisnostima koje mogu biti dio većeg grafa. Oni su detaljnije objašnjeni npr. u \citet{Bishop:2006:PRML} i \citet{Alpaydin:2014:IML}. 
 
 \begin{figure}
 	\centering
@@ -506,7 +559,7 @@ Na slici~\ref{fig:bm-regresija} prikazan je primjer na kojemu se koriste još ne
 	\end{tikzpicture}
 	\caption{Primjer grafičkog modela s faktorizacijom 
 		$\p(\vec x, y,\vec x_1\bidot\vec x_N,y_1\bidot y_N,\vec\theta,\epsilon) 
-		= \p(\vec\theta)\p(\epsilon)p_{\rvec x}(\vec x)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y\mid\vec x,\vec\theta,\epsilon) \prod_i\del{p_{\rvec x}(\vec x_i)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y_i\mid\vec x_i,\vec\theta,\epsilon)}$. Graf prikazuje model regresije, gdje su $\rvec\theta$ nepoznati parametri, $\rvec x_i$ i $\rvec y_i$ opažani parovi ulaza i izlaza, $\rvec x$ opažani ulaz s nepoznati izlazom, a $\rvar\epsilon$ homoskedastički šum, tj. šum koji ne ovisi o ulazu. Na slici je još eksplicitno prikazana deterministička varijabla $\alpha$ koja je parametar razdiobe $\p(\rvec\theta)=\p(\rvec\theta\mid\alpha)$. Slika je napravljena po uzoru na sliku~14.7 u \cite{Alpaydin:2014:IML}.}
+		= \p(\vec\theta)\p(\epsilon)p_{\rvec x}(\vec x)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y\mid\vec x,\vec\theta,\epsilon) \prod_i\del{p_{\rvec x}(\vec x_i)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y_i\mid\vec x_i,\vec\theta,\epsilon)}$. Graf prikazuje model regresije, gdje su $\rvec\theta$ nepoznati parametri, $\rvec x_i$ i $\rvec y_i$ opažani parovi ulaza i izlaza, $\rvec x$ opažani ulaz s nepoznati izlazom, a $\rvar\epsilon$ homoskedastički šum, tj. šum koji ne ovisi o ulazu. Na slici je još eksplicitno prikazana deterministička varijabla $\alpha$ koja je parametar razdiobe $\p(\rvec\theta)=\p(\rvec\theta\mid\alpha)$. Slika je napravljena po uzoru na sliku~14.7 u \citet{Alpaydin:2014:IML}.}
 	\label{fig:bm-regresija}
 \end{figure}
 
@@ -647,7 +700,7 @@ U tom slučaju se nesigurnost može izraziti disperzijom
  
 \section{Monte Carlo aproksimacija}
 
-Ovaj odjeljak temelji se na \cite{Goodfellow:2016:DL}.
+Ovaj odjeljak se temelji na \citet{Goodfellow:2016:DL}.
 
 \emph{Monte Carlo aproksimacija} je postupak procjenjivanja vrijednosti koje se mogu izraziti kao očekivanje neke funkcije neke slučajne varijable na temelju uzoraka. Ponekad nije moguće analitički ili numerički traktabilno ili efikasno izračunati neki integral (ili zbroj). Ako se on može ovako izraziti:
 \begin{align}
@@ -664,7 +717,7 @@ U širem smislu, postupci \textit{Monte Carlo} obuhvaćaju i generiranje uzoraka
 
 \section{Aproksimacija razdioba i aproksimacijsko zaključivanje}
 
-Ovaj odjeljak uglavnom se temelji na \citet{Blei:2017:VIRS} i malo na \citet{Yang:2017:UVLB}.
+Ovaj odjeljak se uglavnom temelji na \citet{Blei:2017:VIRS} i malo na \citet{Yang:2017:UVLB}.
 
 Važan problem u bayesovskoj statistici, gdje se zaključivanje temelji na izračunima koji uključuju aposteriornu razdiobu, je aproksimacija razdioba koje su zahtjevne za računanje. Kod složenijih Bayesovskih modela aposteriorna razdioba se ne može lako izračunati i treba koristiti aproksimacijske postupke od kojih su glavni \emph{varijacijski} postupci \citep{Jordan:1999:IVMGM} i postupci \emph{Monte Carlo} aproksimacije s uzorkovanjem pomoću \emph{Markovljevog lanca} (MCMC, engl. \textit{Markov chain Monte Carlo}). MCMC-postupci temelje se na definiranju stohastičkog procesa koji ima stacionarnu razdiobu jednaku razdiobi koja se aproksimira, omogućuju asimptotski egzaktno uzorkovanje velike klase razdioba. Varijacijski postupci temelje se na aproksimaciji razdiobe nekom jednostavnijom koja se pronalazi rješavanjem optimizacijskog problema, brži su i jednostavniji za ostvariti za složenije modele.
 
@@ -688,11 +741,12 @@ na temelju opažanih vrijednosti slučajne varijable $\rvec x$ (podataka). Kod s
 	\caption{Prikaz grafičkog modela sa skrivenom varijablom $\rvec z$ i opažanom varijablom $\rvec x$.}
 	\label{fig:pgmzx}
 \end{figure}
-%TODO zasjenjen čvor?
+
 
 
 \section{Postupci uzorkovanja}
 
+%TODO 
 TODO
 
 1.3.1 \citet{Neal:1995:BLNN}.
@@ -736,7 +790,7 @@ Dodatno pojednostavljenje koje pomaže u modeliranju i optimizaciji je pretposta
 \begin{align}
 q(\tilde{\vec z}) = \prod_i q_i(\tilde{z}_i),
 \end{align}
-gdje su $q_i$ funkcije gustoće pojedinih slučajnih varijabli, a $\tilde{z}_i=\tilde{\vec z}_{[i]}$. Kod \emph{metode polja sredina} pretpostalja se takva razdioba i obično se primjenjuje koordinatni spust za optimizaciju, s čime ima veze ime metode. To je detaljnije objašnjeno u \cite{Murphy:2012:MLPP}.
+gdje su $q_i$ funkcije gustoće pojedinih slučajnih varijabli, a $\tilde{z}_i=\tilde{\vec z}_{[i]}$. Kod \emph{metode polja sredina} pretpostalja se takva razdioba i obično se primjenjuje koordinatni spust za optimizaciju, s čime ima veze ime metode. To je detaljnije objašnjeno u \citet{Murphy:2012:MLPP}.
 
 \iffalse
 Neka je radi kraćeg zapisa $t(\tilde{\vec z}) \coloneqq \p(\rvec z=\tilde{\vec z},\rvec x=\vec x)$. Uz aproksimaciju polja sredina donja varijacijska granica postaje
@@ -751,11 +805,11 @@ L_{\vec x}(\tilde{\rvec z})
 
 
 
-\chapter{Nadzirano strojno učenje}
+\chapter{Nadzirano strojno učenje} \label{chap:nsu}
 
-Ovo poglavlje se uglavnom temelji na \cite{Snajder:2014:SU} i \cite{Goodfellow:2016:DL}.
+Ovo poglavlje se uglavnom temelji na \citet{Snajder:2014:SU} i \citet{Goodfellow:2016:DL}.
 
-Zadatak algoritama \emph{nadziranog (strojnog) učenja} je preslikavanje \emph{ulaznih primjera} $\vec x\in\set{X}$ u \emph{izlaze (oznake)} $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja osim primjera iz skupa za učenje, u izlaze dobro preslikava i primjere koji nisu u skupu za učenje. Sposobnost postizanja dobre performanse na neviđenim primjerima naziva se \emph{generalizacija}.
+Zadatak algoritama \emph{nadziranog učenja} je preslikavanje \emph{ulaznih primjera} $\vec x$ iz \emph{ulaznog prostora} $\set{X}$ u \emph{izlaze} (\emph{oznake}) $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja osim primjera iz skupa za učenje, u izlaze dobro preslikava i primjere koji nisu u skupu za učenje. Sposobnost postizanja dobre performanse na neviđenim primjerima naziva se \emph{generalizacija}.
 
 Neka je $\set{D}=\cbr{\vec d_i}_i$ skup nezavisnih primjera izvučenih iz neke razdiobe $\distrib{D}$. Možemo definirati \emph{probabilistički model} $\set H$ s nepoznatim parametrima $\vec\theta$ kojemu je cilj što bolje modelirati tu razdiobu pronalaskom najbolje hipoteze na temelju podataka: $\p(\vec{d}\mid\set{D},\set H)$. Model koji modelira razdiobu primjera nazivamo \emph{generativnim modelom}. U nastavku ćemo izostavljati oznaku modela radi kraćeg zapisa.
 
@@ -776,7 +830,7 @@ Većina algoritama strojnog učenja kombinira obje vrste induktivne pristranosti
 
 \section{Komponente algoritma strojnog učenja}
 
-Prema \cite{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo razlikovati 3 osnovne komponente, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
+Prema \citet{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo razlikovati 3 osnovne komponente, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
 \begin{enumerate}
 	\item \emph{Model} ili prostor hipoteza. Model $\set H$ je skup funkcija $h$  parametriziranih parametrima $\vec\theta$: $\set H=\cbr{h(\vec x;\vec{\theta})}_{\vec{\theta}}$.
 	\item \emph{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emph{funkcija gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar predikcija hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
@@ -863,7 +917,7 @@ Kod opisanih modela koji uključuju apriorno znanje, regularizacijskom članu uz
 
 \section{Osnovni zadaci nadziranog učenja}
 
-Osnovni zadaci nadziranog učenja su \emph{klasifikacija} i \emph{regresija}. Zadatak klasifikacije je svakom ulaznom primjerima dodjeljivati oznake iz konačnog skupa oznaka, npr. $\cbr{1\bidot C}$, gdje svaka oznaka predstavlja jednu \emph{klasu (razred)}. Zadatak regresije je ulaznim primjerima dodjeljivati vrijednosti iz kontinuiranog skupa (obično $\R$ ili $\R^n$). Ulazni primjeri su obično realni vektori. Klasifikacijska hipoteza se može definirati preko funkcije s kontinuiranom kodomenom. Ako $C=2$, ta funkcija može biti $\funcdef{f}{\set X}{\R}$, a hipoteza $h(\vec x)=\enbbracket{f(\rvec x)>0}$. Ako $C>2$, onda to može npr. biti $h(\vec x)=\argmax_i f(\rvec x)$, gdje $\funcdef{f}{\set X}{\R^C}$. Kod nekih zadataka ulazi ili izlazi imaju složeniju strukturu i ona se može razlikovati između različitih primjera.
+Osnovni zadaci nadziranog učenja su \emph{klasifikacija} i \emph{regresija}. Zadatak klasifikacije je svakom ulaznom primjerima dodjeljivati oznake iz konačnog skupa oznaka, npr. $\cbr{1\bidot C}$, gdje svaka oznaka predstavlja jednu \emph{klasu} (\emph{razred}). Zadatak regresije je ulaznim primjerima dodjeljivati vrijednosti iz kontinuiranog skupa (obično $\R$ ili $\R^n$). Ulazni primjeri su obično realni vektori. Klasifikacijska hipoteza se može definirati preko funkcije s kontinuiranom kodomenom. Ako $C=2$, ta funkcija može biti $\funcdef{h}{\set X}{\R}$, a hipoteza $h_\text{c}(\vec x)=\enbbracket{h(\vec x)>0}$. Ako $C>2$, onda to može biti npr. $h_\text{c}(\vec x)=\argmax_i h_i(\vec x)$, gdje $\funcdef{h}{\set X}{\R^C}$ i $h(\vec x)=\sbr{h_i(\vec x)}_{i=1\bidot C}^\tp$. Kod nekih zadataka ulazi ili izlazi imaju složeniju strukturu i ona se može razlikovati između različitih primjera.
 
 %klasifikacija, odnos mF1 i mIoU
 %https://www.wolframalpha.com/input/?i=z+%3D+2%2F(1%2Fx%2B1%2Fy)+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
@@ -872,6 +926,119 @@ Osnovni zadaci nadziranog učenja su \emph{klasifikacija} i \emph{regresija}. Za
 %https://www.wolframalpha.com/input/?i=z+%3D+2%2F(1%2Fx%2B1%2Fy)-(1%2F(1%2Fx%2B1%2Fy-1))+for+x+in+%5B0,1%5D,+y+in+%5B0,1%5D
 % IoU i F1 su ekvivalnetne mjera ako se radi mikro usrednjavanje, 
 %https://stats.stackexchange.com/questions/273537/f1-dice-score-vs-iou
+
+
+\section{Primjer klase modela: poopćeni linearni modeli}
+
+Ovaj odjeljak se temelji na \citep{Snajder:2014:SU}.
+
+\emph{Linearni modeli} su modeli kod kojih je hipoteza definirana afinom transformacijom:
+\begin{align}
+h(\vec x) = h(\vec x;\vec\theta) = \vec w^\tp\vec x + b \text{,}
+\end{align}
+gdje je $\vec w$ vektor \emph{težina}, $b$ \emph{pomak} (engl \textit{bias}), a $\vec\theta=(\vec w, b)$. Kod linearnih modela je, u slučaju klasifikacije, granica $(n-1)$-dimenzionalna hiperravnina s normalom $\vec w$. Obično se na ulazne primjere primjenjuje neka nelinearna transformacija
+\begin{align*}
+\phi \colon \R^n &\to \R^m \\
+\vec x &\mapsto \sbr{\phi_1(\vec x),\bidot,\phi_m(\vec x)}^\tp
+\end{align*}
+koja predstavlja preslikavanje ulaznog prostora u \emph{prostor značajki}. Funkcije $\funcdef{\phi_i}{\R^n}{\R}$ nazivaju se \emph{bazne funkcije}. Hipoteza linearnog modela onda ima oblik
+\begin{align}
+h(\vec x) = \vec w^\tp\phi(\vec x) \text{.}
+\end{align}
+Ovdje je izostavljen pomak $b$ jer jedan od izlaza transformacije $\phi$ može biti konstanta $1$ koja se množi s jednom težinom iz $\vec w$. 
+
+\emph{Poopćeni linearni modeli} su modeli kod kojih je hipoteza ovako definirana:
+\begin{align}
+h(\vec x) = f(\vec w^\tp\phi(\vec x)) \text{.}
+\end{align}
+U odnosu na linearne modele, oni još imaju \emph{prijenosnu} (\emph{aktivacijsku}) funkciju $\funcdef{f}{\R}{\R}$. Ako je $f$ nelinearna, model je nelinearan u parametrima, ali granica klasifikacijskog modela je i dalje hiperravnina.
+
+Slijedi pregled nekih linearnih modela prema \citet{Snajder:2017:SULR2} uz oznake $s=\vec w^\tp\phi(\vec x)$ i $\vec s=\mat W\phi(\vec x)$:
+\begin{itemize}
+\item Linearna regresija:
+\begin{align*}
+h(\vec x;\vec w) &= f(s) = s, \\
+\p(y\mid\vec x,\vec w) &= \mathcal{N}(h(\vec x),\sigma^2)(y), \\
+L(y, h(\vec x)) &= \del{h(\vec x)-y}^2, \\
+\nabla_{\vec w}L(y, h(\vec x)) &= \del{h(\vec x)-y}\phi(\vec x),
+\end{align*}
+gdje $y\in\R$.
+\item Logistička regresija:
+\begin{align*}
+h(\vec x;\vec w) &= f(s) 
+= \frac{1}{1+\exp\del{s}} = \P(\rvar y=1\mid\vec x,\vec w), \\
+\P(y\mid\vec x,\vec w) &= h(\vec x)^y(1-h(\vec x))^{1-y}, \\
+L(y, h(\vec x)) &= -y\ln h(\vec x)^y-(1-y)\ln(1-h(\vec x)), \\
+\nabla_{\vec w}L(y, h(\vec x) &= \del{h(\vec x)-y}\phi(\vec x),
+\end{align*}
+gdje $y\in{0,1}$. 
+\item Višeklasna logistička regresija:
+\begin{align*}
+h(\vec x;\mat W) &= f(\vec s) 
+= \frac{1}{\cvec 1^\tp\exp(\vec s)}\exp(\vec s) = \P(\rvar y\mid\vec x,\vec w), \\
+\P(y\mid\vec x,\vec w) &= h(\vec x)_{[y]} = \prod_k h_k(\rvec x)^{\vec y_k}, \\
+L(y, h(\vec x)) &= -\sum_k y_k\ln h(\vec x)^y, \\
+\nabla_{\mat W_{[k,:]}^\tp}L(y, h_k(\vec x)) &= \del{h_k(\vec x)-y_k}\phi(\vec x) \\
+\nabla_{\mat W}L(y, h(\vec x)) &= \phi(\vec x)^\tp \del{h(\vec x)-\cvec e_y},
+\end{align*}
+gdje $y\in{1\bidot C}$, $\vec y=\cvec e_y$, a $\cvec e_k$ predstavlja jednojedinični vektor (vektor kanonske baze), tj. ${\cvec e_k}_{[i]}=\enbbracket{i=k}$.
+\end{itemize}
+Funkcije gubitka su definirane kao negativni logaritam izglednosti, $L(y, h(\vec x))=-\ln\P(y\mid\vec x,\vec w)$, i konveksne su. Optimalne težine linearne regresije mogu se analitički izračunati, logistička regresija i višeklasna logistička regresija se obično uče gradijentnim spustom, ali mogu se koristiti i optimizacijski postupci drugog reda. 
+
+Razdiobe $\P(\vec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \emph{eksponencijalnu familiju razdioba}. Može se pokazati da je to jedina familija razdioba za koje postoje konjugatne apriorne razdiobe, što pojednostavljuje računanje aposteriorne razdiobe \citet{Murphy:2012:MLPP}. Opći oblik ekponencijalne familije i detalji o njoj mogu se naći u \citet{Murphy:2012:MLPP}.
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Duboko učenje i konvolucijske mreže} \label{chap:dukm}
+
+Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk), ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo, a jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro. Kod \emph{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
+
+Odabirom 
+\begin{align}
+\phi(\vec x) 
+= \phi(\vec x;\mat \theta^\text{h})
+= f(\mat W^\text{h}\vec x + \vec b^\text{h}) \text{,}
+\end{align}
+gdje je $\mat W_\text{h}$ matrica težina, $\vec b^\text{h}$ vektor pomaka, $\vec\theta^\text{h}=(\mat W,\vec b^\text{h})$ a $f$ prijenosna (aktivacijska) funkcija koja se primjenjuje na svaki element vektora posebno, dobiva se jednostavna unaprijedna \emph{umjetna neuronska mreža} (ovdje će se koristiti kraći nazivi \textit{neuronska mreža} ili \textit{mreža}) s jednim skrivenim slojem. Onda je, ako se to uvrsti u jednadžbu poopćenog linearnog modela,
+\begin{align}
+h(\vec x; \vec{\theta}) 
+= f(\vec w^\tp f(\mat W^\text{h}\vec x + \vec b^\text{h})+b) \text{,}
+\end{align}
+ili, ako je izlaz vektor,
+\begin{align}
+h(\vec x; \vec{\theta}) 
+= f(\mat W^\text{o} f(\mat W^\text{h}\vec x + \vec b^\text{h})+\vec b^\text{o}) \text{,}
+\end{align}
+gdje $\vec\theta=(\mat W^\text{h},\vec b^\text{h}, \mat W^\text{h},\vec b^\text{h})$.
+
+\section{Unaprijedne neuronske mreže}
+
+
+\section{Računski grafovi}
+
+
+\section{Konvolucijske mreže}
+
+
+\section{Učenje}
+
+\subsection{Algortiam propagacije pogreške unatrag}
+
+\subsection{Optimizacijski algoritmi} \label{subsec:dukn-u-optimizacijski-algoritmi}
+
+\subsection{Algoritam propagacija pogreške unatrag}
+
+\subsection{Isključivanje neurona - dropout}
+
+\subsection{Normalizacija po grupama}
 
 
 
@@ -892,50 +1059,22 @@ Aleatorna nesigurnost može biti homoskedastička i heteroskedastička.
 
 TODO: homoskedastička, heteroskedastička nesigurnost
 
-TODO: model uncertainty Gal-thesis 1.2
+TODO: model uncertainty, predictive uncertainty Gal-thesis 1.2
 
 \the\fontdimen5\font\newline % em
 \the\fontdimen6\font\newline % ex
-small {\small \the\fontdimen6\font\newline % ex}
-	footnotesize {\footnotesize \the\fontdimen6\font\newline % ex}
-		\the\textwidth
+small {\small \the\fontdimen6\font\newline} % ex}
+footnotesize {\footnotesize \the\fontdimen6\font\newline} % ex}
+\the\textwidth
 		
-		\begin{figure}
-			\centering
-			\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
-			\caption{Homoskedastički (lijevo) i heteroskedastički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
-			\label{fig:homoscedastic-heteroscedastic-noises}
-		\end{figure}
-
-
-
-\chapter{Duboko učenje i konvolucijske mreže}
-
-Klasični (plitki) modeli strojnog učenja oslanjaju se
-
-
-\section{Unaprijedne neuronske mreže}
-
-
-
-
-\section{Računski grafovi}
-
-
-\section{Konvolucijske mreže}
-
-
-\section{Učenje}
-
-\subsection{Optimizacijski algoritmi}
-
-\subsection{Algoritam propagacija pogreške unatrag}
-
-\subsection{Isključivanje neurona - dropout}
-
-\subsection{Normalizacija po grupama}
-
-
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
+	\caption{Homoskedastički (lijevo) i heteroskedastički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
+	\label{fig:homoscedastic-heteroscedastic-noises}
+\end{figure}
+		
+		
 
 \chapter{Bayesovske neuronske mreže}
 

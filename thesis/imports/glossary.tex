@@ -31,73 +31,138 @@
 % Objekti
 \glsgroup{o}{Objekti}
 {Varijable se označavaju kosim slovima sa serifima, većina konstanti uspravnim slovima sa serifima, a slučajne varijable kosim slovima bez serifa. Vektori se označavaju malim podebljanim slovima, matrice i višedimenzionalni nizovi (tenzori) velikim podebljanim slovima, a skupovi slovima s udvostručenim linijama. Za svaku vrstu objekta mogu se koristiti i latinska i grčka slova.}
-\glsentm{o}{var}{a,\,A,\,\theta}		{Varijabla (najčešće skalar)}
-\glsentm{o}{vec}{\vec a,\,\vec\theta}	{Vektor ili niz (najčešće vektor stupac)}
-\glsentm{o}{mat}{\mat A,\,\mat\Theta}	{Matrica ili višedimenzionalni niz}
-\glsentm{o}{set}{\set A}	{Skup ili multiskup}
-\glsentm{o}{const}{\const a,\,\const A,\,\const\theta}{Konstanta}
-\glsentm{o}{cvec}{\cvec a,\,\cvec\theta}{Konstanta vektor ili niz}
-\glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}{Konstanta matrica ili višedimenzionalni niz}
-\glsentm{o}{cset}{\cset A,\,\cset\Theta}{Kostanta skup}
-\glsentm{o}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta}{Slučajna varijabla}
-\glsentm{o}{rvec}{\rvec a,\,\rvec\theta}{Slučajni vektor ili niz}
-\glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}{Slučajna matrica ili višedimenzionalni niz}
-\glsentm{o}{rset}{\rset A}{Slučajni skup ili multiskup}
+\glsentm{o}{var}{a,\,A,\,\theta}
+	{Varijabla (najčešće skalar)}
+\glsentm{o}{vec}{\vec a,\,\vec\theta}
+	{Vektor ili niz (najčešće vektor stupac)}
+\glsentm{o}{mat}{\mat A,\,\mat\Theta}
+	{Matrica ili višedimenzionalni niz}
+\glsentm{o}{set}{\set A}
+	{Skup ili multiskup}
+\glsentm{o}{const}{\const a,\,\const A,\,\const\theta}
+	{Konstanta}
+\glsentm{o}{cvec}{\cvec a,\,\cvec\theta}
+	{Konstanta vektor ili niz}
+\glsentm{o}{cmat}{\cmat A,\,\cmat\Theta}
+	{Konstanta matrica ili višedimenzionalni niz}
+\glsentm{o}{cset}{\cset A,\,\cset\Theta}
+	{Kostanta skup}
+\glsentm{o}{rvar}{\rvar a,\,\rvar A,\,\rvar\theta}
+	{Slučajna varijabla}
+\glsentm{o}{rvec}{\rvec a,\,\rvec\theta}
+	{Slučajni vektor ili niz}
+\glsentm{o}{rmat}{\rmat A,\,\rmat\Theta}
+	{Slučajna matrica ili višedimenzionalni niz}
+\glsentm{o}{rset}{\rset A}
+	{Slučajni skup ili multiskup}
+\glsentm{o}{text}{\text{a},\,\text{oznaka}}
+	{Oznaka koja ne predstavlja matematički objekt}
 
 % Konstante
 \glsgroup{k}{Konstante}{}
-\glsentm{k}{emptyset}{\cbr{}} 			{Prazni skup}
-\glsentm{k}{nulvek}{\cvec 0}			{Nul-vektor}
-\glsentm{k}{kanvek}{\cvec e_i}			{$i$-ti vektor kanonske baze}
-\glsentm{k}{jedvek}{\cvec 1}			{Zbroj svih vektora kanonske baze}
-\glsentm{k}{mati}{\cmat I,\,\cmat I_n}	{Matrica identiteta (s $n$ redaka i stupaca)}
-\glsentm{k}{cset}{\N,\Z,\R,\C}			{Poznati skup}
-\glsentm{k}{Rpos}{\R_{\geq 0},\,\R_{> 0}} {Skup nenegativnih/pozitivnih realnih brojeva}
+\glsentm{k}{emptyset}{\cbr{}}
+	{Prazni skup}
+\glsentm{k}{nulvek}{\cvec 0}
+	{Nul-vektor}
+\glsentm{k}{kanvek}{\cvec e_i}
+	{$i$-ti vektor kanonske baze}
+\glsentm{k}{jedvek}{\cvec 1}
+	{Zbroj svih vektora kanonske baze}
+\glsentm{k}{mati}{\cmat I,\,\cmat I_n}
+	{Matrica identiteta (s $n$ redaka i stupaca)}
+\glsentm{k}{cset}{\N,\Z,\R,\C}
+	{Poznati skup}
+\glsentm{k}{Rpos}{\R_{\geq 0},\,\R_{> 0}}
+	{Skup nenegativnih/pozitivnih realnih brojeva}
 
 % Skupovi i nizovi
-\glsgroup{sn}{Skupovi i nizovi}{}
-\glsentm{sn}{range}{a\bidot b} 			{Kraći zapis za $a,..,b$}
-\glsentm{sn}{setrange}{\cbr{a\bidot b}} {Skup cijelih brojeva od $a$ do $b$}
-\glsentm{sn}{setdefn}{\cbr{a_i\colon i=1\bidot n},\,\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}{Skup s $n$ elemenata}
-\glsentm{sn}{setdefset}{\cbr{f(a)\colon P(a)},\, \cbr{f(a)}_{P(a)},\, \cbr{f(a)}_{a}}{Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$ koji može biti implicitan ili neodređen}
-\glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}}{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
-\glsentm{sn}{intoo}{\intoo{a,b}}		{Otvoreni interval}
-\glsentm{sn}{intcc}{\intcc{a,b}}		{Zatvoreni interval}
+\glsgroup{sn}{Definiranje skupova i nizova}{}
+\glsentm{sn}{range}{a\bidot b}
+	{Kraći zapis za $a,..,b$}
+\glsentm{sn}{setrange}{\cbr{a\bidot b}}
+	{Skup cijelih brojeva od $a$ do $b$}
+\glsentm{sn}{setdefset}{\cbr{f(a)\colon P(a)},\, \cbr{f(a)}_{P(a)}}
+	{Skup čiji su elementi definirani preko funkcije $f$ i predikata $P$}
+\glsentm{sn}{setdefsetimp}{\cbr{f(a)}_{a}}
+	{Skup čiji su elementi definirani preko funkcije $f$ i varijabli $a$ iz implicitno određenog skupa}
+\glsentm{sn}{setdefn}{\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}
+	{Skup s $n$ elemenata}
+\glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}}
+	{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
+\glsentm{sn}{intoo}{\intoo{a,b}}
+	{Otvoreni interval}
+\glsentm{sn}{intcc}{\intcc{a,b}}
+	{Zatvoreni interval}
+\glsentm{sn}{rowvec}{\sbr{x_1,\bidot,x_n}}
+	{Vektor redak}
+\glsentm{sn}{colvec}{\del{x_1,\bidot,x_n}}
+	{Vektor (stupac)}
 
 % Indeksiranje
-\glsgroup{i}{Indeksiranje}
-{Indeksi elemenata vektora ili višedimenzionalnih nizova se radi jednoznačnosti mogu pisati u indeksu oznake vektora u uglatim zagradama. Npr. ako je definiran vektor $\vec a=(a_1,.., a_n)^\transpose$, onda je njegov $i$-ti element $\vec a_{\sbr{i}}=a_i$.}
-\glsentm{i}{vecelem}{\vec{a}_{\sbr{i}}} 
+\glsgroup{i}{Donji i gornji indeks}
+{U donjem indeksu oznake mogu biti oznake drugih matematičkih objekata. U donjem i gornjem indeksu oznake mogu biti oznake (slova ili riječi) koje ne predstavljaju matematičke objekte. Oznake koje ne predstavljaju matematičke objekte istog su stila kao tekst. Indeksi (redni brojevi) elemenata vektora ili višedimenzionalnih nizova se, ako nije određeno drugačije, pišu u donjem indeksu oznake vektora u uglatim zagradama. Npr. ako je definiran vektor $\vec a=(a_1,.., a_n)^\tp$, onda je njegov $i$-ti element $\vec a_{\sbr{i}}=a_i$.}
+\glsentm{i}{gdindeks}{a_\text{d}^\text{g}}
+	{Oznaka varijable s oznakama u donjem i gornjem indeksu}
+\glsentm{i}{vecelem}{\vec{a}_{\sbr{i}}}
 	{$i$-ti element vektora $\vec{a}$}
-\glsentm{i}{subvec}{\vec{a}_{\sbr{i_1:i_2}}}{Vektor kojeg čine elementi $\vec{a}_{\sbr{i_1}}, \vec{a}_{\sbr{i_1+1}},.., \vec{a}_{\sbr{i_2}}$}
-\glsentm{i}{subvecsk}{\vec{a}_{\sbr{(i_1\bidot i_n)}}}{Vektor kojeg čine elementi $\vec{a}_{\sbr{i_1}}, \vec{a}_{\sbr{i_2}},.., \vec{a}_{\sbr{i_n}}$}
-\glsentm{i}{matelem}{\mat{A}_{\sbr{i,j}}}{Element $i,j$ matrice $\mat A$}
-\glsentm{i}{matrow}{\mat{A}_{\sbr{i,:}}}{$i$-ti redak matrice $\mat A$}
-\glsentm{i}{masubmat}{\mat{A}_{\sbr{:,i_1:i_2,j}}}{2-D odsječak 3-D niza $\mat A$}
+\glsentm{i}{subvec}{\vec{a}_{\sbr{i_1:i_2}}}
+	{Vektor kojeg čine elementi $\vec{a}_{\sbr{i_1}}, \vec{a}_{\sbr{i_1+1}},.., \vec{a}_{\sbr{i_2}}$}
+\glsentm{i}{subvecsk}{\vec{a}_{\sbr{(i_1\bidot i_n)}}}
+	{Vektor kojeg čine elementi $\vec{a}_{\sbr{i_1}}, \vec{a}_{\sbr{i_2}},.., \vec{a}_{\sbr{i_n}}$}
+\glsentm{i}{matelem}{\mat{A}_{\sbr{i,j}}}
+	{Element $i,j$ matrice $\mat A$}
+\glsentm{i}{matrow}{\mat{A}_{\sbr{i,:}}}
+	{$i$-ti redak matrice $\mat A$}
+\glsentm{i}{masubmat}{\mat{A}_{\sbr{:,i_1:i_2,j}}}
+	{2-D odsječak 3-D niza $\mat A$}
 
 % Operacije linearne algebre
-\glsgroup{l}{Operacije linearne algebre}{}
-\glsentm{l}{scalprod}{\braket{\vec a}{\vec b}} {Skalarni produkt, može biti i $\vec{a}^\transpose\vec{b}$}
-\glsentm{l}{hadprod}{\vec a \odot \vec b}	{Umnožak po elementima; Hadamardov produkt}
-\glsentm{l}{haddiv}{\vec a \oslash \vec b} {Dijeljenje po elementima}
-\glsentm{l}{matmul}{\mat A \mat B}		{Matrično množenje}
-\glsentm{l}{matinv}{\mat A^{-1}}			{Inverz matrice}
-\glsentm{l}{transp}{\mat A^\transpose}	{Transponiranje}
-\glsentm{l}{diag}{\diag\del{\vec{a}}}		{Dijagonalna matrica kojoj dijagonalu čini vektor $\vec a$}
-\glsentm{l}{det}{\det\mat{A}}		{Determinanta matrice $\mat A$}
-\glsentm{l}{vecnorm}{\enVert{\vec a}_p}	{$\const L^p$-norma vektora $\vec a$}
-\glsentm{l}{matnorm}{\enVert{\mat A}_p}	{Matrična $\const L^p$-norma matrice $\mat A$}
-\glsentm{l}{frobnorm}{\enVert{\mat A}_\const{F}}	{Frobeniusova norma matrice $\mat A$}
+\glsgroup{l}{Operacije linearne algebre} {} 
+\glsentm{l}{scalprod}{\braket{\vec a}{\vec b}}
+	{Skalarni produkt, može biti i $\vec{a}^\tp\vec{b}$}
+\glsentm{l}{hadprod}{\vec a \odot \vec b}
+	{Umnožak po elementima; Hadamardov produkt}
+\glsentm{l}{haddiv}{\vec a \oslash \vec b}
+	{Dijeljenje po elementima}
+\glsentm{l}{matmul}{\mat A \mat B}
+	{Matrično množenje}
+\glsentm{l}{matinv}{\mat A^{-1}}
+	{Inverz matrice}
+\glsentm{l}{transp}{\mat A^\tp}
+	{Transponiranje}
+\glsentm{l}{diag}{\diag\del{\vec{a}}}
+	{Dijagonalna matrica kojoj dijagonalu čini vektor $\vec a$}
+\glsentm{l}{det}{\det\mat{A}}
+	{Determinanta matrice $\mat A$}
+\glsentm{l}{vecl2norm}{\enVert{\vec a}_2}
+	{$\const L^2$-norma vektora $\vec a$}
+\glsentm{l}{vecnorm}{\enVert{\vec a}_p}
+	{$\const L^p$-norma vektora $\vec a$}
+\glsentm{l}{matnorm}{\enVert{\mat A}_p}
+	{Matrična $\const L^p$-norma matrice $\mat A$}
+\glsentm{l}{frobnorm}{\enVert{\mat A}_\text{F}}
+	{Frobeniusova norma matrice $\mat A$}
+\glsentm{l}{func}{f(\vec a)}
+	{Ako $f$ nije drugačije definirana i inače označava funkciju $\R\to\R$, onda se primjenjuje po svakom elementu vektora posebno}
 
 % Diferencijalni račun
 \glsgroup{d}{Diferencijalni račun}{}
-\glsentm{d}{od}{\od{y}{x}} 				{Derivacija $y$ po $x$}
-\glsentm{d}{pd}{\pd{y}{x}} 				{Parcijalna derivacija $y$ po $x$}
-\glsentm{d}{grad}{\nabla_{\vec x}{y}} 	{Gradijent $y$ po $\vec x$}
-\glsentm{d}{gradmat}{\nabla_{\mat X}{y}}	{Gradijent $y$ po $\mat X$}
-\glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\mat J_{\vec x\mapsto\vec y},\,\mat J} 	{Jakobijan iz $\R^{m\times n}$ za $\vec y\in\R^m$ i $\vec x\in\R^n$}
-\glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$}
-\glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} {Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ implicitan}
+\glsentm{d}{od}{\od{y}{x},\,\od{}{x}f(x)}
+	{Derivacija $y=f(x)$ po $x$}
+\glsentm{d}{pd}{\pd{y}{x},\,\pd{}{x}f(x)}			
+	{Parcijalna derivacija $y=f(x)$ po $x$}
+\glsentm{d}{grad}{\nabla_{\vec x}{y},\,\nabla_{\vec x}{f(x)},\,\del{\pd{y}{\vec x}}^\tp} 	
+	{Gradijent $y=f(\vec x)$ po $\vec x$}
+\glsentm{d}{gradmat}{\nabla_{\mat X}{y},\,\nabla_{\mat X}{f(x)}}	
+	{Gradijent $y=f(\mat x)$ po $\mat X$}
+\glsentm{d}{hess}{\tfrac{\partial^2y}{\partial\vec x\partial\vec x^\tp},\,\mat H_{f}(\vec x),\,\mat H}
+	{Hessijan iz $\R^{n\times n}$ za $\funcdef{f}{\R^n}{\R}$ i $y=f(\vec x)$}
+\glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\mat J_{f}(\vec x),\,\mat J}
+	{Jakobijeva matrica iz $\R^{m\times n}$ za $\funcdef{f}{\R^n}{\R^m}$ i $\vec y=f(\vec x)$}
+\glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)}
+	{Određeni integral funkcije $f(x)$ po $x\in\set A$}
+\glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} 
+	{Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ implicitan}
 
 % Teorija vjerojatnosti i teorija informacije
 \glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
@@ -113,7 +178,7 @@
 \glsentm{vi}{event}{\set A}{Događaj}
 \glsentm{vi}{eventpred}{\cbr{R(\rvar a)}} {Događaj definiran predikatorm slučajne varijable $\rvar a$}
 \glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
-\glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a)} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
+\glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a),\,\mathcal{D}} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
 \glsentm{vi}{probel}{\P(\rvar a= a),\,P_{\rvar a}(a),\,\P(a)} {Vjerojatnost događaja $\cbr{\rvar a=a}$}
 \glsentm{vi}{probdens}{\p(\rvar a= a),\,p_{\rvar a}(a),\,\p(a)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a}$}
 \glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,\p(a\mid b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a\mid\rvar b=b}$}
@@ -126,7 +191,7 @@
 \glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
 \glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
 \glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
-%\glsentm{vi}{unif}{\mathcal{U}(\set A)} {Uniformna razdioba nad skupom $\set A$}
+\glsentm{vi}{unif}{\mathcal{U}(\set A)} {Uniformna razdioba nad skupom $\set A$}
 \glsentm{vi}{I}{\I(\set A)}			{Sadržaj informacije događaja $\set A$}
 \glsentm{vi}{entropy}{\H(\rvar a)}			{Entropija}
 \glsentm{vi}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
@@ -135,12 +200,12 @@
 \glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
 \glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija (relativna entropija)}
 
+% Grafovi
 \glsgroup{g}{Grafovi}{}
 \glsentm{g}{pa}{\pa_G(a)}	{Skup čvorova roditelja čvora $a$ u grafu $G$}
 \glsentm{g}{ch}{\ch_G(a)}	{Skup čvorova djece čvora $a$ u grafu $G$}
 \glsentm{g}{pred}{\pred_G(a)}	{Skup čvorova prethodnika čvora $a$ u grafu $G$}
 \glsentm{g}{succ}{\succ_G(a)}	{Skup čvorova nasljednika čvora $a$ u grafu $G$}
-
 
 % Ostalo
 \glsgroup{f}{Ostale oznake}{}
