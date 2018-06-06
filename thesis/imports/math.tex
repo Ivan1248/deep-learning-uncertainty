@@ -67,6 +67,7 @@
 \DeclareMathOperator{\logistic}{\sigma}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\ReLU}{ReLU}
 
 % operators
 \DeclareMathOperator*{\argmin}{arg\,min} % thin space
@@ -91,7 +92,7 @@
 
 % bracket operators
 \newcommand{\enangle}[1]{\mathinner{\left\langle{#1}\right\rangle}}
-\newcommand{\enbbracket}[1]{\mathinner{\left\llbracket{#1}\right\rrbracket}}
+\newcommand{\enbbracket}[1]{{\mathinner{\left\llbracket{#1}\right\rrbracket}}}
 \newcommand{\braket}[2]{\enangle{{#1}|{#2}}}
 
 % parentheses from commath redefined to improve spacing because (left and right were redefined)
@@ -112,6 +113,9 @@
 \newcommand{\N}{\cset{N}}
 \newcommand{\dirac}{\delta}
 \newcommand{\ind}[2]{#1_{\sbr{#2}}}
+
+\newcommand\concat{\mathbin{+\mkern-10mu+}}
+
 
 %\let\mid\relax
 %\newcommand{\mid}{\;|\;}  % spaces around not reduced in index

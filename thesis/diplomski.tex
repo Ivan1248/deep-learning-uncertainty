@@ -109,7 +109,7 @@ Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} im
 
 %npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
-Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će radi kratkoće riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
+Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će, radi kratkoće, riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
 
 \subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
@@ -281,7 +281,7 @@ $p_{\mathcal{N}(0,1)}$ označava funkciju gustoće normalne razdiobu s $\mu=0$ i
 % TODO višedimenzionalna Gaussova razdioba
 
 
-\section{Teorija informacije}
+\section{Teorija informacije} \label{sec:teorija-informacije}
 
 Jedan od osnovnih pojmova u teoriji informacije je \emph{sadržaj informacije} koji događaj preslikava u nenegativan realni broj:
 \begin{align}
@@ -450,16 +450,16 @@ Prema tome, svaki probabilistički grafički model ima ekvivalentnu Bayesovu mre
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-	\node[node] (x1) [] {$\rvar x_1$};
-	\node[node] (x2) [right=of x1] {$\rvar x_2$};
-	\node[node] (x3) [above=of x2] {$\rvar x_3$};
-	\node[node] (x4) [above=of x1] {$\rvar x_4$};
-	\path (x1) edge [dagconn] (x2);	
-	\path (x1) edge [dagconn] (x3);	
-	\path (x1) edge [dagconn] (x4);
-	\path (x2) edge [dagconn] (x3);	
-	\path (x2) edge [dagconn] (x4);
-	\path (x3) edge [dagconn] (x4);	
+	\node[pnode] (x1) [] {$\rvar x_1$};
+	\node[pnode] (x2) [right=of x1] {$\rvar x_2$};
+	\node[pnode] (x3) [above=of x2] {$\rvar x_3$};
+	\node[pnode] (x4) [above=of x1] {$\rvar x_4$};
+	\path (x1) edge [dedge] (x2);	
+	\path (x1) edge [dedge] (x3);	
+	\path (x1) edge [dedge] (x4);
+	\path (x2) edge [dedge] (x3);	
+	\path (x2) edge [dedge] (x4);
+	\path (x3) edge [dedge] (x4);	
 	\end{tikzpicture}
 	\caption{Prikaz grafičkog modela s faktorizacijom $\p(x_1,x_2,x_3,x_4)=\p(x_1)\p(x_2\mid x_1)\p(x_3\mid x_1,x_2)\p(x_4\mid x_1,x_2,x_3)$.}
 	\label{fig:bayesova-mreza}
@@ -483,12 +483,12 @@ Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između tr
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\node[node] (x) [] {$\rvar x$};
-		\node[node] (y) [below left=of x] {$\rvar y$};
-		\node[node] (z) [below right=of x] {$\rvar z$};
-		\path (x) edge [dagconn] (y);	
-		\path (x) edge [dagconn] (z);
-		\path (y) edge [dagconn] (z);
+		\node[pnode] (x) [] {$\rvar x$};
+		\node[pnode] (y) [below left=of x] {$\rvar y$};
+		\node[pnode] (z) [below right=of x] {$\rvar z$};
+		\path (x) edge [dedge] (y);	
+		\path (x) edge [dedge] (z);
+		\path (y) edge [dedge] (z);
 		\end{tikzpicture}
 		\caption{Grafički model s faktorizacijom $\p(x,y,z) = \p(x)\p(y\mid x)\p(z\mid x,y)$.}
 		\label{subfig:bm-kanonski-a}
@@ -497,11 +497,11 @@ Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između tr
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\node[node] (x) [] {$\rvar x$};
-		\node[node] (y) [right=of x] {$\rvar y$};
-		\node[node] (z) [right=of y] {$\rvar z$};
-		\path (x) edge [dagconn] (y);	
-		\path (y) edge [dagconn] (z);
+		\node[pnode] (x) [] {$\rvar x$};
+		\node[pnode] (y) [right=of x] {$\rvar y$};
+		\node[pnode] (z) [right=of y] {$\rvar z$};
+		\path (x) edge [dedge] (y);	
+		\path (y) edge [dedge] (z);
 		\end{tikzpicture}
 		\caption{Uz $\rvar x\perp\rvar z\mid\rvar y$ faktorizacija postaje $\p(x,y,z) = \p(x)\p(y\mid x)\p(z\mid y)$ (lanac).}
 		\label{subfig:bm-kanonski-head-to-tail}
@@ -510,11 +510,11 @@ Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između tr
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\node[node] (x) [] {$\rvar x$};
-		\node[node] (y) [below left=of x] {$\rvar y$};
-		\node[node] (z) [below right=of x] {$\rvar z$};
-		\path (x) edge [dagconn] (y);	
-		\path (x) edge [dagconn] (z);
+		\node[pnode] (x) [] {$\rvar x$};
+		\node[pnode] (y) [below left=of x] {$\rvar y$};
+		\node[pnode] (z) [below right=of x] {$\rvar z$};
+		\path (x) edge [dedge] (y);	
+		\path (x) edge [dedge] (z);
 		\end{tikzpicture}
 		\caption{Uz $\rvar y\perp\rvar z\mid\rvar x$ faktorizacija postaje $\p(x,y,z) = \p(x)\p(y\mid x)\p(z\mid x)$ (račvanje).}
 		\label{subfig:bm-kanonski-tail-to-tail}
@@ -523,11 +523,11 @@ Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između tr
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\node[node] (z) [] {$\rvar z$};
-		\node[node] (x) [above left=of z] {$\rvar x$};
-		\node[node] (y) [above right=of z] {$\rvar y$};
-		\path (x) edge [dagconn] (z);	
-		\path (y) edge [dagconn] (z);
+		\node[pnode] (z) [] {$\rvar z$};
+		\node[pnode] (x) [above left=of z] {$\rvar x$};
+		\node[pnode] (y) [above right=of z] {$\rvar y$};
+		\path (x) edge [dedge] (z);	
+		\path (y) edge [dedge] (z);
 		\end{tikzpicture}
 		\caption{Uz $\rvar x\perp\rvar y$ faktorizacija postaje $\p(x,y,z) = \p(x)\p(y)\p(z\mid x,y)$ (sraz). Ovdje također vrijedi $\rvar x\not\perp\rvar y\mid \rvar z$.}
 		\label{subfig:bm-kanonski-head-to-head}
@@ -541,20 +541,20 @@ Na slici~\ref{fig:bm-regresija} prikazan je primjer na kojemu se koriste još ne
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-	\node[node] (t) [] {$\rvec \theta$};
+	\node[pnode] (t) [] {$\rvec \theta$};
 	\node[textnode] (a) [right=of t] {$\alpha$};
-	\node[node] (e) [below=of t] {$\rvar\epsilon$};
-	\node[greynode] (yi) [left=of t] {$\rvar y_i$};
-	\node[greynode] (xi) [left=of yi] {$\rvec x_i$};
-	\node[node] (y) [left=of e] {$\rvar y$};	
-	\node[greynode] (x) [left=of y] {$\rvec x$};
-	\path (a) edge [dagconn] (t);	
-	\path (t) edge [dagconn] (yi);	
-	\path (t) edge [dagconn] (y);
-	\path (e) edge [dagconn] (yi);	
-	\path (e) edge [dagconn] (y);
-	\path (xi) edge [dagconn] (yi);
-	\path (x) edge [dagconn] (y);
+	\node[pnode] (e) [below=of t] {$\rvar\epsilon$};
+	\node[greypnode] (yi) [left=of t] {$\rvar y_i$};
+	\node[greypnode] (xi) [left=of yi] {$\rvec x_i$};
+	\node[pnode] (y) [left=of e] {$\rvar y$};	
+	\node[greypnode] (x) [left=of y] {$\rvec x$};
+	\path (a) edge [dedge] (t);	
+	\path (t) edge [dedge] (yi);	
+	\path (t) edge [dedge] (y);
+	\path (e) edge [dedge] (yi);	
+	\path (e) edge [dedge] (y);
+	\path (xi) edge [dedge] (yi);
+	\path (x) edge [dedge] (y);
 	\plate{}{(xi)(yi)}{$i \in \cbr{1\bidot N}$};
 	\end{tikzpicture}
 	\caption{Primjer grafičkog modela s faktorizacijom 
@@ -734,9 +734,9 @@ na temelju opažanih vrijednosti slučajne varijable $\rvec x$ (podataka). Kod s
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-	\node[node] (z) [] {$\rvec z$};
-	\node[greynode] (x) [right=of z] {$\rvec x$};
-	\path (z) edge [dagconn] (x);
+	\node[pnode] (z) [] {$\rvec z$};
+	\node[greypnode] (x) [right=of z] {$\rvec x$};
+	\path (z) edge [dedge] (x);
 	\end{tikzpicture}
 	\caption{Prikaz grafičkog modela sa skrivenom varijablom $\rvec z$ i opažanom varijablom $\rvec x$.}
 	\label{fig:pgmzx}
@@ -793,7 +793,7 @@ q(\tilde{\vec z}) = \prod_i q_i(\tilde{z}_i),
 gdje su $q_i$ funkcije gustoće pojedinih slučajnih varijabli, a $\tilde{z}_i=\tilde{\vec z}_{[i]}$. Kod \emph{metode polja sredina} pretpostalja se takva razdioba i obično se primjenjuje koordinatni spust za optimizaciju, s čime ima veze ime metode. To je detaljnije objašnjeno u \citet{Murphy:2012:MLPP}.
 
 \iffalse
-Neka je radi kraćeg zapisa $t(\tilde{\vec z}) \coloneqq \p(\rvec z=\tilde{\vec z},\rvec x=\vec x)$. Uz aproksimaciju polja sredina donja varijacijska granica postaje
+Neka je, radi kraćeg zapisa, $t(\tilde{\vec z}) \coloneqq \p(\rvec z=\tilde{\vec z},\rvec x=\vec x)$. Uz aproksimaciju polja sredina donja varijacijska granica postaje
 \begin{align}
 L_{\vec x}(\tilde{\rvec z}) 
 &= \E_{\tilde{\rvec z}}\sbr{\ln t(\tilde{\vec z}) - \ln q(\tilde{\vec z})}
@@ -833,9 +833,9 @@ Većina algoritama strojnog učenja kombinira obje vrste induktivne pristranosti
 Prema \citet{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo razlikovati 3 osnovne komponente, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
 \begin{enumerate}
 	\item \emph{Model} ili prostor hipoteza. Model $\set H$ je skup funkcija $h$  parametriziranih parametrima $\vec\theta$: $\set H=\cbr{h(\vec x;\vec{\theta})}_{\vec{\theta}}$.
-	\item \emph{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emph{funkcija gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar predikcija hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
+	\item \emph{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emph{funkciju gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar predikcija hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
 	\begin{align}
-	E(\vec{\theta,\set D})=\frac{1}{\envert{\set D}}\sum_{(\vec x,\vec y)\in\set D} L(h(\vec x;\vec{\theta}),\vec y) \text{.}
+	E(\vec{\theta,\set D})=\frac{1}{\envert{\set D}}\sum_{(\vec x,\vec y)\in\set D} L(\vec y,h(\vec x;\vec{\theta})) \text{.}
 	\end{align}
 	Obično joj dodajemo \emph{regularizacijski} član kojim unosimo dodatne pretpostavke radi postizanja bolje generalizacije. Više o funkciji pogreške u smislu smanjivanja empirijskog i strukturnog rizika piše u odjeljku~\ref{sec:minimizacija-rizika}.
 	\item \emph{Optimizacijski postupak}. Optimizacijski postupak je algoritam kojim pronalazimo hipotezu koja minimizira pogrešku:
@@ -873,7 +873,7 @@ TODO
 \citet{Murray:2005:NEBOR} MacKay % MLPP! 5.3.1 Bayesian Occam’s razor
 
 
-\section{Minimizacija rizika} \label{sec:minimizacija-rizika}
+\section{Funkcija pogreške} \label{sec:minimizacija-rizika}
 
 Dijelovi ovog odjeljka temelje se na \citep{Murphy:2012:MLPP}.
 
@@ -881,35 +881,50 @@ Dijelovi ovog odjeljka temelje se na \citep{Murphy:2012:MLPP}.
 
 Zadatak nadziranog strojnog učenja može se formulirati kao optimizacijski problem minimizacije \emph{rizika}. Neka su $\vec\theta$ odabrani parametri. Definiramo \emph{funkciju gubitka} $\funcdef{L}{\set{Y}\times\set{Y}}{\R}$ koja kažnjava neslaganje izlaza sa stvarnom oznakom. \emph{Rizik} definiramo kao očekivanje funkcije gubitka:
 \begin{align}
-R(\vec\theta, \mathcal{D}) = \E_{(\vec x,\vec y)\sim\mathcal{D}} L(h(\vec x;\vec\theta), \vec y) \text{.}
+R(\vec\theta; \mathcal{D}) = \E_{(\vec x,\vec y)\sim\mathcal{D}} L(\vec y,h(\vec x;\vec\theta)) \text{.}
 \end{align}
-Razdioba koja generira podatke nije poznata pa se koristi \emph{empirijski rizik} koji prirodnu razdiobu $\mathcal{D}$ procjenjuje empirijskom, tj. uzorkom $\set{D}$:
+Razdioba koja generira podatke nije poznata pa se koristi \emph{empirijski rizik} koji \emph{prirodnu razdiobu} $\mathcal{D}$ procjenjuje \emph{empirijskom razdiobom}, tj. uzorkom $\set{D}$:
 \begin{align}
 R_\text{E}(\vec\theta;\set{D}) 
-= \E_{(\vec x,\vec y)\sim\set D} L(h(\vec x;\vec\theta), \vec y) 
+= \E_{(\vec x,\vec y)\sim\set D} L(\vec y,h(\vec x;\vec\theta)) 
 = \frac{1}{\envert{\set{D}}} 
-\sum_{(\vec x, \vec y)\in\set{D}} L(h(\vec x;\vec\theta), \vec y) \text{.}
+\sum_{(\vec x, \vec y)\in\set{D}} L(\vec y,h(\vec x;\vec\theta)) \text{.}
 \end{align}
-U slučaju nenadziranog učenja, kada se hipoteza sastoji od kodera $E$ i dekodera $D$, tj. $h(\vec x;\theta) = E(D(\vec x;\theta);\theta)$, ili generativnog modela, kada je $h(\vec x;\theta) = \p(\vec x\mid\theta)$, gubitak mjeri \emph{pogrešku rekonstrukcije} i izraz za rizik je \citep{Murphy:2012:MLPP}:
+Što je uzorak veći $\set D$, sličniji je prirodnoj razdiobi i procjena rizika je bolja. U slučaju nenadziranog učenja, kada se hipoteza sastoji od kodera $E$ i dekodera $D$, tj. $h(\vec x;\theta) = E(D(\vec x;\theta);\theta)$, ili generativnog modela, kada je $h(\vec x;\theta) = \p(\vec x\mid\theta)$, gubitak mjeri \emph{pogrešku rekonstrukcije} i izraz za rizik je \citep{Murphy:2012:MLPP}:
 \begin{align}
-R(\rvec\theta;\mathcal{D}) = \E_{\vec d\sim\mathcal{D}} L(h(\vec d;\vec\theta), \vec d) \text{.}
+R(\rvec\theta;\mathcal{D}) = \E_{\vec d\sim\mathcal{D}} L(\vec d,h(\vec d;\vec\theta)) \text{.}
 \end{align}
 
-Kod probabilističkih modela empirijski rizik se može definirati kao negativni logaritam izglednosti parametara:
+Kod probabilističkih modela empirijski rizik se može definirati kao \emph{negativni logaritam izglednosti} parametara:
 \begin{align}
-R_\text{E}(\vec\theta;\set{D}) = -\ln\p(\set{D}\mid\vec\theta) = -\sum_{\vec d\in\set{D}} \ln\p(\vec d\mid\vec\theta) \text{,}
+R_\text{E}(\vec\theta;\set D) 
+= -\frac{1}{\envert{\set D}}\ln\p(\set{D}\mid\vec\theta) 
+= -\frac{1}{\envert{\set D}}\sum_{\vec d\in\set{D}} \ln\p(\vec d\mid\vec\theta) \text{,}
 \end{align}
-tj. gubitak je onda $L(h(\vec d;\vec\theta), \vec d) = -\ln\p(\vec d\mid\vec\theta)$. U slučaju diskriminativnog modela, uz zanemarivanja faktora izglednosti koji ne ovisi o $\vec\theta$ (jednadžba~\eqref{eq:izglednost-diskr}), vrijedi $L(h(\vec x;\vec\theta), \vec y) = -\ln\p(\vec y\mid\vec x,\vec\theta)$.
+gdje je korištena pretpostavka međusobne nezavisnosti primjera. Gubitak je onda $L(\vec d,h(\vec d;\vec\theta)) = -\ln\p(\vec d\mid\vec\theta)$. U slučaju diskriminativnog modela, uz zanemarivanja faktora izglednosti koji ne ovisi o $\vec\theta$ (jednadžba~\eqref{eq:izglednost-diskr}), vrijedi $L(\vec d,h(\vec x;\vec\theta)) = -\ln\p(\vec y\mid\vec x,\vec\theta)$. Minimizacija gubitka definiranog kao negativni logaritam izglednosti ekvivalentna je minimizaciji KL-divergencije ili unakrsne entropije (odjeljak~\ref{sec:teorija-informacije}) s obzirom na empirijsku razdiobu. Zbog toga se takav gubitak još naziva \emph{gubitak unakrsne entropije}.
 
 \subsection{Strukturni rizik i regularizacija}
 
-Kada ima malo podataka ili je model previše složen, minimizacija empirijskog rizika dovodi do velike varijance i slabe generalizacije. Procjenitelj koji minimizira empirijski rizik ne uzima u obzir apriornu razdiobu parametara. Radi postizanja bolje generalizacije, funkciji pogreške dodaje se \emph{regularizacijski} gubitak $\lambda R_\text{R}(\vec\theta)$, $\lambda\geq0$, koji predstavlja \emph{strukturni rizik} koji daje prednost jednostavnijim hipotezama:
+Kada ima malo podataka ili je model previše složen, minimizacija empirijskog rizika dovodi do velike varijance i slabe generalizacije. Procjenitelj koji minimizira empirijski rizik ne uzima u obzir apriornu razdiobu parametara. Radi postizanja bolje generalizacije, funkciji pogreške dodaje se \emph{regularizacijski gubitak} $\lambda R_\text{R}(\vec\theta)$, $\lambda\geq0$, koji predstavlja \emph{strukturni rizik} koji daje prednost jednostavnijim hipotezama. Funkcija pogreške onda ima ovakav oblik:
 \begin{align}
 E(\vec\theta;\set{D}) = R_\text{E}(\vec\theta;\set{D}) + \lambda R_\text{R}(\vec\theta) \text{.}
 \end{align}
-Regularizacijski gubitak obično ovisi samo o parametrima, ali može ovisiti i o podacima \citep{Goodfellow:2016:DL}.
+Regularizacijski gubitak obično ovisi samo o parametrima, ali može ovisiti i o podacima \citep{Goodfellow:2016:DL}. 
 
-Kod opisanih modela koji uključuju apriorno znanje, regularizacijskom članu uz $\lambda=1$ odgovara negativni logaritam apriorne vjerojatnosti parametara: $R_\text{R}(\vec\theta) = -\frac{1}{\envert{\set{D}}}\ln\p(\vec\theta)$. $\lambda$ različit od $1$ odgovara izmjeni entropije apriorne razdiobe. Apriorna razdioba postaje $p'(\vec\theta)=p(\vec\theta)^\lambda/Z$, gdje $Z$ ne ovisi o $\vec\theta$ i ne utječe na optimizaciju. S većim $\lambda$ apriorna razdioba postaje koncentriranija i regularizacija jača. Jačom regularizacijom se povećava pristranost i smanjuje varijanca procjenitelja.
+Ako kao funkciju pogreške koristimo negativni logaritam aposteriorne vjerojatnosti uz pretpostavku međusobne nezavisnosti primjera, funkcija pogreške je
+\begin{align}
+E(\vec\theta;\set{D}) 
+&= -\frac{1}{\envert{\set D}}\ln\p(\vec\theta\mid\set{D}) \\
+&= 
+\underbrace{-\frac{1}{\envert{\set D}}\ln\p(\set{D}\mid\vec\theta)}_{R_\text{E}(\vec\theta;\set{D})}
+\underbrace{-\frac{1}{\envert{\set D}}\ln\p(\vec\theta)}_{\lambda R_\text{R}(\vec\theta)} + C_1
+\text{,}
+\end{align}
+gdje je $C_1=\frac{1}{\envert{\set D}}\ln\p(\set D)$ konstanta koja ne ovisi o $\vec\theta$. Hiperparametar $\lambda$ je onda parametar apriorne razdiobe. Možemo ga ovako izlučiti:
+\begin{align}
+\ln\p(\vec\theta)=\lambda \ln p_0(\vec\theta) +C_2 = \ln p_0(\vec\theta)^\lambda +C_2 \text{,}
+\end{align}
+gdje je $C_2=-\ln\del{\int_{\vec{\theta'}}p_0(\vec\theta')\dif\vec{\theta'}}$ konstanta koja ne ovisi o $\vec\theta$. Vidi se da $\lambda$ određuje koncentraciju apriorne razdiobe. Povećanje $\lambda$ smanjuje entropiju apriorne razdiobe. Ona postaje koncentriranija i regularizacija jača. Jačom regularizacijom se povećava pristranost i smanjuje varijanca.
 
 %TODO regularizacijski gubitak autoenkodera
 %TODO?: MLPP 5.7.1.2 Reject option\\
@@ -928,7 +943,7 @@ Osnovni zadaci nadziranog učenja su \emph{klasifikacija} i \emph{regresija}. Za
 %https://stats.stackexchange.com/questions/273537/f1-dice-score-vs-iou
 
 
-\section{Primjer klase modela: poopćeni linearni modeli}
+\section{Primjeri modela: poopćeni linearni modeli} \label{sec:poopceni-linearni-modeli}
 
 Ovaj odjeljak se temelji na \citep{Snajder:2014:SU}.
 
@@ -948,7 +963,7 @@ h(\vec x) = \vec w^\tp\phi(\vec x) \text{.}
 Ovdje je izostavljen pomak $b$ jer jedan od izlaza transformacije $\phi$ može biti konstanta $1$ koja se množi s jednom težinom iz $\vec w$. 
 
 \emph{Poopćeni linearni modeli} su modeli kod kojih je hipoteza ovako definirana:
-\begin{align}
+\begin{align} \label{eq:poopceni-linearni-model}
 h(\vec x) = f(\vec w^\tp\phi(\vec x)) \text{.}
 \end{align}
 U odnosu na linearne modele, oni još imaju \emph{prijenosnu} (\emph{aktivacijsku}) funkciju $\funcdef{f}{\R}{\R}$. Ako je $f$ nelinearna, model je nelinearan u parametrima, ali granica klasifikacijskog modela je i dalje hiperravnina.
@@ -975,60 +990,135 @@ gdje $y\in{0,1}$.
 \item Višeklasna logistička regresija:
 \begin{align*}
 h(\vec x;\mat W) &= f(\vec s) 
-= \frac{1}{\cvec 1^\tp\exp(\vec s)}\exp(\vec s) = \P(\rvar y\mid\vec x,\vec w), \\
-\P(y\mid\vec x,\vec w) &= h(\vec x)_{[y]} = \prod_k h_k(\rvec x)^{\vec y_k}, \\
-L(y, h(\vec x)) &= -\sum_k y_k\ln h(\vec x)^y, \\
+= \frac{1}{\cvec 1^\tp\exp(\vec s)}\exp(\vec s) = \sbr{\P(y=k\mid\vec x,\vec w)}_{k=1\bidot C}^\tp, \\
+\P(y\mid\vec x,\vec w) &= h_y(\vec x) = \prod_k h_k(\vec x)^\enbbracket{y=k}, \\
+L(y, h(\vec x)) &= -\sum_k \enbbracket{y=k}\ln h(\vec x)^\enbbracket{y=k}, \\
 \nabla_{\mat W_{[k,:]}^\tp}L(y, h_k(\vec x)) &= \del{h_k(\vec x)-y_k}\phi(\vec x) \\
-\nabla_{\mat W}L(y, h(\vec x)) &= \phi(\vec x)^\tp \del{h(\vec x)-\cvec e_y},
+\nabla_{\mat W}L(y, h(\vec x)) &= \phi(\vec x)^\tp \del{h(\vec x)-\cvec e_y} \text{,}
 \end{align*}
-gdje $y\in{1\bidot C}$, $\vec y=\cvec e_y$, a $\cvec e_k$ predstavlja jednojedinični vektor (vektor kanonske baze), tj. ${\cvec e_k}_{[i]}=\enbbracket{i=k}$.
+gdje $y\in{1\bidot C}$, $h(\vec x)=\sbr{h_k(\vec x)}_{k=1\bidot C}^\tp$, $\funcdef{h_i}{\R^n}{\R}$, a $\cvec e_k$ označava jednojedinični vektor (vektor kanonske baze): $\cvec e_k=\sbr{\enbbracket{i=k}}_{i=1\bidot C}^\tp$.
 \end{itemize}
-Funkcije gubitka su definirane kao negativni logaritam izglednosti, $L(y, h(\vec x))=-\ln\P(y\mid\vec x,\vec w)$, i konveksne su. Optimalne težine linearne regresije mogu se analitički izračunati, logistička regresija i višeklasna logistička regresija se obično uče gradijentnim spustom, ali mogu se koristiti i optimizacijski postupci drugog reda. 
+Funkcije gubitka su definirane kao negativni logaritam izglednosti, $L(y, h(\vec x))=-\ln\P(y\mid\vec x,\vec w)$, i konveksne su. Optimalne težine linearne regresije mogu se analitički izračunati, logistička regresija i višeklasna logistička regresija se obično uče optimizacijskim postupcima temeljenim na gradijentu.
 
-Razdiobe $\P(\vec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \emph{eksponencijalnu familiju razdioba}. Može se pokazati da je to jedina familija razdioba za koje postoje konjugatne apriorne razdiobe, što pojednostavljuje računanje aposteriorne razdiobe \citet{Murphy:2012:MLPP}. Opći oblik ekponencijalne familije i detalji o njoj mogu se naći u \citet{Murphy:2012:MLPP}.
-
-
-
-
-
-
-
-
+Razdiobe $\P(\rvec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \emph{eksponencijalnu familiju razdioba}. Može se pokazati da je to jedina familija razdioba za koje postoje konjugatne apriorne razdiobe, što pojednostavljuje računanje aposteriorne razdiobe \citep{Murphy:2012:MLPP}. Opći oblik ekponencijalne familije i više o njenima svojstvima i svojstvima poopćenih linearnih modela može se naći u \citet{Murphy:2012:MLPP}.
 
 
 
 \chapter{Duboko učenje i konvolucijske mreže} \label{chap:dukm}
 
-Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk), ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo, a jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro. Kod \emph{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
+Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk), ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo, npr. jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro. Kod \emph{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
 
 Odabirom 
 \begin{align}
 \phi(\vec x) 
-= \phi(\vec x;\mat \theta^\text{h})
-= f(\mat W^\text{h}\vec x + \vec b^\text{h}) \text{,}
+= \phi(\vec x;\mat \theta_\text{h})
+= f(\mat W_\text{h}\vec x + \vec b_\text{h}) \text{,}
 \end{align}
-gdje je $\mat W_\text{h}$ matrica težina, $\vec b^\text{h}$ vektor pomaka, $\vec\theta^\text{h}=(\mat W,\vec b^\text{h})$ a $f$ prijenosna (aktivacijska) funkcija koja se primjenjuje na svaki element vektora posebno, dobiva se jednostavna unaprijedna \emph{umjetna neuronska mreža} (ovdje će se koristiti kraći nazivi \textit{neuronska mreža} ili \textit{mreža}) s jednim skrivenim slojem. Onda je, ako se to uvrsti u jednadžbu poopćenog linearnog modela,
+gdje je $\mat W_\text{h}$ matrica težina, $\vec b_\text{h}$ vektor pomaka, $\vec\theta_\text{h}=(\mat W_\text{h},\vec b_\text{h})$ a $f$ nelinearna prijenosna (aktivacijska) funkcija koja se primjenjuje na svaki element vektora posebno, dobiva se jednostavna \emph{umjetna neuronska mreža} (ovdje će se koristiti kraći nazivi: \textit{neuronska mreža} ili \textit{mreža}) s jednim \emph{skrivenim slojem} kojemu odgovara funkcija $\phi$. Ako to uvrstimo u jednadžbu poopćenog linearnog modela (jednadžba~\eqref{eq:poopceni-linearni-model}):
 \begin{align}
 h(\vec x; \vec{\theta}) 
-= f(\vec w^\tp f(\mat W^\text{h}\vec x + \vec b^\text{h})+b) \text{,}
+= f(\vec w^\tp f(\mat W_\text{h}\vec x + \vec b_\text{h})+b) \text{,}
 \end{align}
 ili, ako je izlaz vektor,
-\begin{align}
+\begin{align} \label{eq:jednonslojna-nm}
 h(\vec x; \vec{\theta}) 
-= f(\mat W^\text{o} f(\mat W^\text{h}\vec x + \vec b^\text{h})+\vec b^\text{o}) \text{,}
+= f(\mat W_\text{o} f(\mat W_\text{h}\vec x + \vec b_\text{h})+\vec b_\text{o}) \text{,}
 \end{align}
-gdje $\vec\theta=(\mat W^\text{h},\vec b^\text{h}, \mat W^\text{h},\vec b^\text{h})$.
+gdje $\vec\theta=(\mat W_\text{h},\vec b_\text{h}, \mat W_\text{o},\vec b_\text{o})$. Jedinice neuronske mreže kojima odgovaraju operacije oblika $\vec x \mapsto f(\vec w_i^\tp\vec x+b_i)$ nazivaju se \emph{umjetni neuroni}.
 
-\section{Unaprijedne neuronske mreže}
+Za razliku od modela opisanih u odjeljku~\ref{sec:poopceni-linearni-modeli}, za ovakav i dublje modele opisane u sljedećim odjeljcima ciljna funkcija nije konveksna (ni unimodalna) pa nije garantirano da će postupak učenja pronaći dobru hipotezu. Empirijski rezultati ipak pokazuju da duboke mreže uz neke prilagodbe uspješno uče i generaliziraju. Algoritmi koji se koriste za učenje modela dubokog učenja temelje se na gradijentnom spustu. Oni su opisani u odjeljku~\ref{sec:du-ucenje}.
 
 
-\section{Računski grafovi}
+\section{Duboke unaprijedne mreže}
+
+Može se pokazati da model mreže s jednim skrivenim slojem opisan jednadžbom~\eqref{eq:jednonslojna-nm}, ako je dimenzija skrivenog sloja dovoljno velika, može s proizvoljno malom greškom aproksimirati svaku neprekinutu funkciju kojoj je domena konveksni podskup od $\R$. O tome govori teorem o univerzalnoj aproksimaciji \citep{Cybenko:ASSF:1989,Leshno:1993:MFFNWNPA}. Aktivacijska funkcija mora biti nelinearna jer kompozicija linearnih funkcija je linearna funkcija. Teorem o univerzalnoj aproksimaciji ne govori o tome hoće li takav model generalizirati. Dodavanjem jedinica u skriveni sloj povećava se kapacitet modela.
+
+Obična neuronska mreža može imati više skrivenih slojeva, što se može prikazati kao na slici~\ref{fig:neuronska-mreza} ili slici~\ref{fig:racunski-graf}. Povećavanjem broja skrivenih slojeva svaka jedinica u nekom sloju može koristiti izlaze svih jedinica prethodnog sloja kao značajke, što mreži omogućuje da, u odnosu na mrežu s 1 skrivenim slojem, s manje jedinica modelira funkcije u kojima postoje uzorci koji se ponavljaju i imaju hijerarhijsku strukturu \citep{Goodfellow:2016:DL}. Niži slojevi služe višim slojevima kao značajke transformiranjem kojih se dobivaju značajke više razine.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[->,draw=black!100, node distance=\layersep]
+	\definecolor{lcolor}{RGB}{210,230,230}
+	\definecolor{inputcolor}{RGB}{0,0,0}
+	
+	\pgfdeclarelayer{background}
+	\pgfsetlayers{background,main}
+	\tikzstyle{every pin edge}=[<-,shorten <=1pt]
+	\tikzstyle{neuron}=[circle, minimum size=17pt, draw=black!100, fill=white]
+	\tikzstyle{layer}=[rectangle, fill=lcolor, minimum size=17pt, inner sep=3pt, outer sep=0pt]
+	\def\layersep{2cm}
+	\def\inputsize{3}
+	\def\hiddensize{4}
+	
+	% Draw the input layer nodes
+	\foreach \name/\y in {1,...,\inputsize} % the same as \foreach \name / \y in {1/1,2/2,3/3,4/4}
+	\node[neuron, pin=left:$x_\y$] (I-\name) at (0,-\y) {};
+	% Draw the hidden layer nodes
+	\foreach \layer in {1,2}
+	\foreach \name/\y in {1,...,\hiddensize}
+	\path[yshift=0.5cm] node[neuron] (H-\layer-\name) at (\layer*\layersep,-\y cm) {};
+	% Draw the output layer nodes
+	\foreach \name/\y in {1,2}
+	\path[yshift=-0.5cm] node[neuron,pin={[pin edge={->}]right:$y_\y$}] (O-\name) at (3*\layersep,-\y cm) {};
+	% Connect every node in the input layer with every node in the hidden layer.
+	\foreach \source in {1,...,\inputsize}
+	\foreach \dest in {1,...,\hiddensize}
+	\path (I-\source) edge (H-1-\dest);
+	% Connect every node in the input layer with every node in the hidden layer.
+	\foreach \source in {1,...,\hiddensize}
+	\foreach \dest in {1,...,\hiddensize}
+	\path (H-1-\source) edge (H-2-\dest);
+	% Connect every node in the hidden layer with the output layer
+	\foreach \source in {1,...,\hiddensize}
+	\foreach \dest in {1,2}
+	\path (H-2-\source) edge (O-\dest);
+	
+	\begin{pgfonlayer}{background}
+	\node[layer, fit=(H-1-1) (H-1-\hiddensize)] {};
+	\node[layer, fit=(H-2-1) (H-2-\hiddensize)] {};
+	\node[layer, fit=(O-1) (O-2)] {}; 
+	\end{pgfonlayer}
+\end{tikzpicture}
+\caption{Prikaz primjera troslojne mreže. Svakom bridu odgovara jedna težina (pomaci nisu prikazani). Slojevi su označeni plavim četverokutima. Čvorovi koji su unutar slojeva mreže predstavljaju umjetne neurone. Slika je napravljena na temelju \url{http://www.texample.net/tikz/examples/neural-network/}.}
+\label{fig:neuronska-mreza}
+\end{figure}
+
+
+Kao prijenosna funkcija skrivenih slojeva često se koristi \emph{zglobnica} (\emph{ReLU}, engl. rectified linear unit) $\ReLU(x)=\max(0, s)$, a prije su češće bile korištene \emph{logistička funkcija}, $\sigma(s)=\frac{\exp(s)}{1+\exp(s)}$, i \emph{tangens hiperbolni}, $\tanh(x)=\frac{\exp(s)-\exp(-s)}{\exp(s)+\exp(-s)}$. U izlaznom sloju obično se koriste funkcije korištene kod poopćenih linearnih modela (odjeljak~\ref{sec:poopceni-linearni-modeli}) -- identitet za regresiju, logistička funkcija za binarnu klasifikaciju, a \emph{softmaks}, $\softmax(\vec s)=\frac{1}{\cvec 1^\tp\exp(\vec s)}\exp(\vec s)$, koji kao izlaz daje normalizirani vektor koji predstavlja razdiobu, za višeklasnu klasifikaciju.
+
+Dosad opisivane mreže nazivaju se \emph{unaprijedne mreže} (engl. \textit{feedforward networks}) zato što se pri izračunu informacija propagira od ulaza prema izlazu, bez povratnih veza. Za mrežu kažemo da je duboka ako ime veći broj slojeva. Struktura duboke unaprijedne mreže ne mora se sastojati samo od niza afinih transformacija i nelinearnosti. Općenito, mrežu možemo predstaviti \emph{računskim grafom}, tj. usmjerenim acikličkim grafom kod kojega čvorovi predstavljaju proizvoljne računske operacije i njihove izlaze, a bridovi označavaju izlazi kojih čvorova su ulazi kojih čvorova. Takav graf se naziva \emph{računski graf}. Čvorovi koji nemaju roditelje su varijable koje čine ulazi i parametri Parametri se mogu dijeliti, tj. mogu biti ulaz većem broju čvorova. Čvorovi koji nemaju djecu su izlazi (ili gubitak). Na slici \ref{fig:racunski-graf} je prikazan jedan takav graf, ali na njemu, radi sažetosti, parametri nemaju zasebne čvorove, nego su označeni unutar čvorova koji o njima ovise.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+	\def\inp{\underline{\vec x}}
+	\node[nrect] (x) {$\vec x$};
+	\node[above=0 of x] {$\vec x$};
+	\node[nrect] (h1a) [right=of x] {$\mat W_1\inp+\vec b_1$};
+	\node[nrect] (h1f) [right=of h1a] {$f$};
+	\node[above=0 of h1f] {$\vec h_1$};
+	\node[nrect] (h2a) [right=of h1f] {$\mat W_2\inp+\vec b_2$};
+	\node[nrect] (h2f) [right=of h2a] {$f$};
+	\node[above=0 of h2f] {$\vec h_2$};
+	\node[nrect] (oa) [right=of h2f] {$\mat W_3\inp+\vec b_3$};
+	\node[nrect] (y) [right=of oa] {$f$};
+	\node[above=0 of y] {$\vec y=h(\vec x)$};
+	\path (x) edge [dedge] (h1a);	
+	\path (h1a) edge [dedge] (h1f);
+	\path (h1f) edge [dedge] (h2a);
+	\path (h2a) edge [dedge] (h2f);
+	\path (h2f) edge [dedge] (oa);
+	\path (oa) edge [dedge] (y);
+\end{tikzpicture}
+\caption{Prikaz troslojne mreže kao računskog grafa. gdje čvorovi predstavljaju funkcije s parametrima, a bridovi podatke (vektore) čije su oznake prikazane uz neke od čvorova iz kojih izlaze. Funkcije su označene oznakom funkcije (aktivacijska funkcija) ili definicijom (afina transformacija). Ulaz sloja označen je s $\underline{\vec x}$, a oznake varijabli koje pripadaju čvorovima (ulaz u ulaznom čvoru i parametri u čvorovima afine transformacije) nisu podvučene.}
+\label{fig:racunski-graf}
+\end{figure}
 
 
 \section{Konvolucijske mreže}
 
 
-\section{Učenje}
+\section{Učenje} \label{sec:du-ucenje}
 
 \subsection{Algortiam propagacije pogreške unatrag}
 

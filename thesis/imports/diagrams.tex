@@ -13,15 +13,16 @@
 }} % axis style
 
 \tikzset{
-	>={Triangle[length=2.5mm,width=1.75mm]},
-	dagconn/.style={arrows=->, black, thick},
+	>={Triangle[length=2mm,width=1.4mm]},
+	dedge/.style={arrows=->, black, thick},
 }
-\tikzstyle{textnode} = [minimum size=5mm, node distance=12mm]
-\tikzstyle{node} = [circle, minimum size=10mm, thick, draw=black, node distance=12mm]
-\tikzstyle{greynode} = [node, fill=black!5]
+% PGMs
+\tikzstyle{textnode} = [minimum size=5mm, node distance=9mm]
+\tikzstyle{pnode} = [circle, minimum size=10mm, thick, draw=black, node distance=9mm]
+\tikzstyle{greypnode} = [pnode, fill=black!5]
 % https://github.com/jluttine/tikz-bayesnet
 \tikzstyle{wrap} = [inner sep=0pt, fit=#1]
-\tikzstyle{plate} = [draw, rectangle, rounded corners=0.25ex, thick, fit=#1]
+\tikzstyle{plate} = [draw, rectangle, rounded corners=0.5ex, thick, fit=#1]
 \tikzstyle{caption} = [font=\footnotesize, node distance=0]
 \tikzstyle{plate caption} = [caption, node distance=0, inner sep=0pt,
 below left=5pt and 0pt of #1.south east]
@@ -30,3 +31,6 @@ below left=5pt and 0pt of #1.south east]
 	\node[plate caption=#2-wrap] (#2-caption) {#4};
 	\node[plate=(#2-wrap)(#2-caption), #1] (#2) {};
 }
+% ANNs
+\tikzstyle{nnode} = [circle, minimum size=10mm, thick, draw=black, node distance=5mm]
+\tikzstyle{nrect} = [rectangle, minimum size=5mm, thick, draw=black, node distance=5mm, rounded corners=0.1ex]

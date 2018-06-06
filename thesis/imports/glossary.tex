@@ -117,7 +117,7 @@
 	{2-D odsječak 3-D niza $\mat A$}
 
 % Operacije linearne algebre
-\glsgroup{l}{Operacije linearne algebre} {} 
+\glsgroup{l}{Operacije linearne algebre i druge operacije s nizovima} {} 
 \glsentm{l}{scalprod}{\braket{\vec a}{\vec b}}
 	{Skalarni produkt, može biti i $\vec{a}^\tp\vec{b}$}
 \glsentm{l}{hadprod}{\vec a \odot \vec b}
@@ -144,6 +144,12 @@
 	{Frobeniusova norma matrice $\mat A$}
 \glsentm{l}{func}{f(\vec a)}
 	{Ako $f$ nije drugačije definirana i inače označava funkciju $\R\to\R$, onda se primjenjuje po svakom elementu vektora posebno}
+\glsentm{l}{conc}{\vec a\concat\vec b}
+	{Konkatenacija vektora (stupaca) $\vec a\in\R^n$ i $\vec b\in\R^m$ u vektor iz $\R^{n+m}$}
+\glsentm{l}{conc1}{\mat A\concat\mat B}
+	{Konkatenacija višedimenzionalnih nizova po prvoj dimenziji}
+\glsentm{l}{dconc}{\mat A\concat'\mat B}
+	{Konkatenacija višedimenzionalnih nizova po zadnjoj dimenziji}
 
 % Diferencijalni račun
 \glsgroup{d}{Diferencijalni račun}{}
@@ -164,41 +170,44 @@
 \glsentm{d}{int2}{\int f(x)\dif x,\,\int_x f(x)} 
 	{Određeni integral funkcije $f(x)$ po $x\in\set A$, gdje je $\set A$ implicitan}
 
-% Teorija vjerojatnosti i teorija informacije
-\glsgroup{vi}{Teorija vjerojatnosti i teorija informacije}
+% Teorija vjerojatnosti
+\glsgroup{tv}{Teorija vjerojatnosti}
 {Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (koja može biti poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Gustoća vjerojatnosti se još kraće može zapisati $\p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. Isto tako, vjerojatnost elementarnog događaja se može zapisati $\P(a)$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
 %TODO move to new page if too high
-\glsentm{vi}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
-\glsentm{vi}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
-\glsentm{vi}{indep}{\rvar a\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su nezavisne}}
-\glsentm{vi}{dep}{\rvar a\not\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su zavisne}}
-\glsentm{vi}{condindep}{\rvar a\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno nezavisne uz poznat ishod slučajne varijable $\rvar c$}}
-\glsentm{vi}{conddep}{\rvar a\not\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno zavisne uz poznat ishod slučajne varijable $\rvar c$}}
-\glsentm{vi}{distr}{p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
-\glsentm{vi}{event}{\set A}{Događaj}
-\glsentm{vi}{eventpred}{\cbr{R(\rvar a)}} {Događaj definiran predikatorm slučajne varijable $\rvar a$}
-\glsentm{vi}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
-\glsentm{vi}{distrrvar}{\P(\rvar a),\,\p(\rvar a),\,\mathcal{D}} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
-\glsentm{vi}{probel}{\P(\rvar a= a),\,P_{\rvar a}(a),\,\P(a)} {Vjerojatnost događaja $\cbr{\rvar a=a}$}
-\glsentm{vi}{probdens}{\p(\rvar a= a),\,p_{\rvar a}(a),\,\p(a)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a}$}
-\glsentm{vi}{pdfcond}{p_{\rvar a\mid b}(a),\,\p(a\mid b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a\mid\rvar b=b}$}
-\glsentm{vi}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,\p(a,b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a,\rvar b=b}$}
-\glsentm{vi}{hasdistrib}{\rvar a \sim q,\, \p(\rvar a)=q} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $q$}}
-\glsentm{vi}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
-\glsentm{vi}{fromdistrib}{a\sim q} {\textit{$a$ se izvlači iz razidiobe $q$}}
-\glsentm{vi}{fromrvar}{a\sim \rvar a,\,a\sim \p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $\p(\rvar a)$}}
-\glsentm{vi}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a} f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
-\glsentm{vi}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
-\glsentm{vi}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
-\glsentm{vi}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
-\glsentm{vi}{unif}{\mathcal{U}(\set A)} {Uniformna razdioba nad skupom $\set A$}
-\glsentm{vi}{I}{\I(\set A)}			{Sadržaj informacije događaja $\set A$}
-\glsentm{vi}{entropy}{\H(\rvar a)}			{Entropija}
-\glsentm{vi}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
-\glsentm{vi}{mutinf}{\I(\rvar a,\rvar b)}	  {Međusobna informacija}
-\glsentm{vi}{condent}{\H(\rvar a\mid\rvar b)} {Uvjetna entropija}
-\glsentm{vi}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
-\glsentm{vi}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija (relativna entropija)}
+\glsentm{tv}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
+\glsentm{tv}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
+\glsentm{tv}{indep}{\rvar a\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su nezavisne}}
+\glsentm{tv}{dep}{\rvar a\not\perp\rvar b}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su zavisne}}
+\glsentm{tv}{condindep}{\rvar a\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno nezavisne uz poznat ishod slučajne varijable $\rvar c$}}
+\glsentm{tv}{conddep}{\rvar a\not\perp\rvar b\mid\rvar c}{\textit{Slučajne varijable $\rvar a$ i $\rvar b$ su uvjetno zavisne uz poznat ishod slučajne varijable $\rvar c$}}
+\glsentm{tv}{distr}{p,\,q}{Razdioba ili funkcija gustoće vjerojatnosti}
+\glsentm{tv}{event}{\set A}{Događaj}
+\glsentm{tv}{eventpred}{\cbr{R(\rvar a)}} {Događaj definiran predikatorm slučajne varijable $\rvar a$}
+\glsentm{tv}{prob}{\P(\cbr{R(\rvar a)}),\,\P(R(\rvar a))} {Vjerojatnost događaja $\cbr{R(\rvar a)}$}
+\glsentm{tv}{distrrvar}{\P(\rvar a),\,\p(\rvar a),\,\mathcal{D}} {Razdioba slučajne varijable $\rvar a$; $\P$ ako je $\rvar a$ diskretna slučajna varijabla, a $\p$ ako nije ili ako se ne zna}
+\glsentm{tv}{probel}{\P(\rvar a= a),\,P_{\rvar a}(a),\,\P(a)} {Vjerojatnost događaja $\cbr{\rvar a=a}$}
+\glsentm{tv}{probdens}{\p(\rvar a= a),\,p_{\rvar a}(a),\,\p(a)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a}$}
+\glsentm{tv}{pdfcond}{p_{\rvar a\mid b}(a),\,\p(a\mid b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a\mid\rvar b=b}$}
+\glsentm{tv}{pdfjoint}{p_{\rvar a,\rvar b}(a,b),\,\p(a,b)} {Gustoća vjerojatnosti događaja $\cbr{\rvar a=a,\rvar b=b}$}
+\glsentm{tv}{hasdistrib}{\rvar a \sim q,\, \p(\rvar a)=q} {\textit{Slučajna varijabla $\rvar a$ ima razdiobu $q$}}
+\glsentm{tv}{hasdistribset}{\rvar a \sim \set A} 	{\textit{Slučajna varijabla $\rvar a$ ima takvu razdiobu da svi elementi (multi)skupa $\set A$ imaju vjerojatnost proporcionalnu višestrukosti ($\frac{1}{\envert{\set A}}$ za običan skup)}}
+\glsentm{tv}{fromdistrib}{a\sim q} {\textit{$a$ se izvlači iz razidiobe $q$}}
+\glsentm{tv}{fromrvar}{a\sim \rvar a,\,a\sim \p(\rvar a)} {\textit{$a$ se izvlači iz razidobe $\p(\rvar a)$}}
+\glsentm{tv}{E}{\E_{a\sim\rvar a} f(a),\,\E_{\rvar a} f(a)} {Očekivanje funkcije slučajne varijable $\rvar a$}
+\glsentm{tv}{D}{\D_{a\sim\rvar a} f(a),\,\D_{\rvar a} f(a)} {Disperzija (varijanca) funkcije slučajne varijable $\rvar a$}
+\glsentm{tv}{Cov}{\Cov(\rvar a,\rvar b)}		{Kovarijanca}
+\glsentm{tv}{Gauss}{\mathcal{N}(\mu, \sigma^2)} {Normalna razdioba s učekivanjem $\mu$ i varijancom $\sigma^2$}
+\glsentm{tv}{unif}{\mathcal{U}(\set A)} {Uniformna razdioba nad skupom $\set A$}
+
+% Teorija informacije
+\glsgroup{ti}{Teorija informacije}{}
+\glsentm{ti}{I}{\I(\set A)}			{Sadržaj informacije događaja $\set A$}
+\glsentm{ti}{entropy}{\H(\rvar a)}			{Entropija}
+\glsentm{ti}{diffent}{\h(\rvar a)}			{Diferencijalna entropija}
+\glsentm{ti}{mutinf}{\I(\rvar a,\rvar b)}	  {Međusobna informacija}
+\glsentm{ti}{condent}{\H(\rvar a\mid\rvar b)} {Uvjetna entropija}
+\glsentm{ti}{crossent}{\H_{\rvar b}(\rvar a)} {Unakrsna entropija}
+\glsentm{ti}{Dkl}{\Dkl{\rvar a}{\rvar b}} {Kullback-Leiblerova divergencija (relativna entropija)}
 
 % Grafovi
 \glsgroup{g}{Grafovi}{}
