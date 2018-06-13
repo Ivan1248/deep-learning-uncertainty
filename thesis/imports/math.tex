@@ -11,7 +11,74 @@
 \usepackage[OMLmathsfit]{isomath}  % \DeclareMathAlphabet ...
 
 \usepackage{mathtools}  % smashoperator
-\usepackage{commath}  % calculus, perentheses
+
+
+%\usepackage{commath}  % calculus, perentheses
+% https://tex.stackexchange.com/questions/135944/commath-and-ifinner/135985#135985
+%
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}
+\newcommand{\Dif}{\mathop{}\!\mathrm{D}}
+
+\makeatletter
+\newcommand{\spx}[1]{%
+	\if\relax\detokenize{#1}\relax
+	\expandafter\@gobble
+	\else
+	\expandafter\@firstofone
+	\fi
+	{^{#1}}%
+}
+\makeatother
+
+\newcommand\pd[3][]{\frac{\partial\spx{#1}#2}{\partial#3\spx{#1}}}
+\newcommand\tpd[3][]{\tfrac{\partial\spx{#1}#2}{\partial#3\spx{#1}}}
+\newcommand\dpd[3][]{\dfrac{\partial\spx{#1}#2}{\partial#3\spx{#1}}}
+
+\newcommand{\md}[6]{\frac{\partial\spx{#2}#1}{\partial#3\spx{#4}\partial#5\spx{#6}}}
+\newcommand{\tmd}[6]{\tfrac{\partial\spx{#2}#1}{\partial#3\spx{#4}\partial#5\spx{#6}}}
+\newcommand{\dmd}[6]{\dfrac{\partial\spx{#2}#1}{\partial#3\spx{#4}\partial#5\spx{#6}}}
+
+\newcommand{\od}[3][]{\frac{\dif\spx{#1}#2}{\dif#3\spx{#1}}}
+\newcommand{\tod}[3][]{\tfrac{\dif\spx{#1}#2}{\dif#3\spx{#1}}}
+\newcommand{\dod}[3][]{\dfrac{\dif\spx{#1}#2}{\dif#3\spx{#1}}}
+
+\newcommand{\genericdel}[4]{%
+	\ifcase#3\relax
+	\ifx#1.\else#1\fi#4\ifx#2.\else#2\fi\or
+	\bigl#1#4\bigr#2\or
+	\Bigl#1#4\Bigr#2\or
+	\biggl#1#4\biggr#2\or
+	\Biggl#1#4\Biggr#2\else
+	\left#1#4\right#2\fi
+}
+\newcommand{\del}[2][-1]{\genericdel(){#1}{#2}}
+\newcommand{\set}[2][-1]{\genericdel\{\}{#1}{#2}}
+\let\cbr\set
+\newcommand{\sbr}[2][-1]{\genericdel[]{#1}{#2}}
+\let\intoo\del
+\let\intcc\sbr
+\newcommand{\intoc}[2][-1]{\genericdel(]{#1}{#2}}
+\newcommand{\intco}[2][-1]{\genericdel[){#1}{#2}}
+\newcommand{\eval}[2][-1]{\genericdel.|{#1}{#2}}
+\newcommand{\envert}[2][-1]{\genericdel||{#1}{#2}}
+\let\abs\envert
+\newcommand{\sVert}[1][0]{%
+	\ifcase#1\relax
+	\rvert\or\bigr|\or\Bigr|\or\biggr|\or\Biggr
+	\fi
+}
+\newcommand{\enVert}[2][-1]{\genericdel\|\|{#1}{#2}}
+\let\norm\enVert
+\newcommand{\fullfunction}[5]{%
+	\begin{array}{@{}r@{}r@{}c@{}l@{}}
+		#1 \colon & #2 & {}\longrightarrow{} & #3 \\
+		& #4 & {}\longmapsto{}     & #5
+	\end{array}
+}
+%
+%
+
+
 \usepackage{stmaryrd}  % \llbracket for \rrbracket, ...
 
 
@@ -36,22 +103,16 @@
 \let\vec\relax
 \let\set\relax
 \newcommand{\vec}[1]{\mathbfit{#1}}
-\newcommand{\mat}[1]{\vec{#1}}
-\newcommand{\ten}[1]{\vec{#1}}
 \newcommand{\set}[1]{\mathbbmsl{#1}}
 
 % constant
 \newcommand{\const}[1]{\mathrm{#1}}
 \newcommand{\cvec}[1]{\mathbf{#1}}
-\newcommand{\cmat}[1]{\cvec{#1}}
-\newcommand{\cten}[1]{\cvec{#1}}
 \newcommand{\cset}[1]{\mathbb{#1}}
 
 % random variable
 \newcommand{\rvar}[1]{{\color{green!50!blue!40!black}\mathsfit{#1}}}
 \newcommand{\rvec}[1]{{\color{green!50!blue!40!black}\mathsfbfit{#1}}}
-\newcommand{\rmat}[1]{\rvec{#1}}
-\newcommand{\rten}[1]{\rvec{#1}}
 \newcommand{\rset}[1]{{\color{green!50!blue!40!black}\mathsfbbit{#1}}}
 
 % linear algebra
@@ -68,6 +129,7 @@
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\ReLU}{ReLU}
+\DeclareMathOperator{\modfunc}{mod}
 
 % operators
 \DeclareMathOperator*{\argmin}{arg\,min} % thin space
@@ -83,17 +145,20 @@
 \newcommand{\h}{\mathrm{h}}
 \newcommand{\I}{\mathrm{I}}
 \newcommand{\Dist}{\mathrm{D}}  % D is for dispersion
-\renewcommand{\dif}{\mathrm{d}}
+%\renewcommand{\dif}{\mathrm{d}}
 
 \newcommand{\pa}{\mathrm{pa}}
 \newcommand{\ch}{\mathrm{ch}}
 \newcommand{\pred}{\mathrm{pred}}
 \renewcommand{\succ}{\mathrm{succ}}
 
+\newcommand{\vecfunc}{\mathrm{vec}}
+
 % bracket operators
-\newcommand{\enangle}[1]{\mathinner{\left\langle{#1}\right\rangle}}
+%\newcommand{\enangle}[1]{\mathinner{\left\langle{#1}\right\rangle}}
+\newcommand{\enangle}[2][-1]{\genericdel\langle\rangle{#1}{#2}}
 \newcommand{\enbbracket}[1]{{\mathinner{\left\llbracket{#1}\right\rrbracket}}}
-\newcommand{\braket}[2]{\enangle{{#1}|{#2}}}
+\newcommand{\braket}[2]{\enangle{{#1}\middle|{#2}}}
 
 % parentheses from commath redefined to improve spacing because (left and right were redefined)
 \renewcommand{\del}[1]{\left(#1\right)}
@@ -103,8 +168,11 @@
 \renewcommand{\intcc}[1]{\mathinner{\sbr{#1}}}
 \renewcommand{\intco}[1]{\mathinner{\left[#1\right)}}
 \renewcommand{\intoc}[1]{\mathinner{\left(#1\right]}}
+\newcommand{\ind}[1]{{[#1]}}
+
 
 % special
+%\newcommand{\funcdef}[3]{#1 \in (#2 \to #3)}
 \newcommand{\funcdef}[3]{#1 \colon #2 \to #3}
 \newcommand{\Dkl}[2]{\Dist_\mathrm{KL}\del{#1\;\middle\|\;#2}}
 \newcommand{\C}{\cset{C}}
@@ -112,7 +180,6 @@
 \newcommand{\Z}{\cset{Z}}
 \newcommand{\N}{\cset{N}}
 \newcommand{\dirac}{\delta}
-\newcommand{\ind}[2]{#1_{\sbr{#2}}}
 
 \newcommand\concat{\mathbin{+\mkern-10mu+}}
 

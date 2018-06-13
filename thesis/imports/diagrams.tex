@@ -1,7 +1,12 @@
 \usepackage{tikz} 					% dijagrami
 \usepackage{pgfplots}
 \usetikzlibrary{fit,automata,arrows,positioning,calc,petri,topaths,arrows.meta}
-	
+
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/tikz/, shell escape=-enable-write18]
+%TexStudio Configuration\commands\pdflatex:
+%"pdflatex.exe -src -interaction=nonstopmode --shell-escape %.tex
+
 \pgfplotsset{every axis/.append style={
 		axis x line=middle,    	% put the x axis in the middle
 		axis y line=middle,    	% put the y axis in the middle
@@ -13,7 +18,7 @@
 }} % axis style
 
 \tikzset{
-	>={Triangle[length=2mm,width=1.4mm]},
+	>={Triangle[length=1.8mm,width=1.2mm]},
 	dedge/.style={arrows=->, black, thick},
 }
 % PGMs
@@ -33,4 +38,4 @@ below left=5pt and 0pt of #1.south east]
 }
 % ANNs
 \tikzstyle{nnode} = [circle, minimum size=10mm, thick, draw=black, node distance=5mm]
-\tikzstyle{nrect} = [rectangle, minimum size=5mm, thick, draw=black, node distance=5mm, rounded corners=0.1ex]
+\tikzstyle{nrect} = [rectangle, minimum size=7mm, thick, draw=black, node distance=5mm, rounded corners=0.1ex]

@@ -16,7 +16,7 @@
       <data key="d3"><![CDATA[https://arxiv.org/abs/1305.6663]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1482.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="730.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Bengio et al., 2013
@@ -35,7 +35,7 @@ Generalized Denoising Auto-Encoders as Generative Models (2013)<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1505.05424]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="455.9166666666667"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="729.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Blundell et al., 2015-5
@@ -54,7 +54,7 @@ Weight Uncertainty in Neural Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="219.41666666666669"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="866.1666666666666"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hernández-Lobato et Adams, 2015
@@ -73,7 +73,7 @@ Probabilistic Backpropagation for Scalable Learning of Bayesian Neural Networks<
       <data key="d3"><![CDATA[https://pdfs.semanticscholar.org/dde4/b95be20a160253a6cc9ecd75492a13d60c10.pdf]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="529.0595238095239"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="1032.452380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Osband, 2016
@@ -92,7 +92,7 @@ Risk versus Uncertainty in Deep Learning: Bayes, Bootstrap and the Dangers of Dr
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="923.3210317460321" y="633.202380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1005.9901587301588" y="1042.452380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal et Ghahramani, 2015
@@ -111,7 +111,7 @@ Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Lear
       <data key="d3"><![CDATA[mlg.eng.cam.ac.uk/yarin/thesis/thesis.pdf]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="331.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1275.7933333333335" y="223.5"/>
           <y:Fill color="#AAFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal, 2016
@@ -130,7 +130,7 @@ Uncertainty in Deep Learning<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="0.0" y="157.29166666666666"/>
+          <y:Geometry height="50.0" width="150.0" x="0.0" y="420.375"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">MacKay, 1992
@@ -149,7 +149,7 @@ A Practical Bayesian Framework for Backprop Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="345.0000000000002" y="322.75"/>
+          <y:Geometry height="50.0" width="150.0" x="347.0" y="457.75"/>
           <y:Fill color="#AAFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Neal, 1995
@@ -168,7 +168,7 @@ Bayesian Learning for Neural Networks<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.02914]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="892.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1293.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Li et Gal, 2017-3
@@ -187,7 +187,7 @@ Dropout Inference in Bayesian Neural Networks with Alpha-divergences<y:LabelMode
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.02914]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1677.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="925.0" y="1794.7142857142858"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Probabilistic Backpropagation - introduction
@@ -206,7 +206,7 @@ Dropout Inference in Bayesian Neural Networks with Alpha-divergences<y:LabelMode
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2501.557936507937" y="207.5"/>
+          <y:Geometry height="50.0" width="150.0" x="2758.9457142857145" y="207.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">He et al., 2016
@@ -225,7 +225,7 @@ Identity Mappings in Deep Residual Networks.pdf<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1872.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1120.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hu et al., 2017
@@ -244,7 +244,7 @@ Squeeze-and-Excitation Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2281.2246031746035" y="162.5"/>
+          <y:Geometry height="50.0" width="150.0" x="2538.612380952381" y="162.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">He et al., 2015
@@ -263,7 +263,7 @@ Deep Residual Learning for Image Recognition.pdf<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2111.2246031746035" y="162.5"/>
+          <y:Geometry height="50.0" width="150.0" x="2368.612380952381" y="162.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Srivastava et al., 2015
@@ -282,7 +282,7 @@ Highway Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="0.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Huang et al., 2016
@@ -301,7 +301,7 @@ Deep Networks with Stochastic Depth<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="674.702380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1082.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Osband, 2016
@@ -320,7 +320,7 @@ Deep exploration via bootstrapped DQN<y:LabelModel>
       <data key="d3"><![CDATA[http://www.cs.ox.ac.uk/people/yarin.gal/website/blog_5058.html]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="593.702380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1001.952380952381"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-12
@@ -339,7 +339,7 @@ The Science of Deep Learning<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1506.02142]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1442.4793650793654" y="569.5595238095239"/>
+          <y:Geometry height="50.0" width="150.0" x="1583.421904761905" y="977.8095238095239"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal et Ghahramani, 2015
@@ -358,7 +358,7 @@ A Theoretically Grounded Application of Dropout in Recurrent Neural Networks <y:
       <data key="d3"><![CDATA[https://github.com/yaringal/HeteroscedasticDropoutUncertainty]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="299.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1147.952380952381"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2016-2
@@ -377,7 +377,7 @@ Heteroscedastic Dropout Uncertainty<y:LabelModel>
       <data key="d3"><![CDATA[http://mlg.eng.cam.ac.uk/yarin/blog_3d801aa532c1ce.html]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1442.4793650793654" y="504.55952380952385"/>
+          <y:Geometry height="50.0" width="150.0" x="1583.421904761905" y="912.8095238095239"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-7
@@ -396,7 +396,7 @@ What My Deep Model Doesn't Know...<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02157]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="923.3210317460321" y="363.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1005.9901587301588" y="789.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Denker et LeCun, 1991
@@ -415,7 +415,7 @@ Transforming Neural-Net Output Levels to Probability Distributions<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2067.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1315.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Luizos et Wellig, 2017-3
@@ -434,7 +434,7 @@ Multiplicative Normalizing Flows for Variational Bayesian Neural Networks<y:Labe
       <data key="d3"><![CDATA[http://arxiv.org/abs/1705.07115]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="234.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="217.25"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kendall et al., 2017-5
@@ -453,7 +453,7 @@ Multi-Task Learning Using Uncertainty to Weigh Losses for Scene Geometry and Sem
       <data key="d3"><![CDATA[http://arxiv.org/abs/1711.02257]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="234.25"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="217.25"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Chen et al., 2017
@@ -472,7 +472,7 @@ GradNorm: Gradient Normalization for Adaptive Loss Balancing in Deep Multitask N
       <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="820.702380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1275.7933333333335" y="1532.6190476190477"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kingma et al., 2015-6
@@ -492,7 +492,7 @@ Variational Dropout and the Local Reparameterization Trick
       <data key="d3"><![CDATA[https://arxiv.org/pdf/1711.02989.pdf]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="1216.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1610.5714285714287"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hron et al., 2017-11
@@ -511,7 +511,7 @@ Variational Gaussian Dropout is not Bayesian<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="923.3210317460321" y="1281.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1005.9901587301588" y="1699.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Wang et Manning, 2013
@@ -531,7 +531,7 @@ Fast dropout training
       <data key="d3"><![CDATA[http://arxiv.org/abs/1506.02158]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="577.4166666666666"/>
+          <y:Geometry height="50.0" width="150.0" x="1275.7933333333335" y="993.8095238095239"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal et Ghahramani, 2015
@@ -550,7 +550,7 @@ Bayesian Convolutional Neural Networks with Bernoulli Approximate Variational In
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.04977]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1442.4793650793654" y="221.75"/>
+          <y:Geometry height="50.0" width="150.0" x="1583.421904761905" y="332.125"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kendall et Gal, 2017-3
@@ -569,7 +569,7 @@ What uncertainties do we need in bayesian deep learning for computer vision? <y:
       <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1442.4793650793654" y="1184.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1583.421904761905" y="1578.2857142857142"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Molchanov et al., 2017
@@ -588,7 +588,7 @@ Variational Dropout Sparsifies Deep Neural Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="130.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="130.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Veit et al., 2016
@@ -607,7 +607,7 @@ Residual Networks Behave Like Ensembles of Relatively Shallow Networks<y:LabelMo
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="65.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="65.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gomez et al., 2017
@@ -626,7 +626,7 @@ The Reversible Residual Network: Backpropagation Without Storing Activations<y:L
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="325.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="325.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Zagoruyko et Komodakis, 2016
@@ -645,7 +645,7 @@ Wide Residual Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="390.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="390.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Xie et al., 2017
@@ -664,7 +664,7 @@ Aggregated Residual Transformations for Deep Neural Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://pdfs.semanticscholar.org/dde4/b95be20a160253a6cc9ecd75492a13d60c10.pdf]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2262.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1510.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Yang, 2017-9
@@ -683,7 +683,7 @@ Understanding the Variational Lower Bound<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.02914]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="1322.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="65.0"/>
           <y:Fill color="#AAFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Blei et al., 2017
@@ -702,7 +702,7 @@ Variational Inference: A Review for Statisticians<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="1241.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="1635.7857142857142"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Srivastava et al., 2014
@@ -721,7 +721,7 @@ Dropout: A Simple Way to Prevent Neural Networks from Overﬁtting<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="1242.1190476190477"/>
+          <y:Geometry height="50.0" width="150.0" x="347.0" y="1635.7857142857142"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hinton et al., 2012
@@ -740,7 +740,7 @@ Improving neural networks by preventing co-adaptation of feature detectors<y:Lab
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="0.0" y="1281.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="0.0" y="1699.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">MacKay, 1992
@@ -759,7 +759,7 @@ The Evidence Framework Applied to Classification Networks<y:LabelModel>
       <data key="d3"><![CDATA[http://www.cs.ox.ac.uk/people/yarin.gal/website/blog.html]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="315.9166666666667"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="1131.2857142857142"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Y. Gal - Blog<y:LabelModel>
@@ -777,7 +777,7 @@ The Evidence Framework Applied to Classification Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="0.0" y="645.313492063492"/>
+          <y:Geometry height="50.0" width="150.0" x="0.0" y="994.452380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hinton et van Camp, 1993
@@ -796,7 +796,7 @@ Keeping Neural Networks Simple by Minimizing the Description Length of the Weigh
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="345.0000000000002" y="201.91666666666666"/>
+          <y:Geometry height="50.0" width="150.0" x="347.0" y="522.75"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Graves, 2011
@@ -815,7 +815,7 @@ Practical Variational Inference for Neural Networks<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1502.05336]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="1097.702380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="1441.202380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kingma et Wellig, 2011
@@ -834,7 +834,7 @@ Auto-Encoding Variational Bayes<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="63.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1275.7933333333335" y="158.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kiureghian et Ditlevsen, 2009
@@ -853,7 +853,7 @@ Aleatory or epistemic? Does it matter?<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="790.577380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="1362.077380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gal et al., 2017-5
@@ -872,7 +872,7 @@ Concrete Dropout<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="827.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1228.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Maddison et al., 2016
@@ -891,7 +891,7 @@ The Concrete distribution: A continuous relaxation of discrete random variables<
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="739.702380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1358.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Jang et al., 2016
@@ -910,7 +910,7 @@ Categorical reparameterization with Gumbel-softmax<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="1103.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="1487.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Molchanov et al., 2016
@@ -929,7 +929,7 @@ Dropout-based Automatic Relevance Determination<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1703.04977]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2457.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1705.0" y="1794.7142857142858"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="3.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Moja tema
@@ -947,7 +947,7 @@ Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela<y:LabelMod
     <node id="n49">
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="30.0" x="1246.196031746032" y="225.25"/>
+          <y:Geometry height="30.0" width="30.0" x="1335.7933333333335" y="468.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="13.0" y="13.0">
@@ -965,7 +965,7 @@ Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela<y:LabelMod
     <node id="n50">
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="30.0" x="1246.196031746032" y="270.25"/>
+          <y:Geometry height="30.0" width="30.0" x="1335.7933333333335" y="423.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="13.0" y="13.0"/>
@@ -977,7 +977,7 @@ Nadzirani pristupi za procjenu nesigurnosti predikcija dubokih modela<y:LabelMod
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1186.196031746032" y="160.25"/>
+          <y:Geometry height="50.0" width="150.0" x="1275.7933333333335" y="288.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Jordan et al., 1998
@@ -996,7 +996,7 @@ An Introduction to Variational Methods for Graphical Models<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2698.557936507937" y="207.5"/>
+          <y:Geometry height="50.0" width="150.0" x="2955.9457142857145" y="207.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Huang et al., 2016
@@ -1015,7 +1015,7 @@ Densely Connected Convolutional Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="195.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="195.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Jégou et al., 2016
@@ -1034,7 +1034,7 @@ The One Hundred Layers Tiramisu: Fully Convolutional DenseNets for Semantic Segm
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="1177.1190476190477"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="1125.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Ghahramani, 2015
@@ -1052,7 +1052,7 @@ Probabilistic machine learning and artiﬁcial intelligence<y:LabelModel>
     <node id="n55">
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="66.4867368421053" x="1957.9812347535508" y="1267.452380952381"/>
+          <y:Geometry height="30.0" width="66.4867368421053" x="2215.3690125313283" y="1198.452380952381"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="62.69921875" x="1.8937590460527645" y="5.6494140625">13.stranica<y:LabelModel>
@@ -1070,7 +1070,7 @@ Probabilistic machine learning and artiﬁcial intelligence<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1506.02142]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="642.9821428571431" y="585.1460317460318"/>
+          <y:Geometry height="50.0" width="150.0" x="697.0" y="1044.952380952381"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Damianou et Lawrence, 2013
@@ -1089,7 +1089,7 @@ Deep Gaussian Processes<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2652.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1900.0" y="1794.7142857142858"/>
           <y:Fill color="#44DDFF" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Bishop, 2006
@@ -1108,7 +1108,7 @@ Pattern recognition and machine learning<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="169.25"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="552.75"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Korattikara et al., 2015
@@ -1127,7 +1127,7 @@ Bayesian Dark Knowledge<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="122.5"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="546.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Welling et Teh, 2011
@@ -1146,7 +1146,7 @@ Bayesian Learning via Stochastic Gradient Langevin Dynamics<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="1176.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="1570.0714285714287"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Neklyudov et al., 2018
@@ -1167,7 +1167,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="268.75357142857143" width="335.0" x="3085.557936507937" y="0.0"/>
+              <y:Geometry height="268.75357142857143" width="335.0" x="3342.9457142857145" y="0.0"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
               <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="335.0" x="0.0" y="0.0">Legend</y:NodeLabel>
@@ -1196,7 +1196,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GroupNode>
-                  <y:Geometry height="144.37658730158728" width="165.0" x="3100.557936507937" y="98.37678571428573"/>
+                  <y:Geometry height="144.37658730158728" width="165.0" x="3357.9457142857145" y="98.37678571428573"/>
                   <y:Fill color="#F5F5F5" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
                   <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="165.0" x="0.0" y="0.0">Proportion read</y:NodeLabel>
@@ -1223,7 +1223,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="3115.557936507937" y="136.75337301587302"/>
+                  <y:Geometry height="20.0" width="135.0" x="3372.9457142857145" y="136.75337301587302"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">A little<y:LabelModel>
@@ -1241,7 +1241,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="3115.557936507937" y="171.75337301587302"/>
+                  <y:Geometry height="20.0" width="135.0" x="3372.9457142857145" y="171.75337301587302"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">Some important parts<y:LabelModel>
@@ -1259,7 +1259,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="135.0" x="3115.557936507937" y="206.75337301587302"/>
+                  <y:Geometry height="20.0" width="135.0" x="3372.9457142857145" y="206.75337301587302"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">(Almost) everything<y:LabelModel>
@@ -1281,7 +1281,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
             <y:ProxyAutoBoundsNode>
               <y:Realizers active="0">
                 <y:GroupNode>
-                  <y:Geometry height="214.37698412698413" width="125.0" x="3280.557936507937" y="38.37658730158729"/>
+                  <y:Geometry height="214.37698412698413" width="125.0" x="3537.9457142857145" y="38.37658730158729"/>
                   <y:Fill color="#F5F5F5" transparent="false"/>
                   <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
                   <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="22.37646484375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="125.0" x="0.0" y="0.0">Type</y:NodeLabel>
@@ -1308,7 +1308,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[http://www.inference.vc/deep-learning-is-easy/]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="3295.557936507937" y="76.7531746031746"/>
+                  <y:Geometry height="20.0" width="95.0" x="3552.9457142857145" y="76.7531746031746"/>
                   <y:Fill color="#FFFF99" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Blog article<y:LabelModel>
@@ -1326,7 +1326,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://pdfs.semanticscholar.org/dde4/b95be20a160253a6cc9ecd75492a13d60c10.pdf]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="3295.557936507937" y="111.7531746031746"/>
+                  <y:Geometry height="20.0" width="95.0" x="3552.9457142857145" y="111.7531746031746"/>
                   <y:Fill color="#DDFFAA" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="1.4210854715202004E-14">Wikipedia article<y:LabelModel>
@@ -1344,7 +1344,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="3295.557936507937" y="146.75357142857143"/>
+                  <y:Geometry height="20.0" width="95.0" x="3552.9457142857145" y="146.75357142857143"/>
                   <y:Fill color="#CCFFCC" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Article<y:LabelModel>
@@ -1362,7 +1362,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"><![CDATA[mlg.eng.cam.ac.uk/yarin/thesis/thesis.pdf]]></data>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="3295.557936507937" y="181.75357142857143"/>
+                  <y:Geometry height="20.0" width="95.0" x="3552.9457142857145" y="181.75357142857143"/>
                   <y:Fill color="#AAFFFF" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Thesis<y:LabelModel>
@@ -1380,7 +1380,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
               <data key="d3"/>
               <data key="d5">
                 <y:ShapeNode>
-                  <y:Geometry height="20.0" width="95.0" x="3295.557936507937" y="216.75357142857143"/>
+                  <y:Geometry height="20.0" width="95.0" x="3552.9457142857145" y="216.75357142857143"/>
                   <y:Fill color="#44DDFF" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
                   <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="20.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.0" x="0.0" y="0.0">Book<y:LabelModel>
@@ -1400,7 +1400,7 @@ Variance Networks: When Expectation Does Not Meet Your Expectations<y:LabelModel
           <data key="d3"><![CDATA[https://arxiv.org/abs/1506.02557]]></data>
           <data key="d5">
             <y:ShapeNode>
-              <y:Geometry height="35.0" width="135.0" x="3115.557936507937" y="48.37678571428572"/>
+              <y:Geometry height="35.0" width="135.0" x="3372.9457142857145" y="48.37678571428572"/>
               <y:Fill color="#CCFFCC" transparent="false"/>
               <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="35.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.0" x="0.0" y="0.0">Author, year
@@ -1421,7 +1421,7 @@ Title<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="557.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="4279.9457142857145" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Murray et Gharamani, 2005
@@ -1441,7 +1441,7 @@ A note on the evidence and Bayesian Occam’s razor
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="387.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="4109.9457142857145" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">McKay, 1992
@@ -1460,7 +1460,7 @@ Bayesian methods for adaptive models<y:LabelModel>
       <data key="d3"><![CDATA[http://www.inference.vc/the-two-kinds-of-uncertainties-in-reinforcement-learning-2/]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="472.55952380952385"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="870.5"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-8
@@ -1479,7 +1479,7 @@ The Two Kinds of Uncertainty an AI Agent Has to Represent<y:LabelModel>
       <data key="d3"><![CDATA[http://www.inference.vc/deep-learning-is-easy/]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="1022.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="611.5"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-1
@@ -1498,7 +1498,7 @@ Deep Learning is Easy - Learn Something Harder<y:LabelModel>
       <data key="d3"><![CDATA[http://www.inference.vc]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="957.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="676.5"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-6
@@ -1517,7 +1517,7 @@ Another Favourite Machine Learning Paper: Adversarial Networks vs Kernel Scoring
       <data key="d3"><![CDATA[http://www.inference.vc]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="957.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="853.8333333333334"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">F. Huszar - inFERENCe<y:LabelModel>
@@ -1535,7 +1535,7 @@ Another Favourite Machine Learning Paper: Adversarial Networks vs Kernel Scoring
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="45.0"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="130.0"/>
           <y:Fill color="#DDFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Wikipedia
@@ -1554,7 +1554,7 @@ Uncertainty quantification<y:LabelModel>
       <data key="d3"><![CDATA[http://arxiv.org/abs/1711.02257]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1638.4793650793654" y="57.5"/>
+          <y:Geometry height="50.0" width="150.0" x="1867.671904761905" y="105.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Kennedz et O'Hagan, 2002
@@ -1574,7 +1574,7 @@ Bayesian calibration of computer models
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="0.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="3722.9457142857145" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Hendrycks et Gimpel, 2016
@@ -1593,7 +1593,7 @@ A baseline for detecting misclassified and out-of-distribution examples in neura
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="192.0" y="1514.952380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="3914.9457142857145" y="32.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Liang et al., 2017
@@ -1612,7 +1612,7 @@ Enhancing The Reliability of Out-of-distribution Image Detection in Neural Netwo
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2890.557936507937" y="260.0"/>
+          <y:Geometry height="50.0" width="150.0" x="3147.9457142857145" y="260.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Krešo et al., 2016
@@ -1630,7 +1630,7 @@ Ladder-style DenseNets for Semantic Segmentation of Large Natural Images<y:Label
     <node id="n73">
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="66.4867368421053" x="1957.9812347535508" y="0.0"/>
+          <y:Geometry height="30.0" width="66.4867368421053" x="2215.3690125313283" y="921.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="30.021484375" x="18.232626233552764" y="5.6494140625">uvod<y:LabelModel>
@@ -1648,7 +1648,7 @@ Ladder-style DenseNets for Semantic Segmentation of Large Natural Images<y:Label
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="0.0" y="1547.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="3722.9457142857145" y="65.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Guo et al., 2017
@@ -1667,7 +1667,7 @@ On Calibration of Modern Neural Networks<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2698.557936507937" y="272.5"/>
+          <y:Geometry height="50.0" width="150.0" x="2955.9457142857145" y="272.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Valpola, 2014
@@ -1686,7 +1686,7 @@ From neural PCA to deep unsupervised learning<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="922.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="170.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Miyato et al., 2017
@@ -1705,7 +1705,7 @@ Virtual Adversarial Training: a Regularization Method for Supervised and Semi-su
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="752.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="0.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Miyato et al., 2015
@@ -1724,7 +1724,7 @@ Distributional Smoothing with Virtual Adversarial Training<y:LabelModel>
       <data key="d3"><![CDATA[http://www.inference.vc]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1287.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="535.0" y="1794.7142857142858"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dashed" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Christopher Olah - Blog<y:LabelModel>
@@ -1742,7 +1742,7 @@ Distributional Smoothing with Virtual Adversarial Training<y:LabelModel>
       <data key="d3"><![CDATA[http://www.inference.vc]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1117.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="365.0" y="1794.7142857142858"/>
           <y:Fill color="#FFFF99" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">2015-10
@@ -1761,7 +1761,7 @@ Visual Information Theory<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1505.05424]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="345.0000000000002" y="783.327380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="347.0" y="369.5"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gelman, 2008
@@ -1780,7 +1780,7 @@ Objections to Bayesian statistics<y:LabelModel>
       <data key="d3"><![CDATA[https://arxiv.org/abs/1505.05424]]></data>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="1916.2246031746035" y="1387.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2173.612380952381" y="0.0"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="2.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Gelman, 2008
@@ -1799,7 +1799,7 @@ Rejoinder<y:LabelModel>
       <data key="d3"/>
       <data key="d5">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="150.0" x="2847.0" y="1482.452380952381"/>
+          <y:Geometry height="50.0" width="150.0" x="2095.0" y="1794.7142857142858"/>
           <y:Fill color="#CCFFCC" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="dotted" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_size" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="50.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.0" x="0.0" y="0.0">Zoubin et Ghahramani, 2005
@@ -1817,10 +1817,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e0" source="n1" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.666666666666686" tx="75.0" ty="3.125">
-            <y:Point x="632.4821428571431" y="464.25"/>
-            <y:Point x="510.5000000000002" y="186.41666666666666"/>
-            <y:Point x="419.5000000000002" y="186.41666666666666"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-3.125">
+            <y:Point x="686.5" y="754.5"/>
+            <y:Point x="512.5" y="442.25"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1831,9 +1830,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e1" source="n2" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-3.125">
-            <y:Point x="632.4821428571431" y="231.91666666666669"/>
-            <y:Point x="510.5000000000002" y="179.16666666666666"/>
+          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="9.375">
+            <y:Point x="686.5" y="903.6666666666666"/>
+            <y:Point x="512.5" y="588.25"/>
+            <y:Point x="336.5" y="588.25"/>
+            <y:Point x="165.5" y="454.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1844,9 +1845,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e2" source="n2" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-14.285714285714286">
-            <y:Point x="632.4821428571431" y="256.9166666666667"/>
-            <y:Point x="510.5000000000002" y="333.4642857142857"/>
+          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-3.552713678800501E-15">
+            <y:Point x="686.5" y="878.6666666666666"/>
+            <y:Point x="512.5" y="482.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1857,11 +1858,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e3" source="n3" target="n1">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-10.0" tx="75.0" ty="-4.166666666666686">
-            <y:Point x="1905.7246031746035" y="544.0595238095239"/>
-            <y:Point x="1803.9793650793654" y="457.0595238095238"/>
-            <y:Point x="1175.696031746032" y="457.0595238095238"/>
-            <y:Point x="1088.821031746032" y="476.75"/>
+          <y:Path sx="-75.0" sy="-10.0" tx="75.0" ty="-12.5">
+            <y:Point x="2163.112380952381" y="1047.452380952381"/>
+            <y:Point x="2033.171904761905" y="742.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1872,9 +1871,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e4" source="n3" target="n19">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="16.66666666666663">
-            <y:Point x="1712.9793650793654" y="554.0595238095239"/>
-            <y:Point x="1607.9793650793654" y="546.2261904761905"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="1057.452380952381"/>
+            <y:Point x="2033.171904761905" y="952.0"/>
+            <y:Point x="1857.171904761905" y="952.0"/>
+            <y:Point x="1748.921904761905" y="937.8095238095239"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1885,12 +1886,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e5" source="n3" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="10.0" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="564.0595238095239"/>
-            <y:Point x="1803.9793650793654" y="659.202380952381"/>
-            <y:Point x="1175.696031746032" y="659.202380952381"/>
-            <y:Point x="1088.821031746032" y="658.202380952381"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="10.0" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -1900,11 +1896,13 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e6" source="n3" target="n5">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-20.0" tx="75.0" ty="6.25">
-            <y:Point x="1905.7246031746035" y="534.0595238095239"/>
-            <y:Point x="1803.9793650793654" y="364.75"/>
-            <y:Point x="1431.9793650793654" y="364.75"/>
-            <y:Point x="1351.696031746032" y="362.5"/>
+          <y:Path sx="-75.0" sy="-20.0" tx="75.0" ty="-6.25">
+            <y:Point x="2163.112380952381" y="1037.452380952381"/>
+            <y:Point x="2033.171904761905" y="531.0"/>
+            <y:Point x="1857.171904761905" y="531.0"/>
+            <y:Point x="1748.921904761905" y="245.75"/>
+            <y:Point x="1572.921904761905" y="245.75"/>
+            <y:Point x="1441.2933333333335" y="242.25"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1915,9 +1913,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e7" source="n28" target="n5">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="15.625" tx="75.0" ty="-18.75">
-            <y:Point x="1431.9793650793654" y="262.375"/>
-            <y:Point x="1351.696031746032" y="337.5"/>
+          <y:Path sx="-75.0" sy="-15.625" tx="75.0" ty="18.75">
+            <y:Point x="1572.921904761905" y="341.5"/>
+            <y:Point x="1441.2933333333335" y="267.25"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1928,9 +1926,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e8" source="n5" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="0.0">
-            <y:Point x="1175.696031746032" y="368.75"/>
-            <y:Point x="1088.821031746032" y="347.75"/>
+          <y:Path sx="-74.99999999999989" sy="12.5" tx="75.0" ty="-21.428571428571445">
+            <y:Point x="686.5" y="261.0"/>
+            <y:Point x="512.5" y="461.32142857142856"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1941,12 +1939,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e9" source="n5" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-9.375">
-            <y:Point x="1175.696031746032" y="343.75"/>
-            <y:Point x="1088.821031746032" y="331.75"/>
-            <y:Point x="912.8210317460321" y="331.75"/>
-            <y:Point x="808.4821428571431" y="171.91666666666666"/>
-            <y:Point x="419.5000000000002" y="171.91666666666666"/>
+          <y:Path sx="-74.99999999999989" sy="-12.5" tx="75.0" ty="-21.875">
+            <y:Point x="336.5" y="236.0"/>
+            <y:Point x="165.5" y="423.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1957,9 +1952,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e10" source="n7" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="15.625">
-            <y:Point x="334.5000000000002" y="331.0833333333333"/>
-            <y:Point x="165.50000000000023" y="197.91666666666666"/>
+          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="3.125">
+            <y:Point x="336.5" y="466.0833333333333"/>
+            <y:Point x="165.5" y="448.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1971,8 +1966,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="12.499999999999993">
-            <y:Point x="1431.9793650793654" y="1197.452380952381"/>
-            <y:Point x="1351.696031746032" y="858.202380952381"/>
+            <y:Point x="1572.921904761905" y="1590.7857142857142"/>
+            <y:Point x="1441.2933333333335" y="1570.1190476190477"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1984,8 +1979,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="7.14285714285711">
-            <y:Point x="632.4821428571431" y="529.5595238095239"/>
-            <y:Point x="510.5000000000002" y="354.8928571428571"/>
+            <y:Point x="1572.921904761905" y="937.8095238095239"/>
+            <y:Point x="1441.2933333333335" y="939.8095238095239"/>
+            <y:Point x="686.5" y="939.8095238095239"/>
+            <y:Point x="512.5" y="489.8928571428571"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -1997,8 +1994,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="-16.666666666666668">
-            <y:Point x="1627.9793650793654" y="514.2261904761905"/>
-            <y:Point x="1607.9793650793654" y="512.8928571428572"/>
+            <y:Point x="1857.171904761905" y="912.1666666666666"/>
+            <y:Point x="1748.921904761905" y="921.1428571428572"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2009,11 +2006,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e14" source="n64" target="n1">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="4.166666666666686">
-            <y:Point x="1627.9793650793654" y="497.55952380952385"/>
-            <y:Point x="1592.9793650793654" y="489.0595238095238"/>
-            <y:Point x="912.8210317460321" y="489.0595238095238"/>
-            <y:Point x="808.4821428571431" y="485.08333333333337"/>
+          <y:Path sx="-75.0" sy="-16.66666666666663" tx="75.0" ty="4.166666666666629">
+            <y:Point x="1857.171904761905" y="878.8333333333334"/>
+            <y:Point x="1658.421904761905" y="871.0"/>
+            <y:Point x="995.4901587301588" y="871.0"/>
+            <y:Point x="862.5" y="758.6666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2024,13 +2021,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e15" source="n64" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.666666666666686" tx="75.0" ty="4.166666666666686">
-            <y:Point x="1627.9793650793654" y="480.89285714285717"/>
-            <y:Point x="1517.4793650793654" y="473.0595238095238"/>
-            <y:Point x="1175.696031746032" y="473.0595238095238"/>
-            <y:Point x="1088.821031746032" y="428.75"/>
-            <y:Point x="912.8210317460321" y="428.75"/>
-            <y:Point x="808.4821428571431" y="248.58333333333337"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-4.166666666666629">
+            <y:Point x="1857.171904761905" y="895.5"/>
+            <y:Point x="1748.921904761905" y="887.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2042,8 +2035,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-4.166666666666686">
-            <y:Point x="2576.057936507937" y="142.5"/>
-            <y:Point x="2446.7246031746035" y="183.33333333333331"/>
+            <y:Point x="2833.4457142857145" y="142.5"/>
+            <y:Point x="2704.112380952381" y="183.33333333333331"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2055,8 +2048,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-10.0">
-            <y:Point x="2698.057936507937" y="167.5"/>
-            <y:Point x="2667.057936507937" y="222.5"/>
+            <y:Point x="2955.4457142857145" y="167.5"/>
+            <y:Point x="2924.4457142857145" y="222.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2068,8 +2061,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-20.0">
-            <y:Point x="2698.057936507937" y="102.5"/>
-            <y:Point x="2667.057936507937" y="212.5"/>
+            <y:Point x="2955.4457142857145" y="102.5"/>
+            <y:Point x="2924.4457142857145" y="212.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2081,8 +2074,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-12.5">
-            <y:Point x="2576.057936507937" y="77.5"/>
-            <y:Point x="2446.7246031746035" y="175.0"/>
+            <y:Point x="2833.4457142857145" y="77.5"/>
+            <y:Point x="2704.112380952381" y="175.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2094,9 +2087,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="10.0">
-            <y:Point x="2773.557936507937" y="338.0"/>
-            <y:Point x="2698.057936507937" y="338.0"/>
-            <y:Point x="2667.057936507937" y="242.5"/>
+            <y:Point x="3030.9457142857145" y="338.0"/>
+            <y:Point x="2955.4457142857145" y="338.0"/>
+            <y:Point x="2924.4457142857145" y="242.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2108,10 +2101,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="12.5">
-            <y:Point x="2698.057936507937" y="362.5"/>
-            <y:Point x="2667.057936507937" y="273.0"/>
-            <y:Point x="2491.057936507937" y="273.0"/>
-            <y:Point x="2446.7246031746035" y="200.0"/>
+            <y:Point x="2955.4457142857145" y="362.5"/>
+            <y:Point x="2924.4457142857145" y="273.0"/>
+            <y:Point x="2748.4457142857145" y="273.0"/>
+            <y:Point x="2704.112380952381" y="200.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2123,8 +2116,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="20.0">
-            <y:Point x="2698.057936507937" y="402.5"/>
-            <y:Point x="2667.057936507937" y="252.5"/>
+            <y:Point x="2955.4457142857145" y="402.5"/>
+            <y:Point x="2924.4457142857145" y="252.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2136,8 +2129,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="20.833333333333314">
-            <y:Point x="2491.057936507937" y="427.5"/>
-            <y:Point x="2446.7246031746035" y="208.33333333333331"/>
+            <y:Point x="2748.4457142857145" y="427.5"/>
+            <y:Point x="2704.112380952381" y="208.33333333333331"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2148,10 +2141,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e24" source="n24" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-3.125" tx="75.0" ty="21.428571428571445">
-            <y:Point x="998.3210317460321" y="841.577380952381"/>
-            <y:Point x="632.4821428571431" y="841.577380952381"/>
-            <y:Point x="510.5000000000002" y="369.17857142857144"/>
+          <y:Path sx="-74.99999999999989" sy="5.555555555555657" tx="75.0" ty="21.428571428571445">
+            <y:Point x="686.5" y="1563.1746031746031"/>
+            <y:Point x="512.5" y="504.17857142857144"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2162,12 +2154,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e25" source="n22" target="n5">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-6.25">
-            <y:Point x="1627.9793650793654" y="271.75"/>
-            <y:Point x="1592.9793650793654" y="287.25"/>
-            <y:Point x="1431.9793650793654" y="287.25"/>
-            <y:Point x="1351.696031746032" y="350.0"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-18.75"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2178,8 +2165,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="21.428571428571427" tx="75.0" ty="-20.833333333333336">
-            <y:Point x="1431.9793650793654" y="550.9880952380953"/>
-            <y:Point x="1351.696031746032" y="824.8690476190476"/>
+            <y:Point x="1572.921904761905" y="959.2380952380953"/>
+            <y:Point x="1441.2933333333335" y="1536.7857142857144"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2191,10 +2178,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-14.28571428571422" tx="75.0" ty="12.5">
-            <y:Point x="1431.9793650793654" y="515.2738095238096"/>
-            <y:Point x="1351.696031746032" y="498.3928571428571"/>
-            <y:Point x="912.8210317460321" y="498.3928571428571"/>
-            <y:Point x="808.4821428571431" y="493.4166666666667"/>
+            <y:Point x="995.4901587301588" y="923.5238095238095"/>
+            <y:Point x="862.5" y="767.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2205,11 +2190,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e28" source="n19" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="14.285714285714334" tx="75.0" ty="-14.285714285714334">
-            <y:Point x="1431.9793650793654" y="543.8452380952382"/>
-            <y:Point x="1351.696031746032" y="642.9166666666666"/>
-            <y:Point x="1175.696031746032" y="642.9166666666666"/>
-            <y:Point x="1088.821031746032" y="643.9166666666666"/>
+          <y:Path sx="-75.0" sy="7.14285714285711" tx="75.0" ty="-21.42857142857133">
+            <y:Point x="1572.921904761905" y="944.952380952381"/>
+            <y:Point x="1441.2933333333335" y="978.3095238095239"/>
+            <y:Point x="1265.2933333333335" y="978.3095238095239"/>
+            <y:Point x="1171.4901587301588" y="1046.0238095238096"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2220,9 +2205,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e29" source="n19" target="n27">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="7.142857142857146" tx="75.0" ty="0.0">
-            <y:Point x="1431.9793650793654" y="536.702380952381"/>
-            <y:Point x="1351.696031746032" y="602.4166666666666"/>
+          <y:Path sx="-75.0" sy="14.285714285714286" tx="75.0" ty="0.0">
+            <y:Point x="1572.921904761905" y="952.0952380952382"/>
+            <y:Point x="1441.2933333333335" y="1018.8095238095239"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2233,13 +2218,12 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e30" source="n19" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-7.14285714285711" tx="75.0" ty="9.375">
-            <y:Point x="1431.9793650793654" y="522.4166666666667"/>
-            <y:Point x="1351.696031746032" y="521.4166666666666"/>
-            <y:Point x="632.4821428571431" y="521.4166666666666"/>
-            <y:Point x="510.5000000000002" y="267.4166666666667"/>
-            <y:Point x="334.5000000000002" y="267.4166666666667"/>
-            <y:Point x="165.50000000000023" y="191.66666666666666"/>
+          <y:Path sx="-75.0" sy="-7.14285714285711" tx="75.0" ty="15.625">
+            <y:Point x="1441.2933333333335" y="931.6666666666666"/>
+            <y:Point x="686.5" y="931.6666666666666"/>
+            <y:Point x="512.5" y="595.5"/>
+            <y:Point x="336.5" y="595.5"/>
+            <y:Point x="165.5" y="461.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2250,11 +2234,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e31" source="n39" target="n19">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="340.9166666666667"/>
-            <y:Point x="1803.9793650793654" y="538.0595238095239"/>
-            <y:Point x="1637.9793650793654" y="538.0595238095239"/>
-            <y:Point x="1607.9793650793654" y="529.5595238095239"/>
+          <y:Path sx="-75.0" sy="-16.666666666666742" tx="75.0" ty="16.66666666666663">
+            <y:Point x="2163.112380952381" y="1139.6190476190475"/>
+            <y:Point x="2033.171904761905" y="968.0"/>
+            <y:Point x="1942.171904761905" y="968.0"/>
+            <y:Point x="1748.921904761905" y="954.4761904761905"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2265,9 +2249,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e32" source="n39" target="n16">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="357.58333333333337"/>
-            <y:Point x="1803.9793650793654" y="618.702380952381"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="1156.2857142857142"/>
+            <y:Point x="2033.171904761905" y="1026.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2278,9 +2262,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e33" source="n16" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.66666666666663" tx="75.0" ty="-7.14285714285711">
-            <y:Point x="1627.9793650793654" y="635.3690476190476"/>
-            <y:Point x="1592.9793650793654" y="651.0595238095239"/>
+          <y:Path sx="-75.0" sy="16.666666666666742" tx="75.0" ty="-7.14285714285711">
+            <y:Point x="1857.171904761905" y="1043.6190476190477"/>
+            <y:Point x="1733.921904761905" y="1059.3095238095239"/>
+            <y:Point x="1350.2933333333335" y="1059.3095238095239"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2291,11 +2276,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e34" source="n16" target="n27">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="16.66666666666663">
-            <y:Point x="1627.9793650793654" y="618.702380952381"/>
-            <y:Point x="1592.9793650793654" y="635.0595238095239"/>
-            <y:Point x="1431.9793650793654" y="635.0595238095239"/>
-            <y:Point x="1351.696031746032" y="619.0833333333333"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="16.666666666666742">
+            <y:Point x="1857.171904761905" y="1026.952380952381"/>
+            <y:Point x="1733.921904761905" y="1043.3095238095239"/>
+            <y:Point x="1572.921904761905" y="1043.3095238095239"/>
+            <y:Point x="1441.2933333333335" y="1035.4761904761906"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2317,8 +2302,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-20.833333333333343">
-            <y:Point x="2576.057936507937" y="25.0"/>
-            <y:Point x="2446.7246031746035" y="166.66666666666666"/>
+            <y:Point x="2833.4457142857145" y="25.0"/>
+            <y:Point x="2704.112380952381" y="166.66666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2330,8 +2315,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="4.166666666666661">
-            <y:Point x="2491.057936507937" y="232.5"/>
-            <y:Point x="2446.7246031746035" y="191.66666666666666"/>
+            <y:Point x="2748.4457142857145" y="232.5"/>
+            <y:Point x="2704.112380952381" y="191.66666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2342,7 +2327,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e38" source="n67" target="n66">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="878.8333333333334"/>
+            <y:Point x="2033.171904761905" y="701.5"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2352,10 +2340,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e39" source="n67" target="n64">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="966.2857142857143"/>
-            <y:Point x="1803.9793650793654" y="497.55952380952385"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2365,9 +2350,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e40" source="n67" target="n65">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="999.6190476190476"/>
-            <y:Point x="1803.9793650793654" y="1047.952380952381"/>
+          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="862.1666666666667"/>
+            <y:Point x="2033.171904761905" y="636.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2379,8 +2364,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="0.0">
-            <y:Point x="1627.9793650793654" y="602.0357142857143"/>
-            <y:Point x="1607.9793650793654" y="594.5595238095239"/>
+            <y:Point x="1857.171904761905" y="1010.2857142857142"/>
+            <y:Point x="1748.921904761905" y="1002.8095238095239"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2391,7 +2376,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e42" source="n39" target="n18">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="0.0"/>
+          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2402,10 +2387,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-21.428571428571445" tx="75.0" ty="12.5">
-            <y:Point x="1431.9793650793654" y="508.1309523809524"/>
-            <y:Point x="1351.696031746032" y="412.75"/>
-            <y:Point x="1175.696031746032" y="412.75"/>
-            <y:Point x="1088.821031746032" y="400.75"/>
+            <y:Point x="1572.921904761905" y="916.3809523809524"/>
+            <y:Point x="1441.2933333333335" y="827.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2426,9 +2409,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e45" source="n24" target="n26">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="21.875" tx="75.0" ty="-12.5">
-            <y:Point x="1175.696031746032" y="867.577380952381"/>
-            <y:Point x="1088.821031746032" y="1294.452380952381"/>
+          <y:Path sx="-75.0" sy="22.22222222222222" tx="75.0" ty="-12.5">
+            <y:Point x="1265.2933333333335" y="1579.8412698412699"/>
+            <y:Point x="1171.4901587301588" y="1712.2142857142858"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2439,11 +2422,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e46" source="n25" target="n24">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="20.83333333333337">
-            <y:Point x="1627.9793650793654" y="1241.952380952381"/>
-            <y:Point x="1592.9793650793654" y="1250.452380952381"/>
-            <y:Point x="1431.9793650793654" y="1250.452380952381"/>
-            <y:Point x="1351.696031746032" y="866.5357142857143"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="20.833333333333258">
+            <y:Point x="1857.171904761905" y="1635.5714285714287"/>
+            <y:Point x="1748.921904761905" y="1643.7857142857142"/>
+            <y:Point x="1572.921904761905" y="1643.7857142857142"/>
+            <y:Point x="1441.2933333333335" y="1578.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2454,9 +2437,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e47" source="n36" target="n37">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
-            <y:Point x="997.8210317460321" y="1266.452380952381"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2466,9 +2447,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e48" source="n26" target="n37">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="16.66666666666667">
-            <y:Point x="912.8210317460321" y="1294.452380952381"/>
-            <y:Point x="808.4821428571431" y="1283.7857142857144"/>
+          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="16.666666666666742">
+            <y:Point x="696.5" y="1712.2142857142858"/>
+            <y:Point x="512.5" y="1677.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2490,8 +2471,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="-12.5">
-            <y:Point x="334.5000000000002" y="364.4166666666667"/>
-            <y:Point x="165.50000000000023" y="1294.452380952381"/>
+            <y:Point x="336.5" y="499.41666666666663"/>
+            <y:Point x="165.5" y="1712.2142857142858"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2503,8 +2484,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-10.0">
-            <y:Point x="334.5000000000002" y="347.75"/>
-            <y:Point x="165.50000000000023" y="660.313492063492"/>
+            <y:Point x="336.5" y="482.75"/>
+            <y:Point x="165.5" y="1009.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2515,9 +2496,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e52" source="n24" target="n40">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="3.125" tx="75.0" ty="10.0">
-            <y:Point x="334.5000000000002" y="848.827380952381"/>
-            <y:Point x="165.50000000000023" y="680.313492063492"/>
+          <y:Path sx="-74.99999999999989" sy="11.111111111111086" tx="75.0" ty="20.0">
+            <y:Point x="1080.9901587301588" y="1569.7301587301588"/>
+            <y:Point x="336.5" y="1569.7301587301588"/>
+            <y:Point x="165.5" y="1039.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2528,9 +2510,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e53" source="n41" target="n40">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-20.0">
-            <y:Point x="334.5000000000002" y="226.91666666666666"/>
-            <y:Point x="165.50000000000023" y="650.313492063492"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
+            <y:Point x="336.5" y="547.75"/>
+            <y:Point x="165.5" y="1019.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2541,11 +2523,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e54" source="n24" target="n41">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-9.375" tx="75.0" ty="19.99999999999997">
-            <y:Point x="1175.696031746032" y="836.327380952381"/>
-            <y:Point x="998.3210317460321" y="834.327380952381"/>
-            <y:Point x="632.4821428571431" y="834.327380952381"/>
-            <y:Point x="510.5000000000002" y="246.91666666666663"/>
+          <y:Path sx="-74.99999999999989" sy="-5.555555555555657" tx="75.0" ty="20.0">
+            <y:Point x="1265.2933333333335" y="1552.063492063492"/>
+            <y:Point x="1080.9901587301588" y="1550.0626984126984"/>
+            <y:Point x="686.5" y="1550.0626984126984"/>
+            <y:Point x="512.5" y="567.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2556,11 +2538,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e55" source="n24" target="n42">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="9.375" tx="75.0" ty="-6.25">
-            <y:Point x="1175.696031746032" y="855.077380952381"/>
-            <y:Point x="1088.821031746032" y="1112.952380952381"/>
-            <y:Point x="912.8210317460321" y="1112.952380952381"/>
-            <y:Point x="808.4821428571431" y="1116.452380952381"/>
+          <y:Path sx="-74.99999999999989" sy="-11.111111111111086" tx="75.0" ty="18.75">
+            <y:Point x="1265.2933333333335" y="1546.5079365079366"/>
+            <y:Point x="1080.9901587301588" y="1543.506746031746"/>
+            <y:Point x="995.4901587301588" y="1543.506746031746"/>
+            <y:Point x="862.5" y="1484.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2571,11 +2553,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e56" source="n24" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-21.875" tx="75.0" ty="12.5">
-            <y:Point x="1175.696031746032" y="823.827380952381"/>
-            <y:Point x="1088.821031746032" y="460.75"/>
-            <y:Point x="912.8210317460321" y="460.75"/>
-            <y:Point x="808.4821428571431" y="256.9166666666667"/>
+          <y:Path sx="-74.99999999999989" sy="-16.666666666666742" tx="75.0" ty="20.83333333333337">
+            <y:Point x="1265.2933333333335" y="1540.952380952381"/>
+            <y:Point x="1171.4901587301588" y="1536.9507936507937"/>
+            <y:Point x="995.4901587301588" y="1536.9507936507937"/>
+            <y:Point x="862.5" y="912.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2586,9 +2568,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e57" source="n24" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-15.625" tx="75.0" ty="21.428571428571416">
-            <y:Point x="1175.696031746032" y="830.077380952381"/>
-            <y:Point x="1088.821031746032" y="679.6309523809524"/>
+          <y:Path sx="-75.0" sy="-22.22222222222223" tx="75.0" ty="21.428571428571416">
+            <y:Point x="1265.2933333333335" y="1535.3968253968255"/>
+            <y:Point x="1171.4901587301588" y="1088.8809523809523"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2600,8 +2582,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="16.66666666666667">
-            <y:Point x="1627.9793650793654" y="1225.2857142857142"/>
-            <y:Point x="1607.9793650793654" y="1226.6190476190477"/>
+            <y:Point x="1748.921904761905" y="1619.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2613,8 +2594,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="21.875" tx="75.0" ty="-16.666666666666668">
-            <y:Point x="1431.9793650793654" y="268.625"/>
-            <y:Point x="1351.696031746032" y="585.75"/>
+            <y:Point x="1572.921904761905" y="379.0"/>
+            <y:Point x="1441.2933333333335" y="1002.1428571428572"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2626,8 +2607,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-21.875" tx="75.0" ty="12.5">
-            <y:Point x="1431.9793650793654" y="224.875"/>
-            <y:Point x="1351.696031746032" y="100.75"/>
+            <y:Point x="1572.921904761905" y="335.25"/>
+            <y:Point x="1441.2933333333335" y="196.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2638,11 +2619,13 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e61" source="n44" target="n5">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-21.875" tx="75.0" ty="18.75">
-            <y:Point x="1905.7246031746035" y="793.702380952381"/>
-            <y:Point x="1803.9793650793654" y="380.75"/>
-            <y:Point x="1431.9793650793654" y="380.75"/>
-            <y:Point x="1351.696031746032" y="375.0"/>
+          <y:Path sx="-75.0" sy="-21.875" tx="75.0" ty="6.25">
+            <y:Point x="2163.112380952381" y="1365.202380952381"/>
+            <y:Point x="2033.171904761905" y="758.0"/>
+            <y:Point x="1857.171904761905" y="758.0"/>
+            <y:Point x="1748.921904761905" y="261.75"/>
+            <y:Point x="1572.921904761905" y="261.75"/>
+            <y:Point x="1441.2933333333335" y="254.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2653,10 +2636,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e62" source="n44" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-9.375" tx="75.0" ty="14.28571428571422">
-            <y:Point x="1803.9793650793654" y="805.202380952381"/>
-            <y:Point x="1175.696031746032" y="805.202380952381"/>
-            <y:Point x="1088.821031746032" y="672.4880952380952"/>
+          <y:Path sx="-75.0" sy="3.125" tx="75.0" ty="14.28571428571422">
+            <y:Point x="2163.112380952381" y="1390.202380952381"/>
+            <y:Point x="2033.171904761905" y="1424.452380952381"/>
+            <y:Point x="1265.2933333333335" y="1424.452380952381"/>
+            <y:Point x="1171.4901587301588" y="1081.7380952380952"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2667,9 +2651,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e63" source="n44" target="n8">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="9.375" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="824.952380952381"/>
-            <y:Point x="1803.9793650793654" y="917.952380952381"/>
+          <y:Path sx="-75.0" sy="-9.375" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="1377.702380952381"/>
+            <y:Point x="2033.171904761905" y="1318.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2680,9 +2664,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e64" source="n44" target="n24">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-3.125" tx="75.0" ty="-12.5">
-            <y:Point x="1431.9793650793654" y="812.452380952381"/>
-            <y:Point x="1351.696031746032" y="833.202380952381"/>
+          <y:Path sx="-75.0" sy="15.625" tx="75.0" ty="-4.1666666666667425">
+            <y:Point x="2163.112380952381" y="1402.702380952381"/>
+            <y:Point x="2033.171904761905" y="1553.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2693,9 +2677,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e65" source="n44" target="n45">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="3.125" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="818.702380952381"/>
-            <y:Point x="1803.9793650793654" y="852.952380952381"/>
+          <y:Path sx="-75.0" sy="-15.625" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="1371.452380952381"/>
+            <y:Point x="2033.171904761905" y="1253.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2706,10 +2690,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e66" source="n44" target="n46">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-15.625" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="799.952380952381"/>
-            <y:Point x="1803.9793650793654" y="764.702380952381"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="-3.125" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2719,9 +2700,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e67" source="n44" target="n47">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="15.625" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="831.202380952381"/>
-            <y:Point x="1803.9793650793654" y="1128.952380952381"/>
+          <y:Path sx="-75.0" sy="9.375" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="1396.452380952381"/>
+            <y:Point x="2033.171904761905" y="1512.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2732,9 +2713,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e68" source="n47" target="n24">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.666666666666742" tx="75.0" ty="4.166666666666629">
-            <y:Point x="1431.9793650793654" y="1112.2857142857142"/>
-            <y:Point x="1351.696031746032" y="849.8690476190476"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-12.5">
+            <y:Point x="1572.921904761905" y="1512.952380952381"/>
+            <y:Point x="1441.2933333333335" y="1545.1190476190477"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2745,7 +2726,12 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e69" source="n47" target="n42">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="6.25"/>
+          <y:Path sx="-75.0" sy="-16.666666666666742" tx="75.0" ty="-6.25">
+            <y:Point x="1857.171904761905" y="1496.2857142857142"/>
+            <y:Point x="1658.921904761905" y="1456.452380952381"/>
+            <y:Point x="995.4901587301588" y="1456.452380952381"/>
+            <y:Point x="862.5" y="1459.952380952381"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2755,13 +2741,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e70" source="n28" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-15.625" tx="75.0" ty="-21.875">
-            <y:Point x="1431.9793650793654" y="231.125"/>
-            <y:Point x="1351.696031746032" y="144.75"/>
-            <y:Point x="912.8210317460321" y="144.75"/>
-            <y:Point x="808.4821428571431" y="24.5"/>
-            <y:Point x="419.5000000000002" y="24.5"/>
-            <y:Point x="165.50000000000023" y="160.41666666666666"/>
+          <y:Path sx="-75.0" sy="-3.125" tx="75.0" ty="-15.625">
+            <y:Point x="336.5" y="354.0"/>
+            <y:Point x="165.5" y="429.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2772,11 +2754,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e71" source="n28" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="9.375" tx="75.0" ty="-7.142857142857167">
-            <y:Point x="1431.9793650793654" y="256.125"/>
-            <y:Point x="1351.696031746032" y="315.75"/>
-            <y:Point x="632.4821428571431" y="315.75"/>
-            <y:Point x="510.5000000000002" y="340.60714285714283"/>
+          <y:Path sx="-75.0" sy="3.125" tx="75.0" ty="-14.285714285714278">
+            <y:Point x="1350.7933333333335" y="361.25"/>
+            <y:Point x="686.5" y="361.25"/>
+            <y:Point x="512.5" y="468.4642857142857"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2787,9 +2768,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e72" source="n28" target="n49">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-3.125" tx="15.0" ty="0.0">
-            <y:Point x="1431.9793650793654" y="243.625"/>
-            <y:Point x="1291.696031746032" y="240.25"/>
+          <y:Path sx="-75.0" sy="15.625" tx="15.0" ty="0.0">
+            <y:Point x="1572.921904761905" y="372.75"/>
+            <y:Point x="1441.2933333333335" y="483.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2800,13 +2781,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e73" source="n49" target="n41">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-11.15625" sy="-10.0" tx="75.0" ty="-10.0">
-            <y:Point x="1235.696031746032" y="230.25"/>
-            <y:Point x="998.3210317460321" y="224.25"/>
-            <y:Point x="912.8210317460321" y="224.25"/>
-            <y:Point x="808.4821428571431" y="187.91666666666666"/>
-            <y:Point x="632.4821428571431" y="187.91666666666666"/>
-            <y:Point x="510.5000000000002" y="216.91666666666666"/>
+          <y:Path sx="-11.15625" sy="-10.0" tx="75.0" ty="-20.0">
+            <y:Point x="1325.2933333333335" y="473.0"/>
+            <y:Point x="1171.4901587301588" y="467.0"/>
+            <y:Point x="686.5" y="467.0"/>
+            <y:Point x="512.5" y="527.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2817,7 +2796,12 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e74" source="n49" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-15.0" sy="0.0" tx="75.0" ty="-4.166666666666686"/>
+          <y:Path sx="-11.15625" sy="10.0" tx="75.0" ty="-20.83333333333337">
+            <y:Point x="1325.2933333333335" y="493.0"/>
+            <y:Point x="1171.4901587301588" y="499.0"/>
+            <y:Point x="995.4901587301588" y="499.0"/>
+            <y:Point x="862.5" y="870.3333333333333"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2827,11 +2811,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e75" source="n49" target="n1">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-11.15625" sy="10.0" tx="75.0" ty="-20.833333333333314">
-            <y:Point x="1235.696031746032" y="250.25"/>
-            <y:Point x="998.3210317460321" y="256.25"/>
-            <y:Point x="912.8210317460321" y="256.25"/>
-            <y:Point x="808.4821428571431" y="460.08333333333337"/>
+          <y:Path sx="-15.0" sy="0.0" tx="75.0" ty="-20.83333333333337">
+            <y:Point x="995.4901587301588" y="483.0"/>
+            <y:Point x="862.5" y="733.6666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2842,9 +2824,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e76" source="n28" target="n50">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="3.125" tx="15.0" ty="0.0">
-            <y:Point x="1431.9793650793654" y="249.875"/>
-            <y:Point x="1351.696031746032" y="285.25"/>
+          <y:Path sx="-75.0" sy="9.375" tx="15.0" ty="0.0">
+            <y:Point x="1572.921904761905" y="366.5"/>
+            <y:Point x="1441.2933333333335" y="438.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2855,13 +2837,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e77" source="n50" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-15.0" sy="0.0" tx="75.0" ty="-21.428571428571445">
-            <y:Point x="1235.696031746032" y="285.25"/>
-            <y:Point x="998.3210317460321" y="288.25"/>
-            <y:Point x="912.8210317460321" y="288.25"/>
-            <y:Point x="808.4821428571431" y="203.91666666666666"/>
-            <y:Point x="632.4821428571431" y="203.91666666666666"/>
-            <y:Point x="510.5000000000002" y="326.32142857142856"/>
+          <y:Path sx="-15.0" sy="0.0" tx="75.0" ty="-7.142857142857167">
+            <y:Point x="1325.2933333333335" y="438.0"/>
+            <y:Point x="1171.4901587301588" y="451.0"/>
+            <y:Point x="686.5" y="451.0"/>
+            <y:Point x="512.5" y="475.60714285714283"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2872,13 +2852,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e78" source="n50" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-11.15625" sy="-10.0" tx="75.0" ty="-15.625">
-            <y:Point x="1235.696031746032" y="275.25"/>
-            <y:Point x="998.3210317460321" y="272.25"/>
-            <y:Point x="912.8210317460321" y="272.25"/>
-            <y:Point x="808.4821428571431" y="31.75"/>
-            <y:Point x="419.5000000000002" y="31.75"/>
-            <y:Point x="165.50000000000023" y="166.66666666666666"/>
+          <y:Path sx="-11.15625" sy="-10.0" tx="75.0" ty="-9.375">
+            <y:Point x="1325.2933333333335" y="428.0"/>
+            <y:Point x="1080.9901587301588" y="435.0"/>
+            <y:Point x="336.5" y="435.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2890,8 +2867,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-11.15625" sy="10.0" tx="75.0" ty="-12.5">
-            <y:Point x="1175.696031746032" y="295.25"/>
-            <y:Point x="1088.821031746032" y="375.75"/>
+            <y:Point x="1325.2933333333335" y="448.0"/>
+            <y:Point x="1171.4901587301588" y="802.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2903,8 +2880,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-9.375" tx="75.0" ty="0.0">
-            <y:Point x="1431.9793650793654" y="237.375"/>
-            <y:Point x="1351.696031746032" y="185.25"/>
+            <y:Point x="1572.921904761905" y="347.75"/>
+            <y:Point x="1441.2933333333335" y="313.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2925,7 +2902,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e82" source="n22" target="n28">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="0.0"/>
+          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="0.0">
+            <y:Point x="1857.171904761905" y="254.75"/>
+            <y:Point x="1748.921904761905" y="357.125"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -2935,9 +2915,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e83" source="n27" target="n4">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-21.428571428571427">
-            <y:Point x="1175.696031746032" y="602.4166666666666"/>
-            <y:Point x="1088.821031746032" y="636.7738095238095"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-14.285714285714286">
+            <y:Point x="1265.2933333333335" y="1018.8095238095239"/>
+            <y:Point x="1171.4901587301588" y="1053.1666666666667"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2949,10 +2929,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-33.24336842105265" sy="0.0" tx="75.0" ty="12.5">
-            <y:Point x="1516.9793650793654" y="1282.452380952381"/>
-            <y:Point x="1351.696031746032" y="1306.952380952381"/>
-            <y:Point x="1175.696031746032" y="1306.952380952381"/>
-            <y:Point x="1088.821031746032" y="1214.6190476190477"/>
+            <y:Point x="1867.171904761905" y="1213.452380952381"/>
+            <y:Point x="1658.921904761905" y="1440.452380952381"/>
+            <y:Point x="995.4901587301588" y="1440.452380952381"/>
+            <y:Point x="862.5" y="1163.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2963,9 +2943,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e85" source="n4" target="n54">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="22.22222222222222" tx="75.0" ty="-12.5">
-            <y:Point x="912.8210317460321" y="680.4246031746031"/>
-            <y:Point x="808.4821428571431" y="1189.6190476190477"/>
+          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-12.5">
+            <y:Point x="995.4901587301588" y="1079.952380952381"/>
+            <y:Point x="862.5" y="1138.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2976,9 +2956,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e86" source="n4" target="n7">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="5.555555555555543" tx="75.0" ty="14.285714285714278">
-            <y:Point x="632.4821428571431" y="663.7579365079365"/>
-            <y:Point x="510.5000000000002" y="362.0357142857143"/>
+          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="14.28571428571422">
+            <y:Point x="995.4901587301588" y="1054.952380952381"/>
+            <y:Point x="862.5" y="1017.452380952381"/>
+            <y:Point x="686.5" y="1017.452380952381"/>
+            <y:Point x="512.5" y="497.0357142857142"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -2989,11 +2971,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e87" source="n4" target="n6">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-5.555555555555543" tx="75.0" ty="21.875">
-            <y:Point x="912.8210317460321" y="652.6468253968254"/>
-            <y:Point x="717.9821428571431" y="650.6460317460318"/>
-            <y:Point x="334.5000000000002" y="650.6460317460318"/>
-            <y:Point x="165.50000000000023" y="204.16666666666666"/>
+          <y:Path sx="-75.0" sy="7.5" tx="75.0" ty="21.875">
+            <y:Point x="995.4901587301588" y="1074.952380952381"/>
+            <y:Point x="862.5" y="1110.452380952381"/>
+            <y:Point x="336.5" y="1110.452380952381"/>
+            <y:Point x="165.5" y="467.25"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3004,8 +2986,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e88" source="n4" target="n40">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="11.111111111111086" tx="75.0" ty="0.0">
-            <y:Point x="717.9821428571431" y="670.313492063492"/>
+          <y:Path sx="-75.0" sy="-2.5" tx="75.0" ty="10.0">
+            <y:Point x="995.4901587301588" y="1064.952380952381"/>
+            <y:Point x="862.5" y="1029.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3016,10 +2999,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e89" source="n4" target="n41">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="10.0">
-            <y:Point x="717.9821428571431" y="657.2019841269841"/>
-            <y:Point x="632.4821428571431" y="657.2019841269841"/>
-            <y:Point x="510.5000000000002" y="236.91666666666666"/>
+          <y:Path sx="-75.0" sy="-7.5" tx="75.0" ty="10.0">
+            <y:Point x="995.4901587301588" y="1059.952380952381"/>
+            <y:Point x="862.5" y="1023.452380952381"/>
+            <y:Point x="686.5" y="1023.452380952381"/>
+            <y:Point x="512.5" y="557.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3030,9 +3014,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e90" source="n4" target="n42">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="-18.75">
-            <y:Point x="912.8210317460321" y="674.8690476190476"/>
-            <y:Point x="808.4821428571431" y="1103.952380952381"/>
+          <y:Path sx="-75.0" sy="17.5" tx="75.0" ty="-18.75">
+            <y:Point x="995.4901587301588" y="1084.952380952381"/>
+            <y:Point x="862.5" y="1447.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3043,9 +3027,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e91" source="n4" target="n1">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="20.83333333333333">
-            <y:Point x="912.8210317460321" y="641.5357142857143"/>
-            <y:Point x="808.4821428571431" y="501.75"/>
+          <y:Path sx="-75.0" sy="-22.5" tx="75.0" ty="20.83333333333333">
+            <y:Point x="995.4901587301588" y="1044.952380952381"/>
+            <y:Point x="862.5" y="775.3333333333334"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3056,9 +3040,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e92" source="n4" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-22.22222222222223" tx="75.0" ty="20.83333333333333">
-            <y:Point x="912.8210317460321" y="635.9801587301588"/>
-            <y:Point x="808.4821428571431" y="265.25"/>
+          <y:Path sx="-75.0" sy="-17.5" tx="75.0" ty="12.499999999999993">
+            <y:Point x="995.4901587301588" y="1049.952380952381"/>
+            <y:Point x="862.5" y="903.6666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3069,10 +3053,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e93" source="n4" target="n56">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-11.111111111111114" tx="75.0" ty="0.0">
-            <y:Point x="912.8210317460321" y="647.0912698412699"/>
-            <y:Point x="808.4821428571431" y="610.1460317460318"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="2.5" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -3082,9 +3063,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e94" source="n35" target="n40">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="20.0">
-            <y:Point x="334.5000000000002" y="1347.452380952381"/>
-            <y:Point x="165.50000000000023" y="690.313492063492"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-20.0">
+            <y:Point x="336.5" y="90.0"/>
+            <y:Point x="165.5" y="999.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3095,13 +3076,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e95" source="n58" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="6.25" tx="75.0" ty="-12.5">
-            <y:Point x="1905.7246031746035" y="200.5"/>
-            <y:Point x="1713.4793650793654" y="204.0"/>
-            <y:Point x="1431.9793650793654" y="204.0"/>
-            <y:Point x="1351.696031746032" y="128.75"/>
-            <y:Point x="912.8210317460321" y="128.75"/>
-            <y:Point x="808.4821428571431" y="231.91666666666669"/>
+          <y:Path sx="-75.0" sy="18.75" tx="75.0" ty="-12.5">
+            <y:Point x="2163.112380952381" y="596.5"/>
+            <y:Point x="2033.171904761905" y="855.0"/>
+            <y:Point x="995.4901587301588" y="855.0"/>
+            <y:Point x="862.5" y="878.6666666666666"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3112,13 +3091,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e96" source="n58" target="n1">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="18.75" tx="75.0" ty="-12.5">
-            <y:Point x="1905.7246031746035" y="213.0"/>
-            <y:Point x="1803.9793650793654" y="396.75"/>
-            <y:Point x="1175.696031746032" y="396.75"/>
-            <y:Point x="1088.821031746032" y="444.75"/>
-            <y:Point x="912.8210317460321" y="444.75"/>
-            <y:Point x="808.4821428571431" y="468.4166666666667"/>
+          <y:Path sx="-75.0" sy="6.25" tx="75.0" ty="-4.166666666666629">
+            <y:Point x="2163.112380952381" y="584.0"/>
+            <y:Point x="2033.171904761905" y="774.0"/>
+            <y:Point x="995.4901587301588" y="774.0"/>
+            <y:Point x="862.5" y="750.3333333333334"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3129,10 +3106,7 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e97" source="n58" target="n59">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-18.75" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="175.5"/>
-            <y:Point x="1803.9793650793654" y="147.5"/>
-          </y:Path>
+          <y:Path sx="-75.0" sy="-6.25" tx="75.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -3142,11 +3116,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e98" source="n58" target="n41">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-6.25" tx="75.0" ty="-20.0">
-            <y:Point x="1431.9793650793654" y="188.0"/>
-            <y:Point x="1351.696031746032" y="47.75"/>
-            <y:Point x="632.4821428571431" y="47.75"/>
-            <y:Point x="510.5000000000002" y="206.91666666666666"/>
+          <y:Path sx="-75.0" sy="-18.75" tx="75.0" ty="-10.0">
+            <y:Point x="2163.112380952381" y="559.0"/>
+            <y:Point x="2033.171904761905" y="515.0"/>
+            <y:Point x="995.4901587301588" y="515.0"/>
+            <y:Point x="862.5" y="537.75"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3157,11 +3131,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e99" source="n60" target="n36">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="14.28571428571422" tx="75.0" ty="10.0">
-            <y:Point x="1905.7246031746035" y="1215.7380952380952"/>
-            <y:Point x="1803.9793650793654" y="1298.452380952381"/>
-            <y:Point x="1516.9793650793654" y="1298.452380952381"/>
-            <y:Point x="1351.696031746032" y="1276.452380952381"/>
+          <y:Path sx="-75.0" sy="14.28571428571422" tx="75.0" ty="21.42857142857133">
+            <y:Point x="2163.112380952381" y="1609.357142857143"/>
+            <y:Point x="2033.171904761905" y="1684.2142857142858"/>
+            <y:Point x="1080.4901587301588" y="1684.2142857142858"/>
+            <y:Point x="862.5" y="1682.2142857142856"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3172,9 +3146,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e100" source="n24" target="n37">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="15.625" tx="75.0" ty="-16.666666666666742">
-            <y:Point x="1175.696031746032" y="861.327380952381"/>
-            <y:Point x="1088.821031746032" y="1250.452380952381"/>
+          <y:Path sx="-74.99999999999989" sy="0.0" tx="75.0" ty="-16.666666666666742">
+            <y:Point x="1080.9901587301588" y="1556.6186507936509"/>
+            <y:Point x="686.5" y="1556.6186507936509"/>
+            <y:Point x="512.5" y="1644.1190476190475"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3185,13 +3160,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e101" source="n60" target="n42">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-14.28571428571422" tx="75.0" ty="18.75">
-            <y:Point x="1905.7246031746035" y="1187.1666666666667"/>
-            <y:Point x="1803.9793650793654" y="1169.452380952381"/>
-            <y:Point x="1431.9793650793654" y="1169.452380952381"/>
-            <y:Point x="1351.696031746032" y="1144.952380952381"/>
-            <y:Point x="912.8210317460321" y="1144.952380952381"/>
-            <y:Point x="808.4821428571431" y="1141.452380952381"/>
+          <y:Path sx="-75.0" sy="-21.42857142857133" tx="75.0" ty="6.25">
+            <y:Point x="2163.112380952381" y="1573.6428571428573"/>
+            <y:Point x="2033.171904761905" y="1472.452380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3202,11 +3173,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e102" source="n60" target="n24">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-21.42857142857133" tx="75.0" ty="-4.166666666666629">
-            <y:Point x="1905.7246031746035" y="1180.0238095238096"/>
-            <y:Point x="1803.9793650793654" y="1088.452380952381"/>
-            <y:Point x="1431.9793650793654" y="1088.452380952381"/>
-            <y:Point x="1351.696031746032" y="841.5357142857143"/>
+          <y:Path sx="-75.0" sy="-14.28571428571422" tx="75.0" ty="4.1666666666667425">
+            <y:Point x="2163.112380952381" y="1580.7857142857144"/>
+            <y:Point x="2033.171904761905" y="1562.7857142857142"/>
+            <y:Point x="1657.921904761905" y="1562.7857142857142"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3217,9 +3187,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e103" source="n60" target="n29">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
-            <y:Point x="1637.9793650793654" y="1201.452380952381"/>
-            <y:Point x="1607.9793650793654" y="1209.952380952381"/>
+          <y:Path sx="-75.0" sy="-7.14285714285711" tx="75.0" ty="-16.666666666666742">
+            <y:Point x="2033.171904761905" y="1586.6190476190477"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3231,10 +3200,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="21.42857142857133" tx="75.0" ty="12.5">
-            <y:Point x="1905.7246031746035" y="1222.8809523809523"/>
-            <y:Point x="1803.9793650793654" y="1330.452380952381"/>
-            <y:Point x="1260.696031746032" y="1330.452380952381"/>
-            <y:Point x="1088.821031746032" y="1319.452380952381"/>
+            <y:Point x="2163.112380952381" y="1616.5"/>
+            <y:Point x="2033.171904761905" y="1737.2142857142858"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3246,8 +3213,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="7.142857142857146" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="1208.595238095238"/>
-            <y:Point x="1803.9793650793654" y="1241.952380952381"/>
+            <y:Point x="2163.112380952381" y="1602.2142857142858"/>
+            <y:Point x="2033.171904761905" y="1635.5714285714287"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3258,9 +3225,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e106" source="n29" target="n36">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-10.0">
-            <y:Point x="1431.9793650793654" y="1222.452380952381"/>
-            <y:Point x="1351.696031746032" y="1256.452380952381"/>
+          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-7.14285714285711">
+            <y:Point x="1572.921904761905" y="1615.7857142857142"/>
+            <y:Point x="1441.2933333333335" y="1651.642857142857"/>
+            <y:Point x="1080.4901587301588" y="1651.642857142857"/>
+            <y:Point x="862.5" y="1653.642857142857"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3271,9 +3240,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e107" source="n47" target="n36">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666742" tx="75.0" ty="-20.0">
-            <y:Point x="1431.9793650793654" y="1145.6190476190477"/>
-            <y:Point x="1351.696031746032" y="1246.452380952381"/>
+          <y:Path sx="-75.0" sy="16.666666666666742" tx="75.0" ty="0.0">
+            <y:Point x="1857.171904761905" y="1529.6190476190477"/>
+            <y:Point x="1748.921904761905" y="1659.7857142857142"/>
+            <y:Point x="1080.4901587301588" y="1659.7857142857142"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3284,9 +3254,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e108" source="n25" target="n36">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666742" tx="75.0" ty="0.0">
-            <y:Point x="1627.9793650793654" y="1258.6190476190477"/>
-            <y:Point x="1517.4793650793654" y="1266.452380952381"/>
+          <y:Path sx="-75.0" sy="16.666666666666742" tx="75.0" ty="7.14285714285711">
+            <y:Point x="1857.171904761905" y="1652.2380952380954"/>
+            <y:Point x="1748.921904761905" y="1667.9285714285713"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3297,8 +3267,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e109" source="n60" target="n29">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-7.14285714285711" tx="75.0" ty="-16.666666666666742">
-            <y:Point x="1803.9793650793654" y="1193.2857142857142"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
+            <y:Point x="1857.171904761905" y="1595.0714285714287"/>
+            <y:Point x="1748.921904761905" y="1603.2857142857142"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3309,11 +3280,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e110" source="n44" target="n36">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="21.875" tx="75.0" ty="20.0">
-            <y:Point x="1905.7246031746035" y="837.452380952381"/>
-            <y:Point x="1803.9793650793654" y="1314.452380952381"/>
-            <y:Point x="1516.9793650793654" y="1314.452380952381"/>
-            <y:Point x="1351.696031746032" y="1286.452380952381"/>
+          <y:Path sx="-75.0" sy="21.875" tx="75.0" ty="14.28571428571422">
+            <y:Point x="2163.112380952381" y="1408.952380952381"/>
+            <y:Point x="2033.171904761905" y="1676.0714285714287"/>
+            <y:Point x="1080.4901587301588" y="1676.0714285714287"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3354,11 +3324,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e112" source="n68" target="n43">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="-12.5">
-            <y:Point x="1905.7246031746035" y="57.5"/>
-            <y:Point x="1788.9793650793654" y="42.0"/>
-            <y:Point x="1431.9793650793654" y="42.0"/>
-            <y:Point x="1351.696031746032" y="75.75"/>
+          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="-12.5">
+            <y:Point x="2163.112380952381" y="167.5"/>
+            <y:Point x="1942.671904761905" y="171.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3369,7 +3337,10 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e113" source="n68" target="n69">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="0.0"/>
+          <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="0.0">
+            <y:Point x="2163.112380952381" y="142.5"/>
+            <y:Point x="2033.171904761905" y="130.5"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -3380,8 +3351,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="0.0">
-            <y:Point x="181.5" y="1527.452380952381"/>
-            <y:Point x="165.5" y="1507.452380952381"/>
+            <y:Point x="3904.4457142857145" y="45.0"/>
+            <y:Point x="3888.4457142857145" y="25.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3393,8 +3364,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="-12.5" tx="75.0" ty="12.5">
-            <y:Point x="2880.057936507937" y="272.5"/>
-            <y:Point x="2864.057936507937" y="245.0"/>
+            <y:Point x="3137.4457142857145" y="272.5"/>
+            <y:Point x="3121.4457142857145" y="245.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3405,9 +3376,11 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e116" source="n73" target="n2">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-33.24336842105265" sy="0.0" tx="75.0" ty="-20.833333333333343">
-            <y:Point x="912.8210317460321" y="15.0"/>
-            <y:Point x="808.4821428571431" y="223.58333333333334"/>
+          <y:Path sx="-33.24336842105265" sy="0.0" tx="75.0" ty="4.166666666666629">
+            <y:Point x="1857.171904761905" y="936.0"/>
+            <y:Point x="1748.921904761905" y="896.3333333333334"/>
+            <y:Point x="995.4901587301588" y="896.3333333333334"/>
+            <y:Point x="862.5" y="895.3333333333333"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3419,8 +3392,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="12.5" tx="75.0" ty="0.0">
-            <y:Point x="181.5" y="1552.452380952381"/>
-            <y:Point x="165.5" y="1572.452380952381"/>
+            <y:Point x="3904.4457142857145" y="70.0"/>
+            <y:Point x="3888.4457142857145" y="90.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3432,8 +3405,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="7.14285714285711">
-            <y:Point x="1175.696031746032" y="699.702380952381"/>
-            <y:Point x="1088.821031746032" y="665.3452380952381"/>
+            <y:Point x="1265.2933333333335" y="1107.952380952381"/>
+            <y:Point x="1171.4901587301588" y="1074.595238095238"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3445,8 +3418,8 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       <data key="d9">
         <y:PolyLineEdge>
           <y:Path sx="-75.0" sy="20.0" tx="75.0" ty="0.0">
-            <y:Point x="1905.7246031746035" y="574.0595238095239"/>
-            <y:Point x="1803.9793650793654" y="699.702380952381"/>
+            <y:Point x="2163.112380952381" y="1077.452380952381"/>
+            <y:Point x="2033.171904761905" y="1107.952380952381"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3497,9 +3470,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e124" source="n1" target="n80">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="-12.5">
-            <y:Point x="632.4821428571431" y="497.58333333333337"/>
-            <y:Point x="510.5000000000002" y="795.827380952381"/>
+          <y:Path sx="-75.0" sy="-16.66666666666667" tx="75.0" ty="12.5">
+            <y:Point x="686.5" y="737.8333333333334"/>
+            <y:Point x="512.5" y="407.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3510,9 +3483,9 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
     <edge id="e125" source="n81" target="n80">
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="12.5">
-            <y:Point x="632.4821428571431" y="1412.452380952381"/>
-            <y:Point x="510.5000000000002" y="820.827380952381"/>
+          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="-12.5">
+            <y:Point x="686.5" y="25.0"/>
+            <y:Point x="512.5" y="382.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -3521,12 +3494,41 @@ A note on the evidence and Bayesian Occam’s razor<y:LabelModel>
       </data>
     </edge>
     <edge id="e126" source="n1" target="n41">
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path sx="-75.0" sy="16.666666666666668" tx="75.0" ty="0.0">
+            <y:Point x="686.5" y="771.1666666666666"/>
+            <y:Point x="512.5" y="547.75"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e127" source="n4" target="n36">
       <data key="d8"/>
       <data key="d9">
         <y:PolyLineEdge>
-          <y:Path sx="-75.0" sy="0.0" tx="75.0" ty="0.0">
-            <y:Point x="632.4821428571431" y="480.9166666666667"/>
-            <y:Point x="510.5000000000002" y="226.91666666666666"/>
+          <y:Path sx="-75.0" sy="22.5" tx="75.0" ty="-21.428571428571427">
+            <y:Point x="995.4901587301588" y="1089.952380952381"/>
+            <y:Point x="862.5" y="1639.357142857143"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e128" source="n24" target="n36">
+      <data key="d8"/>
+      <data key="d9">
+        <y:PolyLineEdge>
+          <y:Path sx="-74.99999999999989" sy="16.666666666666742" tx="75.0" ty="-14.28571428571422">
+            <y:Point x="1265.2933333333335" y="1574.2857142857144"/>
+            <y:Point x="1171.4901587301588" y="1643.5"/>
+            <y:Point x="1080.4901587301588" y="1643.5"/>
+            <y:Point x="862.5" y="1646.5"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
