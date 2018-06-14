@@ -67,7 +67,7 @@ primjena na semantičkoj segmentaciji i procjeni dubine
 
 \section{Teorija vjerojatnosti}
 
-Jako važan pojam u strojnom učenju je nesigurnost ili neizvjesnost. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje nesigurnosti pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
+Jako važan pojam u strojnom učenju je nesigurnost ili neizvjesnost. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje nesigurnosti i pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
 
 Postoje dvije glavne interpretacije vjerojatnosti \citep{Murphy:2012:MLPP}. Jedna je \emph{frekventistička interpretacija} prema kojoj vjerojatnosti predstavljaju učestalosti različitih događaja ako se pokus ponavlja velik broj puta. Druga je \emph{bayesovska interpretacija} prema kojoj vjerojatnost izražava našu nesigurnost o ishodu pokusa. 
  
@@ -535,7 +535,7 @@ Jednadžba~\eqref{eq:pgm-pravilo-umnoska} onda prelazi u
 = \prod_i\p\del{x_i \midmid \bigcap_{\rvar x_j\in\pa_G(\rvar x_i)}\cbr{\rvar x_j=x_j}} \text{.}
 \end{align} 
 To omogućuje primjenu efikasnijih algoritama za zaključivanje \citep{Murphy:2012:MLPP}.
-Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između triju slučajnih varijabli povezanih zavisnostima koje mogu biti dio većeg grafa. Oni su detaljnije objašnjeni npr. u \citet{Bishop:2006:PRML} i \citet{Alpaydin:2014:IML}. 
+Na slici~\ref{fig:bm-kanonski} prikazani su osnovni slučajevi odnosa između triju slučajnih varijabli povezanih zavisnostima koje mogu biti dio većeg grafa. Oni su detaljnije objašnjeni npr. u \citet{Bishop:2006:PRML,Alpaydin:2014:IML}. 
 
 \begin{figure}
 	\centering
@@ -618,7 +618,7 @@ Na slici~\ref{fig:bm-regresija} prikazan je primjer na kojem se koriste još nek
 	\end{tikzpicture}
 	\caption{Primjer grafičkog modela s faktorizacijom 
 		$\p(\vec x, y,\vec x_1\bidot\vec x_N,y_1\bidot y_N,\vec\theta,\epsilon) 
-		= \p(\vec\theta)\p(\epsilon)p_{\rvec x}(\vec x)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y\mid\vec x,\vec\theta,\epsilon) \prod_i\del{p_{\rvec x}(\vec x_i)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y_i\mid\vec x_i,\vec\theta,\epsilon)}$. Graf prikazuje model regresije, gdje su $\rvec\theta$ nepoznati parametri, $\rvec x_i$ i $\rvec y_i$ opažani parovi ulaza i izlaza, $\rvec x$ opažani ulaz s nepoznati izlazom, a $\rvar\epsilon$ homoskedastički šum, tj. šum koji ne ovisi o ulazu. Na slici je još eksplicitno prikazana deterministička varijabla $\alpha$ koja je parametar razdiobe $\p(\rvec\theta)=\p(\rvec\theta\mid\alpha)$. Slika je napravljena po uzoru na sliku~14.7 u \citet{Alpaydin:2014:IML}.}
+		= \p(\vec\theta)\p(\epsilon)p_{\rvec x}(\vec x)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y\mid\vec x,\vec\theta,\epsilon) \prod_i\del{p_{\rvec x}(\vec x_i)p_{\rvec y\mid\rvec x,\rvec\theta,\rvar\epsilon}(y_i\mid\vec x_i,\vec\theta,\epsilon)}$. Graf prikazuje model regresije, gdje su $\rvec\theta$ nepoznati parametri, $\rvec x_i$ i $\rvec y_i$ opažani parovi ulaza i izlaza, $\rvec x$ opažani ulaz s nepoznati izlazom $\rvar y$, a $\rvar\epsilon$ homoskedastički šum, tj. šum koji ne ovisi o ulazu. Na slici je još eksplicitno prikazana deterministička varijabla $\alpha$ koja je parametar razdiobe $\p(\rvec\theta)=\p(\rvec\theta\mid\alpha)$. Slika je napravljena po uzoru na sliku~14.7 u \citet{Alpaydin:2014:IML}.}
 	\label{fig:bm-regresija}
 \end{figure}
 
@@ -860,7 +860,7 @@ L_{\vec x}(\tilde{\rvec z})
 
 \chapter{Nadzirano strojno učenje} \label{chap:nsu}
 
-Ovo poglavlje se uglavnom temelji na \citet{Snajder:2014:SU} i \citet{Goodfellow:2016:DL}.
+Ovo poglavlje se uglavnom temelji na \citet{Snajder:2014:SU,Goodfellow:2016:DL}.
 
 Zadatak algoritama \emph{nadziranog učenja} je preslikavanje \emph{ulaznih primjera} $\vec x$ iz \emph{ulaznog prostora} $\set{X}$ u \emph{izlaze} (\emph{oznake}) $\vec y\in\set{Y}$ na temelju konačnog skupa označenih primjera $\set{D} = \cbr{\del{\vec x_i,\vec y_i}}_{i}$. Algoritmima strojnog učenja pretražuje se \emph{model} ili \emph{prostor hipoteza} u cilju pronalaska \emph{hipoteze} koja osim primjera iz skupa za učenje, u izlaze dobro preslikava i primjere koji nisu u skupu za učenje. Sposobnost postizanja dobre performanse na neviđenim primjerima naziva se \emph{generalizacija}.
 
@@ -1013,6 +1013,7 @@ Osnovni zadaci nadziranog učenja su \emph{klasifikacija} i \emph{regresija}. Za
 
 %TODO
 
+
 \section{Primjeri modela: poopćeni linearni modeli} \label{sec:poopceni-linearni-modeli}
 
 Ovaj odjeljak se temelji na \citep{Snajder:2014:SU}.
@@ -1078,7 +1079,7 @@ Razdiobe $\P(\rvec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \e
 
 Na ovaj odjeljak imaju utjecaj \citet{Goodfellow:2016:DL} i predavanja iz predmeta \textit{\href{http://www.zemris.fer.hr/~ssegvic/du/}{Duboko učenje}}.
 
-Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk), ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo, npr. jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro. Kod \emph{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
+Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk) ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo. Ni jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro zbog \emph{prokletstva dimanzionalnosti} \citep{Bengio:2005:CDLKM}. Kod \emph{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
 
 Odabirom 
 \begin{align}
@@ -1610,7 +1611,7 @@ Kod konvolucijski mreža još se koriste neke izmjene konvolucije kako bi se pos
 	\label{fig:konvolucija-izl-korak}
 \end{figure}
 
-Kako bi se povećalo \emph{receptivno polje} jedinice konvolucijskog sloja bez povećavanja dimenzija jezgre, koristi se konvolucija s \emph{dilatacijom} (ili \emph{dilacijom}), tj. \emph{širenje jezgre}. Na slici~\ref{fig:konvolucija-dilatacija} ilustrirana konvolucija s dilacijom $1$. Takva konvolucija je ekvivalentan konvoluciji kod koje se koristi veća jezgra kod koje se svaki drugi redak ili stupac sastoji od nula.
+Kako bi se povećalo \emph{receptivno polje} jedinice konvolucijskog sloja bez povećavanja dimenzija jezgre, koristi se konvolucija s \emph{dilatacijom} (ili \emph{dilacijom}), tj. \emph{širenjem jezgre}. Na slici~\ref{fig:konvolucija-dilatacija} ilustrirana konvolucija s dilacijom $1$. Takva konvolucija je ekvivalentan konvoluciji kod koje se koristi veća jezgra kod koje se svaki drugi redak ili stupac sastoji od nula.
 
 \begin{figure}
 	\centering
@@ -1729,7 +1730,7 @@ Ovdje se vidi da $\pd{\vec y}{\vecfunc(\vec X)}=\vec W_\text{M}$. Gradijent gubi
 
 \subsection{Slojevi sažimanja}
 
-U konvolucijskim mrežama se, uglavnom radi smanjivanja dimenzija, mogu koristiti \emph{slojevi sažimanja}. Operacije sažimanja, slično konvolucijskim slojevima, primjenjuju neku funkciju pomicanjem okna po dimenzijama konvolucije, obično s korakom većim od 1. Za razliku od konvolucijskih slojeva, oni obično djeluju na svakoj mapi značajki posebno i izlazi sažimanja su invarijantni na zamjenu elemenata unutar okna. To svojstvo se naziva \emph{lokalna invarijantnost}. Najčešće se kao funkcija koja preslikava skup elementa okna u izlaz koristi $\max$ ili prosjek. Veličina okna je često jednaka veličini koraka tako da se susjedna okna ne preklapaju. Na slici~\ref{fig:sazimanje-primjeri}.
+U konvolucijskim mrežama se, uglavnom radi smanjivanja dimenzija, mogu koristiti \emph{slojevi sažimanja}. Operacije sažimanja, slično konvolucijskim slojevima, primjenjuju neku funkciju pomicanjem okna po dimenzijama konvolucije, obično s korakom većim od 1. Za razliku od konvolucijskih slojeva, oni obično djeluju na svakoj mapi značajki posebno i izlazi sažimanja su invarijantni na zamjenu elemenata unutar okna. To svojstvo se naziva \emph{lokalna invarijantnost}. Najčešće se kao funkcija koja preslikava skup elementa okna u izlaz koristi $\max$ ili prosjek. Veličina okna je često jednaka veličini koraka tako da se susjedna okna ne preklapaju. Na slici~\ref{fig:sazimanje-primjeri} ilustrirani su primjeri sažimanja.
 
 \begin{figure}
 	\centering
@@ -1763,44 +1764,61 @@ U konvolucijskim mrežama se, uglavnom radi smanjivanja dimenzija, mogu koristit
 \end{figure}
 
 
-\chapter{Procjenjivanje nesigurnosti}
+
+\chapter{Procjenjivanje nesigurnosti kod dubokih mreža}
 
 
 \section{Aleatorna i epistemička nesigurnost}
 
-Kod bayesovskih modela nesigurnost zaključivanja izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i entropijom ili varijancom kada je prikladno.
+Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost} \citep{Kiureghian:2009:AEDM}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u \emph{strukturu modela} i \emph{parametre modela} \citep{Gal:2016:UDL}. Ona se zato još nazive \emph{nesigurnost modela}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
 
-Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste: \emph{aleatornu nesigurnost} i \emph{epistemičku nesigurnost} \citep{Kiureghian:2009:AEDM}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u strukturu i parametre modela \citep{Gal:2016:UDL}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
+Razlikovanje aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će biti aleatorna neovisno o ograničenosti modela.
 
-Granica između aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će, neovisno o ograničenosti modela, biti aleatorna.
+Na temelju aleatorne i epistemičke nesigurnosti može se procijeniti \emph{nesigurnost predikcije}. Kod bayesovskih modela nesigurnost predikcije izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i nekom mjerom kao što je entropija ili varijanca, ovisno o tome što je prikladno.
 
-\section{Homoskedastička i heteroskedastička aleatorna nesigurnost}
+Aleatorna nesigurnost može biti \emph{homoskedastička} ili \emph{heteroskedastička}. Homoskedastička nesigurnost znači da je aleatorna nesigurnost (šum) neovisna o primjeru, a heteroskedastička da ovisi o primjeru. Na slici~\ref{fig:bm-heteroskedasticki-sum} je prikazan primjer grafičkog modela koji pretpostavlja aleatorni šum, a na slici~\ref{fig:homoskedasticki-heteroskedasticki-sum-regresija} je ilustrirana usporedba regresijskih zadataka bez i sa šumom koji ovisi u ulaznom primjeru.
 
-Aleatorna nesigurnost može biti homoskedastička i heteroskedastička.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+	\node[pnode] (t) [] {$\rvec \theta$};
+	\node[pnode] (e) [left=of t] {$\rvar\epsilon$};
+	\node[pnode] (y) [below=of t] {$\rvar y$};	
+	\node[greypnode] (x) [left=of y] {$\rvec x$};
+	\path (t) edge [dedge] (y);
+	\path (e) edge [dedge] (y);
+	\path (x) edge [dedge] (e);
+	\path (x) edge [dedge] (y);
+	\end{tikzpicture}
+	\caption{Model regresije kod kojeg su $\rvec\theta$ nepoznati parametri, $\rvec x$ opažani ulaz, $\rvar y$ nepoznati izlaz, a $\rvar\epsilon$ heteroskedastički šum koji ovisi o ulazu $\rvec x$. Čvorovi koji predstavljaju podatke za učenje nisu prikazani.}
+	\label{fig:bm-heteroskedasticki-sum}
+\end{figure}
 
-TODO: homoskedastička, heteroskedastička nesigurnost
-
-TODO: model uncertainty, predictive uncertainty Gal-thesis 1.2
-
-\the\fontdimen5\font\newline % em
-\the\fontdimen6\font\newline % ex
-small {\small \the\fontdimen6\font\newline} % ex}
-footnotesize {\footnotesize \the\fontdimen6\font\newline} % ex}
-\the\textwidth
-		
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{homoscedastic-heteroscedastic-noises}
 	\caption{Homoskedastički (lijevo) i heteroskedastički (desno) Gaussov šum.  Crta prikazuje očekivanje $f(x)$, svjetloplava površina standardnu devijaciju šuma $s(x)$, a točke slučajne uzorke. Točke su generirane prema $(\rvar y\mid x) \sim \mathcal{N}(f(x),s(x)^2)$. Na lijevoj slici je $s(x)=1$.}
-	\label{fig:homoscedastic-heteroscedastic-noises}
+	\label{fig:homoskedasticki-heteroskedasticki-sum-regresija}
 \end{figure}
-		
-		
 
-\chapter{Nesigurnost kod dubokih mreža}
+Jedan poseban slučaj nesigurnosti modela je nesigurnost u to \emph{pripada li primjer razdiobi skupa za učenje}. Modelu se može kao ulazni primjer dati nešto za što ne bi trebala biti definirana hipoteza. Takav primjer može biti npr. slika koja pripada nekoj klasi koja nije među onima koje model treba raspoznavati ili samo slučajni šum.
+
+Problem prepoznavanja primjera koji su izvan razdiobe skupa za učenje prirodno rješavaju generativni probabilistički modeli, ali kod složenih visokodimenzionalnih podataka to postaje problem zbog prokletstva dimenzionalnosti i složenosti modeliranja i statističkog zaključivanja. Kod diskriminativnih modela je problem to što oni ne modeliraju razdiobu ulaznih primjera $\p(\rvec x)$, nego samo uvjetnu razdiobu izlaza uz dani ulaz $\p(\rvec y \mid\vec x)$.
 
 
 \section{Bayesovske neuronske mreže}
+
+Poželjno svojstvo modela strojnog učenja je mogućnost je da može prepozna
+
+
+Iako duboki
+
+Kod dubokih modela 
+
+problem visoka dimenzionalnost
+
+%nemogućnost statističkog modeliranja
+
 
 
 \chapter{Eksperimentalni rezultati}
