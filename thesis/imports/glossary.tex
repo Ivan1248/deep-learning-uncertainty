@@ -24,7 +24,7 @@
 	\newglossaryentry{#1}{type=symbols, name={{\large \textbf{#2}} \def\temp{#3}\ifx\temp\empty\else\vspace{2mm}\newline #3\fi}, description={}}
 }
 \newcommand{\glsent}[4]{\newglossaryentry{{#1:#2}}{sort={#2},type=symbols,name={#3},description={#4},parent={#1}}}
-\newcommand{\glsentm}[4]{\glsent{#1}{#2}{\ensuremath{#3}}{#4}}
+\newcommand{\glsentm}[4]{\glsent{#1}{#2}{\ensuremath{\displaystyle#3}}{#4}}
 
 %\setglossarypreamble[symbols]{Ovaj odjeljak sadrži popis velikog broja oznaka koje se koriste u ovom radu. Za neke skupine oznaka napisana su kratka objašnjenja koja dodatno pojašnjavaju i opravdavaju neke oznake. Pojmovi koje označavaju neke oznake detaljnije su objašnjeni u poglavlju~\ref{chap:osnovni-pojmovi}.}
 
@@ -91,22 +91,20 @@
 	{Skup čiji su elementi definirani preko funkcije $f$ i varijabli $a$ iz implicitno određenog skupa}
 \glsentm{sn}{setdefn}{\cbr{a_1\bidot a_n},\,\cbr{a_i}_{i=1\bidot n}}
 	{Skup s $n$ elemenata}
-\glsentm{sn}{ndarrdef}{\del{a_i}_{i}, \del{a_{i,j}}_{i,j}, \del{a_{i,j,k}}_{i,j,k}}
-	{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
-\glsentm{sn}{intoo}{\intoo{a,b}}
-	{Otvoreni interval}
-\glsentm{sn}{intcc}{\intcc{a,b}}
-	{Zatvoreni interval}
 \glsentm{sn}{rowvec}{\sbr{x_1,\bidot,x_n}}
 	{Vektor redak}
+\glsentm{sn}{ndarrdef}{\sbr{a_i}_{i}, \sbr{a_{i,j}}_{i,j}, \sbr{a_{i,j,k}}_{i,j,k}}
+	{Višedimenzionalni niz s implicitnim ili neodređenim brojem elemenata}
+\glsentm{sn}{intco}{\intco{a,b}}
+	{Poluzatvoreni interval}
 %\glsentm{sn}{colvec}{\del{x_1,\bidot,x_n}}
 %	{$n$-torka}
 
 % Donji i gornji indeks
 \glsgroup{i}{Donji i gornji indeks}
-{U donjem indeksu oznake mogu biti oznake drugih matematičkih objekata. U donjem i gornjem indeksu oznake mogu biti oznake (slova ili riječi) koje ne predstavljaju matematičke objekte. Oznake koje ne predstavljaju matematičke objekte istog su stila kao tekst. Indeksi (redni brojevi) elemenata vektora ili višedimenzionalnih nizova se, ako nije određeno drugačije, pišu u donjem indeksu oznake vektora u uglatim zagradama. Npr. ako je definiran vektor $\vec a=(a_1,.., a_n)^\tp$, onda je njegov $i$-ti element $\vec a_\ind{i}=a_i$. Indeksi kod $n$-dimenzionalnih nizova mogu biti i vektori iz $\N^{n}$, ili kombinacije vektora manje dimenzije sa skalarima. Ako nije navedeno drugačije, najmanji indeks je $1$.}
+{U donjem i gornjem indeksu oznake mogu biti oznake drugih matematičkih objekata ili slova ili riječi koje ne predstavljaju matematičke objekte. Redni brojevi elemenata vektora ili višedimenzionalnih nizova se, ako nije određeno drugačije, pišu u donjem indeksu oznake vektora u uglatim zagradama. Npr. $i$-ti element vektora $\vec a=\sbr{a_1,.., a_n}^\tp$ je $\vec a_\ind{i}=a_i$. Indeksi kod $n$-dimenzionalnih nizova mogu biti i vektori iz $\N^{n}$, ili kombinacije vektora manje dimenzije sa skalarima.}
 \glsentm{i}{gdindeks}{a_\text{d}^\text{g}}
-	{Oznaka varijable s oznakama u donjem i gornjem indeksu}
+	{Varijabla s oznakama u donjem i gornjem indeksu}
 \glsentm{i}{vecelem}{\vec{a}_\ind{i}}
 	{$i$-ti element vektora $\vec{a}$}
 \glsentm{i}{subvec}{\vec{a}_\ind{i_1:i_2}}
@@ -120,11 +118,11 @@
 \glsentm{i}{asubmat}{\vec{A}_\ind{:,i_1:i_2,j}}
 	{2-D odsječak 3-D niza $\vec A$}
 \glsentm{i}{aet}{\vec{A}_\ind{\vec i}}
-	{Element $\vec{A}_\ind{\vec i_\ind{1},\bidot,\vec i_\ind{n}}$ $n$-dimenzionalnog niza}
+	{Element $\vec{A}_\ind{\vec i_\ind{1},\bidot,\vec i_\ind{n}}$ $n$-D niza}
 \glsentm{i}{ast}{\vec{A}_\ind{\vec i_1:\vec i_2}}
-	{Podniz $\vec{A}_\ind{{\vec i_1}_\ind{1}:{\vec i_2}_\ind{1},\bidot,{\vec i_1}_\ind{n}:{\vec i_2}_\ind{n}}$ $n$-dimenzionalnog niza}
+	{Podniz $\vec{A}_\ind{{\vec i_1}_\ind{1}:{\vec i_2}_\ind{1},\bidot,{\vec i_1}_\ind{n}:{\vec i_2}_\ind{n}}$ $n$-D niza}
 \glsentm{i}{astp}{\vec{A}_\ind{\vec i_1:\vec i_2;:}}
-	{Podniz $\vec{A}_\ind{{\vec i_1}_\ind{1}:{\vec i_2}_\ind{1},\bidot,{\vec i_1}_\ind{n-1}:{\vec i_2}_\ind{n-1},:}$ $n$-dimenzionalnog niza}
+	{Podniz $\vec{A}_\ind{{\vec i_1}_\ind{1}:{\vec i_2}_\ind{1},\bidot,{\vec i_1}_\ind{n-1}:{\vec i_2}_\ind{n-1},:}$ $n$-D niza}
 
 % Operacije linearne algebre i operacije s nizovima
 \glsgroup{l}{Operacije linearne algebre i operacije s nizovima} {} 
@@ -137,11 +135,11 @@
 \glsentm{l}{haddiv}{\vec a \oslash \vec b}
 	{Dijeljenje po elementima}
 \glsentm{l}{hadpow}{\vec a^{\odot b}}
-	{Potenciranje po elementima; Hadamardovo potenciranje}
+	{Potenciranje po elementima}
 \glsentm{l}{matmul}{\vec A \vec B}
-	{Matrično množenje (kompozicija linearnih operatora)}
+	{Matrično množenje}
 \glsentm{l}{matinv}{\vec A^{-1}}
-	{Inverz matrice (inverz linearnog operatora)}
+	{Inverz matrice}
 \glsentm{l}{transp}{\vec A^\tp}
 	{Transponiranje}
 \glsentm{l}{diag}{\diag\del{\vec{a}}}
@@ -161,15 +159,15 @@
 \glsentm{l}{conc}{\vec a\concat\vec b}
 	{Konkatenacija vektora (stupaca) $\vec a\in\R^n$ i $\vec b\in\R^m$ u vektor iz $\R^{n+m}$}
 \glsentm{l}{conc1}{\vec A\concat\vec B}
-	{Konkatenacija višedimenzionalnih nizova po prvoj dimenziji}
+	{Konkatenacija nizova po prvoj dimenziji}
 \glsentm{l}{dconc}{\vec A\concat'\vec B}
-	{Konkatenacija višedimenzionalnih nizova po zadnjoj dimenziji}
+	{Konkatenacija nizova po zadnjoj dimenziji}
 \glsentm{l}{vec}{\vecfunc(\vec A)}
-	{Funkcija koja preslikava niz iz $\R^{d_1\times\dots\times d_n}$ u vektor iz $\R^{d_1\dots d_n}$}
+	{Funkcija koja preslikava niz iz $\R^{d_1\times\dots\times d_n}$ u $\R^{d_1\dots d_n}$}
 \glsentm{l}{vdim}{\dim(\vec a)}
 	{Dimenzija vektora}
 \glsentm{l}{dim}{\dim(\vec A)}
-	{Vektor dimenzija $\sbr{d_1,\bidot,d_n}$ ako $\vec A\in\R^{d_1\times\dots\times d_n}$}
+	{Vektor dimenzija niza; $\sbr{d_1,\bidot,d_n}$ za $\vec A\in\R^{d_1\times\dots\times d_n}$}
 
 % Diferencijalni račun
 \glsgroup{d}{Diferencijalni račun}{}
@@ -181,7 +179,7 @@
 	{Gradijent $y=f(\vec x)$ po $\vec x$}
 \glsentm{d}{gradmat}{\nabla_{\vec X}{y},\,\nabla_{\vec X}{f(x)}}	
 	{Gradijent $y=f(\vec x)$ po $\vec X$}
-\glsentm{d}{hess}{\tfrac{\partial^2y}{\partial\vec x\partial\vec x^\tp},\,\vec H_{f}(\vec x),\,\vec H}
+\glsentm{d}{hess}{\frac{\partial^2y}{\partial\vec x\partial\vec x^\tp},\,\vec H_{f}(\vec x),\,\vec H}
 	{Hessijan iz $\R^{n\times n}$ za $\funcdef{f}{\R^n}{\R}$ i $y=f(\vec x)$}
 \glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\vec J_{f}(\vec x),\,\vec J}
 	{Jakobijeva matrica iz $\R^{m\times n}$ za $\funcdef{f}{\R^n}{\R^m}$ i $\vec y=f(\vec x)$}
@@ -192,7 +190,7 @@
 
 % Teorija vjerojatnosti
 \glsgroup{tv}{Teorija vjerojatnosti}
-{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (koja može biti poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Gustoća vjerojatnosti se još kraće može zapisati $\p(a)$, gdje se po slovu implicitno pretpostavlja slučajna varijabla označena istim slovom bez serifa. Isto tako, vjerojatnost elementarnog događaja se može zapisati $\P(a)$. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
+{Svakoj slučajnoj varijabli $\rvar a$ jednoznačno je dodijeljena jedna razdioba $\p(\rvar a)$ (ili $\P(\rvar a)$) i funkcija gustoće vjerojatnosti (koja može biti poopćena funkcija) $p_{\rvar a}(a)=\p(\rvar a=a)$. $\P(A)$ označava vjerojatnost događaja $A$, a $P_{\rvar a}$ funkciju vjerojatnosti slučajne varijable $\rvar a$. Mogući su i kraći zapisi $\p(a)$ i $\P(a)$, gdje se po slovu koje označava vrijednost pretpostavlja slučajna varijabla označena istim slovom bez serifa. Mogu se koristiti i druge oznake za funkciju vjerojatnosti ili funkciju gustoće vjerojatnosti.}
 %TODO move to new page if too high
 \glsentm{tv}{rvarcond}{(\rvar a\mid\rvar b= b),\,(\rvar a\mid b)}{Uvjetna slučajna varijabla}
 \glsentm{tv}{rvarjoint}{(\rvar a,\rvar b)}{Združena slučajna varijabla}
@@ -285,3 +283,5 @@
 	{Niz (engl. \textit{array}) iz $\R^{d_1\times\dots\times d_n}$, tj. postoji $\funcdef{f}{\cbr{1..d_1}\times\dots\times\cbr{1..d_n}}{\R}$ tako da za svaku $n$-torku $\vec i$ iz njene domene vrijedi $\vec A_\ind{\vec i} = f(\vec i)$}
 \glsent{r}{idn}{$i$-ta dimenzija niza}
 	{$d_i$, ako je niz iz $\R^{d_1\times\dots\times d_n}$}
+\glsent{r}{nd}{$n$-D}
+	{$n$-dimenzionalan}
