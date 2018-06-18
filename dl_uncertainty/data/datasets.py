@@ -18,9 +18,9 @@ from ..ioutils import file
 
 def _to_rgb(img):
     if len(img.shape) == 2:
-        img = np.dstack([img] * 3)
+        return np.dstack([img] * 3)
     elif img.shape[-1] > 3:
-        img = img[:, :, :3]
+        return img[:, :, :3]
     return img
 
 
@@ -251,8 +251,12 @@ class CamVidDataset(Dataset):
         self.name = f"CamVid-{subset}"
 
     def __getitem__(self, idx):
-        img, lab = map(_load_image, self._img_lab_list[idx])
-        lab = lab.astype(np.int8)
+        img, lab = self._img_lab_list[idx]
+        img = _load_image(img)
+        img, lab = _load_image(lab, force_rgb=False).astype(np.int8)
+        if len(lab.shape == 3):
+            assert np.all(lab[:, :, 0] == lab[:, :, 1])
+            lab = lab[:, :, 0]
         lab[lab == 11] = -1
         return img, lab
 
@@ -438,6 +442,29 @@ class VOC2012SegmentationDataset(Dataset):
                 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
                 'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa',
                 'train', 'tvmonitor'
+            ],
+            'class_colors': [
+                (128, 64, 128),
+                (244, 35, 232),
+                (70, 70, 70),
+                (102, 102, 156),
+                (190, 153, 153),
+                (153, 153, 153),
+                (250, 170, 30),
+                (220, 220, 0),
+                (107, 142, 35),
+                (152, 251, 152),
+                (70, 130, 180),
+                (220, 20, 60),
+                (255, 0, 0),
+                (0, 0, 142),
+                (0, 0, 70),
+                (0, 60, 100),
+                (0, 80, 100),
+                (0, 0, 230),
+                (0, 0, 230),
+                (0, 0, 230),
+                (119, 11, 32),
             ]
         }
         self.name = f"VOC2012Segmentation-{subset}"
@@ -445,7 +472,8 @@ class VOC2012SegmentationDataset(Dataset):
     def __getitem__(self, idx):
         name = self._image_list[idx]
         img = _load_image(f"{self._images_dir}/{name}.jpg")
-        lab = _load_image(f"{self._labels_dir}/{name}.png").astype(np.int8)
+        lab = _load_image(
+            f"{self._labels_dir}/{name}.png", force_rgb=False).astype(np.int8)
         img = pad_to_shape(img, [500] * 2)
         lab = pad_to_shape(lab, [500] * 2, value=-1)  # -1 ok?
         return img, lab
