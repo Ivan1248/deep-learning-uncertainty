@@ -141,7 +141,7 @@ def get_inference_component(
     # logits
     class_count = ds_train.info['class_count']
     if (problem_id, net_name) == ('semseg', 'ldn'):
-        add(Layers.Logits.segmentation_multi(class_count))
+        add(Layers.Logits.segmentation(class_count))
         add(lambda x, **k: (x[0], {}))  # extract main logits
     elif problem_id == 'semseg':
         if aleatoric_uncertainty:

@@ -379,7 +379,7 @@ class TrainingComponents:
         return TrainingComponents.standard(
             batch_size=batch_size,
             loss=(Layers.Loss.cross_entropy_loss_multi(loss_weights),
-                  ['all_logits', 'label']),
+                  ['all_logits' if len(loss_weights) > 1 else 'logits', 'label']),
             weight_decay=weight_decay,
             optimizer=tf.train.AdamOptimizer,
             learning_rate_policy=learning_rate_policy,

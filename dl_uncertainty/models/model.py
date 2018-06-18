@@ -251,7 +251,7 @@ class Model(object):
             inputs = [inputs]
         if type(outputs) is str:
             outputs = [outputs]
-        NP = ['probs', 'output', 'probs_entropy', 'pred_logits_var']
+        NP = ['probs', 'output', 'probs_entropy', 'pred_logits_var', 'logits_var', ]
         for o in outputs:
             assert o in NP
         sampled_logits, sampled_probs = self._sample_logits_and_probs(
