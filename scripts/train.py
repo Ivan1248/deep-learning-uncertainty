@@ -19,6 +19,7 @@ CUDA_VISIBLE_DEVICES=2 python train.py
   cifar dn 100 12 --epochs 300 --trainval
   cifar rn  34  8 --epochs 200 --trainval
   cifar rn 164 16 --epochs 200 --trainval
+  voc2012 rn 50 64 --pretrained --epochs 30 --trainval
   cityscapes dn  121 32 --epochs 30 --pretrained
   cityscapes rn   50 64 --epochs 30 --pretrained
   cityscapes ldn 121 32 --epochs 30 --pretrained

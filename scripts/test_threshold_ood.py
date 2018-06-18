@@ -57,10 +57,19 @@ if args.ds == 'mozgalooodtrain':
     test_dataset_ids.remove('mozgalo')
     test_dataset_ids.append('mozgaloood')
     test_dataset_ids.append('mozgalooodtrain')
+
 ds_id_to_ds = {
     ds_id: data_utils.get_cached_dataset_with_normalized_inputs(
-        ds_id, trainval_test=True)[1].permute().subset(np.arange(150))
+        ds_id, trainval_test=True)[1]
     for ds_id in test_dataset_ids
+}
+
+for ds_id, ds in ds_id_to_ds.items():
+    print(ds_id, len(ds))
+
+ds_id_to_ds = {
+    ds_id: ds.permute().subset(np.arange(150))
+    for ds_id, ds in ds_id_to_ds.items()
 }
 
 shape = ds_id_to_ds[args.ds][0][0].shape
