@@ -1395,8 +1395,6 @@ Postupci koji značajno mogu utjecati na generalizaciju su postupci \emphasize{p
 
 Dodavanje šuma ulazu isto može biti korisno \citep{Goodfellow:2016:DL}. To odgovara pretpostavci da primjeri koji su slični u ulaznom prostoru trebaju biti slični i u izlaznim prostoru.
 
-Pokazalo se da je moguće pronaći ulazne primjere koji su (npr. slike) u ljudskoj percepciji slični prirodnim primjerima, ali i modeli koji ostvaruju rezultate usporedive s rezultatima ljudi daju krive predikcije \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE,Moosavi:2016:UAP}. Takvi ulazni primjeri nazivaju se \emphasize{neprijateljski primjeri}. Oni se mogu dobiti i pomoću jednog koraka gradijentnog spusta pomicanjem ulaznog primjera u smjeru povećavanja gubitka. Jedan od uspješnijih načina postizanja otpornosti na neprijateljske primjere je proširivanje skupa za učenje neprijateljskim primjerima \citep{Madry:2017:TDLMRAA}.
-
 \subsection{Isključivanje neurona --- dropout} \label{subsec:dropout}
 
 \emphasize{Dropout} \citep{Hinton:2012:INNPCAFD,Srivastava:2014:DASWPNNO} je postupak regularizacije koji unosi šum u izlaze skrivenih slojeva tijekom učenja. Obično se ostvaruje tako da se tijekom učenja za svaki primjer svaka jedinica mreže isključi s vjerojatnošću $1-p$, koja je hiperparametar. Tijekom testiranja, tj. zaključivanja, sve se jedinice skaliraju s $p$, tj. očekivanjem skaliranja koje je tijekom učenja $0$ s vjerojatnošću $1-p$, a $1$ s vjerojatnošću $p$. \textit{Dropout} se obično primjenjuje nakon afine transformacije (ne nakon aktivacije).
@@ -1477,6 +1475,69 @@ Pokazuje se da normalizacija po grupama ima i regularizacijski učinak, vjerojat
 %\subsection{Dijeljenja parametara, pomoćni gubici i višezadaćno učenje}
 %višezadaćno učenje, pomoćni gubici, dijeljenje parametara
 
+\subsection{Neprijateljski primjeri i regularizacija za postizanje otpornosti na njih}
+
+Ovaj odjeljak se uglavnom temelji na \cite{Grubisic:2018:IPM} uz neke manje izmjene i dodatke.
+ 
+Pokazalo se da je moguće pronaći ulazne primjere koji su (npr. slike) u ljudskoj percepciji slični prirodnim primjerima, ali i modeli koji ostvaruju rezultate usporedive s rezultatima ljudi daju krive predikcije \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE}. Takvi ulazni primjeri nazivaju se \emphasize{neprijateljski primjeri}. Oni se mogu dobiti i pomoću jednog koraka gradijentnog spusta pomicanjem ulaznog primjera u smjeru povećavanja gubitka. Na slici~\ref{fig:neprijateljski-primjer} je prikazano generiranje neprijateljskog primjera malom izmjenom izvorne slike.
+
+\begin{figure}
+	\centering
+	\begin{tabular}{>{\centering\arraybackslash}m{.2\textwidth}m{.5in}>{\centering\arraybackslash}m{.2\textwidth}m{.1in}>{\centering\arraybackslash}m{.2\textwidth}}
+		\centering\arraybackslash
+		%abs max for panda was 138, eps was 1., so relative eps is ~.007
+		\includegraphics[width=.2\textwidth]{adversarial-examples/panda_577.png} &%
+		\centering\arraybackslash%
+		$ +\ 0.007\ \cdot$ &%
+		\includegraphics[width=.2\textwidth]{adversarial-examples/nematode_082.png} &%
+		$=$ & %
+		\includegraphics[width=.2\textwidth]{adversarial-examples/gibbon_993.png} \\
+		$\centering \vec x$     &%
+		& $\sgn \nabla_{\vec x} L(y,h(\vec x;\vec\theta))$ & & $\widetilde{\vec x}$ \\
+		\emph{panda} (0.577) & & & & \emph{gibon} (0.993) 
+	\end{tabular}
+	\caption{Prilagođeni prikaz dobivanja neprijateljskog primjera FGSM-om iz \cite{Goodfellow:2014:EHAE}. Nakošene riječi predstavljaju klase, a brojevi u zagradama vjerojatnosti koje im mreža dodjeljuje.}
+	\label{fig:neprijateljski-primjer}
+\end{figure}
+
+Neka je $d:\set{X}\times\set{X}$ funkcija udaljenosti u ulaznom prostoru. Za svaki primjer $\vec x$ možemo definirati susjedstvo $B_\epsilon(\vec x) = \cbr{\vec x' \colon d(\vec x',\vec x)\leq\epsilon}$. Pronalaženje neprijateljskih primjera se može definirati kao optimizacijski problem pronalaženja primjera $\widetilde{\vec x}$ koji maksimizira gubitak uz ograničenje da se nalazi u susjedstvu $B_\epsilon$ prirodnog primjera $\vec x$:
+\begin{equation} \label{eq:neprijateljski-primjer}
+\widetilde{\vec x} = \argmax_{\widetilde{\vec x}\in B_\epsilon(\vec x)} L(y,h(\widetilde{\vec x})) \text{.}
+\end{equation}
+Za funkciju udaljenosti $d$ se obično uzima neka $L^p$-norma razlike. Npr. za $L^\infty$-normu je $B_\epsilon(\vec x) = \{\widetilde{\vec x} : \lVert \widetilde{\vec x}-\vec x\rVert_\infty\leq\epsilon\}$.
+
+Neprijateljski primjeri mogu se pronaći iterativnim optimizacijskim postupcima prvog reda uz održavanje ograničenja susjedstva. Pokazuje se da je neprijateljske primjere moguće pronaći već samo jednim korakom u smjeru predznaka gradijenta. Jedna vrsta takvog napada je \emph{\textit}{fast gradient sign method} (FGSM) \cite{Goodfellow:2014:EHAE}. Neprijateljskom primjeru koji se pronalazi FGSM-om odgovara sljedeći izraz:
+\begin{equation} \label{eq:FGSM}
+\widetilde{\vec x} = \vec x + \epsilon\sgn \nabla_{\vec x} L(y,h(\vec x)) \text{.}
+\end{equation}
+\citet{Madry:2017:TDLMRAA} definiraju iterativni postupak koji se temelji na FGSM-u i nazivaju ga \emph{projected gradient descent} (PGD):
+\begin{equation} \label{eq:pgd}
+\widetilde{\vec x} \gets \Pi_{B_\epsilon(\vec x)} (\widetilde{\vec x} + \alpha\sgn\nabla_{\widetilde{\vec x}} L(y,h(\widetilde{\vec x}))) \text{.}
+\end{equation}
+Početni $\tilde{\vec x}$ se bira nasumično unutar $B_\epsilon(\vec x)$. $\alpha$ je veličina koraka optimizacije, a $\Pi_{B_\epsilon(\vec x)}$ označava projekciju na zatvorenu $\epsilon$-kuglu oko prirodnog primjera $\vec x$ uz $L^\infty$-normu. Npr. projekcijom vektora $\vec v$ na susjedstvo vektora $\vec x$, $\Pi_{B_\epsilon(\vec x)}(\vec v) = \argmin_{\vec v'\in B_\epsilon(\vec x)}\lVert \vec v'-\vec v\rVert_\infty$, svakoj komponenti $v_i$ dodjeljuje se najbliža vrijednost unutar intervala $\left[x_i-\epsilon, x_i+\epsilon\right]$.
+
+Mogući su i napadi bez uvida u strukturu modela, npr. genetskim algoritmom. Također, pokazuje se da su neprijateljski primjeri u velikoj mjeri prenosivi između različitih modela \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE, Moosavi:2016:UAP,Liu:2016:DITAEBBA}.
+
+Možemo definirati oblik rizika koji se može nazvati \emphasize{neprijateljski rizik} \citep{Madry:2017:TDLMRAA}:
+\begin{equation}\label{eq:adv-risk}
+R_\text{A}(\vec\theta;d,\epsilon) = \mathbb{E}_{(\vec x,y)\sim\mathcal{D}}\left[
+\max_{\widetilde{\vec x} \in B_\epsilon(\vec x)} L(y,h(\widetilde{\vec x};\vec\theta)) \right] \text{.}
+\end{equation}
+Mali neprijateljski rizik predstavlja dobru lokalnu generalizaciju u susjedstvu prirodnih primjera.
+
+Jedan od najuspješnijih postupaka za postizanje otpornosti na neprijateljske primjere je \emphasize{učenje s neprijateljskim primjerima} (engl. \textit{adversarial training}). Kod učenja s neprijateljskim primjerima skup za učenje se proširuje neprijateljskim primjerima koji se tijekom učenja prilagođavaju parametrima mreže \cite{Goodfellow:2014:EHAE}. 
+
+\cite{Kurakin:2016:AMLS} primjećuju da korištenja stvarne ciljne oznaka u gubitku koji se maksimizira kako bi se dobio neprijateljski primjer unosi informacije o pravim oznakama u neprijateljske primjere koji se koriste tijekom učenja, na što se model može prenaučiti i može biti neotporan na neprijateljske primjere dobivene postupcima koji ne koriste stvarnu oznaku. Zato predlažu da se umjesto ciljne oznake u gubitku koji se maksimizira koristi oznaka koja odgovara predikciji modela. Onda izrazu~\eqref{eq:neprijateljski-primjer} odgovara ovaj izraz:
+\begin{equation} \label{eq:neprijateljski-primjer-p}
+\widetilde{\vec x} = \argmax_{\widetilde{\vec x}\in B_\epsilon(\vec x)} L\del{\argmax_k h(\vec x)_\ind{k},h(\widetilde{\vec x})} \text{,}
+\end{equation}
+što je obično maksimizacija negativnog logaritma najvećeg izlaza softmaksa:
+\begin{equation} \label{eq:neprijateljski-primjer-plogsoftmax}
+\widetilde{\vec x} = \argmax_{\widetilde{\vec x}\in B_\epsilon(\vec x)} \del{-\ln h(\widetilde{\vec x})_\ind{\argmax_k h(\vec x)_\ind{k}}} \text{.}
+\end{equation}
+
+Pokazuje se da se najučinkovitiji neprijateljski primjeri dobivaju u više koraka optimizacije \citep{Kurakin:2016:AMLS,Madry:2017:TDLMRAA}. \citet{Madry:2017:TDLMRAA} postižu dobru otpornost uz korištenja PGD-a (jednadžba~\ref{eq:pgd}) za generiranje neprijateljskih primjera tijekom učenja, a zaključuju i da je potreban veći kapacitet kako bi mreža zadržala performansu na prirodnim podacima.
+
 
 \section{Konvolucijske mreže}
 
@@ -1524,7 +1585,7 @@ Osnovni način definiranja $m$-dimenzionalne konvolucije (unakrsne korelacije ak
 \braket{\vec X_\ind{\vec t:\vec t+ \vec d_{\vec W}+\cvec 1,:}}{\vec W} \text{,}
 \end{align}
 gdje je $\vec d_{\vec W} = \dim(\vec W)_\ind{1:m}$ vektor dimenzija jezgre po kojima se obavlja konvolucija. Skalarni produkt na desnoj je definiran ako $\forall i \in \cbr{1\bidot m}\ {\vec t}_\ind{i} \in \cbr{1,\bidot,{\vec d_{\vec X}}_\ind{i}-{\vec d_{\vec W}}_\ind{i}-1}$, gdje je $\vec d_{\vec X}=\dim(\vec X)_\ind{1:m}$ vektor dimenzija ulaza. Izlaz takve operacije je dimenzija $\del{{\vec d_{\vec X}}_\ind{i}-{\vec d_{\vec W}}_\ind{i}-\cvec 1}$.
-Kod obrade slike obično želimo da izlaz konvolucije bude jednakih dimenzija kao ulaz. To se može ostvariti dopunjavanjem ulaza nulama po rubu dimenzija po kojima treba obavljati konvoluciju tako da sredina jezgre, za koju pretpostavljamo da ima neparne dimenzije, može doći do ruba originalnog ulaza. Neka $\mathrm{pad}\del{\vec X, \tfrac{1}{2}\del{\vec d_{\vec W}-\cvec 1}}$ označava takvu operaciju dopunjavanja. Definiramo novu operaciju:
+Kod obrade slike obično želimo da izlaz konvolucije bude jednakih dimenzija kao ulaz. To se može ostvariti dopunjavanjem ulaza nulama po rubu dimenzija po kojima treba obavljati konvoluciju tako da sredina jezgre, za koju pretpostavljamo da ima neparne dimenzije, može doći do ruba izvornog ulaza. Neka $\mathrm{pad}\del{\vec X, \tfrac{1}{2}\del{\vec d_{\vec W}-\cvec 1}}$ označava takvu operaciju dopunjavanja. Definiramo novu operaciju:
 \begin{align} \label{eq:konvolucija-ss}
 \vec X *_\text{s}^\text{s} \vec W \coloneqq 
 \mathrm{pad}\del{\vec X, \tfrac{1}{2}\del{\vec d_{\vec W}-\cvec 1}} *_\text{s}^\text{v} \vec W \text{.}
@@ -1819,15 +1880,16 @@ Aleatorna nesigurnost može biti \emphasize{homoskedastička} ili \emphasize{het
 
 \subsection{Izvanrazdiobni primjeri}
 
-Jedan poseban slučaj nesigurnosti modela je nesigurnost u to \emphasize{pripada li primjer razdiobi skupa za učenje}. Modelu se može kao ulazni primjer dati nešto za što ne bi trebala biti definirana hipoteza. Takav primjer može biti npr. slika koja pripada nekoj klasi koja nije među onima koje model treba raspoznavati ili samo slučajni šum. Primjeri koji su izvan razdiobe skupa za učenje dalje će se nazivati \emphasize{izvanrazdiobni primjeri}. Primjeri koji su iz razdiobe skupa za učenje nazivat će se \emphasize{unutarrazdiobni primjeri}.
+Jedan poseban slučaj nesigurnosti modela je nesigurnost u to \emphasize{pripada li primjer razdiobi skupa za učenje}. Modelu se dati ulazni primjer za koji ne postoji točna oznaka i nije sličan primjerima u skupu za učenje. Takav primjer može biti npr. slika koja pripada nekoj klasi koja nije među onima koje model treba raspoznavati ili samo slučajni šum. Primjeri koji su izvan razdiobe skupa za učenje dalje ćemo nazivati \emphasize{izvanrazdiobni primjeri}. Primjeri koji su iz razdiobe skupa za učenje nazivat ćemo \emphasize{unutarrazdiobni primjeri}.
 
 Problem prepoznavanja primjera koji su izvan razdiobe skupa za učenje prirodno rješavaju generativni probabilistički modeli, ali kod složenih visokodimenzionalnih podataka to postaje problem zbog prokletstva dimenzionalnosti i složenosti modeliranja i statističkog zaključivanja. Kod diskriminativnih modela je problem to što oni ne modeliraju razdiobu ulaznih primjera $\p(\rvec x)$, nego samo uvjetnu razdiobu izlaza uz dani ulaz $\p(\rvec y \mid\vec x)$.
 
-\subsection{Važnost i primjene procjenjivanja i razlikovanja nesigurnosti u strojnom učenju}
+
+\section{Važnost i primjene procjenjivanja i razlikovanja nesigurnosti u strojnom učenju} \label{sec:vaznost-primjene-nesigurnosti}
 
 Sve se više upotrebljavaju složeni duboki modeli kod ozbiljnih primjena kao što su medicina i autonomna vozila, gdje treba osigurati pouzdanost i sposobnost prepoznavanja primjera o kojima model ne može donositi pouzdane zaključke. Trenutno najuspješniji modeli imaju problema s pokazivanjem prevelike sigurnosti u predikciji kod izvanrazdiobnih primjera i krivo klasificiranih primjera \citep{Nguyen:2015:DNNEFHCPUI,Hendrycks:2016:BDMOODE}, a mogu se i pronalaziti neprijateljski primjeri koji su slični unutarrazdiobnim primjerima \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE,Moosavi:2016:UAP}. Neprijateljski primjeri su kratko opisani u pododjeljku~\ref{subsec:du-generiranje-podataka}.
 
-Primjeri područja strojnog učenja u kojima nesigunost ima važnost su aktivno učenje i podržano učenje. Aktivno učenje je oblik polunadziranog učenja gdje algoritam učenja bira primjere za koje zaključi da su potrebni za učenje. Kod podržanog učenja algoritam bira koja će stanja istraživati. Osim procjenjivanja mjere nesigurnosti, za efikasno učenje kod takvih algoritama je bitno i razlikovanje epsitemičke i aleatorne nesigurnosti \citep{Gal:2016:UDL}. Npr. agent kod podržanog učenja neće puno naučiti pretraživanjem stanja koja su sama po sebi nasumična (aleatorna), dok će pretraživanjem stanja o kojima nema puno znanja (epistemička nesigurnost) naučiti nešto novo. Dakle, uspješnim modeliranjem i razlikovanjem nesigurnosti može se poboljšati efikasnost takvih algoritama.
+Primjeri područja strojnog učenja u kojima je posebno važno procjenjivanje nesigunosti su aktivno učenje i podržano učenje. Aktivno učenje je oblik polunadziranog učenja gdje algoritam učenja bira primjere za koje zaključi da su potrebni za učenje. Kod podržanog učenja algoritam bira koja će stanja istraživati. Osim procjenjivanja mjere nesigurnosti, za efikasno učenje kod takvih algoritama je bitno i razlikovanje epsitemičke i aleatorne nesigurnosti \citep{Gal:2016:UDL}. Npr. agent kod podržanog učenja neće puno naučiti pretraživanjem stanja koja su sama po sebi nasumična (aleatorna), dok će pretraživanjem stanja o kojima nema puno znanja (epistemička nesigurnost) naučiti nešto novo. Dakle, uspješnim modeliranjem i razlikovanjem nesigurnosti može se poboljšati efikasnost takvih algoritama.
 
 
 \section{Bayesovske neuronske mreže}
@@ -1892,7 +1954,9 @@ U ovom odjeljku su opisani primjeri pristupa za procjenu nesigurnosti i prepozna
 
 \subsection{Aproksimacija bayesovske neuronske mreže mrežom s dropoutom}
 
-\textit{Dropout}, opisan u pododjeljku~\ref{subsec:dropout}, je postupak koji tijekom učenja nasumično isključuje jedinice i može se interpretirati kao aproksimacija učenja eksponencijalnog broja mreža koje dijele parametre. Pri testiranju se obično usrednjavanje aproksimira tako da se, umjesto isključivanja jedinica, izlazi slojeva usrednje skaliranjem koje odgovara vjerojatnosti neisključivanja. Drugi način usrednjavanja je usrednjavanje izlaza cijele mreže dobivenih uzorkovanjem uz dropout kao pri učenju \citep{Ioffe:2015:BNADNTRUCS,Gal:2015:DBA}, što se naziva \emphasize{MC-dropout} (\textit{Monte Carlo dropout}). Taj način usrednjavanja je ispravniji i daje bolju performansu, ali manje efikasan jer zahtijeva veći broj evaluacija izlaza uz isključivanje jedinica.
+\textit{Dropout}, opisan u pododjeljku~\ref{subsec:dropout}, je postupak koji tijekom učenja nasumično isključuje jedinice i može se interpretirati kao aproksimacija učenja eksponencijalnog broja mreža koje dijele parametre. Pri testiranju se obično usrednjavanje aproksimira tako da se, umjesto isključivanja jedinica, izlazi slojeva usrednje skaliranjem koje odgovara vjerojatnosti neisključivanja. 
+
+Drugi način usrednjavanja je usrednjavanje izlaza cijele mreže dobivenih uzorkovanjem uz dropout kao pri učenju \cite{Srivastava:2014:DASWPNNO,Gal:2015:DBA}, što se naziva \emphasize{MC-dropout} (\textit{Monte Carlo dropout}). Taj način usrednjavanja je ispravniji i daje bolju performansu, ali manje efikasan jer zahtijeva veći broj evaluacija izlaza uz isključivanje jedinica.
 
 \cite{Gal:2016:BCNNBAVI} učenje s \textit{dropoutum} interpretiraju kao varijacijsko zaključivanje s Bernoullijevom razdiobom kod bayesovske neuronske mreže i pokazuju da korištenje \textit{MC-dropouta} pri testiranju daje bolje rezultate ako je mreža učena na manjem skupu za učenje. Ako pretpostavimo da  \textit{dropout} dolazi iza slojeva linearne transformacije kojima odgovaraju matrice $\vec M_l$, slučajna varijabla koja odgovara varijacijskoj razdiobi matrice težina je
 \begin{align} \label{eq:dropout-matrica-tezina}
@@ -1916,7 +1980,7 @@ Prvi integral je $\infty$ zato što se faktori varijacijske razdiobe sastoje od 
 &= (1-p)\delta(w)+p\delta(w-{\vec M_l}_\ind{i,j}) \\
 &\approx \frac{1-p}{2\epsilon}\enbbracket{-\epsilon<w<\epsilon}+\frac{p}{2\epsilon}\enbbracket{{-\epsilon<w-\vec M_l}_\ind{i,j}<\epsilon} \text{.}
 \end{align}
-Ako pretpostavimo da neke težine neće postati točno $0$, tj. bliže nuli od $2\epsilon$, prvi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} (diferencijalna entropija varijacijske razdiobe) onda postaje konačan i neovisan o varijacijskim parametrima i može se zanemariti kod učenja. Za drugi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} ne aproksimiramo varijacijsku razdiobu. Ona je težinski zbroj višedimenzionalnih Diracovih \textit{šiljaka} kojima se \textit{uzorkuje} apriorna razdioba. Ako se koristi Gaussova apriorna razdioba, može se pokazati da je taj član proporcionalan $p$ i zbroju kvadrata težina, što odgovara $L^2$ regularizaciji. Malo drugačiji i detaljniji izvod može se vidjeti u \cite{Gal:2015:DBA,Gal:2015:DBAA}, gdje se neuronska mreža s \textit{dropoutum} povezuje s Gaussovim procesima. Vidimo da ako su regularizirane samo matrice težina, maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost} odgovara minimizacija ove funkcije pogreške:
+Ako pretpostavimo da neke težine neće postati točno $0$, tj. bliže nuli od $2\epsilon$, prvi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} (diferencijalna entropija varijacijske razdiobe) onda postaje konačan i neovisan o varijacijskim parametrima i može se zanemariti kod učenja. Za drugi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} ne aproksimiramo varijacijsku razdiobu. Ona je težinski zbroj višedimenzionalnih Diracovih \textit{šiljaka} kojima se \textit{uzorkuje} apriorna razdioba. Ako se koristi Gaussova apriorna razdioba, može se pokazati da je taj član proporcionalan $p$ i zbroju kvadrata težina, što odgovara $L^2$ regularizaciji. Malo drugačiji i detaljniji izvod može se vidjeti u \cite{Gal:2015:DBA,Gal:2015:DBAA}, gdje se mreža s \textit{dropoutum} interpretira kao aproksimacija s Gaussovog procesa. Vidimo da ako su regularizirane samo matrice težina, maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost} odgovara minimizacija ove funkcije pogreške:
 \begin{align}
 E(\vec\theta;\set{D}) = -\sum_i \ln\p\del{\vec y_i\midmid\vec x_i,\rvec\theta=\tilde{\vec\theta}_i} + \frac{\lambda}{2}\sum_l\enVert{\vec M_l}_\text{F}^2 \text{,}
 \end{align}
@@ -1932,6 +1996,30 @@ gdje su $\tilde{\vec\theta}_i$ uzorci parametara iz varijacijske razdiobe $q_{\v
 \subsubsection{Konvolucijske mreže}
 
 Kod konvolucijskih mreža \textit{dropoutom} se obično krši svojstvo ekvivarijantnosti, tj. za svaki položaj jezgre se nezavisno određuje hoće li se element izlaza isključit. \textit{Dropoutu} kod konvolucijskih slojeva za svaki položaj jezgre odgovara posebna slučajna varijabla prema jednadžbi~\eqref{eq:dropout-matrica-tezina}, ali sve dijele parametre $\vec M_l$. Matrici $\vec M_l$ kod konvolucijskog sloja odgovara matrica težina kao u jednadžbi~\eqref{eq:konvolucija-matrica-tezina} transponirana tako da jezgre odgovaraju recima.
+
+Slika~\ref{fig:mc-drouput-samples-DSN} prikazuje ovisnost klasifikacijske pogreške o broju uzoraka \textit{MC-dropouta} na primjeru konvolucijske mreže. Broj uzoraka potrebnih za postizanje bolje performanse ovisi o modelu i skupu podataka. Npr. \cite{Srivastava:2014:DASWPNNO} su za nekonvolucijski model koji su ispitivali na lakšem skupu, MNIST-u, trebali više od $50$ uzoraka za postizanje manje klasifikacijske pogreške uz \textit{MC-dropout}. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{uncertainty/DSN_samples}
+	\caption{Ovisnost klasifikacijske pogreške (plavo) o broju uzoraka u \textit{Monte Carlo} aproksimaciji izlaza na mreži koju su ispitivali autori \citep{Gal:2016:BCNNBAVI} na skupu CIFAR-10. Svaka točka je prosjek $5$ mjerenja i prikazane su standardne devijacije. Zeleni pravac označava klasifikacijsku pogrešku kod userdnjavanja kakvo se inače koristi kod testiranja. Slika je preuzeta iz \citet{Gal:2016:BCNNBAVI}.}
+	\label{fig:mc-drouput-samples-DSN}
+\end{figure}
+
+\subsection{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita}
+
+Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdiobu, koju duboki modeli daju kao izlaz softmaksa, su često previše sigurne kod krive klasifikacije i nije ih dobro interpretirati kao vjerojatnosti.
+
+\cite{Hendrycks:2016:BDMOODE} pokazuju da se krivo klasificirani i izvanrazdiobni primjeri mogu uspješnije nego što je očekivano prepoznavati klasifikacijom maksimalne vjerojatnosti softmaksa kod različitih zadataka i skupova podataka. 
+
+\citet{Guo:2017:CMNN} pokazuju da se samo skaliranjem temperature softmaksa, tj. dodavanjem dijeljenja svih logita (ulaza softmaksa) s $T$ prije softmaksa, može značajno poboljšati kalibracija\footnote{Model je dobro kalibriran ako svaka vjerojatnost koju djeljuje nekoj klasi slična stvarnoj učestalosti te klase kada model dodjeljuje tu vjerojatnost.} već naučene mreže. Kod skaliranja temperature, ako su logiti $\vec s$ ($h(\vec x)=\softmax(\vec s)$), izlazni vektor vjerojatnosti uz skaliranje temperature je $\softmax\del{\frac{1}{T}\vec s}$. Optimalni $T$ se traži na validacijskom skupu. \citet{Guo:2017:CMNN} su još isprobali nekoliko složenijih postupaka, ali s njima nisu dobili bolje rezultate. Još nešto zanimljivo što su zaključili je da se optimalne općenitije transfomacije logita kao $\softmax(\vec s\oslash\vec t)$ otprilike svode na skaliranje temperature, tj. vrijedi $\vec t^*\approx T^*\cvec 1$ gdje su $\vec t^*$ i $T^*$ optimalni. 
+
+\cite{Liang:2017:PDOODENN} predlažu dva poboljšanja klasifikacije maksimalne vrijednosti softmaksa. Jedno poboljšanje je skaliranje temperature. Pokazuju da, što je veća temperatura, to se primjeri izvanrazdiobni primjeri mogu bolje odvojiti od unutarrazdiobnih primjera na temelju maksimalne vrijednosti softmaksa. Drugo poboljšanje je izmjena ulaza mreže tako da se FGSM-om (jednadžba~\eqref{eq:FGSM}) pomakne u smjeru povećavanja (za razliku od smanjivanja kod neprijateljskih primjera) maksimalnog izlaza softmaksa:
+\begin{equation} \label{eq:ODIN-FGSM}
+\widetilde{\vec x} = \vec x - \epsilon\sgn\nabla_{\vec x}\del{-\ln \del{\max_k h(\vec x)_\ind{k}}} \text{.}
+\end{equation}
+\cite{Liang:2017:PDOODENN} pokazuju da takav pomak ulaznog primjere ima veći utjecaj na unutarrazdiobne primjere i tako ih bolje razdvaja od izvanrazdiobnih.
+ 
 
 
 
