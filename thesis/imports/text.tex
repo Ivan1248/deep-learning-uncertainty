@@ -6,6 +6,13 @@
 \captionsetup{%
 	justification=raggedright,
 }
+\usepackage{etoolbox}
+\makeatletter
+	\patchcmd{\@dottedtocline}
+	{\rightskip\@tocrmarg}
+	{\rightskip\@tocrmarg plus 4em \hyphenpenalty\@M}
+	{}{}
+\makeatother
 \setlength{\parindent}{1em}	 % uvlačenje ulomaka
 \usepackage{indentfirst}	 % uvlačenje prvog ulomka
 \setlength{\parskip}{0.5em}	 % razmak između ulomaka

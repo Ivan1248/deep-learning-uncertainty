@@ -75,7 +75,7 @@ Ovo poglavlje daje kratak i matematički ne potpuno precizan pregled nekih od os
 
 \subsection{Slučajne varijable i razdiobe}
 
-Neizvjesnost neke pojave modeliramo \emphasize{slučajnom varijablom}. Slučajnoj varijabli dodijeljena je \emphasize{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti neke slučajne varijable još se naziva i \emphasize{prostor elementarnih događaja}. \emphasize{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost se označava $\P(\cbr{\rvar x = x})$, $\P(\rvar x = x)$ ili $\P(x)$. \emphasize{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
+Neizvjesnost neke pojave modeliramo \emphasize{slučajnom varijablom}. Slučajnoj varijabli je dodijeljena \emphasize{razdioba} koja definira skup vrijednosti koje slučajna varijabla može poprimiti i vjerojatnosti ostvarivanja tih vrijednosti. Skup mogućih vrijednosti neke slučajne varijable se još naziva i \emphasize{prostor elementarnih događaja}. \emphasize{Elementarni događaj} je element prostora elementarnih događaja i, ako je $\rvar x$ slučajna varijabla za koju se u nekom eksperimentu opaža vrijednost $x$, taj događaj ima zapis $\cbr{\rvar x = x}$, a njegova vjerojatnost se označava $\P(\cbr{\rvar x = x})$, $\P(\rvar x = x)$ ili $\P(x)$. \emphasize{Događaj} je skup vrijednosti i obično se izražava predikatom nad slučajnom varijablom: $\cbr{R(\rvar x)}=\cbr{x\colon R(x)}$. Ako je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, onda $\P(\rvar x\in \set X)=1$. Funkcija 
 \begin{align*}
 \fullfunction{P_{\rvar x}}{\set X}{\intcc{0,1}}{x}{\P(\rvar x=x)}
 \end{align*}
@@ -95,9 +95,9 @@ Funkciju gustoće vjerojatnosti možemo smatrati i \emphasize{poopćenom funkcij
 \begin{align} \label{eq:dirac-density}
 p_{\rvar x}(x)=\sum_{x'\in\set X} \P(\rvar x=x) \dirac(x-x')  \text{,}
 \end{align}
-gdje je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, a $\delta$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
+gdje je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, a $\dirac$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
 \begin{align*}
-\delta(x)=\lim_{\sigma\to 0}\frac{1}{\sqrt{2\pi}\sigma}\exp\del{\frac{x^2}{2\sigma^2}}.
+\dirac(x)=\lim_{\sigma\to 0}\frac{1}{\sqrt{2\pi}\sigma}\exp\del{\frac{x^2}{2\sigma^2}}.
 \end{align*}
 Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
 \begin{align}
@@ -105,7 +105,7 @@ Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
 \end{align}
 Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} ima vrijednost $1$. 
 
-%npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\delta(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
+%npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\dirac(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
 Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će, radi kratkoće, riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
 
@@ -183,7 +183,7 @@ gdje se integrira po prostoru elementarnih događaja. Još se označava ovako: $
 \end{align}
 Ako je po oznaci jasno o kojoj se slučajnoj varijabli radi, možemo kraće pisati $\E_{\rvar x} f(x)$. Očekivanje ima svojstvo linearnosti:
 \begin{align}
-\E\sbr{\alpha f(\rvar x)+\beta g(\rvar x)} = \alpha\E f(\rvar x)+\beta\E g(\rvar x) \text{.}
+\E\del{\alpha f(\rvar x)+\beta g(\rvar x)} = \alpha\E f(\rvar x)+\beta\E g(\rvar x) \text{.}
 \end{align}
 
 \emphasize{Varijanca} (disperzija, drugi centralni moment) slučajne varijable definirana je ovako:
@@ -298,7 +298,11 @@ Sadržaj informacije odgovara minimalnom broju simbola (bitova ako $b=2$) potreb
 \end{align}
 Ona iskazuje neizvjesnost diskretne slučajne varijable. Entropija će biti $0$ ako je vjerojatnost nekog elementarnog događaja $1$, a najveća će biti kada svi elementarni događaji imaju istu vjerojatnost: $\H(\rvar x)=\log_b n$, gdje je $n$ broj elementarnih događaja. 
 
-Entropija kontinuirane slučajne varijable je beskonačna. Ako se u izrazu \eqref{eq:entropy} vjerojatnost zamijeni gustoćom vjerojatnosti, onda on predstavlja \emphasize{diferencijalnu entropiju}, jedan od analoga\footnote{\url{https://en.wikipedia.org/wiki/Differential_entropy}} entropije za kontinuirane varijable koji nema neka od svojstava koja ima entropija.
+Entropija kontinuirane slučajne varijable je beskonačna. Ako se u izrazu \eqref{eq:entropy} vjerojatnost zamijeni gustoćom vjerojatnosti, onda on predstavlja \emphasize{diferencijalnu entropiju}
+\begin{align}\label{eq:entropy}
+\h(\rvar x) \coloneqq -\E_{\rvar x}\log_b \p(x) \text{,}
+\end{align}
+jedan od analoga\footnote{\url{https://en.wikipedia.org/wiki/Differential_entropy}} entropije za kontinuirane varijable koji nema neka od svojstava koja ima entropija.
 
 \emphasize{Unakrsna entropija} je mjera koja iskazuje donju granicu očekivanja duljine poruke kodirane optimalnim kodom za razdiobu $\P(\rvar y)$ dok izvor poruka ima  razdiobu $\P(\rvar x)$. Ovako je definirana:
 \begin{align}
@@ -332,17 +336,16 @@ Ona je uvijek pozitivna i mjeri koliko simbola više se u prosjeku koristi ako s
 \end{figure}
 
 \emphasize{Međusobna informacija} je mjera zavisnosti između slučajnih varijabli. Definirana je ovako:
-\begin{align}
+\begin{align} \label{eq:mutinf}
 \I\del{\rvar x;\rvar y} \coloneqq \E_{\rvar x, \rvar y} \log_b\frac{P_{\rvar x, \rvar y}(x, y)}{P_{\rvar x}(x)P_{\rvar y}(y)} \text{,}
-\label{eq:mutinf}
 \end{align}
 a može se i na ove načine izraziti:
 \begin{align}
 \I(\rvar x;\rvar y)
 &= \H(\rvar x)+\H(\rvar y)-\H(\rvar x, \rvar y) \\
-&= \H(\rvar x)-\H(\rvar x\mid \rvar y) \\ 
-&= \H(\rvar y)-\H(\rvar y\mid\rvar x) \text{,}
-\label{eq:mutinf2}
+&= \H(\rvar x)-\H(\rvar x\mid \rvar y) \\
+&= \H(\rvar y)-\H(\rvar y\mid\rvar x) \text{,} 
+\label{eq:mutinf-zadnja}
 \end{align}
 gdje je
 \begin{align}
@@ -522,7 +525,7 @@ Prema tome, svaki probabilistički grafički model ima ekvivalentnu Bayesovu mre
 
 Pretpostavljanjem uvjetnih nezavisnosti, neki bridovi grafa $G$ se mogu ukloniti pa za varijable (čvorove grafa) vrijedi \emphasize{uređajno Markovljevo svojstvo}:
 \begin{align}
-\rvar x\perp \pred_G(\rvar x) \setminus \pa_G(\rvar x) \mid \pa_G(\rvar x).
+\rvar x\perp \pred_G(\rvar x) \setminus \pa_G(\rvar x) \mid \pa_G(\rvar x) \text{.}
 \end{align}
 Jednadžba~\eqref{eq:pgm-pravilo-umnoska} onda prelazi u 
 \begin{align}
@@ -666,7 +669,7 @@ Neka $N$ u oznaci ${\rset D}_N$ označava veličinu uzorka. Nepristrani procjeni
 
 Može se pokazati da je očekivanje srednje kvadratne pogreške procjenitelja jednaka zbroju njegove varijance i kvadrata njegove pristranosti \citep{Snajder:2014:SU}, tj. 
 \begin{align}
-\E\sbr{\del{\hat{\rvar\theta}-\theta}^2} = \D\hat{\rvar\theta} + \del{\E\hat{\rvar\theta}}^2  \text{.}
+\E\del{\del{\hat{\rvar\theta}-\theta}^2} = \D\hat{\rvar\theta} + \del{\E\hat{\rvar\theta}}^2  \text{.}
 \end{align}
 
 \subsection{Procjenitelj maksimalne izglednosti}
@@ -838,7 +841,7 @@ gdje su $q_{\vec\phi,i}$ funkcije gustoće pojedinih slučajnih varijabli. Kod \
 Neka je, radi kraćeg zapisa, $t\del{\tilde{\vec\theta}} \coloneqq \p(\rvec\theta=\tilde{\vec\theta},\rvec x=\vec x)$. Uz aproksimaciju polja sredina donja varijacijska granica postaje
 \begin{align}
 L_{\vec x}\del{\tilde{\rvec\theta}} 
-&= \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\sbr{\ln t\del{\tilde{\vec\theta}} - \ln q\del{\tilde{\vec\theta}}}
+&= \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\del{\ln t\del{\tilde{\vec\theta}} - \ln q\del{\tilde{\vec\theta}}}
 \\
 &= \int\dif{\tilde{\vec\theta}} \del{\prod_i q_i(\tilde{z}_i)}\del{\ln t\del{\tilde{\vec\theta}} - \sum_j \ln q_j(\tilde{z}_j)}
 \text{.}
@@ -1254,13 +1257,13 @@ U ovom odjeljku su kratko opisane ideje korištene za efikasno računanje gradij
 
 Na ovaj pododjeljak ima utjecaj \cite{Olah:2015:CCGB}.
 
-Gradijent gubitka nije potrebno analitički računati za svaki parametar posebno. Primjenom pravila deriviranja složene funkcije, derivacija vrijednosti nekog čvora $b$ s obzirom na čvor vrijednost nekog čvora $a\in\pred(b)$ jednaka je zbroju umnožaka parcijalnih derivacija \textit{dijete-roditelj} čvorova po svakom putu između $a$ i $b$. Pri tome je put definiran kao niz takav da sljedeći (usmjereni) brid počinje u čvoru u kojem je prethodni završio. Svakom bridu $(p,c)$ odgovara derivacija $\pd{c}{p}$. Derivacije između susjednih čvorova ne moraju se računati za svaki put posebno. Već izračunate derivacije se mogu ponovo koristiti. Isto vrijedi ako su vrijednosti čvorova vektori (ako su višedimenzionalni nizovi, možemo ih svesti na vektore) i ako računamo Jakobijeve matrice. Dalje će se za Jakobijeve matrice isto koristiti riječ \textit{derivacija}.
+Gradijent gubitka nije potrebno analitički računati za svaki parametar posebno. Primjenom pravila deriviranja složene funkcije, derivacija vrijednosti nekog čvora $b$ s obzirom na čvor vrijednost nekog čvora $a\in\pred_G(b)$ jednaka je zbroju umnožaka parcijalnih derivacija \textit{dijete-roditelj} čvorova po svakom putu između $a$ i $b$. Pri tome je put definiran kao niz takav da sljedeći (usmjereni) brid počinje u čvoru u kojem je prethodni završio. Svakom bridu $(p,c)$ odgovara derivacija $\pd{c}{p}$. Derivacije između susjednih čvorova ne moraju se računati za svaki put posebno. Već izračunate derivacije se mogu ponovo koristiti. Isto vrijedi ako su vrijednosti čvorova vektori (ako su višedimenzionalni nizovi, možemo ih svesti na vektore) i ako računamo Jakobijeve matrice. Dalje će se za Jakobijeve matrice isto koristiti riječ \textit{derivacija}.
 
 Algoritam propagacije pogreške unatrag se tako naziva zato što se izračun gradijenta širi od izlaznog čvora (ili čvora koji predstavlja gubitak ili funkciju pogreške) prema njegovim roditeljima, pa prema roditeljima roditelja itd. uz primjenu pravila deriviranja kompozicije funkcija. Pri tome se ne moraju računati gradijenti s obzirom na čvorove koji ne ovise o varijablama za koje se računa gradijent.
 
 Neka je $L$ vrijednost čvora gubitka, a $\vec\theta$ neki parametar. Želimo izračunati gradijent $\nabla_{\vec\theta_i}L=\pd{L}{\vec\theta}^\tp$. Derivacija gubitka s obzirom na čvoru $u$ se može rekurzivno izraziti: 
 \begin{align} \label{eq:gradijent-rekurzivno}
-\pd{L}{u} = \sum_{c\in\ch(u)} \pd{L}{c}\pd{c}{u}	\text{,}
+\pd{L}{u} = \sum_{c\in\ch_G(u)} \pd{L}{c}\pd{c}{u}	\text{,}
 \end{align}
 gdje su $c$ djeca čvora $u$. Ako $\pd{L}{c}$ nije izračunat za trenutni ulaz, izračuna se, a inače se koristi prethodno izračunata vrijednost. Ista jednadžba vrijedi za čvorove parametara.
 
@@ -1477,23 +1480,23 @@ Pokazuje se da normalizacija po grupama ima i regularizacijski učinak, vjerojat
 
 \subsection{Neprijateljski primjeri i regularizacija za postizanje otpornosti na njih}
 
-Ovaj odjeljak se uglavnom temelji na \cite{Grubisic:2018:IPM} uz neke manje izmjene i dodatke.
+Ovaj odjeljak se uglavnom temelji na \cite{Grubisic:2018:IPM}.
  
-Pokazalo se da je moguće pronaći ulazne primjere koji su (npr. slike) u ljudskoj percepciji slični prirodnim primjerima, ali i modeli koji ostvaruju rezultate usporedive s rezultatima ljudi daju krive predikcije \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE}. Takvi ulazni primjeri nazivaju se \emphasize{neprijateljski primjeri}. Oni se mogu dobiti i pomoću jednog koraka gradijentnog spusta pomicanjem ulaznog primjera u smjeru povećavanja gubitka. Na slici~\ref{fig:neprijateljski-primjer} je prikazano generiranje neprijateljskog primjera malom izmjenom izvorne slike.
+Pokazalo se da se mogu pronaći ulazni primjeri (npr. slike) koji su u ljudskoj percepciji slični prirodnim primjerima, ali i modeli koji na neizmjenjenim primjerima ostvaruju rezultate usporedive s rezultatima ljudi daju krive predikcije \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE}. Takvi ulazni primjeri nazivaju se \emphasize{neprijateljski primjeri}. Oni se mogu dobiti i pomoću jednog koraka gradijentnog spusta pomicanjem ulaznog primjera u smjeru povećavanja gubitka. Na slici~\ref{fig:neprijateljski-primjer} je prikazano generiranje neprijateljskog primjera malom izmjenom izvorne slike.
 
 \begin{figure}
 	\centering
-	\begin{tabular}{>{\centering\arraybackslash}m{.2\textwidth}m{.5in}>{\centering\arraybackslash}m{.2\textwidth}m{.1in}>{\centering\arraybackslash}m{.2\textwidth}}
+	\begin{tabular}{>{\centering\arraybackslash}m{.22\textwidth}m{.5in}>{\centering\arraybackslash}m{.22\textwidth}m{.1in}>{\centering\arraybackslash}m{.22\textwidth}}
 		\centering\arraybackslash
 		%abs max for panda was 138, eps was 1., so relative eps is ~.007
-		\includegraphics[width=.2\textwidth]{adversarial-examples/panda_577.png} &%
+		\includegraphics[width=.22\textwidth]{adversarial-examples/panda_577.png} &%
 		\centering\arraybackslash%
 		$ +\ 0.007\ \cdot$ &%
-		\includegraphics[width=.2\textwidth]{adversarial-examples/nematode_082.png} &%
+		\includegraphics[width=.22\textwidth]{adversarial-examples/nematode_082.png} &%
 		$=$ & %
-		\includegraphics[width=.2\textwidth]{adversarial-examples/gibbon_993.png} \\
+		\includegraphics[width=.22\textwidth]{adversarial-examples/gibbon_993.png} \\
 		$\centering \vec x$     &%
-		& $\sgn \nabla_{\vec x} L(y,h(\vec x;\vec\theta))$ & & $\widetilde{\vec x}$ \\
+		& $\sgn \nabla_{\vec x} L(y,h(\vec x))$ & & $\widetilde{\vec x}$ \\
 		\emph{panda} (0.577) & & & & \emph{gibon} (0.993) 
 	\end{tabular}
 	\caption{Prilagođeni prikaz dobivanja neprijateljskog primjera FGSM-om iz \cite{Goodfellow:2014:EHAE}. Nakošene riječi predstavljaju klase, a brojevi u zagradama vjerojatnosti koje im mreža dodjeljuje.}
@@ -1512,7 +1515,7 @@ Neprijateljski primjeri mogu se pronaći iterativnim optimizacijskim postupcima 
 \end{equation}
 \citet{Madry:2017:TDLMRAA} definiraju iterativni postupak koji se temelji na FGSM-u i nazivaju ga \emph{projected gradient descent} (PGD):
 \begin{equation} \label{eq:pgd}
-\widetilde{\vec x} \gets \Pi_{B_\epsilon(\vec x)} (\widetilde{\vec x} + \alpha\sgn\nabla_{\widetilde{\vec x}} L(y,h(\widetilde{\vec x}))) \text{.}
+\widetilde{\vec x}_i = \Pi_{B_\epsilon(\vec x)} (\widetilde{\vec x}_{i-1} + \alpha\sgn\nabla_{\widetilde{\vec x}_{i-1}} L(y,h(\widetilde{\vec x}_{i-1}))) \text{.}
 \end{equation}
 Početni $\tilde{\vec x}$ se bira nasumično unutar $B_\epsilon(\vec x)$. $\alpha$ je veličina koraka optimizacije, a $\Pi_{B_\epsilon(\vec x)}$ označava projekciju na zatvorenu $\epsilon$-kuglu oko prirodnog primjera $\vec x$ uz $L^\infty$-normu. Npr. projekcijom vektora $\vec v$ na susjedstvo vektora $\vec x$, $\Pi_{B_\epsilon(\vec x)}(\vec v) = \argmin_{\vec v'\in B_\epsilon(\vec x)}\lVert \vec v'-\vec v\rVert_\infty$, svakoj komponenti $v_i$ dodjeljuje se najbliža vrijednost unutar intervala $\left[x_i-\epsilon, x_i+\epsilon\right]$.
 
@@ -1520,7 +1523,7 @@ Mogući su i napadi bez uvida u strukturu modela, npr. genetskim algoritmom. Tak
 
 Možemo definirati oblik rizika koji se može nazvati \emphasize{neprijateljski rizik} \citep{Madry:2017:TDLMRAA}:
 \begin{equation}\label{eq:adv-risk}
-R_\text{A}(\vec\theta;d,\epsilon) = \mathbb{E}_{(\vec x,y)\sim\mathcal{D}}\left[
+R_\text{A}(\vec\theta;d,\epsilon) = \E_{(\vec x,y)\sim\mathcal{D}}\left[
 \max_{\widetilde{\vec x} \in B_\epsilon(\vec x)} L(y,h(\widetilde{\vec x};\vec\theta)) \right] \text{.}
 \end{equation}
 Mali neprijateljski rizik predstavlja dobru lokalnu generalizaciju u susjedstvu prirodnih primjera.
@@ -1838,35 +1841,46 @@ Za smanjivanje mapa značajki često se koriste i uobičajeni postupci interpola
 
 
 
-\chapter{Procjenjivanje nesigurnosti kod dubokih mreža}
+\chapter{Procjenjivanje nesigurnosti kod dubokih modela}
 
-Kod uobičajenih modela dubokog učenja ne možemo pouzdano procijeniti nesigurnost predikcija. Modeli za regresiju kao izlaz daju točkastu procjenu izlaza, a modeli za klasifikaciju daju vektor koji predstavlja razdiobu sigurnosti u klase, ali ta razdioba nije dobar pokazatelj stvarne nesigurnosti i neznanja. Ovo poglavlje opisuje podjelu nesigurnosti, njenu ulogu i važnost u nekim algoritmima strojnog učenja i neke pristupe koji omogućuju bolje procjenjvanje nesigurnosti kod dubokih nadziranih modela.
+Kod uobičajenih modela dubokog učenja ne možemo pouzdano procijeniti nesigurnost predikcija. Modeli za regresiju kao izlaz daju točkastu procjenu izlaza, a modeli za klasifikaciju daju vektor koji predstavlja razdiobu sigurnosti u klase, ali ta razdioba nije dobar pokazatelj stvarne nesigurnosti i neznanja. Ovo poglavlje opisuje podjelu nesigurnosti, njenu ulogu i važnost u nekim algoritmima strojnog učenja i neke pristupe koji omogućuju bolje procjenjvanje nesigurnosti kod dubokih nadziranih modela. Rezultati eksperimenata s nekim postupcima opisani su u poglavlju~\ref{chap:eksperimenti}.
 
 
 \section{Aleatorna i epistemička nesigurnost}
 
 Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste: \emphasize{aleatornu nesigurnost} i \emphasize{epistemičku nesigurnost} \citep{Kiureghian:2009:AEDM}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u \emphasize{strukturu modela} i \emphasize{parametre modela} \citep{Gal:2016:UDL}. Ona se zato još nazive \emphasize{nesigurnost modela}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
 
-Razlikovanje aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti epistemičkog karaktera. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će biti aleatorna neovisno o ograničenosti modela.
+Razlikovanje aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti epistemička, tj. može se smanjiti uz više podataka. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će biti aleatorna neovisno o ograničenosti modela.
 
 Na temelju aleatorne i epistemičke nesigurnosti može se procijeniti \emphasize{nesigurnost predikcije}. Kod bayesovskih modela nesigurnost predikcije izražava se razdiobom po vrijednostima varijable čija vrijednost se procjenjuje, a može se izraziti i nekom mjerom kao što je entropija ili varijanca, ovisno o tome što je prikladno.
 
-Aleatorna nesigurnost može biti \emphasize{homoskedastička} ili \emphasize{heteroskedastička}. Homoskedastička nesigurnost znači da je aleatorna nesigurnost (šum) neovisna o primjeru, a heteroskedastička da ovisi o primjeru. Na slici~\ref{fig:bm-heteroskedasticki-sum} je prikazan primjer grafičkog modela koji pretpostavlja aleatorni šum, a na slici~\ref{fig:homoskedasticki-heteroskedasticki-sum-regresija} je ilustrirana usporedba regresijskih zadataka bez i sa šumom koji ovisi u ulaznom primjeru.
-
+Aleatorna nesigurnost može biti \emphasize{homoskedastička} ili \emphasize{heteroskedastička}. Kažemo da je aleatorna nesigurnost homoskedastička ako je neovisna o primjeru, a heteroskedastička ako ovisi o primjeru. Heteroskedastička nesigurnost se treba modelirati kao funkcija primjera. Za izlaz te funkcije se isto može procjenjivati epistemička nesigurnost --- nesigurnost u procjenu aleatorne nesigurnosti. Na slici~\ref{fig:bm-heteroskedasticki-sum} je prikazan primjer grafičkog modela koji pretpostavlja aleatorni šum, a na slici~\ref{fig:homoskedasticki-heteroskedasticki-sum-regresija} je ilustrirana usporedba regresijskih zadataka bez i sa šumom koji ovisi u ulaznom primjeru. Modeliranje aleatorne nesigurnosti se ostvaruje kao funkcija ulaza.
 
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
 	\node[pnode] (t) [] {$\rvec \theta$};
-	\node[pnode] (e) [left=of t] {$\rvar\epsilon$};
-	\node[pnode] (y) [below=of t] {$\rvar y$};	
+	\node[textnode] (a) [right=of t] {$\alpha$};
+	\node[greypnode] (yi) [left=of t] {$\rvar y_i$};
+	\node[greypnode] (xi) [left=of yi] {$\rvec x_i$};
+	\node[pnode] (ei) [above=of yi] {$\epsilon_i$};
+	\node[pnode] (e) [below=of yi] {$\rvar\epsilon$};
+	\node[pnode] (y) [below=of e] {$\rvar y$};	
 	\node[greypnode] (x) [left=of y] {$\rvec x$};
+	\path (a) edge [dedge] (t);	
+	\path (t) edge [dedge] (yi);	
+	\path (t) edge [dedge] (ei);	
 	\path (t) edge [dedge] (y);
+	\path (t) edge [dedge] (e);
 	\path (e) edge [dedge] (y);
-	\path (x) edge [dedge] (e);
+	\path (xi) edge [dedge] (yi);
+	\path (xi) edge [dedge] (ei);
+	\path (ei) edge [dedge] (yi);
 	\path (x) edge [dedge] (y);
+	\path (x) edge [dedge] (e);
+	\plate{}{(xi)(yi)(ei)}{$i \in \cbr{1\bidot N}$};
 	\end{tikzpicture}
-	\caption{Model regresije kod kojeg su $\rvec\theta$ nepoznati parametri, $\rvec x$ opažani ulaz, $\rvar y$ nepoznati izlaz, a $\rvar\epsilon$ heteroskedastički šum koji ovisi o ulazu $\rvec x$. Čvorovi koji predstavljaju podatke za učenje nisu prikazani.}
+	\caption{Model regresije (prema onom na slici~\ref{fig:bm-regresija}) kod kojeg su $\rvec\theta$ nepoznati parametri, $\rvec x$ opažani ulaz, $\rvar y$ nepoznati izlaz, a $\rvar\epsilon$ heteroskedastički šum koji ovisi o ulazu $\rvec x$. Čvorovi s indeksima $i$ predstavljaju podatke za učenje (opažani čvorovi) i odgovarajući šum ($\epsilon_i$).}
 	\label{fig:bm-heteroskedasticki-sum}
 \end{figure}
 
@@ -1885,7 +1899,7 @@ Jedan poseban slučaj nesigurnosti modela je nesigurnost u to \emphasize{pripada
 Problem prepoznavanja primjera koji su izvan razdiobe skupa za učenje prirodno rješavaju generativni probabilistički modeli, ali kod složenih visokodimenzionalnih podataka to postaje problem zbog prokletstva dimenzionalnosti i složenosti modeliranja i statističkog zaključivanja. Kod diskriminativnih modela je problem to što oni ne modeliraju razdiobu ulaznih primjera $\p(\rvec x)$, nego samo uvjetnu razdiobu izlaza uz dani ulaz $\p(\rvec y \mid\vec x)$.
 
 
-\section{Važnost i primjene procjenjivanja i razlikovanja nesigurnosti u strojnom učenju} \label{sec:vaznost-primjene-nesigurnosti}
+\section{Važnost i primjene procjenjivanja i razlikovanja nesigurnosti} \label{sec:vaznost-primjene-nesigurnosti}
 
 Sve se više upotrebljavaju složeni duboki modeli kod ozbiljnih primjena kao što su medicina i autonomna vozila, gdje treba osigurati pouzdanost i sposobnost prepoznavanja primjera o kojima model ne može donositi pouzdane zaključke. Trenutno najuspješniji modeli imaju problema s pokazivanjem prevelike sigurnosti u predikciji kod izvanrazdiobnih primjera i krivo klasificiranih primjera \citep{Nguyen:2015:DNNEFHCPUI,Hendrycks:2016:BDMOODE}, a mogu se i pronalaziti neprijateljski primjeri koji su slični unutarrazdiobnim primjerima \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE,Moosavi:2016:UAP}. Neprijateljski primjeri su kratko opisani u pododjeljku~\ref{subsec:du-generiranje-podataka}.
 
@@ -1896,11 +1910,11 @@ Primjeri područja strojnog učenja u kojima je posebno važno procjenjivanje ne
 
 Dijelovi ovog odjeljka se temelje na \citet[poglavlje 2]{Gal:2016:UDL}.
 
-\emphasize{Bayesovske neuronske mreže} su predložene otprilike početkom $90$-ih godina prošlog stoljeća \citep{MacKay:1992:PBFBN,Neal:1995:BLNN}. Za razliku od običnih neuronskih mreža, gdje se učenjem provodi točkasta procjena parametara, kod bayesovskih neuronskih mreža se provodi bayesovka procjena parametara (pododjeljak~\ref{subsec:bayesovski procjenitelj}), tj. na temelju apriorne razdioba i podataka, zaključuje se o aposteriornoj razdiobi parametara. Tako naučena mreža predstavlja razdiobu nad hipotezama, što omogućuje otpornost na prenaučenost i procjenjivanje nesigurnosti predikcija \citep{Gal:2016:UDL}.
+\emphasize{Bayesovske neuronske mreže} su predložene otprilike početkom $90$-ih godina prošlog stoljeća \citep{Denker:1990:TNOLPD,MacKay:1992:PBFBN,Neal:1995:BLNN}. Za razliku od običnih neuronskih mreža, gdje se učenjem provodi točkasta procjena parametara, kod bayesovskih neuronskih mreža se provodi bayesovka procjena parametara (pododjeljak~\ref{subsec:bayesovski procjenitelj}), tj. zaključuje se o aposteriornoj razdiobi parametara na temelju apriorne razdiobe i podataka. Tako naučena mreža predstavlja razdiobu nad hipotezama, što omogućuje otpornost na prenaučenost i procjenjivanje nesigurnosti predikcija \citep{Gal:2016:UDL}.
 
 Kod bayesovskih neuronskih mreža se za apriornu razdiobu težina često koristi pretpostavka nezavisnosti i Gaussova razdioba $\mathcal{N}(0,\lambda^{-1})$ za svaku težinu, gdje je $\lambda$ preciznost. Radi jednostavnosti se pomaci često točkasto procjenjuju. Iako su bayesovske neuronske mreže jednostavne za formulirati, kod njih nije jednostavno provoditi zaključivanje.
 
-Prema jednadžbi~\eqref{eq:posterior-bayes}, aposteriorna vjerojatnost parametara je :
+Prema jednadžbi~\eqref{eq:posterior-bayes}, aposteriorna vjerojatnost parametara je
 \begin{equation}
 \p(\vec\theta\mid\set D) 
 = \frac{\p(\set{D}\mid\vec\theta)\p(\vec\theta)}{\p(\set{D})} \text{,}
@@ -1936,7 +1950,7 @@ za koju ne treba računati marginalnu izglednost $\p(\set D)$. Zbog pretpostavke
 \end{align}
 Možemo zanemariti faktore $\p\del{\vec x_i}$ jer oni ne ovise o parametrima i maksimiziramo
 \begin{align} \label{eq:bnm-marginalna-izglednost}
-\E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\sbr{\sum_i \ln\p\del{\vec y_i\midmid\vec x_i,\rvec\theta=\tilde{\vec\theta}}} - \Dkl{q_{\vec\phi}}{\p(\rvec\theta)}
+\E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\del{\sum_i \ln\p\del{\vec y_i\midmid\vec x_i,\rvec\theta=\tilde{\vec\theta}}} - \Dkl{q_{\vec\phi}}{\p(\rvec\theta)}
 \end{align}
 s obzirom na varijacijske parametre. Prvi član u tom izrazu potiče maksimizaciju izglednosti parametara na skupu za učenje. Razlika u odnosu na maksimizaciju izglednosti kod običnih dubokih mreža je da se izglednost ne maksimizira po točkastim procjenama parametra, nego po po razdiobama. Drugi dio izraza kažnjava udaljavanje od apriorne razdiobe i služi kao regularizacija.
 
@@ -1947,12 +1961,65 @@ Zamjenom aposteriorne razdiobe u jednadžbi~\eqref{eq:zakljucivanje-y-bnm} sa za
 = \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\p(\vec y\mid\vec x,\vec\theta) \text{.}
 \end{align}
 
+U pododjeljku~\ref{subsec:bnm-dropout} je opisana aproksimacija bayesovske neuronske mreže pomoću \textit{dropouta}.
+
+
+\section{Mjere za izražavanje nesigurnosti predikcije}
+
+Osnovne mjere za izražavanje nesigurnosti su vjerojatnost, entropija i varijanca. Pretpostavimo da modeliramo (diskretnu ili kontinuiranu) razdiobu $\p(\rvar y\mid\vec x,\vec\theta)$ ili $\p(\rvar y\mid\vec x,\set D)$ ako se provodi bayesovsko zaključivanje. Jedan način izražavanja nesigurnosti u predikciju kod klasifikacije je vjerojatnost klase s najvećom vjerojatnošću
+\begin{align}
+\max_k \P(\rvar y=k\mid\vec x,\vec\theta) \text{.}
+\end{align}
+Nesigurnost se može izraziti i entropijom
+\begin{align}
+\H(\rvar y\mid\vec x,\vec\theta)=-\E_{\rvar y\mid\vec x,\vec\theta}\ln\P\del{y\mid\vec x,\vec\theta}
+\end{align}
+ili, kod regresije, diferencijalnom entropijom
+\begin{align}
+\h(\rvar y\mid\vec x,\vec\theta)=-\E_{\rvar y\mid\vec x,\vec\theta}\ln\p\del{y\mid\vec x,\vec\theta}
+\end{align}
+koja je, ako $\del{\rvar y\mid\vec x,\vec\theta}$ ima Gaussovu razdiobu, proporcionalna (i kao mjera ekvivalentna) varijanci $\D\del{\rvar y\mid\vec x,\vec\theta}$. Ako kod klasifikacije gledamo samo vjerojatnost klase s najvećom vjerojatnošću, možemo kao mjeru nesigurnosti koristiti i binarnu entropiju $-p_{\hat{y}}\ln p_{\hat{y}}-\del{1-p_{\hat{y}}}\ln\del{1-p_{\hat{y}}}$, gdje je $p_{\hat{y}}$ vjerojatnost klase s najvećom vjerojatnošću.
+
+Jedan nedostatak ovih mjera je što ne razlikuju epistemičku i aleatornu nesigurnost. Još jedan nedostatak entropije i maksimalne vjerojatnosti može biti to što npr. razdioba $(0.6,0.2,0.2)$ ima veću entropiju od razdiobe $(0.6,0.4,0)$ iako se može interpretirati da je kod prve razdiobe veća jednoznačnost zaključka o klasi.
+
+\subsection{Razlikovanje aleatorne i epistemičke nesigurnosti}
+
+\citet{Kendall:2017:WUNBDLCV} za bayesovske neuronske mreže predlažu eksplicitno modeliranje aleatorne nesigurnosti predikcijom varijance kod regresije i varijance logita kod klasifikacije. Kao konačnu procjenu nesigurnosti, za regresiju procjenjuju ukupnu varijancu izlaza koja je zbroj procjene aleatorne varijance i epistemičke varijance, a za klasifikaciju entropiju izlaza koji se dobiva marginalizacijom po parametrima i logitima za koje pretpostavljaju faktoriziranu Gaussovu razdiobu. Za regresiju predlažu gubitak proporcionalan negativnom logaritmu izglednosti koji uključuje varijancu, koja se inače ne uključuje u gubitak jer se pretpostavlja da je konstanta. Za regresiju je to
+\begin{align}
+L(\vec y\mid h'(\vec x;\vec\theta))=\frac{1}{2\sigma(\vec x;\vec\theta)^2}\enVert{\vec y-h(\vec x;\vec\theta)}^2+\frac{1}{2}\ln\sigma(\vec x;\vec\theta)^2 \text{,}
+\end{align}
+gdje $h'(\vec x;\vec\theta)=(h(\vec x;\vec\theta),\sigma(\vec x;\vec\theta))$. U slučaju homoskedastičkog šuma $\sigma(\vec x;\vec\theta)=\sigma$, gdje je $\sigma$ parametar modela. Takav gubitak potiče predikciju veće varijance kada hipoteza očekuje veću kvadratnu pogrešku. Radi numeričke stabilnosti, \citet{Kendall:2017:WUNBDLCV} predlažu da se umjesto $\sigma(\vec x;\vec\theta)$ kao predikcija daje $s(\vec x,\vec\theta)=\ln\sigma(\vec x;\vec\theta)^2$. Gubitak je onda
+\begin{align}
+L(\vec y\mid h'(\vec x;\vec\theta))=\frac{1}{2}\exp(-s(\vec x;\vec\theta))\enVert{\vec y-h(\vec x;\vec\theta)}^2+\frac{1}{2}s(\vec x;\vec\theta) \text{.}
+\end{align}
+Za procjenu ukupne varijance predikcije predlažu zbroj aleatorne varijance i očekivanja varijanci elemenata izlaza:
+\begin{align}
+\E_{\rvec\theta\mid\set D}\sigma(\vec x;\vec\theta) + \sum_i \D_{\rvec\theta\mid\set D}\del{h(\vec x;\vec\theta)_\ind{i}} \text{.}
+\end{align}
+Za procjenjivanje epistemičke nesigurnosti predikcije kod klasifikacije, \citet{Kendall:2017:WUNBDLCV} koriste entropiju očekivanja predikcije: $\H\del{\rvar y\mid\vec x,\set D}=\H\del{\E_{\rvec\theta\mid\set D}(\rvar y\mid\vec x,\vec\theta)}$. Razdiobe $(\rvar y\mid\vec x,\vec\theta)$ predstavlja izlaz softmaksa, tj. $h(\vec x;\vec\theta)_\ind{k}=(\rvar y=k\mid\vec x,\vec\theta)$. Za procjenu aleatorne nesigurnosti kod klasifikacije pretpostavljaju da logiti imaju Gaussovu razdiobu i predlažu da se za svaki logit procjenjuje varijanca. Neka je $g(\vec x)=g(\vec x;\vec\theta)$ funkcija koja daje očekivanje, a $\sigma(\vec x)=\sigma(\vec x;\vec\theta)$ funkcija koja daje vektor standardnih devijacija logita. Izlazna razdioba se računa ovako:
+\begin{align}
+h(\vec x;\set D) = \E_{\vec s\sim\mathcal{N}(g(\vec x),\diag\del{\sigma(\vec x)^2})}\softmax(\vec s) \text{.}
+\end{align}
+Gubitak ostaje negativni logaritam izglednosti i može se ovako izraziti:
+\begin{align}
+L(y\mid h'(\vec x;\vec\theta))=\ln\del{\E_{\vec s\sim\mathcal{N}(g(\vec x),\diag\del{\sigma(\vec x)^2})} \exp\del{\vec s-\ln\del{\cvec 1^\tp\exp\del{\vec s}}}} \text{.}
+\end{align}
+Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Carlo} aproksimacija.
+
+\cite{Rawat:2017:APEBDL,Smith:2018:UMUAED} predlažu korištenje međusobne informacije (jednadžbe \eqref{eq:mutinf}-\eqref{eq:condentropy}) kod bayesovskog zaključivanja kako bi se razlikovale epistemička i aleatorna nesigurnost. Prema \citet{Smith:2018:UMUAED}, količina informacije koju dobijemo o parametrima ako dobijemo oznaku $y\sim\rvar y$ za novi ulazni primjer $\vec x$ je
+\begin{align}
+\I(\rvar y,\rvec\theta\mid\vec x,\set D) 
+&= \H(\rvar y\mid\vec x,\set D) - \H(\rvar y\mid\rvec\theta,\vec x) \\
+&= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{,}
+\end{align}
+gdje $\H(\rvar y\mid\rvec\theta,\vec x,\set D)=\H(\rvar y\mid\rvec\theta,\vec x)$ jer $\rvar y\perp\rvec\theta\mid\rset D$. Veća međusobna informacija se može interpretirati tako da opažanje oznake $y$ za primjer $x$ povećava znanje o parametrima ako postoji nesigurnost u njih. Ako nema puno nesigurnosti u parametre, a ima u predikciju zbog velike aleatorne nesigurnosti, međusobna informacija će biti mala jer je naučeno da za primjer $x$ nije moguće puzdano predvidjeti oznaku. Dakle, međusobna informacije je mjera epistemičke nesigurnosti \citep{Smith:2018:UMUAED}.
+
 
 \section{Primjeri pristupa za procjenu nesigurnosti}
 
 U ovom odjeljku su opisani primjeri pristupa za procjenu nesigurnosti i prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera bez puno izmjena uobičajenih dubokih modela. U poglavlju~\ref{chap:eksperimenti} su prikazani rezultati nekih eksperimenata s nekima od opisanih pristupa.
 
-\subsection{Aproksimacija bayesovske neuronske mreže mrežom s dropoutom}
+\subsection{Aproksimacija bayesovske neuronske mreže s dropoutom} \label{subsec:bnm-dropout}
 
 \textit{Dropout}, opisan u pododjeljku~\ref{subsec:dropout}, je postupak koji tijekom učenja nasumično isključuje jedinice i može se interpretirati kao aproksimacija učenja eksponencijalnog broja mreža koje dijele parametre. Pri testiranju se obično usrednjavanje aproksimira tako da se, umjesto isključivanja jedinica, izlazi slojeva usrednje skaliranjem koje odgovara vjerojatnosti neisključivanja. 
 
@@ -1974,13 +2041,13 @@ gdje su $\tilde{\vec\theta}_i$ uzorci parametara iz varijacijske razdiobe $q_{\v
 &=\int_{\vec\theta}q_{\vec\phi}(\vec\theta)\ln\frac{q_{\vec\phi}(\vec\theta)}{\p(\vec\theta)}\dif\vec\theta \\ \label{eq:dropoutvi-dkl-qp-2}
 &=\int_{\vec\theta}q_{\vec\phi}(\vec\theta)\ln q_{\vec\phi}(\vec\theta)\dif\vec\theta - \int_{\vec\theta}q_{\vec\phi}(\vec\theta)\ln\p(\vec\theta)\dif\vec\theta \text{.}
 \end{align}
-Prvi integral je $\infty$ zato što se faktori varijacijske razdiobe sastoje od Diracovih \textit{šiljaka}. Šiljke možemo aproksimirati proizvoljno uskim pravokutnicima širine $2\epsilon$, npr.
+Prvi integral u zadnjem izrazu je baskonačan zato što se faktori varijacijske razdiobe sastoje od Diracovih \textit{šiljaka}. Šiljke možemo aproksimirati proizvoljno uskim pravokutnicima širine $2\epsilon$, npr.
 \begin{align}
 \p({\rvec W_l}_\ind{i,j}=w) 
-&= (1-p)\delta(w)+p\delta(w-{\vec M_l}_\ind{i,j}) \\
+&= (1-p)\dirac(w)+p\dirac(w-{\vec M_l}_\ind{i,j}) \\
 &\approx \frac{1-p}{2\epsilon}\enbbracket{-\epsilon<w<\epsilon}+\frac{p}{2\epsilon}\enbbracket{{-\epsilon<w-\vec M_l}_\ind{i,j}<\epsilon} \text{.}
 \end{align}
-Ako pretpostavimo da neke težine neće postati točno $0$, tj. bliže nuli od $2\epsilon$, prvi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} (diferencijalna entropija varijacijske razdiobe) onda postaje konačan i neovisan o varijacijskim parametrima i može se zanemariti kod učenja. Za drugi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} ne aproksimiramo varijacijsku razdiobu. Ona je težinski zbroj višedimenzionalnih Diracovih \textit{šiljaka} kojima se \textit{uzorkuje} apriorna razdioba. Ako se koristi Gaussova apriorna razdioba, može se pokazati da je taj član proporcionalan $p$ i zbroju kvadrata težina, što odgovara $L^2$ regularizaciji. Malo drugačiji i detaljniji izvod može se vidjeti u \cite{Gal:2015:DBA,Gal:2015:DBAA}, gdje se mreža s \textit{dropoutum} interpretira kao aproksimacija s Gaussovog procesa. Vidimo da ako su regularizirane samo matrice težina, maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost} odgovara minimizacija ove funkcije pogreške:
+Ako pretpostavimo da neke težine neće postati točno $0$, tj. bliže nuli od $2\epsilon$, prvi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} (diferencijalna entropija varijacijske razdiobe) onda postaje konačan i neovisan o varijacijskim parametrima i može se zanemariti kod učenja. Za drugi član u izrazu~\eqref{eq:dropoutvi-dkl-qp-2} ne aproksimiramo varijacijsku razdiobu. Ona je težinski zbroj višedimenzionalnih Diracovih \textit{šiljaka} kojima se \textit{uzorkuje} apriorna razdioba. Ako se koristi Gaussova apriorna razdioba, može se pokazati da je taj član proporcionalan $p$ i zbroju kvadrata težina, što odgovara $L^2$ regularizaciji. Malo drugačiji i detaljniji izvod može se vidjeti u \cite{Gal:2015:DBA,Gal:2015:DBAA}, gdje se mreža s \textit{dropoutum} interpretira kao aproksimacija s Gaussovog procesa\footnote{\url{https://en.wikipedia.org/wiki/Gaussian_process}}. Vidimo da ako su regularizirane samo matrice težina, maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost} odgovara minimizacija ove funkcije pogreške:
 \begin{align}
 E(\vec\theta;\set{D}) = -\sum_i \ln\p\del{\vec y_i\midmid\vec x_i,\rvec\theta=\tilde{\vec\theta}_i} + \frac{\lambda}{2}\sum_l\enVert{\vec M_l}_\text{F}^2 \text{,}
 \end{align}
@@ -2008,7 +2075,7 @@ Slika~\ref{fig:mc-drouput-samples-DSN} prikazuje ovisnost klasifikacijske pogre�
 
 \subsection{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita}
 
-Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdiobu, koju duboki modeli daju kao izlaz softmaksa, su često previše sigurne kod krive klasifikacije i nije ih dobro interpretirati kao vjerojatnosti.
+Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdiobe koju duboki modeli daju kao izlaz softmaksa su često previše sigurne kod krive klasifikacije i nije ih dobro interpretirati kao vjerojatnosti.
 
 \cite{Hendrycks:2016:BDMOODE} pokazuju da se krivo klasificirani i izvanrazdiobni primjeri mogu uspješnije nego što je očekivano prepoznavati klasifikacijom maksimalne vjerojatnosti softmaksa kod različitih zadataka i skupova podataka. 
 
@@ -2018,13 +2085,16 @@ Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdio
 \begin{equation} \label{eq:ODIN-FGSM}
 \widetilde{\vec x} = \vec x - \epsilon\sgn\nabla_{\vec x}\del{-\ln \del{\max_k h(\vec x)_\ind{k}}} \text{.}
 \end{equation}
-\cite{Liang:2017:PDOODENN} pokazuju da takav pomak ulaznog primjere ima veći utjecaj na unutarrazdiobne primjere i tako ih bolje razdvaja od izvanrazdiobnih.
+\cite{Liang:2017:PDOODENN} pokazuju da takav pomak ulaznog primjera ima veći utjecaj na unutarrazdiobne primjere i tako ih bolje razdvaja od izvanrazdiobnih.
  
 
 
 
 \chapter{Eksperimenti} \label{chap:eksperimenti}
 
+\section{Aproksimacija bayesovske neuronske mreže s dropoutom}
+
+\section{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita}
 
 \section{Programska izvedba}
 
