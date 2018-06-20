@@ -152,14 +152,14 @@
 	{Matrična $\const L^p$-norma matrice $\vec A$}
 \glsentm{l}{frobnorm}{\enVert{\vec A}_\text{F}}
 	{Frobeniusova norma matrice $\vec A$}
-\glsentm{l}{func}{f(\vec a)}
-	{Ako $f$ nije drugačije definirana i inače označava funkciju $\R\to\R$, onda se primjenjuje po elementima}
+%\glsentm{l}{func}{f(\vec a)}
+%	{Ako $f$ nije drugačije definirana i inače označava funkciju $\R\to\R$, onda se primjenjuje po elementima}
 \glsentm{l}{conc}{\vec a\concat\vec b}
 	{Konkatenacija vektora (stupaca) $\vec a\in\R^n$ i $\vec b\in\R^m$ u vektor iz $\R^{n+m}$}
 \glsentm{l}{conc1}{\vec A\concat\vec B}
 	{Konkatenacija nizova po prvoj dimenziji}
-\glsentm{l}{dconc}{\vec A\concat'\vec B}
-	{Konkatenacija nizova po zadnjoj dimenziji}
+%\glsentm{l}{dconc}{\vec A\concat'\vec B}
+%	{Konkatenacija nizova po zadnjoj dimenziji}
 \glsentm{l}{vec}{\vecfunc(\vec A)}
 	{Funkcija koja preslikava niz iz $\R^{d_1\times\dots\times d_n}$ u $\R^{d_1\dots d_n}$}
 \glsentm{l}{vdim}{\dim(\vec a)}
@@ -169,17 +169,17 @@
 
 % Diferencijalni račun
 \glsgroup{d}{Diferencijalni račun}{}
-\glsentm{d}{od}{\od{y}{x},\,\od{}{x}f(x)}
+\glsentm{d}{od}{\tod{y}{x},\,\tod{}{x}f(x)}
 	{Derivacija $y=f(x)$ po $x$}
-\glsentm{d}{pd}{\pd{y}{x},\,\pd{}{x}f(x)}			
+\glsentm{d}{pd}{\tpd{y}{x},\,\tpd{}{x}f(x)}			
 	{Parcijalna derivacija $y=f(x)$ po $x$}
-\glsentm{d}{grad}{\nabla_{\vec x}{y},\,\nabla_{\vec x}{f(x)},\,\del{\pd{y}{\vec x}}^\tp} 	
+\glsentm{d}{grad}{\nabla_{\vec x}{y},\,\nabla_{\vec x}{f(x)},\,\del{\tpd{y}{\vec x}}^\tp} 	
 	{Gradijent $y=f(\vec x)$ po $\vec x$}
 \glsentm{d}{gradmat}{\nabla_{\vec X}{y},\,\nabla_{\vec X}{f(x)}}	
 	{Gradijent $y=f(\vec x)$ po $\vec X$}
-\glsentm{d}{hess}{\frac{\partial^2y}{\partial\vec x\partial\vec x^\tp},\,\vec H_{f}(\vec x),\,\vec H}
+\glsentm{d}{hess}{\tfrac{\partial^2y}{\partial\vec x\partial\vec x^\tp},\,\vec H_{f}(\vec x),\,\vec H}
 	{Hessijan iz $\R^{n\times n}$ za $\funcdef{f}{\R^n}{\R}$ i $y=f(\vec x)$}
-\glsentm{d}{jacobi}{\pd{\vec y}{\vec x},\,\vec J_{f}(\vec x),\,\vec J}
+\glsentm{d}{jacobi}{\tpd{\vec y}{\vec x},\,\vec J_{f}(\vec x),\,\vec J}
 	{Jakobijeva matrica iz $\R^{m\times n}$ za $\funcdef{f}{\R^n}{\R^m}$ i $\vec y=f(\vec x)$}
 \glsentm{d}{int}{\int_{\set A}f(x)\dif x,\,\int_{x\in\set A}f(x)}
 	{Određeni integral funkcije $f(x)$ po $x\in\set A$}
@@ -266,8 +266,8 @@
 	{Diracova delta}
 \glsentm{f}{doublebracket}{\enbbracket{\cdot}}
 	{Iversonova uglata zagrada; $\enbbracket{P}=\begin{cases} 1, & P \equiv \top \\ 0, & P \equiv \bot \end{cases}$}
-\glsentm{f}{mod}{\modfunc(a,b)}
-	{Ostatak pri dijeljenju cijelih brojeva; $\modfunc(a,b)\coloneqq a-\lfloor a/b\rfloor b$}
+%\glsentm{f}{mod}{\modfunc(a,b)}
+%	{Ostatak pri dijeljenju cijelih brojeva; $\modfunc(a,b)\coloneqq a-\lfloor a/b\rfloor b$}
 
 % Riječi
 \glsgroup{r}{Fraze}{}

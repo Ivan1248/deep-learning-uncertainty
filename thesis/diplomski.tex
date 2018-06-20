@@ -60,16 +60,22 @@ primjena na semantičkoj segmentaciji i procjeni dubine
 
 \section{Struktura rada}
 
+U poglavlju~\ref{chap:osnovni-pojmovi} su definirani i kratko objašnjeni neki od osnovnih pojmova u vezi teorije vjerojatnosti, teorije informacije i optimizacije temeljena na gradijentu, na kojima se temelje pojmovi u poglavljima koja slijede. U njemu su definirane i neke oznake, a na početku rada je tablični pregled mnogih oznaka koje se koriste u radu. 
+U poglavlju~\ref{chap:statisticko-zakljucivanje} su opisani neki od osnovnih pojmova u vezi statističkog zaključivanja, koje koriste mnogi algoritmi strojnog učenja.
+U poglavlju~\ref{chap:nadzirano-strojno-ucenje} su opisani neki od osnovnih pojmova strojnog učenja, posebno nadziranog učenja.
+U poglavlju~\ref{chap:duboko-ucenje-i-konvolucijske-mreze} su neki od osnovnih pojmova dubokog učenja, posebno unaprijednih neuronskih mreža i konvolucijskih mreža.
+Poglavlje \ref{chap:procjenjivanje-nesigurnosti} se bavi glavnom temom ovog rada --- procjenjivanjem nesigurnosti kod dubokih nadziranih modela. U njemu je opisana podjela nesigurnosti, bayesovske neuronske mreže, mjere za izražavanje nesigurnosti i neki primjeri pristupa za procjenu nesigurnosti i prepoznavanje nalazi li se podatak u razdiobi skupa za učenje. Neki od tih pristupa \citep{Kendall:2017:WUNBDLCV,Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN} su isprobani za ovaj rad. Rezultati eksperimenata su opisani u poglavlju~\ref{chap:eksperimenti}.
 
 
-\chapter{Osnovni pojmovi}
+\chapter{Osnovni pojmovi} \label{chap:osnovni-pojmovi}
 
+U ovom poglavlju su definirani i kratko objašnjeni neki od osnovnih pojmova na kojima se temelje pojmovi u poglavljima koja slijede.
 
 \section{Teorija vjerojatnosti}
 
 Jako važan pojam u strojnom učenju je nesigurnost ili neizvjesnost. Ona dolazi od šuma u mjerenju i iz konačnosti skupa podataka \citep{Bishop:2006:PRML}. Teorija vjerojatnosti nam omogućuje modeliranje nesigurnosti i pronalaženje optimalnih zaključaka korištenjem dostupnih informacija.
 
-Postoje dvije glavne interpretacije vjerojatnosti \citep{Murphy:2012:MLPP}. Jedna je \emphasize{frekventistička interpretacija} prema kojoj vjerojatnosti predstavljaju učestalosti različitih događaja ako se pokus ponavlja velik broj puta. Druga je \emphasize{bayesovska interpretacija} prema kojoj vjerojatnost izražava našu nesigurnost o ishodu pokusa. 
+Postoje dvije glavne interpretacije vjerojatnosti \citep{Murphy:2012:MLPP}. Jedna je \textit{frekventistička} interpretacija, prema kojoj vjerojatnosti predstavljaju učestalosti različitih događaja ako se pokus ponavlja velik broj puta. Druga je \textit{bayesovska} interpretacija, prema kojoj vjerojatnost izražava našu nesigurnost o ishodu pokusa. 
  
 Ovo poglavlje daje kratak i matematički ne potpuno precizan pregled nekih od osnovnih pojmova i pravila vezanih uz vjerojatnost. Na strukturu ovog poglavlja imaju utjecaj \citet{Goodfellow:2016:DL,Murphy:2012:MLPP}.
 
@@ -91,29 +97,29 @@ za koju vrijedi
 \end{align}
 za svaki $\set A\subset\set X$.
 
-Funkciju gustoće vjerojatnosti možemo smatrati i \emphasize{poopćenom funkcijom}\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}. To nam omogućuje da funkcijom gustoće predstavljamo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Diskretnu razdiobu onda možda možemo predstaviti funkcijom gustoće vjerojatnosti 
+Funkciju gustoće vjerojatnosti možemo smatrati i \emphasize{poopćenom funkcijom}\footnote{\url{https://en.wikipedia.org/wiki/Distribution_(mathematics)}}, tj. funkcijom koja se može izraziti kao zbroj neke funkcije $f$ i translatiranih Diracovih funkcija oblika $x\mapsto f(x)+\sum_i\dirac(x-\alpha_i)$, gdje su $\alpha_i$ neke konstante, a $\dirac$ Diracova funkcija, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. To nam omogućuje da funkcijom gustoće predstavljamo razdiobe za koje neki elementarni događaji imaju vjerojatnost veću od $0$. Razdiobu diskretne slučajne varijable $\rvar x$ onda možemo predstaviti funkcijom gustoće vjerojatnosti 
 \begin{align} \label{eq:dirac-density}
 p_{\rvar x}(x)=\sum_{x'\in\set X} \P(\rvar x=x) \dirac(x-x')  \text{,}
 \end{align}
-gdje je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$, a $\dirac$ Diracova delta, poopćena funkcija za koju vrijedi $\dirac(x)=0$ za $x\neq0$ i $\int_x\dirac(x)\dif x=1$. Diracova delta se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
+gdje je $\set X$ prostor elementarnih događaja slučajne varijable $\rvar x$. Diracova funkcija se može promatrati kao limes funkcije gustoće Gaussove razdiobe:
 \begin{align*}
 \dirac(x)=\lim_{\sigma\to 0}\frac{1}{\sqrt{2\pi}\sigma}\exp\del{\frac{x^2}{2\sigma^2}}.
 \end{align*}
-Ako je $\rvar x$ vektor $\rvec x = (\rvar x_1,..,\rvar x_n)$, mora vrijediti
-\begin{align}
+Ako je argument Diracove funkcije vektor vektor $\vec x=(x_1,..,x_n)$, onda Diracovu funkciju definiramo umnoškom Diracovih funkcija njegovih elemenata:
+\begin{align} \label{eq:dirac-vektor}
 \dirac(\vec x)\coloneqq\prod_i\dirac(x_i) \text{.}
 \end{align}
-Onda $n$-struki integral gustoće definirane izrazom \eqref{eq:dirac-density} ima vrijednost $1$. 
+Takva definicija omogućuje da $n$-struki integrali funkcija definiranih izrazima \eqref{eq:dirac-density} ili \eqref{eq:dirac-vektor} imaju vrijednost $1$.
 
 %npr. definirati i funkciju gustoće vjerojatnosti $p_{\rvar x}(x) = \frac{1}{2}\dirac(x)+\frac{1}{2}$ definiranom na domeni $\intcc{0,1}$.
 
-Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili neodređena. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će, radi kratkoće, riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
+Razdioba slučajne varijable $\rvar x$ će se u ovom radu označavati s $\P(\rvar x)$ ako je diskretna, a s $\p(\rvar x)$ ako je kontinuirana ili ju nismo definirali. Funkcija (gustoće) vjerojatnosti će se označavati bez oznake slučajne varijable u indeksu ako je po slovu vrijednosti jasno o kojoj se varijabli radi. Druge oznake koje se koriste opisane su u popisu oznaka na početku rada. Na nekim mjestima će, radi kratkoće, riječ \textit{razdioba} imati značenje \textit{funkcija gustoće} ili \textit{funkcija vjerojatnosti}.
 
 \subsection{Združena, uvjetna i marginalna vjerojatnost i osnovna pravila vjerojatnosti}
 
-Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Dvije slučajne varijable, i ako imaju istu razdiobu, ne moraju biti iste jer se mogu razlikovati po odnosima s drugim slučajnim varijablama.
+Dvije razdiobe su iste ako imaju iste funkcije gustoće vjerojatnosti. Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti iste jer se mogu razlikovati po odnosima s drugim slučajnim varijablama.
 
-Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varijablu) i njihovu \emphasize{združenu razdiobu} $\p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Dalje će se izrazi pravila vjerojatnosti odnositi samo na elemntarne događaje. Npr. $x, y$ će skraćeno označavati $\cbr{\rvar x=x, \rvar y=y}$ kada je jasno po slovima o kojim se slučajnim varijablama radi. Ista pravila vjerojatnosti vrijede i za općenitije događaje jer za svaki događaj možemo definirati indikatorsku slučajnu varijablu kojoj je taj događaj elementarni događaj: $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila.
+Možemo razmatrati više slučajnih varijabli zajedno (združenu slučajnu varijablu ili slučajni vektor) i njihovu \emphasize{združenu razdiobu}, npr. $\p(\rvar x,\rvar y)$. Događaji onda imaju oblik $\cbr{R(\rvar x,\rvar y)}$, gdj je $R$ neki predikat. Elementarni događaj onda ima oblik $\cbr{\rvar x=x, \rvar y=y}$. Često ćemo $\cbr{\rvar x=x, \rvar y=y}$ skraćeno označavati s $x, y$ ako je jasno po slovima o kojim se slučajnim varijablama radi. Dalje će se izrazi pravila vjerojatnosti u ovom odjeljku odnositi na elementarne događaje, ali ista pravila vjerojatnosti vrijede i za općenitije događaje jer za svaki događaj možemo definirati indikatorsku slučajnu varijablu kojoj je taj događaj elementarni događaj: $\rvar e_i = \enbbracket{R_i(\rvar x, \rvar y)}$. Takve slučajne varijable imaju skup elementarnih događaja $\cbr{0,1}$ i za njih vrijede ista pravila.
 
 \emphasize{Uvjetna vjerojatnost} je vjerojatnost nekog događaja ako je poznato da se neki drugi događaj ostvario. Ovako je definirana uvjetna vjerojatnost događaja $\cbr{\rvar x=x}$ ako je poznato da se ostvario događaj $\cbr{\rvar y=y}$:
 \begin{align} \label{eq:uvjetna-vj}
@@ -121,7 +127,7 @@ Možemo razmatrati više slučajnih varijable zajedno (združenu slučajnu varij
 \end{align}
 
 Združena vjerojatnost se može rastaviti \emphasize{pravilom umnoška}: 
-\begin{align}
+\begin{align}  \label{eq:pravilo-umnoska-bin}
 \p(x,y) = \p(x\mid y)\p(y) \text{.}
 \end{align}
 Općenitije, pravilo umnoška za $n$ slučajnih varijabli $\rvar x_1,..,\rvar x_n$ izgleda ovako:
@@ -136,9 +142,9 @@ Općenitije, pravilo umnoška za $n$ slučajnih varijabli $\rvar x_1,..,\rvar x_
 \p(x) = \int_{\set Y}\p(x,y)\dif y = \int_{\set Y}\p(x\mid y)\p(y)\dif y \text{.}
 \end{align}
 
-Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar x_1\sim q_1$, $\rvar x_2\sim q_1$ i $\rvar y\sim q_2$, ne mora vrijediti $\p(\rvar x_1, \rvar y) = \p(\rvar x_2, \rvar y)$.
+Dvije slučajne varijable koje imaju istu razdiobu ne moraju biti u istom odnosu prema drugim slučajnim varijablama. Npr. ako $\rvar x_1\sim q_1$, $\rvar x_2\sim q_1$ i $\rvar y\sim q_2$, tj. slučajne varijable $\rvar x_1$ i $\rvar x_2$ imaju razdiobu $q_1$, $\rvar y$ razdiobu $q_2$, ne mora vrijediti $\p(\rvar x_1, \rvar y) = \p(\rvar x_2, \rvar y)$.
 
-Rastavljanjem lijeve strane jednadžbe~\eqref{eq:pravilo-umnoska} na umnožak $\p(x\mid y)\p(y)$ dobivamo \emphasize{Bayesovo pravilo}:
+Rastavljanjem lijeve strane jednadžbe~\eqref{eq:pravilo-umnoska-bin} na umnožak $\p(x\mid y)\p(y)$ dobivamo \emphasize{Bayesovo pravilo}:
 \begin{align}
 \p(x\mid y) = \frac{\p(y\mid x)\p(x)}{\p(y)} \text{,}
 \end{align}
@@ -169,7 +175,7 @@ Slučajne varijable $\rvar x$ i $\rvar y$, koje mogu biti zavisne, su uz znanje 
 \p(x\mid y,z) = \p(x\mid z) \text{.}
 \end{align}
 
-Isto tako, slučajne varijable $\rvar x$ i $\rvar y$ koje su nezavisne mogu biti \emphasize{uvjetno zavisne} uz znanje o ishodu neke slučajne varijable $\rvar z$. Općenito, dvije slučajne varijable ne moraju biti ni uvjetno zavisne ni uvjetno nezavisne jer neki ishodi treće slučajne varijable mogu utjecati na njihovu zavisnost, a neki ne. Također se može govoriti i o zavisnosti ili nezavisnosti pojedinih događaja.
+Isto tako, slučajne varijable $\rvar x$ i $\rvar y$ koje su nezavisne mogu biti \emphasize{uvjetno zavisne} uz znanje o ishodu neke slučajne varijable $\rvar z$. Općenito, dvije slučajne varijable ne moraju biti ni uvjetno zavisne ni uvjetno nezavisne jer uz neke ishode slučajne varijable po kojoj se uvjetuje one mogu biti zavisne, a uz neke nezavisne. Također se može govoriti i o zavisnosti ili nezavisnosti događaja.
 
 \subsection{Očekivanje, varijanca i kovarijanca}
 
@@ -215,20 +221,36 @@ Neka je odnos između slučajnih varijabli $\rvar x$ i $\rvar y$ definiran funkc
 	P_{\rvar y}(y) = \sum_{x\colon f(x)=y} P_\rvar{x}(x) \text{.}
 \end{align} 
 Ako su $\rvar x$ i $\rvar y$ kontinuirane slučajne varijable s vrijednostima iz $\R$ i $f$ je injektivna, može se pokazati \citep{Elezovic:2007:VSSV} da vrijedi
-\begin{align}
+\begin{align} \label{eq:gustoca-funkcije-sv}
 p_{\rvar y}(y) = p_\rvar{x}(x) \envert{\od{x}{y}} \text{.}
 \end{align} 
-To se može poopćiti i na vektore. Onda je $p_{\rvec y}(\vec y)=\envert{\det\pd{\vec x}{\vec y}}$ \citep{Murphy:2012:MLPP}.
-
-%Neka je $c_{\rvar x}(x) := \int_{-\infty}^{x} p_{\rvar x}(x') \dif{x'}$.
-%Vrijednosti iz intervala $\intoo{x, x+\epsilon}$ na kojem je $f$ monotono rastuća preslikavaju se u interval $\intoo{f(x), f(x+\epsilon)}$ (granice su obrnute ako je monotono padajuća) i vrijedi $c_{\rvar x}(x+\epsilon)-c_{\rvar x}(x) = c_{\rvar y}(f(x)+\epsilon)-c_{\rvar y}(f(x))$.
+Neka je $C_{\rvar x}(x) := \int_{-\infty}^{x} p_{\rvar x}(x') \dif{x'}$. Vrijednosti iz intervala $\intoo{x, x+\epsilon}$ na kojem je $f$ monotono rastuća preslikavaju se u interval $\intoo{f(x), f(x+\epsilon)}$. Granice su obrnute ako je $f$ monotono padajuća na tom intervalu. Budući da događaji $\cbr{\rvar x\in\intoo{x, x+\epsilon}}$ i $\cbr{\rvar y\in\intoo{f(x), f(x+\epsilon)}}$ imaju istu vjerojatnost, vrijedi
+\begin{align}
+C_{\rvar x}(x+\epsilon)-C_{\rvar x}(x) = 
+C_{\rvar y}(f(x+\epsilon))-C_{\rvar y}(f(x)) \text{.}
+\end{align}
+Ako obje strane jednadžbe dijelimo s $\epsilon$ i pustimo $\epsilon\to0$, 
+\begin{align}
+	\lim_{\epsilon\to 0}\frac{C_{\rvar x}(x+\epsilon)-C_{\rvar x}(x)}{\epsilon} = \lim_{\epsilon\to 0}\frac{C_{\rvar y}(f(x+\epsilon))-C_{\rvar y}(f(x))}{\epsilon} \text{.}
+\end{align}
+Redom prema definiciji derivacije, pravilu derivacije složene funkcije i definiciji funkcija $C_\rvec{x}$ i $C_\rvec{y}$ kao integrala gustoće vjerojatnosti slijedi:
+\begin{align}
+\od{}{x}C_{\rvar x}(x) &= \od{}{x}C_{\rvar y}(f(x)) \text{,}\\
+\od{}{x}C_{\rvar x}(x) &= \od{}{f(x)}C_{\rvar y}(f(x))\od{}{x}f(x) \text{,}\\
+p_{\rvar x}(x) &= p_{\rvar y}(f(x))\od{}{x}f(x) \text{.} \label{eq:gustoca-funkcije-sv-dokaz-rastuci}
+\end{align}
+Može se pokazati da je za monotono padajuće intervale desna strana jednadžbe~\eqref{eq:gustoca-funkcije-sv-dokaz-rastuci} pomnožena s $-1$, iz čega uz jednadžbu~\eqref{eq:gustoca-funkcije-sv-dokaz-rastuci} slijedi
+\begin{align}
+p_{\rvar x}(x) &= p_{\rvar y}(y)\envert{\od{y}{x}} \text{,} \label{eq:gustoca-funkcije-sv-dokaz-xy}
+\end{align}
+gdje je $f(x)$ zamijenjen s $y$. Množenjem toga s $\envert{\od{x}{y}}=\envert{\od{y}{x}}^{-1}$ slijedi jednadžba~\eqref{eq:gustoca-funkcije-sv}. To pravilo se može poopćiti i na vektore. Onda je $p_{\rvec y}(\vec y)=p_\rvec{x}(\vec x)\envert{\det\pd{\vec x}{\vec y}}$ \citep{Murphy:2012:MLPP}.
 
 Neka je $\rvar z$ zbroj slučajnih varijabli $\rvar x$ i $\rvar y$. Onda vrijedi
 \begin{align}
 	p_{\rvar z}(z) = \int p_{\rvar x,\rvar y}(x, z-x)\dif x \text{.}
 \end{align}
 Ako su $\rvar x$ i $\rvar y$ nezavisne, onda to postaje konvolucija:
-\begin{align}
+\begin{align} \label{eq:nezavisne-gustoce-konvolucija}
 p_{\rvar z}(z) = \int p_{\rvar x}(x)p_{\rvar y}(z-x)\dif x \eqqcolon (p_{\rvar x}*p_{\rvar y})(z) \text{.}
 \end{align}
 
@@ -241,7 +263,7 @@ p_{\rvar z}(z) = \int p_{\rvar x}(x)p_{\rvar y}(z-x)\dif x \eqqcolon (p_{\rvar x
 	\D \rvar x &= \mu(1-\mu) \text{.}
 \end{align}
 
-\emphasize{Kategorička razdioba} je poopćenje Bernoullijeve razdiobe na konačan prostor elementarnih događaja koji može imati više od $2$ vrijednosti. Ako prostor elementarnih događaja ima kardinalitet $n$, razdioba je određena vektorom $\vec p\in\intcc{0,1}^{n-1}$ za koji vrijedi $\sum_i p_\ind{i}\leq 1$. Prostor elementarnih događaja ne mora biti skup $\cbr{1\bidot n}$ pa je kategorička razdioba najopćenitija diskretna razdioba nad konačnim skupom elementarnih događaja.
+\emphasize{Kategorička razdioba} je poopćenje Bernoullijeve razdiobe na konačan prostor elementarnih događaja koji može imati više od $2$ vrijednosti. Ako prostor elementarnih događaja ima kardinalitet $n$, razdioba je određena vektorom $\vec p\in\intcc{0,1}^{n-1}$ za koji vrijedi $\sum_i p_\ind{i}\leq 1$. Prostor elementarnih događaja ne mora biti skup $\cbr{1\bidot n}$, pa je kategorička razdioba najopćenitija diskretna razdioba nad konačnim skupom elementarnih događaja.
 
 \emphasize{Eksponencijalna razdioba} je kontinuirana razdioba s domenom $\R_{\geq0}$. Ona je definirana parametrom $\lambda\in\R_{>0}$ ili $\beta=\lambda^{-1}$ i ima ova svojstva:
 \begin{align}
@@ -263,16 +285,22 @@ p_{\rvar z}(z) = \int p_{\rvar x}(x)p_{\rvar y}(z-x)\dif x \eqqcolon (p_{\rvar x
 \E \rvar x &= \mu, \\
 \D \rvar x &= \sigma^2 \text{.}
 \end{align}
-Neka je $\rvar z_n = \frac{\sum_{i=1}^n \del{\rvar x_i-\mu}}{\sigma\sqrt{n}}$ normalizirani zbroj $n$ nezavisnih slučanih varijabli $\rvar x_i$ koje imaju jednaku razdiobu s očekivanjem $\mu$ i varijancom $\sigma^2$. Prema \emphasize{centralnom graničnom teoremu}, $\rvar z_n$ u razdiobi konvergira prema Gaussovoj razdiobi kada $n\to\infty$, tj.
+Neka je 
+\begin{align} \label{eq:normalizirani-zbroj}
+\rvar z_n = \frac{\sum_{i=1}^n \del{\rvar x_i-\mu}}{\sigma\sqrt{n}}
+\end{align}
+normalizirani zbroj $n$ nezavisnih slučanih varijabli $\rvar x_i$ koje imaju jednaku razdiobu s očekivanjem $\mu$ i varijancom $\sigma^2$. Prema \emphasize{centralnom graničnom teoremu}, $\rvar z_n$ u razdiobi konvergira prema Gaussovoj razdiobi kada $n\to\infty$, tj.
 \begin{align}
 \lim_{n\to\infty} \P(\rvar z_n<z) = \int_{-\infty}^{z} p_{\mathcal{N}(0,1)}(z')\dif{z'} \text{.}
 \end{align}
-$p_{\mathcal{N}(0,1)}$ označava funkciju gustoće normalne razdiobu s $\mu=0$ i $\sigma^2=1$. To je detaljnije objašnjeno i dokazano npr. u \citep{Elezovic:2007:VSSV}. Centralni granični teorem je ilustriran na slici~\ref{fig:clt}.
+$p_{\mathcal{N}(0,1)}$ označava funkciju gustoće normalne razdiobu s $\mu=0$ i $\sigma^2=1$. To je detaljnije objašnjeno i dokazano npr. u \citet{Elezovic:2007:VSSV}. Centralni granični teorem je ilustriran na slici~\ref{fig:clt}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\textwidth]{clt}
-	\caption{Ilustracija centralnog graničnog teorema. Grafovi za različite brojeve pribrojnika $n$ prikazuju funkcije gustoće vjerojatnosti normaliziranih zbrojeva nezavisnih slučajnih varijabli s razdiobom prikazanom prvim grafom. Zadnji graf prikazuje funkciju gustoće Gaussove razdiobe s očekivanjem $0$ i varijancom $1$.}
+	\caption{Ilustracija centralnog graničnog teorema. Grafovi za različite brojeve pribrojnika $n$ prikazuju funkcije gustoće vjerojatnosti normaliziranih zbrojeva (kao u je jednadžbi~\eqref{eq:normalizirani-zbroj}) nezavisnih slučajnih varijabli s razdiobom prikazanom prvim grafom. Zadnji graf prikazuje funkciju gustoće Gaussove razdiobe s očekivanjem $0$ i varijancom $1$. Slika je dobivena ponavljanom konvolucijom (jednadžba~\eqref{eq:nezavisne-gustoce-konvolucija}) funkcije gustoće vjerojatnosti uz primjenu jednadžbe~\eqref{eq:gustoca-funkcije-sv} za normalizaciju.
+	%Normalizirani zbroj slučajnih varijabli $\rvar x_1,\bidot,\rvar x_n$ je $\frac{1}{\sqrt{n}}\sum_i \frac{\rvar x_i-\E\rvar x_i}{\sqrt{\D\rvar x_i}}$. 
+	}
 	\label{fig:clt}
 \end{figure}
 
@@ -286,7 +314,7 @@ Ako su $\rvec x_\ind{i}$ nezavisne, $\vec\Sigma$ će biti dijagonalna matrica, a
 
 \section{Teorija informacije} \label{sec:teorija-informacije}
 
-Jedan od osnovnih pojmova u teoriji informacije je \emphasize{sadržaj informacije} koji događaj preslikava u nenegativan realni broj:
+Jedan od osnovnih pojmova u teoriji informacije \citep{Shannon:1948:MTC} je \emphasize{sadržaj informacije} koji događaj preslikava u nenegativan realni broj:
 \begin{align}
 \I(x\in\set A)\coloneqq\log_b \frac{1}{\P(x\in\set A)} = -\log_b \P(x\in\set A) \text{.}
 \end{align}
@@ -296,19 +324,19 @@ Sadržaj informacije odgovara minimalnom broju simbola (bitova ako $b=2$) potreb
 \begin{align}\label{eq:entropy}
 \H(\rvar x) \coloneqq  \E_{\rvar x}\I(\rvar x=x) = -\E_{\rvar x}\log_b \P(x) \text{.}
 \end{align}
-Ona iskazuje neizvjesnost diskretne slučajne varijable. Entropija će biti $0$ ako je vjerojatnost nekog elementarnog događaja $1$, a najveća će biti kada svi elementarni događaji imaju istu vjerojatnost: $\H(\rvar x)=\log_b n$, gdje je $n$ broj elementarnih događaja. 
+Kažemo \textit{donja granica} zato što kodne riječi ili poruke mogu imati samo cjelobrojne duljine, a sadržaj informacije pojedinih poruka ne mora biti cjelobrojan, pa optimalno kodirana poruka mora imati najbliži cijeli broj simbola koji je veći ili jednak sadržaju informacije. U nastavku se, radi jednostavnosti i na račun preciznosti, to neće spominjati kod opisivanje drugih informacijsko-teorijskih veličina. Entropija iskazuje neizvjesnost diskretne slučajne varijable. Ona će biti $0$ ako je vjerojatnost nekog elementarnog događaja $1$, a najveća će biti kada svi elementarni događaji imaju istu vjerojatnost: $\H(\rvar x)=\log_b n$, gdje je $n$ broj elementarnih događaja. 
 
 Entropija kontinuirane slučajne varijable je beskonačna. Ako se u izrazu \eqref{eq:entropy} vjerojatnost zamijeni gustoćom vjerojatnosti, onda on predstavlja \emphasize{diferencijalnu entropiju}
-\begin{align}\label{eq:entropy}
+\begin{align}\label{eq:diff-entropy}
 \h(\rvar x) \coloneqq -\E_{\rvar x}\log_b \p(x) \text{,}
 \end{align}
 jedan od analoga\footnote{\url{https://en.wikipedia.org/wiki/Differential_entropy}} entropije za kontinuirane varijable koji nema neka od svojstava koja ima entropija.
 
-\emphasize{Unakrsna entropija} je mjera koja iskazuje donju granicu očekivanja duljine poruke kodirane optimalnim kodom za razdiobu $\P(\rvar y)$ dok izvor poruka ima  razdiobu $\P(\rvar x)$. Ovako je definirana:
+\emphasize{Unakrsna entropija} je mjera koja iskazuje očekivanje duljine poruke kodirane optimalnim kodom za razdiobu $\P(\rvar y)$ ako izvor poruka ima razdiobu $\P(\rvar x)$. Ovako je definirana:
 \begin{align}
 \H_{\rvar y}(\rvar x)\coloneqq \E_{\rvar x}\I(\rvar y=x) = -\E_{\rvar x}\log_b P_{\rvar y}(x) \text{.}
 \end{align}
-Za $\P(\rvar y) = \P(\rvar x)$ je $\H_{\rvar y}(\rvar x) = \H_{\rvar x}(\rvar x)=\H(\rvar x)$. Za unakrsnu entropiju se često koristi oznaka $\H(\rvar x,\rvar y)$, ali ista oznaka se koristi i za entropiju združene slučajne varijable $(\rvar x,\rvar y)$. Po uzoru na \citet{Olah:2015:VIT}, ovdje koristimo oznaku $\H_{\rvar y}(\rvar x)$.
+Za $\P(\rvar y) = \P(\rvar x)$ je $\H_{\rvar y}(\rvar x) = \H_{\rvar x}(\rvar x)=\H(\rvar x)$. Za unakrsnu entropiju se često koristi oznaka $\H(\rvar x,\rvar y)$, ali ista oznaka se koristi i za entropiju para slučajnih varijabli $(\rvar x,\rvar y)$. Po uzoru na \citet{Olah:2015:VIT}, ovdje koristimo oznaku $\H_{\rvar y}(\rvar x)$.
 
 Kao mjera razlike između dviju razdioba često se koristi \emphasize{relativna entropija} ili \emphasize{Kullback-Leiblerova divergencija} (KL-divergencija):
 \begin{align}
@@ -324,7 +352,7 @@ Ona je uvijek pozitivna i mjeri koliko simbola više se u prosjeku koristi ako s
 	\draw[thick] (0,3.5ex) rectangle (5,7ex) node[pos=.5] {$\H(\rvar x)$};
 	\draw[thick] (5,3.5ex) rectangle (8,7ex) node[pos=.5] {$\Dkl{\rvar x}{\rvar y}$};
 	\end{tikzpicture}
-	\caption{Odnos entropije, unakrsne entropije i KL-divergencije.}
+	\caption{Odnos entropije, unakrsne entropije i KL-divergencije: $\H_{\rvar y}(\rvar x)=\H(\rvar x)+\Dkl{\rvar x}{\rvar y}$.}
 	\label{fig:dkl}
 \end{figure}
 
@@ -366,14 +394,14 @@ gdje je
 \draw[thick] (3,3.5ex) rectangle (8,7ex) node[pos=.5] {$\H(\rvar y)$};
 \draw[thick] (0,0) rectangle (8,3.5ex) node[pos=.5] {$\H(\rvar x,\rvar y)$};
 \end{tikzpicture}
-\caption{Odnosi informacijsko-teorijskih veličina dviju slučajnih varijabli.}
+\caption{Odnosi informacijsko-teorijskih veličina dviju slučajnih varijabli: $\H(\rvar y)=\I(\rvar x,\rvar y)+\H(\rvar y\mid\rvar x)$,  $\H(\rvar x,\rvar y)=\I(\rvar x,\rvar y)+\H(\rvar x\mid\rvar y)+\H(\rvar y\mid\rvar x)$.}
 \label{fig:entropije}
 \end{figure}
 
 
 \section{Optimizacija temeljena na gradijentu}
 
-U ovom odjeljku su opisani osnovni optimizacijski algoritmi temeljeni na gradijentu i neki izvedeni algoritmi koji koriste doaatne heuristike. Oni su bitni u strojnom učenju (poglavlje \ref{chap:nsu}), posebno u dubokom učenju (poglavlje \ref{chap:dukm}). Primjena optimizacijskih algoritama u dubokom učenju opisana je u pododjeljku \ref{subsec:dukn-stoh-optimizacija}.
+U ovom odjeljku su opisani osnovni optimizacijski algoritmi temeljeni na gradijentu i neki izvedeni algoritmi koji koriste dodatne heuristike. Oni su bitni u strojnom učenju (poglavlje \ref{chap:nadzirano-strojno-ucenje}), posebno u dubokom učenju (poglavlje \ref{chap:duboko-ucenje-i-konvolucijske-mreze}). Primjena optimizacijskih algoritama u dubokom učenju opisana je u pododjeljku \ref{subsec:dukn-stoh-optimizacija}.
 
 Neka je $\funcdef{f}{\R^n}{\R}$ funkcija čiji minumum s obzirom na parametre $\vec x$ želimo naći. Ona se u okolini točke $\vec x$, ako je dovoljno (beskonačno) puta derivabilna može izraziti Taylorovim redom:
 \begin{align}
@@ -392,11 +420,11 @@ Ako je $\vec d$ ima malu normu, funkciju $f$ u okoline neke točke možemo dobro
 \end{align}
 gdje je $i$ redni broj iteracije, a $\eta$ \emphasize{veličina koraka} (\emphasize{stopa učenja} kod strojnog učenja) koja može biti konstanta ili može ovisiti o $i$.
 
-Neka $\vec g=\nabla_{\vec x}f(\vec x)$ i $\vec H=\vec H_f(\vec x)$. Za dovoljno mal $\eta$
+Neka $\vec g=\nabla_{\vec x}f(\vec x)$ i $\vec H=\vec H_f(\vec x)$. Za dovoljno mali $\eta$
 \begin{align} \label{eq:grad-delta-approx}
 f(\vec x-\eta\vec g) = f(\vec x) - \eta\vec g^\tp\vec g - \frac{1}{2}\eta^2\vec g^\tp\vec H\vec g + \cdots
 \end{align}
-Uz neke blage uvjete koje mora zadovoljavati $f$ i dovoljno mal $\eta$, gradijentni spust konvergira, tj. proizvoljno se približi nekom lokalnom minimumu (ili stacionarnoj točki koja nije lokalni minimum, gdje $\nabla_{\vec x}f(\vec x)=\cvec 0$) ovisno o $\eta$. Jedan blagi uvjet može biti \emphasize{Lipschitz-kontinuiranost} funkcije $f$ ili njene derivacije \citep{Goodfellow:2016:DL}. Funkcija $f$ je Lipschitz-kontinuirana ako postoji konstanta $\lambda$ za koju za svaki par $(\vec x,\vec y)$ vrijedi:
+Uz neke blage uvjete koje mora zadovoljavati $f$ i dovoljno mali $\eta$, gradijentni spust konvergira, tj. proizvoljno se približi nekom lokalnom minimumu ili stacionarnoj točki koja nije lokalni minimum, u kojoj je isto $\nabla_{\vec x}f(\vec x)=\cvec 0$, ovisno o $\eta$. Jedan blagi uvjet može biti \emphasize{Lipschitz-kontinuiranost} funkcije $f$ ili njene derivacije \citep{Goodfellow:2016:DL}. Funkcija $f$ je Lipschitz-kontinuirana ako postoji konstanta $\lambda$ za koju za svaki par $(\vec x,\vec y)$ vrijedi:
 \begin{align}
 \envert{f(\vec x)-f(\vec y)} < \lambda\enVert{\vec x-\vec y} \text{.}
 \end{align}
@@ -413,7 +441,7 @@ gdje je $\beta\in\intco{0,1}$ faktor kojim se određuje \textit{otpor} proporcio
 \begin{align}
 \vec v_i = \vec v_{i-1} - (1-\beta)\vec v_{i-1} + \nabla_{\vec x}f(\vec x_{i-1}) \text{.}
 \end{align}
-$\beta$ se obično odabire da bude bliže $1$. Uz $\beta=0$ dobiva se obični gradijentni spust, dobiva čestica koja klizi bez trenja. Uz dobro odabran $\beta$ prigušuju se pomaci koji nisu u smjeru gibanja $\vec v$. To omogućuje bržu konvergenciju i izbjegavanje malih lokalnih optimuma i drugih stacionarnih točaka. Svojstva gradijentnog spusta s inercijom su dobro objašnjena u \citet{GOH:2017:WMRW}.
+$\beta$ se obično odabire da bude bliže $1$. Uz $\beta=1$ dobiva se obični gradijentni spust, a uz $\beta=0$ čestica koja klizi bez trenja. Uz dobro odabran $\beta$ prigušuju se pomaci koji nisu u smjeru gibanja $\vec v$. To omogućuje bržu konvergenciju i izbjegavanje malih lokalnih optimuma i drugih stacionarnih točaka. Svojstva gradijentnog spusta s inercijom su dobro objašnjena u \citet{GOH:2017:WMRW}.
 
 Jedno poboljšanje gradijentnog spusta s inercijom je \emphasize{Nesterovljev postupak} \citep{Nesterov:2014:ILCOBC,Sutskever:2013:TRNN}:
 \begin{align}
@@ -438,10 +466,10 @@ Jedan algoritam koji često ubrzava učenje je \emphasize{Adam} \citep{Kingma:20
 \vec v_i &= \beta_1\vec v_{i-1} + (1-\beta_1)\vec g_i, \\
 \vec r_i &= \beta_2\vec r_{i-1} + (1-\beta_2)\vec g_i^{\odot 2}, \\
 \vec v'_i &= \frac{1}{1-\beta_1^i}\vec v_i, \\
-\vec r'_i &= \frac{1}{1-\beta_1^i}\vec r_i, \\
+\vec r'_i &= \frac{1}{1-\beta_2^i}\vec r_i, \\
 \vec x_i &= \vec x_{i-1} - \eta\del{\epsilon\cvec 1+\vec r_i^{\odot\frac{1}{2}}}^{\odot-1} \odot \nabla_{\vec x}f(\vec x_{i-1}) \text{,}
 \end{align}
-gdje je $\vec v_i$ pomični prosjek gradijenta, $\vec r_i$ pokretni prosjek kvadrata gradijenta po elementima, a $\epsilon$ mala konstanta. Parametar $\beta_1$ ima ulogu kao $\beta$ kao gradijentnog spusta s inercijom, a $\beta_2$ kao $\rho$ kod RMSPropa. Brzina $\vec v_i$ i pokretni prosjek kvadrata $\vec r_i$ se inicijaliziraju u $\cvec 0$ i u svakom koraku se skaliraju obrnuto proporcionalno udjelu gradijenta u odnosu na inicijalnu vrijednost $\cvec 0$ u pokretnom prosjeku radi poništavanja pristranosti procjena. Za velik $i$ ti faktori skaliranja približavaju se $1$.
+gdje je $\vec v_i$ pomični prosjek gradijenta, $\vec r_i$ pokretni prosjek kvadrata gradijenta po elementima, a $\epsilon$ mala konstanta. Parametar $\beta_1$ ima ulogu kao $\beta$ kao gradijentnog spusta s inercijom, a $\beta_2$ kao $\rho$ kod RMSPropa. Brzina $\vec v_i$ i pokretni prosjek kvadrata $\vec r_i$ se inicijaliziraju u $\cvec 0$ i u svakom koraku se skaliraju obrnuto proporcionalno udjelu gradijenta u odnosu na inicijalnu vrijednost $\cvec 0$ u pokretnom prosjeku radi poništavanja pristranosti procjena. Za faktore skaliranja vrijedi $\lim_{i\to\infty}\frac{1}{1-\beta^i}=1$.
 
 \subsection{Postupci drugog reda}
 
@@ -471,7 +499,7 @@ s $\eta<1$.
 \iffalse
 %\section{Računski grafovi}
 
-Ovaj odjeljak definira \emphasize{računski graf} i opisuje grafički jezik za prikaz računskih grafova koji će se koristiti od poglavlja~\ref{chap:dukm}.
+Ovaj odjeljak definira \emphasize{računski graf} i opisuje grafički jezik za prikaz računskih grafova koji će se koristiti od poglavlja~\ref{chap:duboko-ucenje-i-konvolucijske-mreze}.
 
 Računaski graf neke funkcije je usmjereni aciklički graf gdje čvorovi koji nemaju djecu predstavljaju varijable (parametre), ostali čvorovi predstavljaju operacije koje ovise varijablama ili rezultatima drugih operacija, a bridovi povezuju ulaze operacija s operacijama.
 
@@ -480,7 +508,9 @@ Ako je funkcija koju prikazujemo $f\colon x\mapsto y$ kompozicija $n$ funkcija: 
 
 
 
-\chapter{Statističko modeliranje}
+\chapter{Statističko zaključivanje} \label{chap:statisticko-zakljucivanje}
+
+U ovom poglavlju su opisane neke od osnovnih ideja koje omogućuju efikasno \emphasize{statističko zaključivanje}, tj. optimalno procjenjivanje nesigurnosti i svojstava neopažanih slučajnih varijabli na temelju pravila vjerojatnosti, opažanja i pretpostavki. Zbog nedostatka vremena, ovdje nije obrađeno statističko testiranje, koje je jedno važno područje statističkog zaključivanja.
 
 
 \section{Probabilistički grafički modeli}
@@ -523,7 +553,7 @@ Prema tome, svaki probabilistički grafički model ima ekvivalentnu Bayesovu mre
 	\label{fig:bayesova-mreza}
 \end{figure}
 
-Pretpostavljanjem uvjetnih nezavisnosti, neki bridovi grafa $G$ se mogu ukloniti pa za varijable (čvorove grafa) vrijedi \emphasize{uređajno Markovljevo svojstvo}:
+Pretpostavljanjem uvjetnih nezavisnosti, neki bridovi grafa $G$ se mogu ukloniti, pa za varijable (čvorove grafa) vrijedi \emphasize{uređajno Markovljevo svojstvo}:
 \begin{align}
 \rvar x\perp \pred_G(\rvar x) \setminus \pa_G(\rvar x) \mid \pa_G(\rvar x) \text{.}
 \end{align}
@@ -683,7 +713,7 @@ Zbog pretpostavke međusobne nezavisnosti primjera vrijedi
  \p(\set{D}\mid\vec\theta) = \prod_{\vec d\in\set{D}} \p(\vec d\mid\vec\theta) \text{.}
 \end{align}
 
-Za razliku od generativnih, diskriminativni modeli ne modeliraju razdiobu ulaznih primjera, nego samo uvjetnu razdiobu $\p(\vec y\mid \vec x, \set{D})$ pa kod njih razdioba ulaznih primjera ne ovisi o $\vec\theta$, tj. $\p(\vec x\mid\vec\theta) = \p(\vec x)$. Onda je izglednost
+Za razliku od generativnih, diskriminativni modeli ne modeliraju razdiobu ulaznih primjera, nego samo uvjetnu razdiobu $\p(\vec y\mid \vec x, \set{D})$, pa kod njih razdioba ulaznih primjera ne ovisi o $\vec\theta$, tj. $\p(\vec x\mid\vec\theta) = \p(\vec x)$. Onda je izglednost
 \begin{align}\label{eq:izglednost-diskr}
 \p(\set{D}\mid\vec\theta) 
 = \prod_{(\vec x,\vec y)\in\set{D}} \p(\vec y\mid\vec x,\vec\theta)\p(\vec x\mid\vec\theta) 
@@ -811,7 +841,7 @@ Ako ciljnu funkciju ovako izrazimo:
 &= \E_{\tilde{\vec\theta}\sim q_{\vec\phi}} \ln\frac{q_{\vec\phi}\del{\tilde{\vec\theta}}}{p_{\rvec\theta\mid \vec x}\del{\tilde{\vec\theta}}} \nonumber \\
 &= \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\ln q_{\vec\phi}\del{\tilde{\vec\theta}} - \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\ln \p\del{\rvec\theta=\tilde{\vec\theta},\vec x} + \ln\p(\vec x) \text{,} \label{eq:dkl-split}
 \end{align}
-vidi se da se ona ne može lako izračunati jer zahtijeva računanje marginalne izglednosti $\p(\vec x)$ iz nazivnika u jednadžbi~\eqref{eq:posterior-inference} marginalizacijom po $\rvec\theta$. Marginalna izglednost ne ovisi o varijacijskim parametrima pa ju možemo zanemariti i maksimiziramo funkciju koja se naziva \emphasize{varijacijska donja granica} (engl. \textit{variational lower bound}) ili \emphasize{donja granica (logaritma) marginalne izglednosti} (engl. \textit{(log) evidence lower bound}, \textit{ELBO}):
+vidi se da se ona ne može lako izračunati jer zahtijeva računanje marginalne izglednosti $\p(\vec x)$ iz nazivnika u jednadžbi~\eqref{eq:posterior-inference} marginalizacijom po $\rvec\theta$. Marginalna izglednost ne ovisi o varijacijskim parametrima, pa ju možemo zanemariti i maksimiziramo funkciju koja se naziva \emphasize{varijacijska donja granica} (engl. \textit{variational lower bound}) ili \emphasize{donja granica (logaritma) marginalne izglednosti} (engl. \textit{(log) evidence lower bound}, \textit{ELBO}):
 \begin{align}
 L_{\vec x}\del{q_{\vec\phi}} 
 \coloneqq \ln\p(\vec x) - \Dkl{q_{\vec\phi}}{\p(\rvec\theta\mid\vec x)}
@@ -850,7 +880,7 @@ L_{\vec x}\del{\tilde{\rvec\theta}}
 
 
 
-\chapter{Nadzirano strojno učenje} \label{chap:nsu}
+\chapter{Nadzirano strojno učenje} \label{chap:nadzirano-strojno-ucenje}
 
 Ovo poglavlje se uglavnom temelji na \citet{Snajder:2014:SU,Goodfellow:2016:DL}.
 
@@ -919,7 +949,7 @@ Zadatak nadziranog strojnog učenja može se formulirati kao optimizacijski prob
 \begin{align}
 R(\vec\theta; \mathcal{D}) = \E_{(\vec x,\vec y)\sim\mathcal{D}} L(\vec y,h(\vec x;\vec\theta)) \text{.}
 \end{align}
-Razdioba koja generira podatke nije poznata pa se koristi \emphasize{empirijski rizik} koji \emphasize{prirodnu razdiobu} $\mathcal{D}$ procjenjuje \emphasize{empirijskom razdiobom}, tj. uzorkom $\set{D}$:
+Razdioba koja generira podatke nije poznata, pa se koristi \emphasize{empirijski rizik} koji \emphasize{prirodnu razdiobu} $\mathcal{D}$ procjenjuje \emphasize{empirijskom razdiobom}, tj. uzorkom $\set{D}$:
 \begin{align}
 R_\text{E}(\vec\theta;\set{D}) 
 = \E_{(\vec x,\vec y)\sim\set D} L(\vec y,h(\vec x;\vec\theta)) 
@@ -1083,11 +1113,11 @@ Razdiobe $\P(\rvec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \e
 
 
 
-\chapter{Duboko učenje i konvolucijske mreže} \label{chap:dukm}
+\chapter{Duboko učenje i konvolucijske mreže} \label{chap:duboko-ucenje-i-konvolucijske-mreze}
 
 Na ovaj odjeljak imaju utjecaj \citet{Goodfellow:2016:DL} i predavanja iz predmeta \textit{\href{http://www.zemris.fer.hr/~ssegvic/du/}{Duboko učenje}}.
 
-Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk) ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo. Ni jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro zbog \emphasize{prokletstva dimanzionalnosti} \citep{Bengio:2005:CDLKM}. Kod \emphasize{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
+Klasični (plitki) modeli strojnog učenja (npr. poopćeni linearni modeli) oslanjaju se na kvalitetne značajke, tj. funkciju $\phi$ koja transformira ulazne primjere u vektore značajki. Za neke zadatke koji uključuju visokodimenzionalne primjere sa složenom strukturom (npr. slike, tekst i zvuk) ručno konstruiranje transformacije koja bi bila dovoljno dobra nije izvedivo. Ni jezgrene metode kod kojih se preslikavanje temelji na pretpostavci sličnosti primjera bliskih u ulaznom prostoru ne generaliziraju dobro zbog \emphasize{prokletstva dimenzionalnosti} \citep{Bengio:2005:CDLKM}. Kod \emphasize{dubokog učenja} \citep{LeCun:2015:DL,Goodfellow:2016:DL} transformacija $\phi$ se uči.
 
 Odabirom 
 \begin{align}
@@ -1110,18 +1140,17 @@ gdje $\vec\theta=(\vec W_\text{h},\vec b_\text{h}, \vec W_\text{o},\vec b_\text{
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-	\tikzstyle{borderless}=[nrect, draw=none]
 	\def\inp{\_}
 	
 	\node[nrect] (x1) {$x_1$};
 	\node[nrect] (x2) [below=of x1] {$x_2$};
-	\node[borderless] (xdots) [below=of x2] {};
+	\node[nrect,draw=none] (xdots) [below=of x2] {};
 	\node[nrect] (xn) [below=of xdots] {$x_n$};
 	\path (x2) -- node[auto=false]{\vdots} (xn);
 	
 	\node[nrect] (w1) [right=of x1] {$w_1\inp$};
 	\node[nrect] (w2) [below=of w1] {$w_2\inp$};
-	\node[borderless] (wdots) [below=of w2] {};
+	\node[nrect,draw=none] (wdots) [below=of w2] {};
 	\node[nrect] (wn) [below=of wdots] {$w_n\inp$};
 	\path (w2) -- node[auto=false]{\vdots} (wn);	
 	\foreach \i in {1,2,n}
@@ -1141,7 +1170,7 @@ gdje $\vec\theta=(\vec W_\text{h},\vec b_\text{h}, \vec W_\text{o},\vec b_\text{
 	\label{fig:umjetni-neuron}
 \end{figure}
 
-Za razliku od modela opisanih u odjeljku~\ref{sec:poopceni-linearni-modeli}, za ovakav i dublje modele opisane u sljedećim odjeljcima ciljna funkcija nije konveksna (ni unimodalna) pa nije garantirano da će postupak učenja pronaći dobru hipotezu. Empirijski rezultati ipak pokazuju da duboke mreže uz neke prilagodbe uspješno uče i generaliziraju. Algoritmi koji se koriste za učenje modela dubokog učenja temelje se na gradijentnom spustu. Oni su opisani u odjeljku~\ref{sec:du-ucenje}.
+Za razliku od modela opisanih u odjeljku~\ref{sec:poopceni-linearni-modeli}, za ovakav i dublje modele opisane u sljedećim odjeljcima ciljna funkcija nije konveksna (ni unimodalna), pa nije garantirano da će postupak učenja pronaći dobru hipotezu. Empirijski rezultati ipak pokazuju da duboke mreže uz neke prilagodbe uspješno uče i generaliziraju. Algoritmi koji se koriste za učenje modela dubokog učenja temelje se na gradijentnom spustu. Oni su opisani u odjeljku~\ref{sec:du-ucenje}.
 
 
 \section{Duboke unaprijedne mreže}
@@ -1237,7 +1266,7 @@ U izlaznom sloju obično se koriste funkcije korištene kod poopćenih linearnih
 	\label{fig:prijenosne-funkcije}
 \end{figure}
 
-Dosad opisivane mreže nazivaju se \emphasize{unaprijedne mreže} (engl. \textit{feedforward networks}) zato što se pri izračunu informacija propagira od ulaza prema izlazu, bez povratnih veza. Za mrežu kažemo da je duboka ako ime veći broj slojeva. Struktura duboke unaprijedne mreže ne mora se sastojati samo od niza afinih transformacija i nelinearnosti. Općenito, mrežu možemo predstaviti \emphasize{računskim grafom}, tj. usmjerenim acikličkim grafom kod kojega čvorovi predstavljaju varijable ili računske operacije i njihove izlaze, a bridovi označavaju ovisnosti, tj. koji čvor je ulaz kojeg čvora. Svaki čvor koji nije ulazni predstavlja funkciju koju ostvaruje podgraf koji čine njegovi preci pa ga možemo poistovjetiti s funkcijom čiji su parametri svi ulazni čvorovi iz skupa čvorova predaka. Čvorovi koji nemaju roditelje su varijable koje čine ulazi i parametri. Parametri se mogu dijeliti, tj. mogu biti ulaz većem broju čvorova kao i svi drugi čvorovi. Čvorovi koji nemaju djecu su izlazi računskog grafa. Na slici \ref{fig:umjetni-neuron} i \ref{fig:racunski-graf} su prikazani takvi grafovi s različitim razinama apstrakcije. U njima, radi sažetosti, parametri nemaju zasebne čvorove, nego su označeni unutar čvorova koji o njima ovise.
+Dosad opisivane mreže nazivaju se \emphasize{unaprijedne mreže} (engl. \textit{feedforward networks}) zato što se pri izračunu informacija propagira od ulaza prema izlazu, bez povratnih veza. Za mrežu kažemo da je duboka ako ime veći broj slojeva. Struktura duboke unaprijedne mreže ne mora se sastojati samo od niza afinih transformacija i nelinearnosti. Općenito, mrežu možemo predstaviti \emphasize{računskim grafom}, tj. usmjerenim acikličkim grafom kod kojega čvorovi predstavljaju varijable ili računske operacije i njihove izlaze, a bridovi označavaju ovisnosti, tj. koji čvor je ulaz kojeg čvora. Svaki čvor koji nije ulazni čvor predstavlja funkciju koju ostvaruje podgraf koji čine njegovi preci, pa ga možemo poistovjetiti s funkcijom čiji su parametri svi ulazni čvorovi iz skupa čvorova predaka. Čvorovi koji nemaju roditelje su varijable koje čine ulazi i parametri. Parametri se mogu dijeliti, tj. mogu biti ulaz većem broju čvorova kao i svi drugi čvorovi. Čvorovi koji nemaju djecu su izlazi računskog grafa. Na slici \ref{fig:umjetni-neuron} i \ref{fig:racunski-graf} su prikazani takvi grafovi s različitim razinama apstrakcije. U njima, radi sažetosti, parametri nemaju zasebne čvorove, nego su označeni unutar čvorova koji o njima ovise.
 
 \section{Učenje} \label{sec:du-ucenje}
 
@@ -1425,7 +1454,6 @@ Statistike grupe, tj. srednje vrijednosti i standardne devijacije od grupe za ko
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\tikzstyle{borderless}=[nrect, draw=none]
 		\def\inp{\_}
 		\node[nrect] (x) [] {$\vec X$};
 		\node[nrect] (s) [above right=0mm and 5mm of x] {$s(\inp)$};
@@ -1448,7 +1476,6 @@ Statistike grupe, tj. srednje vrijednosti i standardne devijacije od grupe za ko
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
 		\begin{tikzpicture}
-		\tikzstyle{borderless}=[nrect, draw=none]
 		\def\inp{\_}
 		\node[nrect] (x) [] {$\vec X$};
 		\node[nrect] (s) [above right=0mm and 5mm of x] {$\overline{\vec\sigma}$};
@@ -1471,7 +1498,7 @@ Kako se ne bi izgubila ekspresivnost, nakon sloja normalizacije po grupama obič
 
 Kod konvolucijskih mreža se normalizacija po grupama ne provodi samo po dimenziji grupe, nego i po dimenzijama konvolucije, po kojima treba vrijediti translacijska ekvivarijantnost. Npr. ako je ulazni niz dimenzija $N\times H\times W\times C$, gdje je $N$ veličina grupe, $H$ visina slike, $W$ širina slike, a $C$ broj značajki, tj. broj filtara zadnje konvolucije, vektor srednjih vrijednosti i vektor standardnih devijacija je dimenzije $C$, tj. $1\times 1\times 1\times C$.
 
-\subsection{Normalizacija po grupama i regularizacija}
+\subsubsection{Normalizacija po grupama i regularizacija}
 
 Pokazuje se da normalizacija po grupama ima i regularizacijski učinak, vjerojatno zbog stohastičnosti mini-grupa i same reperametrizacije. Zbog neovisnosti izlaza normalizacijskog sloja o skaliranju težina linearnog sloja koji mu prethodi tijekom učenja, $L^2$ regularizacija nema regularizacijski utjecaj na linearne slojeve, ali ima na veličinu koraka učenja u odnosu na težine \citep{Twan:2017:LRBWN}. Pokazuje se da \textit{dropout} uz normalizaciju po grupama često ima slab ili negativan učinak na učenje. \cite{Xiang:2018:UDBDBNVS} to objašnjavaju manjom varijancom tijekom testiranja u odnosu na varijancu tijekom učenja i predlažu izmjene za smanjivanje negativnog učinka.
 
@@ -1480,7 +1507,7 @@ Pokazuje se da normalizacija po grupama ima i regularizacijski učinak, vjerojat
 
 \subsection{Neprijateljski primjeri i regularizacija za postizanje otpornosti na njih}
 
-Ovaj odjeljak se uglavnom temelji na \cite{Grubisic:2018:IPM}.
+Ovaj odjeljak se temelji na \cite{Grubisic:2018:IPM}.
  
 Pokazalo se da se mogu pronaći ulazni primjeri (npr. slike) koji su u ljudskoj percepciji slični prirodnim primjerima, ali i modeli koji na neizmjenjenim primjerima ostvaruju rezultate usporedive s rezultatima ljudi daju krive predikcije \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE}. Takvi ulazni primjeri nazivaju se \emphasize{neprijateljski primjeri}. Oni se mogu dobiti i pomoću jednog koraka gradijentnog spusta pomicanjem ulaznog primjera u smjeru povećavanja gubitka. Na slici~\ref{fig:neprijateljski-primjer} je prikazano generiranje neprijateljskog primjera malom izmjenom izvorne slike.
 
@@ -1523,14 +1550,12 @@ Mogući su i napadi bez uvida u strukturu modela, npr. genetskim algoritmom. Tak
 
 Možemo definirati oblik rizika koji se može nazvati \emphasize{neprijateljski rizik} \citep{Madry:2017:TDLMRAA}:
 \begin{equation}\label{eq:adv-risk}
-R_\text{A}(\vec\theta;d,\epsilon) = \E_{(\vec x,y)\sim\mathcal{D}}\left[
-\max_{\widetilde{\vec x} \in B_\epsilon(\vec x)} L(y,h(\widetilde{\vec x};\vec\theta)) \right] \text{.}
+R_\text{A}(\vec\theta;d,\epsilon) = \E_{(\vec x,y)\sim\mathcal{D}}\del{
+\max_{\widetilde{\vec x} \in B_\epsilon(\vec x)} L(y,h(\widetilde{\vec x};\vec\theta))} \text{.}
 \end{equation}
-Mali neprijateljski rizik predstavlja dobru lokalnu generalizaciju u susjedstvu prirodnih primjera.
+Mali neprijateljski rizik predstavlja dobru lokalnu generalizaciju u susjedstvu prirodnih primjera. Jedan od najuspješnijih postupaka za postizanje otpornosti na neprijateljske primjere je \emphasize{učenje s neprijateljskim primjerima} (engl. \textit{adversarial training}). Kod učenja s neprijateljskim primjerima skup za učenje se proširuje neprijateljskim primjerima koji se tijekom učenja prilagođavaju parametrima mreže \citet{Goodfellow:2014:EHAE}. Umjesto prirodne razdiobe $\mathcal{D}$ u jednadžbi~\ref{eq:adv-risk}, koriste se podaci za učenje, tj. empirijska razdioba. 
 
-Jedan od najuspješnijih postupaka za postizanje otpornosti na neprijateljske primjere je \emphasize{učenje s neprijateljskim primjerima} (engl. \textit{adversarial training}). Kod učenja s neprijateljskim primjerima skup za učenje se proširuje neprijateljskim primjerima koji se tijekom učenja prilagođavaju parametrima mreže \cite{Goodfellow:2014:EHAE}. 
-
-\cite{Kurakin:2016:AMLS} primjećuju da korištenja stvarne ciljne oznaka u gubitku koji se maksimizira kako bi se dobio neprijateljski primjer unosi informacije o pravim oznakama u neprijateljske primjere koji se koriste tijekom učenja, na što se model može prenaučiti i može biti neotporan na neprijateljske primjere dobivene postupcima koji ne koriste stvarnu oznaku. Zato predlažu da se umjesto ciljne oznake u gubitku koji se maksimizira koristi oznaka koja odgovara predikciji modela. Onda izrazu~\eqref{eq:neprijateljski-primjer} odgovara ovaj izraz:
+\citet{Kurakin:2016:AMLS} primjećuju da korištenja stvarne ciljne oznaka u gubitku koji se maksimizira kako bi se dobio neprijateljski primjer unosi informacije o pravim oznakama u neprijateljske primjere koji se koriste tijekom učenja, na što se model može prenaučiti i može biti neotporan na neprijateljske primjere dobivene postupcima koji ne koriste stvarnu oznaku. Zato predlažu da se umjesto ciljne oznake u gubitku koji se maksimizira koristi oznaka koja odgovara predikciji modela. Onda izrazu~\eqref{eq:neprijateljski-primjer} odgovara ovaj izraz:
 \begin{equation} \label{eq:neprijateljski-primjer-p}
 \widetilde{\vec x} = \argmax_{\widetilde{\vec x}\in B_\epsilon(\vec x)} L\del{\argmax_k h(\vec x)_\ind{k},h(\widetilde{\vec x})} \text{,}
 \end{equation}
@@ -1538,8 +1563,98 @@ Jedan od najuspješnijih postupaka za postizanje otpornosti na neprijateljske pr
 \begin{equation} \label{eq:neprijateljski-primjer-plogsoftmax}
 \widetilde{\vec x} = \argmax_{\widetilde{\vec x}\in B_\epsilon(\vec x)} \del{-\ln h(\widetilde{\vec x})_\ind{\argmax_k h(\vec x)_\ind{k}}} \text{.}
 \end{equation}
+To je slično virtualnim neprijateljskim primjerima koje su predložili \citet{Miyato:2015:DSVAE}. \citet{Miyato:2015:DSVAE,Miyato:2017:VATRMSSSL} definiraju regularizacisjki gubitak kojemu odgovara ovakav rizik kojeg možemo nazvati \emphasize{rizik lokalne zaglađenosti razdiobe} (engl. \textit{local distributional smoothness}, \textit{LDS}):
+\begin{equation}\label{eq:adv-risk-lds}
+R_\text{LDS}(\vec\theta;d,\epsilon) = \E_{(\vec x,y)\sim\mathcal{D}} \del{
+	\max_{\widetilde{\vec x} \in B_\epsilon(\vec x)} \Dkl{\rvec y\mid\vec x,\hat{\vec\theta}}{\rvec y\mid\widetilde{\vec x},\vec\theta}
+} \text{,}
+\end{equation}
+Razlika u odnosu na neprijateljski rizik je u tome što se umjesto KL-divergencije između ciljne oznake i razdiobe predikcije za neprijateljski primjer, ovdje koristi KL-divergencija između razdiobe predikcije za neizmijenjeni primjer i razdiobe predikcije za neprijateljski primjer. $\hat{\vec\theta}=\vec\theta$, ali $\hat{\vec\theta}$ označava da se parametri ne optimiziraju s obzirom na argument koji zamjenjuje oznaku. Takva regularizacija se može koristiti i u polunadziranom učenju, kada nisu poznate oznake svih primjera u skupu za učenje. 
 
 Pokazuje se da se najučinkovitiji neprijateljski primjeri dobivaju u više koraka optimizacije \citep{Kurakin:2016:AMLS,Madry:2017:TDLMRAA}. \citet{Madry:2017:TDLMRAA} postižu dobru otpornost uz korištenja PGD-a (jednadžba~\ref{eq:pgd}) za generiranje neprijateljskih primjera tijekom učenja, a zaključuju i da je potreban veći kapacitet kako bi mreža zadržala performansu na prirodnim podacima.
+
+\subsection{Dijeljenje parametara i dijelova mreže}
+
+Dijeljenje ili višestruka uporaba parametara i dijelova mreže je korisna kada se za podatke vrijede neka svojstva ekvivarijantnosti (npr. na pomak u prostoru ili vremenu, skaliranje, kompozitnost,...). Ono se može primjenjivati i kod višezadaćnog učenja kod kojeg se dio mreže koristi za dobivanje značajki koje su korisne za učenje većeg broja različitih zadataka.
+
+\subsection{Pomoćni gubici, duboko nadziranje i preskočne veze}
+
+Ponekad kod učenja dubokih mreža mogu pomoći \emphasize{dodatni gubici} koji ovise o funkcijama koje procjenjuju izlaz na temelju značajki niže razine. Najuspješniji modeli koriste \emphasize{preskočne veze} koje omogućuju da funkcije koje računaju značajke više razine imaju izravan pristup značajkama niže razine. Najjednostavniji i najčešće korišteni takvi modeli (u računalnom vidu) su \textit{rezidualne mreže} (\textit{ResNet}) \citep{He:2015:DRLIR,He:2016:IMDRL} i \textit{guste mreže} (\textit{DenseNet}) \citep{Huang:2016:DCCN} od kojih je osnovna struktura prikazana na slici~\ref{fig:resnet-densenet}. Empirijski se pokazuje da se povećavanjem dubine takvih mreža poboljšava generalizacija.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{1\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\def\inp{\_}
+		\node[nrect] (x) {$\vec x$};
+		\node[nrect] (f1) [above right=of x] {$f(\inp;\vec\theta_1)$};
+		\node[nrect] (p1) [below right=of f1] {$+$};
+		
+		\node[nrect] (f2) [above right=of p1] {$f(\inp;\vec\theta_2)$};
+		\node[nrect] (p2) [below right=of f2] {$+$};
+		\node[nrect,draw=none] (dots) [right=of p2] {$\cdots$};	
+		\node[nrect] (pn-1) [right=of dots] {$+$};
+		
+		\node[nrect] (fn) [above right=of pn-1] {$f(\inp;\vec\theta_n)$};
+		\node[nrect] (pn) [below right=of fn] {$+$};
+		
+		\path (x) edge [dedge] (f1);
+		\path (x) edge [dedge] (p1);		
+		\path (f1) edge [dedge] (p1);
+		
+		\path (p1) edge [dedge] (f2);
+		\path (p1) edge [dedge] (p2);		
+		\path (f2) edge [dedge] (p2);
+		
+		\path (p2) edge [dedge] (dots);	
+		\path (dots) edge [dedge] (pn-1);
+		
+		\path (pn-1) edge [dedge] (fn);
+		\path (pn-1) edge [dedge] (pn);	
+		\path (fn) edge [dedge] (pn);
+		\end{tikzpicture}
+		\caption{Grupa \textit{rezidualne mreže}.}
+		\label{subfig:resnet}
+	\end{subfigure}
+	\vskip\baselineskip
+	\begin{subfigure}[t]{1\textwidth}
+		\centering
+		\begin{tikzpicture}
+		\def\inp{\_}
+		\node[nrect] (x) {$\vec x$};
+		\node[nrect] (f1) [above right=of x] {$f(\inp;\vec\theta_1)$};
+		\node[nrect] (p1) [below right=of f1] {$\concat'$};
+		
+		\node[nrect] (f2) [above right=of p1] {$f(\inp;\vec\theta_2)$};
+		\node[nrect] (p2) [below right=of f2] {$\concat'$};
+		\node[nrect,draw=none] (dots) [right=of p2] {$\cdots$};	
+		\node[nrect] (pn-1) [right=of dots] {$\concat'$};
+		
+		\node[nrect] (fn) [above right=of pn-1] {$f(\inp;\vec\theta_n)$};
+		\node[nrect] (pn) [below right=of fn] {$\concat'$};
+		
+		\path (x) edge [dedge] (f1);
+		\path (x) edge [dedge] (p1);		
+		\path (f1) edge [dedge] (p1);
+		
+		\path (p1) edge [dedge] (f2);
+		\path (p1) edge [dedge] (p2);		
+		\path (f2) edge [dedge] (p2);
+		
+		\path (p2) edge [dedge] (dots);	
+		\path (dots) edge [dedge] (pn-1);
+		
+		\path (pn-1) edge [dedge] (fn);
+		\path (pn-1) edge [dedge] (pn);	
+		\path (fn) edge [dedge] (pn);
+		\end{tikzpicture}
+		\caption{Blok \textit{guste mreže}.}
+		\label{subfig:densenet}
+	\end{subfigure}
+	\caption{Osnovne strukture \textit{rezidualnih} i \textit{gustih} mreža. $f$ je obično niz od nekoliko konvolucijskih (ili linearnih slojeva) tako da je ispred svake sloj normalizacije po grupama i sloj $\ReLU$-a. $+$ označava zbrajanje, a $\concat'$ konkatenacija po zadnjoj dimenziji ulaznih nizova.}
+	\label{fig:resnet-densenet}
+\end{figure}
 
 
 \section{Konvolucijske mreže}
@@ -1578,7 +1693,7 @@ U ovom slučaju, kodomena funkcije $f*_\text{s}g$ je $\R$. Isti izraz vrijedi i 
 
 \subsection{Konvolucijski sloj}
 
-Jednom umjetnom neuronu kod konvolucijskih mreža, ako se zanemari pomak, obično odgovara operacija u jednadžbi~\eqref{eq:konvolucija-s}, samo što funkcijama $f$ i $g$ odgovaraju konačni $(m+1)$-dimenzionalni (ili $m$-dimenzionalni ako $n=1$) nizovi pa treba prilagoditi definiciju konvolucije na nizove. Jednoj funkciji odgovara ulazni niz, a drugoj \emphasize{konvolucijska jezgra} (\emphasize{filtar}) koja je obično manja i neovisna o veličini ulaza. Izlaz konvolucije je onda $m$-dimenzionalni niz kojem su dimenzije obično iste kao privih $m$ dimenzija ulaznog niza, ovisno o prilagodbi definicije konvolucije na nizove. Ovakvu konvoluciju ćemo nazivati \emphasize{$m$-dimenzionalna konvolucija}. Ovdje se neće razmatrati $m$-dimenzionalna konvolucija $(m+n)$-dimenzionalnih nizova kod kojih $n>1$, tj. $\vec A_\ind{i_1,\bidot,i_m,:}$ su vektori ako je $\vec A$ $(m+1)$-dimenzionalan.
+Jednom umjetnom neuronu kod konvolucijskih mreža, ako se zanemari pomak, obično odgovara operacija u jednadžbi~\eqref{eq:konvolucija-s}, samo što funkcijama $f$ i $g$ odgovaraju konačni $(m+1)$-dimenzionalni (ili $m$-dimenzionalni ako $n=1$) nizovi, pa treba prilagoditi definiciju konvolucije za nizove. Jednoj funkciji odgovara ulazni niz, a drugoj \emphasize{konvolucijska jezgra} (\emphasize{filtar}) koja je obično manja i neovisna o veličini ulaza. Izlaz konvolucije je onda $m$-dimenzionalni niz kojem su dimenzije obično iste kao privih $m$ dimenzija ulaznog niza, ovisno o prilagodbi definicije konvolucije na nizove. Ovakvu konvoluciju ćemo nazivati \emphasize{$m$-dimenzionalna konvolucija}. Ovdje se neće razmatrati $m$-dimenzionalna konvolucija $(m+n)$-dimenzionalnih nizova kod kojih $n>1$, tj. $\vec A_\ind{i_1,\bidot,i_m,:}$ su vektori ako je $\vec A$ $(m+1)$-dimenzionalan.
 
 Slojevi koji obavljaju konvoluciju nazivaju se \emphasize{konvolucijski slojevi}. Izlaz jedne jedinice (dobiven jednim filtrom) u konvolucijskom sloju naziva se \emphasize{mapa značajki}. Izlaz konvolucijskog sloja sastoji se od više mapa značajki i čini $(m+1)$-dimenzionalni izlaz kojem je zadnja dimenzija jednaka broju mapa značajki. $m$-dimenzionalnu konvoluciju s $k$ jezgri nazivat ćemo \emphasize{$k$-struka $m$-dimenzionalna konvolucija}.
 
@@ -1616,7 +1731,7 @@ U gornjem indeksu operatora "v" dolazi od riječi \textit{valid} zato što se fi
 		\caption{Potpuno dopunjavanje.}
 		\label{subfig:konv-fullpad}
 	\end{subfigure}
-	\caption{Ilustracija dopunjavanja kod dvodimenzionalne konvolucije. Slika~\ref{subfig:konv-samepad} i slika~\ref{subfig:konv-fullpad} su preuzete, a slika~\ref{subfig:konv-nopad} je napravljena na temelju slika iz \citet{Dumoulin:2016:GCADL}.}
+	\caption{Ilustracija dopunjavanja kod dvodimenzionalne konvolucije. Slike~\ref{subfig:konv-samepad}~i~\ref{subfig:konv-fullpad} su preuzete, a slika~\ref{subfig:konv-nopad} je napravljena na temelju slika iz \citet{Dumoulin:2016:GCADL}.}
 	\label{fig:konvolucija-dopunjavanje}
 \end{figure}
 
@@ -1625,7 +1740,6 @@ U gornjem indeksu operatora "v" dolazi od riječi \textit{valid} zato što se fi
 \begin{subfigure}[t]{0.48\textwidth}
 	\centering
 	\begin{tikzpicture}
-	\tikzstyle{borderless}=[nrect, draw=none]
 	\def\inp{\_}
 	\node[nrect] (x) [] {$\vec X$};	
 	\node[nrect] (y) [right=of x] {$*_\text{s}^\text{s}$};
@@ -1641,7 +1755,6 @@ U gornjem indeksu operatora "v" dolazi od riječi \textit{valid} zato što se fi
 \begin{subfigure}[t]{0.48\textwidth}
 	\centering
 	\begin{tikzpicture}
-	\tikzstyle{borderless}=[nrect, draw=none]
 	\def\inp{\_}
 	\def\n{4}
 	
@@ -1741,7 +1854,6 @@ Konvolucijski sloj obično ima više jezgri $\vec W_i$. Sada se lako vidi da vri
 \begin{figure}
 	\centering
 	\begin{tikzpicture}
-	\tikzstyle{borderless}=[nrect, draw=none]
 	\def\inp{\_}
 	\def\n{4}
 	
@@ -1841,14 +1953,16 @@ Za smanjivanje mapa značajki često se koriste i uobičajeni postupci interpola
 
 
 
-\chapter{Procjenjivanje nesigurnosti kod dubokih modela}
+\chapter{Procjenjivanje nesigurnosti kod dubokih modela} \label{chap:procjenjivanje-nesigurnosti}
 
-Kod uobičajenih modela dubokog učenja ne možemo pouzdano procijeniti nesigurnost predikcija. Modeli za regresiju kao izlaz daju točkastu procjenu izlaza, a modeli za klasifikaciju daju vektor koji predstavlja razdiobu sigurnosti u klase, ali ta razdioba nije dobar pokazatelj stvarne nesigurnosti i neznanja. Ovo poglavlje opisuje podjelu nesigurnosti, njenu ulogu i važnost u nekim algoritmima strojnog učenja i neke pristupe koji omogućuju bolje procjenjvanje nesigurnosti kod dubokih nadziranih modela. Rezultati eksperimenata s nekim postupcima opisani su u poglavlju~\ref{chap:eksperimenti}.
+Kod uobičajenih modela dubokog učenja ne možemo pouzdano procijeniti nesigurnost predikcija. Modeli za regresiju kao izlaz daju točkastu procjenu izlaza, a modeli za klasifikaciju daju vektor koji predstavlja razdiobu sigurnosti u klase, ali ta razdioba nije dobar pokazatelj stvarne nesigurnosti i neznanja.
+
+Ovo poglavlje opisuje podjelu nesigurnosti, njenu ulogu i važnost u nekim algoritmima strojnog učenja i neke pristupe koji omogućuju bolje procjenjvanje nesigurnosti kod dubokih nadziranih modela. Rezultati eksperimenata s nekim postupcima opisani su u poglavlju~\ref{chap:eksperimenti}.
 
 
 \section{Aleatorna i epistemička nesigurnost}
 
-Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste: \emphasize{aleatornu nesigurnost} i \emphasize{epistemičku nesigurnost} \citep{Kiureghian:2009:AEDM}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u \emphasize{strukturu modela} i \emphasize{parametre modela} \citep{Gal:2016:UDL}. Ona se zato još nazive \emphasize{nesigurnost modela}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
+Postoje različiti izvori nesigurnosti \citep{Kennedy:2002:BCCM}, ali nesigurnost općenito možemo podijeliti na dvije vrste: \emphasize{aleatornu nesigurnost} i \emphasize{epistemičku nesigurnost} \citep{Kiureghian:2009:AEDM}. Riječ \textit{aleatorna} izvedena je vjerojatno od latinske riječi \textit{aleator} \citep{Gal:2016:UDL} koja znači \textit{kockar}, a riječ \textit{epistemička} izvedena je od grčke riječi \textit{epist\={e}m\={e}} koja znači \textit{znanje}. Aleatorna nesigurnost je nesigurnost koju model ne može smanjiti neovisno o znanju i količini dostupnih podataka. Ona dolazi od nedeterminizma samog procesa koji generira podatke, nedostupnosti dijela informacija ili ograničenja modela. Epistemička nesigurnost je nesigurnost u \emphasize{strukturu modela} i \emphasize{parametre modela} \citep{Gal:2016:UDL}. Ona se zato još naziva \emphasize{nesigurnost modela}. Ona dolazi od neznanja i može se smanjiti uz više podataka.
 
 Razlikovanje aleatorne i epistemičke nesigurnosti ovisi o modelu. Nešto što je kod jednostavnijeg modela aleatorna nesigurnost, kod složenijeg modela može biti epistemička, tj. može se smanjiti uz više podataka. Ako su neke pojave po prirodi nasumične ili se ne mogu ili ne žele modelu dati informacije koje bi ih mogle objasniti, nesigurnost zaključivanja u vezi tih pojava će biti aleatorna neovisno o ograničenosti modela.
 
@@ -1894,7 +2008,7 @@ Aleatorna nesigurnost može biti \emphasize{homoskedastička} ili \emphasize{het
 
 \subsection{Izvanrazdiobni primjeri}
 
-Jedan poseban slučaj nesigurnosti modela je nesigurnost u to \emphasize{pripada li primjer razdiobi skupa za učenje}. Modelu se dati ulazni primjer za koji ne postoji točna oznaka i nije sličan primjerima u skupu za učenje. Takav primjer može biti npr. slika koja pripada nekoj klasi koja nije među onima koje model treba raspoznavati ili samo slučajni šum. Primjeri koji su izvan razdiobe skupa za učenje dalje ćemo nazivati \emphasize{izvanrazdiobni primjeri}. Primjeri koji su iz razdiobe skupa za učenje nazivat ćemo \emphasize{unutarrazdiobni primjeri}.
+Jedan poseban slučaj epistemičke nesigurnosti je nesigurnost u to \emphasize{pripada li primjer razdiobi skupa za učenje}. Modelu se dati ulazni primjer za koji ne postoji točna oznaka i nije sličan primjerima u skupu za učenje. Takav primjer može biti npr. slika koja pripada nekoj klasi koja nije među onima koje model treba raspoznavati ili samo slučajni šum. Primjeri koji su izvan razdiobe skupa za učenje dalje ćemo nazivati \emphasize{izvanrazdiobni primjeri}. Primjeri koji su iz razdiobe skupa za učenje nazivat ćemo \emphasize{unutarrazdiobni primjeri}.
 
 Problem prepoznavanja primjera koji su izvan razdiobe skupa za učenje prirodno rješavaju generativni probabilistički modeli, ali kod složenih visokodimenzionalnih podataka to postaje problem zbog prokletstva dimenzionalnosti i složenosti modeliranja i statističkog zaključivanja. Kod diskriminativnih modela je problem to što oni ne modeliraju razdiobu ulaznih primjera $\p(\rvec x)$, nego samo uvjetnu razdiobu izlaza uz dani ulaz $\p(\rvec y \mid\vec x)$.
 
@@ -1964,7 +2078,7 @@ Zamjenom aposteriorne razdiobe u jednadžbi~\eqref{eq:zakljucivanje-y-bnm} sa za
 U pododjeljku~\ref{subsec:bnm-dropout} je opisana aproksimacija bayesovske neuronske mreže pomoću \textit{dropouta}.
 
 
-\section{Mjere za izražavanje nesigurnosti predikcije}
+\section{Mjere za izražavanje nesigurnosti predikcije} \label{sec:mjere-nesigurnosti}
 
 Osnovne mjere za izražavanje nesigurnosti su vjerojatnost, entropija i varijanca. Pretpostavimo da modeliramo (diskretnu ili kontinuiranu) razdiobu $\p(\rvar y\mid\vec x,\vec\theta)$ ili $\p(\rvar y\mid\vec x,\set D)$ ako se provodi bayesovsko zaključivanje. Jedan način izražavanja nesigurnosti u predikciju kod klasifikacije je vjerojatnost klase s najvećom vjerojatnošću
 \begin{align}
@@ -2006,13 +2120,13 @@ L(y\mid h'(\vec x;\vec\theta))=\ln\del{\E_{\vec s\sim\mathcal{N}(g(\vec x),\diag
 \end{align}
 Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Carlo} aproksimacija.
 
-\cite{Rawat:2017:APEBDL,Smith:2018:UMUAED} predlažu korištenje međusobne informacije (jednadžbe \eqref{eq:mutinf}-\eqref{eq:condentropy}) kod bayesovskog zaključivanja kako bi se razlikovale epistemička i aleatorna nesigurnost. Prema \citet{Smith:2018:UMUAED}, količina informacije koju dobijemo o parametrima ako dobijemo oznaku $y\sim\rvar y$ za novi ulazni primjer $\vec x$ je
+\citet{Rawat:2017:APEBDL,Smith:2018:UMUAED} predlažu korištenje međusobne informacije (jednadžbe \eqref{eq:mutinf}-\eqref{eq:condentropy}) kod bayesovskog zaključivanja kako bi se razlikovale epistemička i aleatorna nesigurnost. Prema \citet{Smith:2018:UMUAED}, količina informacije koju dobijemo o parametrima ako dobijemo oznaku $y\sim\rvar y$ za novi ulazni primjer $\vec x$ je
 \begin{align}
 \I(\rvar y,\rvec\theta\mid\vec x,\set D) 
 &= \H(\rvar y\mid\vec x,\set D) - \H(\rvar y\mid\rvec\theta,\vec x) \\
 &= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{,}
 \end{align}
-gdje $\H(\rvar y\mid\rvec\theta,\vec x,\set D)=\H(\rvar y\mid\rvec\theta,\vec x)$ jer $\rvar y\perp\rvec\theta\mid\rset D$. Veća međusobna informacija se može interpretirati tako da opažanje oznake $y$ za primjer $x$ povećava znanje o parametrima ako postoji nesigurnost u njih. Ako nema puno nesigurnosti u parametre, a ima u predikciju zbog velike aleatorne nesigurnosti, međusobna informacija će biti mala jer je naučeno da za primjer $x$ nije moguće puzdano predvidjeti oznaku. Dakle, međusobna informacije je mjera epistemičke nesigurnosti \citep{Smith:2018:UMUAED}.
+gdje $\H(\rvar y\mid\rvec\theta,\vec x,\set D)=\H(\rvar y\mid\rvec\theta,\vec x)$ jer $\rvar y\perp\rvec\theta\mid\rset D$. Veća međusobna informacija se može interpretirati tako da opažanje oznake $y$ za primjer $x$ povećava znanje o parametrima ako postoji nesigurnost u njih. Ako nema puno nesigurnosti u parametre, a ima u predikciju zbog velike aleatorne nesigurnosti, međusobna informacija će biti mala jer je naučeno da za primjer $x$ nije moguće puzdano predvidjeti oznaku. Dakle, međusobna informacije je mjera epistemičke nesigurnosti \citep{Smith:2018:UMUAED}. Dobro je još primijetiti da vrijedi $0<\I(\rvar y,\rvec\theta\mid\vec x,\set D)<\H(\rvar y\mid\vec x,\set D)$, kao što je i ilustrirano na slici~\ref{fig:entropije}. \citet{Smith:2018:UMUAED} objašnjavaju uspješnost korištenja varijance softmaksa kao mjere nesigurnosti u drugim radovima pokazujući da varijanca može dobiti kao aproksimacija međusobne informacije razvojem međusobne informacije u Taylorov red.
 
 
 \section{Primjeri pristupa za procjenu nesigurnosti}
@@ -2073,7 +2187,7 @@ Slika~\ref{fig:mc-drouput-samples-DSN} prikazuje ovisnost klasifikacijske pogre�
 	\label{fig:mc-drouput-samples-DSN}
 \end{figure}
 
-\subsection{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita}
+\subsection{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita} \label{subsec:pristupi-ood-softmaks-logiti}
 
 Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdiobe koju duboki modeli daju kao izlaz softmaksa su često previše sigurne kod krive klasifikacije i nije ih dobro interpretirati kao vjerojatnosti.
 
@@ -2087,14 +2201,17 @@ Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdio
 \end{equation}
 \cite{Liang:2017:PDOODENN} pokazuju da takav pomak ulaznog primjera ima veći utjecaj na unutarrazdiobne primjere i tako ih bolje razdvaja od izvanrazdiobnih.
  
-
-
+ 
 
 \chapter{Eksperimenti} \label{chap:eksperimenti}
 
-\section{Aproksimacija bayesovske neuronske mreže s dropoutom}
+Eksperimentalno su ispitani neki od postupaka opisanih u odjeljcima~\ref{sec:mjere-nesigurnosti},~\ref{subsec:bnm-dropout}~i~\ref{subsec:pristupi-ood-softmaks-logiti}.
 
-\section{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita}
+\ref{subsec:pristupi-ood-softmaks-logiti}
+
+\section{Aproksimacija bayesovske neuronske mreže s dropoutom i procjena nesigurnosti kod semantičke segmentacije}
+
+\section{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita kod klasifikacije slika}
 
 \section{Programska izvedba}
 
@@ -2108,7 +2225,7 @@ Kao što je spomenuto u odjeljku~\ref{sec:vaznost-primjene-nesigurnosti}, razdio
 Zaključak.
 
 \bibliography{literatura}
-\bibliographystyle{fer}
+\bibliographystyle{fer} 
 
 \begin{sazetak}
 Sažetak na hrvatskom jeziku.
