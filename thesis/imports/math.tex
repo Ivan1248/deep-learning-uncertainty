@@ -177,7 +177,10 @@
 \renewcommand{\hat}[1]{\vphantom{#1}\smash[t]{\oldhat{#1}}}
 \let\oldtilde\tilde
 \renewcommand{\tilde}[1]{\vphantom{#1}\smash[t]{\oldtilde{#1}}}
-
+%\renewcommand{\tilde}[1]{\stackrel{\sim}{\smash{\mathcal{#1}}\rule{0pt}{1.1ex}}}
+%\renewcommand{\tilde}[1]{\overset{\sim}{#1}}}
+\let\oldwidetilde\widetilde
+\renewcommand{\widetilde}[1]{\vphantom{#1}\smash[t]{\oldwidetilde{#1}}}
 
 % special
 %\newcommand{\funcdef}[3]{#1 \in (#2 \to #3)}
