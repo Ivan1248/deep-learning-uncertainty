@@ -253,10 +253,11 @@ class CamVidDataset(Dataset):
     def __getitem__(self, idx):
         img, lab = self._img_lab_list[idx]
         img = _load_image(img)
-        img, lab = _load_image(lab, force_rgb=False).astype(np.int8)
-        if len(lab.shape == 3):
-            assert np.all(lab[:, :, 0] == lab[:, :, 1])
-            lab = lab[:, :, 0]
+        lab = _load_image(lab, force_rgb=False).astype(np.int8)
+        #if len(lab.shape)==3:
+        #    assert False
+        #    assert np.all(lab[:, :, 0] == lab[:, :, 1])
+        #    lab = lab[:, :, 0]
         lab[lab == 11] = -1
         return img, lab
 
