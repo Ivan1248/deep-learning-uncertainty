@@ -1,3 +1,7 @@
+import numpy as np
+import tensorflow as tf
+
+
 def model_loss(y, model, mean=True):
     """
     Taken from https://github.com/tensorflow/cleverhans.
@@ -21,6 +25,18 @@ def model_loss(y, model, mean=True):
     if mean:
         loss = tf.reduce_mean(loss)
     return loss
+
+
+def fgsm(x, probs, eps=0.3, clip_min=None, clip_max=None,
+         antiadversarial=False):
+    return fgm(
+        x=x,
+        probs=probs,
+        eps=eps,
+        clip_min=clip_min,
+        clip_max=clip_max,
+        antiadversarial=antiadversarial)
+
 
 def fgm(x,
         probs,

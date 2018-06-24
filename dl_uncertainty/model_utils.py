@@ -98,7 +98,7 @@ class StandardFeatureExtractors:
             base_width=32,
             cifar_root_block=cifar_root_block,
             group_lengths=group_lengths,
-            dropout_rate=0.1 if dropout else 0)
+            dropout_rate=0.2 if dropout else 0)
 
 
 def get_inference_component(

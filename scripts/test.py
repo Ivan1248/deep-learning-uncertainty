@@ -23,7 +23,16 @@ CUDA_VISIBLE_DEVICES=2 python test.py
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-pretrained-e30/2018-05-18-2129/Model
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-pretrained-e80/2018-05-24-0403/Model --mcdropout
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-pretrained-e80/2018-05-24-0403/Model --mcdropout --test_dataset wilddash
- camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-train/ldn-121-32-mc_dropout-pretrained-e30/2018-05-23-1320/Model
+ dropout0.1
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-pretrained-e30/2018-06-24-1051/Model --mcdropout
+ dropout0.1 1/2
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-22-1256/Model --mcdropout
+ dropout0.1 1/4
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac4-pretrained-e30/2018-06-22-1226/Model --mcdropout
+ dropout0.1 1/8
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac8-pretrained-e30/2018-06-22-1205/Model --mcdropout
+ dropout0.1 1/2
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-24-1509/Model --mcdropout
  mozgalo rn 50 64
  mozgalo rn 18 64
 """
@@ -74,34 +83,39 @@ model.load_state(args.saved_path)
 
 if args.view or args.hard or args.view2:
     ds_disp = ds_train if args.test_on_training_set else ds_test
+    ds_disp = ds_disp.permute()
+
     if args.hard:
         ds_disp = training.get_hard_examples(model, ds_disp)
 
     def predict(x):
-        out_names = ['output', 'probs_entropy']
-        outs = model.predict(x, single_input=True, outputs=out_names)
+        out_names = ['output', 'probs', 'probs_entropy']
+        output, probs, probs_entropy = model.predict(
+            x, single_input=True, outputs=out_names)
         if args.mcdropout:
-            mcd_outs = model.predict(
+            mc_output, mc_probs, mc_probs_entropy, mc_probs_mi = model.predict(
                 x,
                 single_input=True,
                 mc_dropout=args.mcdropout,
-                outputs=out_names + ['pred_logits_var'])
-            mine = np.min([mcd_outs[1], outs[1]])
-            maxe = np.max([mcd_outs[1], outs[1]])
-            mcd_outs[1].flat[0], outs[1].flat[0] = [mine] * 2
-            mcd_outs[1].flat[1], outs[1].flat[1] = [maxe] * 2
-            return [
-                outs[0], mcd_outs[0], outs[1], mcd_outs[1], mcd_outs[2],
-                mcd_outs[1] * mcd_outs[2]
+                outputs=out_names + ['probs_mi']  #,'pred_logits_var']
+            )
+            epistemic = mc_probs_mi
+            aleatoric = mc_probs_entropy - mc_probs_mi
+            uncertainties = [
+                probs_entropy, mc_probs_entropy, aleatoric, epistemic * 20
             ]
-        return outs
+            maxent = np.log(mc_probs.shape[-1])
+            for a in uncertainties:
+                a.flat[0] = maxent
+                a.flat[1] = 0
+            return [output, mc_output] + uncertainties
+        return [output, probs_entropy]
 
     save_dir = f'{dirs.CACHE}/viewer/{args.ds}-{args.net}-{args.depth}-{args.width}'
+    if args.test_dataset != "":
+        save_dir += f'-{args.test_dataset}'
     if args.dropout or args.mcdropout:
         save_dir += "-dropout"
-    if args.test_dataset != "":
-        save_dir += f"-{args.test_dataset}"
-
     view = view_predictions_2 if args.view2 else view_predictions
     view(ds_disp, predict, save_dir=save_dir if args.save else None)
 else:

@@ -26,6 +26,7 @@ CUDA_VISIBLE_DEVICES=2 python train.py
   camvid ldn 121 32 --epochs 30 --trainval --pretrained
   mozgalo rn 50 64 --pretrained --epochs 15 --trainval
   mozgalo rn 18 64 --epochs 12 --trainval
+CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 16; CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 2
 """
 
 parser = argparse.ArgumentParser()
@@ -39,6 +40,7 @@ parser.add_argument('--mcdropout', action='store_true')
 parser.add_argument('--pretrained', action='store_true')
 parser.add_argument('--randomcrop', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
+parser.add_argument('--frac', nargs='?', default=None, type=int)
 parser.add_argument('--name_addition', required=False, default="", type=str)
 args = parser.parse_args()
 print(args)
@@ -48,6 +50,9 @@ print(args)
 print("Setting up data loading...")
 ds_train, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
     args.ds, trainval_test=args.trainval)
+
+if args.frac:
+    ds_train = ds_train.permute(53).split(1/args.frac)[0]
 
 # Model
 
@@ -89,6 +94,8 @@ if args.dropout or args.mcdropout:
     name_addition += "-dropout"
 if args.randomcrop:
     name_addition += "-randomcrop"
+if args.frac:
+    name_addition += f"-frac{args.frac}"
 if args.name_addition:
     name_addition += f"-{args.name_addition}"
 model_utils.save_trained_model(

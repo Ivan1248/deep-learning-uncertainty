@@ -251,26 +251,34 @@ class Model(object):
             inputs = [inputs]
         if type(outputs) is str:
             outputs = [outputs]
-        NP = ['probs', 'output', 'probs_entropy', 'pred_logits_var', 'logits_var', ]
+        NP = [
+            'probs', 'output', 'probs_entropy', 'pred_logits_var', 'logits_var',
+            'probs_mi'
+        ]        
         for o in outputs:
             assert o in NP
+
         sampled_logits, sampled_probs = self._sample_logits_and_probs(
             inputs, sample_count)
+
+        if single_input:
+            shape = [sampled_logits.shape[0]] + list(sampled_logits.shape[2:])
+            sampled_logits = np.reshape(sampled_logits, shape)
+            sampled_probs = np.reshape(sampled_probs, shape)
+
         probs = sampled_probs.mean(0)
-        del sampled_probs
         output = np.argmax(probs, -1)
 
         #pred_logits_var = (probs * sampled_logits.var(0)).mean(-1)
 
-        if single_input:
-            probs = probs[0]
-            output = output[0]
-
         ret = {'probs': probs}
         if 'output' in outputs:
             ret['output'] = output
-        if 'probs_entropy' in outputs:
-            ret['probs_entropy'] = (-probs * np.log(probs)).sum(axis=-1)
+        if 'probs_entropy' in outputs or 'probs_mi' in outputs:
+            ret['probs_entropy'] = -(probs * np.log(probs)).sum(axis=-1)
+        if 'probs_mi' in outputs:
+            entropies = -(sampled_probs * np.log(sampled_probs)).sum(axis=-1)
+            ret['probs_mi'] = ret['probs_entropy'] - entropies.mean(0)
         if 'pred_logits_var' in outputs:
             mask = np.eye(probs.shape[-1], dtype=np.bool)[output]
             pred_logits_samples = np.reshape(sampled_logits[:, mask],

@@ -6,23 +6,33 @@ from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, au
 import matplotlib.pyplot as plt
 from skimage import transform
 from tqdm import tqdm
+import pandas as pd
 
 from _context import dl_uncertainty
 
 from dl_uncertainty.data import DataLoader, datasets
 from dl_uncertainty import dirs, training
 from dl_uncertainty import data_utils, model_utils
-from dl_uncertainty.utils.visualization import view_predictions
 from dl_uncertainty.processing.shape import fill_to_shape
 from dl_uncertainty.processing.data_augmentation import random_crop
 from dl_uncertainty.models.odin import Odin
+
+from functools import lru_cache
+
+#from dl_uncertainty.utils.figstyle import figsize
+figsize = lambda: (15, 10)
+#oldfigsize = figsize
+#figsize = lambda: oldfigsize(10)
+(figw, figh) = figsize()
 
 # Use "--trainval" only for training on "trainval" and testing "test".
 # CUDA_VISIBLE_DEVICES=0 python test_threshold_ood.py
 # CUDA_VISIBLE_DEVICES=1 python test_threshold_ood.py
 # CUDA_VISIBLE_DEVICES=2 python test_threshold_ood.py
-#   cifar wrn 28 10 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/wrn-28-10/2018-04-28-1926/Model
+#   cifar wrn 28 10 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/wrn-28-10-e200/2018-06-22-1412/Model
+#     A = 0.9571
 #   cifar dn 100 12 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/dn-100-12-e300/2018-05-28-0121/Model
+#     A = 0.9481
 #   cifar rn 34 8
 #   cityscapes dn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/dn-121-32-pretrained-e30/2018-05-16-1623/Model
 #   mozgalo rn 50 64
@@ -39,7 +49,10 @@ parser.add_argument('saved_path', type=str)
 parser.add_argument('--dropout', action='store_true')
 parser.add_argument('--mcdropout', action='store_true')
 parser.add_argument('--test_on_training_set', action='store_true')
-parser.add_argument('--ds_size', default=150, type=int)
+parser.add_argument('--perturb', action='store_true')
+parser.add_argument('--plot', action='store_true')
+parser.add_argument('--noperturb', action='store_true')
+parser.add_argument('--ds_size', default=10000, type=int)
 args = parser.parse_args()
 print(args)
 
@@ -58,57 +71,54 @@ def resize(x, shape):
     x_min, x_max = np.min(x), np.max(x)
     s = x_max - x_min
     x = (x - x_min) / s  # values need to be in [0,1]
-    x = transform.resize(x, shape, order=1, clip=False)
+    x = transform.resize(x, shape, order=1, clip=False, mode='constant')
     return s * x + x_min  # restore value scaling
 
 
 # Cached dataset with normalized inputs
 
 print("Setting up data loading...")
-test_dataset_ids = ['cifar', 'tinyimagenet', 'isun', 'mozgalo', 'cityscapes']
-if args.ds == 'mozgalooodtrain':
-    test_dataset_ids.remove('mozgalo')
-    test_dataset_ids.append('mozgaloood')
-    test_dataset_ids.append('mozgalooodtrain')
-
 get_ds = data_utils.get_cached_dataset_with_normalized_inputs
-# test sets
-ds_id_to_ds = map_to_dict(lambda ds_id: get_ds(ds_id, trainval_test=True)[1],
-                          test_dataset_ids)
-# val sets
-ds_id_to_ds_val = map_to_dict(lambda ds_id: get_ds(ds_id)[1], test_dataset_ids)
 
+ds_id_to_ds = dict()
+
+if args.ds == 'mozgalooodtrain':
+    for ds_id in ['mozgalo', 'mozgaloood', 'mozgalooodtrain']:
+        ds_id_to_ds[ds_id] = get_ds(ds_id, trainval_test=True)[1]
+
+for ds_id in ['cifar', 'tinyimagenet']:
+    ds_id_to_ds[ds_id] = get_ds(ds_id, trainval_test=True)[1]
+isun_trainval, isun_test = get_ds('isun', trainval_test=True)
+ds_id_to_ds['isun'] = isun_trainval.join(isun_test).split(0.1)[0]
+
+# val sets
 for ds_id, ds in ds_id_to_ds.items():
     print(ds_id, len(ds))  # print dataset length
 
-
-def take_subsets(ds_id_to_ds_dict, size=args.ds_size):
-    return map_dict_v(lambda ds: ds.permute().subset(np.arange(size)),
-                      ds_id_to_ds_dict)
-
-
-ds_id_to_ds_val, ds_id_to_ds = map(take_subsets, [ds_id_to_ds_val, ds_id_to_ds])
-
 # prepare cropped and resized datasets
 shape = ds_id_to_ds[args.ds][0][0].shape
-size = len(ds_id_to_ds[args.ds])
 for ds_id, ds in list(ds_id_to_ds.items()):
     if ds_id == args.ds:
         continue
     if args.ds == 'cifar' and ds_id in ['tinyimagenet', 'cityscapes']:
-        ds_id_to_ds[ds_id + '-crop'] = \
-            ds.map(lambda d: random_crop(d, shape[:2]), 0, func_name='crop')
-    ds_id_to_ds[ds_id + '-res'] = \
-        ds.map(lambda d: resize(d, shape[:2]), 0, func_name='resize')
+        ds_id_to_ds[ds_id + '-c'] = \
+            ds.map(lambda d: random_crop(d, shape[:2]), 0, func_name='c')
+    ds_id_to_ds[ds_id + '-r'] = \
+        ds.map(lambda d: resize(d, shape[:2]), 0, func_name='r')
+    del ds_id_to_ds[ds_id]
     #ds_id_to_ds[ds_id + '-plus'] = \
     #    ds.map(lambda d: resize(d, shape[:2])*3+3, 0, func_name='resize')
-    del ds_id_to_ds[ds_id]
 
 # add noise datasets
 ds_id_to_ds['gaussian'] = \
-    datasets.WhiteNoiseDataset(shape, size=size).map(lambda x: (x, -1))
+    datasets.WhiteNoiseDataset(shape, size=args.ds_size).map(lambda x: (x, -1))
 ds_id_to_ds['uniform'] = datasets.WhiteNoiseDataset(
-    shape, size=size, uniform=True).map(lambda x: (x, -1))
+    shape, size=args.ds_size, uniform=True).map(lambda x: (x, -1))
+
+ds_id_to_ds = map_dict_v(
+    lambda v: v.permute().subset(np.arange(min(len(v), args.ds_size))),
+    ds_id_to_ds)
+ds_id_to_ds = map_dict_v(lambda v: v.cache(), ds_id_to_ds)
 
 # Model
 
@@ -122,9 +132,10 @@ model = model_utils.get_model(
     dropout=args.dropout or args.mcdropout)
 model.load_state(args.saved_path)
 
+odin = Odin(model)
+
 # Logits
-
-
+"""
 def to_logits(xy, label=0):
     x, _ = xy
     logits, output = model.predict(
@@ -135,7 +146,7 @@ def to_logits(xy, label=0):
 ds_id_to_logits_ds = {
     k: v.map(
         lambda x: to_logits(x, label=int(k == args.ds)),
-        func_name='to_logits').cache()
+        func_name='to_logits') #.cache()
     for k, v in ds_id_to_ds.items()
 }
 
@@ -147,12 +158,65 @@ ds_id_to_sum_logits_ds = map_dict_v(
 max_logits_ds = ds_id_to_max_logits_ds[args.ds]
 
 y_score_in, y_true_in = zip(* [(x, y) for x, y in max_logits_ds])
+"""
+
+
+def evaluate(scores_in, scores_out):
+    y_true = np.concatenate(
+        [[1] * len(scores_in), [0] * len(scores_out)], axis=0)
+    y_score = np.concatenate([scores_in, scores_out], axis=0)
+
+    fpr, tpr, thr = roc_curve(y_true=y_true, y_score=y_score)
+
+    tpr95idx = np.argmin(np.abs(tpr - 0.95))
+    if tpr[tpr95idx] < 0.95:
+        fpr95_indices = [tpr95idx, min(len(tpr) - 1, tpr95idx + 1)]
+    else:
+        fpr95_indices = [max(0, tpr95idx - 1), tpr95idx]
+    fpr95_weights = np.array(
+        [tpr[fpr95_indices[1]] - 0.95, 0.95 - tpr[fpr95_indices[0]]])
+    if np.sum(fpr95_weights) < 1e-5:
+        fpr95_weights = np.array([0, 1])
+    else:
+        fpr95_weights /= np.sum(fpr95_weights)
+    fpr95t = fpr[fpr95_indices].dot(fpr95_weights)  # tpr95 ~= 0.95
+    tpr95t = 0.95
+
+    det_err95t = ((1 - tpr95t) + fpr95t) / 2
+
+    p_in, r_in, thr = precision_recall_curve(y_true=y_true, probas_pred=y_score)
+    pi_in = np.array([np.max(p_in[:j + 1]) for j, _ in enumerate(p_in)])
+
+    p_out, r_out, thr = precision_recall_curve(
+        y_true=1 - y_true, probas_pred=-y_score)
+    pi_out = np.copy(p_out)
+    pi_out = np.array([np.max(p_out[:j + 1]) for j, _ in enumerate(p_out)])
+
+    return {
+        'fpr': fpr,
+        'tpr': tpr,
+        'auroc': auc(fpr, tpr),
+        'fpr95t': fpr95t,
+        'det_err95t': det_err95t,
+        'p_in': p_in,
+        'r_in': r_in,
+        'pi_in': pi_in,
+        'aupr_in': auc(r_in, p_in),
+        'aupir_in': auc(r_in, pi_in),
+        'p_out': p_out,
+        'r_out': r_out,
+        'pi_out': pi_out,
+        'aupr_out': auc(r_out, p_out),
+        'aupir_out': auc(r_out, pi_out),
+    }
+
 
 # Max-logits-sum-logits distributions plots
+"""
 
 fig, axes = plt.subplots(
     2, (len(ds_id_to_max_logits_ds) + 1) // 2,
-    figsize=(40, 16),
+    figsize=(figw, figh),
     sharex=True,
     sharey=True)
 
@@ -167,91 +231,186 @@ for ax in axes[1, :]:
 for ax in axes[:, 0]:
     ax.set_ylabel('sum logits')
 plt.show()
+"""
 
 # Max-logits distributions, evaluation curves plots
 
-fig, axes = plt.subplots(
-    4,
-    len(ds_id_to_max_logits_ds),
-    figsize=(40, 16),
-    sharex='row',
-    sharey='row')
 
-
-def plot_roc(ax, fpr, tpr, fpr95, det_err):
-    ax.plot(fpr, fpr, linestyle='--')
-    ax.plot(fpr, tpr, label=f'{auc(fpr, tpr):.3f}')
-    ax.plot([fpr95], [0.95], label=f'FPR@95%={fpr95:.3f}')
-    ax.plot([fpr95], [0.95], label=f'd_err={det_err:.3f}')
-    ax.set_xlabel('FPR')
-    if i == 0:
-        ax.set_ylabel('TPR')
-    ax.legend()
-
-
-def plot_pr(ax, p, p_interp, r, name):
-    ax.plot(r, p, label=f'{auc(r, p):.3f}')
-    ax.plot(r, p_interp, label=f'{auc(r, p_interp):.3f}')
-    ax.set_xlabel(f'R_{name}')
-    if i == 0:
-        ax.set_ylabel(f'P_{name}')
-    ax.legend()
-
-
-for i, (ds_id, ds) in tqdm(enumerate(ds_id_to_max_logits_ds.items())):
-    y_score_out, y_true_out = zip(* [(x, y) for x, y in ds])
-    y_true = np.array(y_true_in + y_true_out)
-    y_score = np.array(y_score_in + y_score_out)
-
-    # evaluation
-    fpr, tpr, thresholds = roc_curve(y_true=y_true, y_score=y_score)
-
-    tpr95idx = np.argmin(np.abs(tpr - 0.95))
-    if tpr[tpr95idx] < 0.95:
-        fpr95_indices = [tpr95idx, min(len(tpr) - 1, tpr95idx + 1)]
-    else:
-        fpr95_indices = [max(0, tpr95idx - 1), tpr95idx]
-    if fpr95_indices[0] == fpr95_indices[1]:
-        fpr95_weights = np.array([0, 1])
-    else:
-        fpr95_weights = np.array(
-            [tpr[fpr95_indices[1]] - 0.95, 0.95 - tpr[fpr95_indices[0]]])
-        fpr95_weights /= np.sum(fpr95_weights)
-    fpr95t = fpr[fpr95_indices].dot(fpr95_weights)  # tpr95 ~= 0.95
-    tpr95t = 0.95
-
-    det_err95t = ((1 - tpr95t) + fpr95t) / 2
-
-    p_in, r_in, thresholds = precision_recall_curve(
-        y_true=y_true, probas_pred=y_score)
-    pi_in = np.copy(p_in)
-    for j, _ in enumerate(p_in):
-        pi_in[j] = np.max(p_in[:j + 1])
-
-    p_out, r_out, thresholds = precision_recall_curve(
-        y_true=1 - y_true, probas_pred=-y_score)
-    pi_out = np.copy(p_out)
-    for j, _ in enumerate(p_out):
-        pi_out[j] = np.max(p_out[:j + 1])
-
-    # histograms
-    ax = axes[0, i]
-    ax.set_title(ds_id)
-    hist_range = (min(y_score), max(y_score))
+def plot_histograms(ax, y_score_in, y_score_out):
+    y_score = np.concatenate([y_score_in, y_score_out], axis=0)
+    hist_range = (min(y_score_in), max(y_score))
     ax.hist(y_score_in, bins=40, range=hist_range, alpha=0.5)
     ax.hist(y_score_out, bins=40, range=hist_range, alpha=0.5)
 
-    # in-distribution ROC, AUROC, FPR@95%TPR
-    plot_roc(axes[1, i], fpr, tpr, fpr95t, det_err95t)
 
-    # in-distribution P-R, AUPR
-    plot_pr(axes[2, i], p_in, pi_in, r_in, 'in')
+def plot_roc(ax, fpr, tpr, fpr95t, det_err=None):
+    ax.plot(fpr, fpr, linestyle='--')
+    ax.plot(fpr, tpr, label=f'{auc(fpr, tpr):.3f}')
+    ax.plot([fpr95t], [0.95], label=f'FPR95={fpr95t:.3f}')
+    if det_err is not None:
+        ax.plot([fpr95t], [0.95], label=f'de={det_err:.3f}')
+    ax.set_xlabel('FPR')
+    if i == 0:
+        ax.set_ylabel('TPR')
+    ax.set_ylim(bottom=0)
+    ax.legend()
 
-    # out-distribution P-R, AUPR
-    plot_pr(axes[3, i], p_out, pi_out, r_out, 'out')
 
-#fig.tight_layout(pad=0.1)
-plt.tight_layout(pad=0.5)
-plt.xticks(fontsize=8)
-plt.xticks(fontsize=8)
-plt.show()
+def plot_pr(ax, p, p_interp, r, aupr, aupir, name):
+    ax.plot(r, p, label=f'{aupr:.3f}')
+    ax.plot(r, p_interp, label=f'{aupir:.3f}')
+    ax.set_xlabel(f'R_{name}')
+    if i == 0:
+        ax.set_ylabel(f'P_{name}')
+    ax.set_ylim(bottom=0)
+    ax.legend()
+
+
+method_to_evaluations = dict()
+for perturb in [True] if args.perturb else [False] if args.noperturb else [
+        False, True
+]:
+    for method in ['max-probs', 'max-logits']:
+        full_method_name = method
+        if perturb:
+            full_method_name += '-p'
+        method_to_evaluations[full_method_name] = dict()
+
+        if args.plot:
+            fig, axes = plt.subplots(
+                4,
+                len(ds_id_to_ds),
+                figsize=(figw, figh),
+                sharex='row',
+                sharey='row')
+
+        ds_in = ds_id_to_ds[args.ds]
+
+        print(f"Evaluating: {full_method_name}")
+        for i, (ds_out_id, ds_out) in enumerate(tqdm(ds_id_to_ds.items())):
+            ds_out = ds_id_to_ds[ds_out_id]
+            ds_out_val, ds_out = ds_out.split(0.1)
+
+            eps = 0
+
+            if perturb:
+                epsilons, perfs = odin.fit_epsilon(
+                    ds_in, ds_out_val,
+                    lambda si, so: 1 - evaluate(si, so)['fpr95t'])
+                print(ds_out_id)
+                print(perfs)
+                print(perfs)
+                eps = epsilons[np.argmax(perfs)]
+
+            scores_name = method[method.index('-') + 1:]
+            y_score_in = odin.get_scores(ds_in, scores_name=scores_name)
+            y_score_out = odin.get_scores(ds_out, scores_name=scores_name)
+
+            # evaluation
+            ev = evaluate(y_score_in, y_score_out)
+            method_to_evaluations[full_method_name][ds_out_id] = {
+                'fpr95t': ev['fpr95t'],
+                'auroc': ev['auroc'],
+                'aupr_in': ev['aupr_in'],
+                'aupr_out': ev['aupr_out'],
+                'eps': eps,
+            }
+
+            if not args.plot:
+                continue
+
+            # histograms
+            plot_histograms(axes[0, i], y_score_in, y_score_out)
+            axes[0, i].set_title(f"{ds_out_id}{odin.epsilon}")
+            # in-distribution ROC, AUROC, FPR@95%TPR
+            plot_roc(axes[1, i], ev['fpr'], ev['tpr'], ev['fpr95t'])
+            # in-distribution P-R, AUPR
+            plot_pr(axes[2, i], ev['p_in'], ev['pi_in'], ev['r_in'],
+                    ev['aupr_in'], ev['aupir_in'], 'in')
+            # out-distribution P-R, AUPR
+            plot_pr(axes[3, i], ev['p_out'], ev['pi_out'], ev['r_out'],
+                    ev['aupr_out'], ev['aupir_out'], 'out')
+
+        if args.plot:
+            plt.xticks(fontsize=8)
+            plt.xticks(fontsize=8)
+            #fig.tight_layout(pad=0.1)
+            plt.tight_layout(pad=0.5)
+            plt.show()
+
+m2e = method_to_evaluations
+evaluations = dict()
+methods = []
+for method_name, ds2evs in m2e.items():
+    methods += [method_name]
+    for ds_out_id, evs in ds2evs.items():
+        if ds_out_id not in evaluations:
+            evaluations[ds_out_id] = dict()
+        for ev_name, ev_val in evs.items():
+            if ev_name not in evaluations[ds_out_id]:
+                evaluations[ds_out_id][ev_name] = []
+            evaluations[ds_out_id][ev_name] += [ev_val]
+
+
+def rank(ev_name, ev_vals):
+    arr = np.array(ev_vals)
+    if ev_name not in ['fpr95t']:
+        arr *= -1
+    return np.argsort(arr)
+
+
+def translate_evaluation_measure_name(name):
+    return {
+        'fpr95t': r'$\mathit{FPR}_{R=0.95}/\%$',
+        'auroc': r'$\mathit{AUROC}/\%$',
+        'aupr_in': r'$\mathit{AP}_\text{in}/\%$',
+        'aupr_out': r'$\mathit{AP}_\text{out}/\%$',
+        'eps': r'$\epsilon/10^{-3}$',
+    }[name]
+
+
+def translate_ds_name(name):
+    return {
+        'cifar': r'CIFAR-10',
+        'tinyimagenet-c': r'TinyImagenet-C',
+        'tinyimagenet-r': r'TinyImagenet-R',
+        'isun-r': r'iSUN',
+        'gaussian': r'Gaussian',
+        'uniform': r'Uniform',
+    }[name]
+
+
+for ds_out_id in list(evaluations.keys()):
+    evs = evaluations[ds_out_id]
+    for ev_name in list(evs.keys()):
+        if ev_name == 'eps':
+            ev_strings = [f"{x*1000:.1f}" for x in evs[ev_name]]
+        else:
+            ev_strings = [f"{x*100:.1f}" for x in evs[ev_name]]
+            r = rank(ev_name, evs[ev_name])
+            ev_strings[r[0]] = r"\mathbf{" + ev_strings[r[0]] + r"}"
+            #ev_strings[r[1]] = r"\mathbf{" + ev_strings[r[1]] + r"}"
+        evs[ev_name] = r"$\begin{matrix}" + r"&".join(
+            ev_strings) + r"\end{matrix}$"
+        new_name = translate_evaluation_measure_name(ev_name)
+        evs[new_name] = evs[ev_name]
+        del evs[ev_name]
+    new_name = translate_ds_name(ds_out_id)
+    evaluations[new_name] = evaluations[ds_out_id]
+    del evaluations[ds_out_id]
+
+pd.set_option('display.max_colwidth', -1)
+
+df = pd.DataFrame.from_dict(evaluations, orient='index')
+import pdb
+pdb.set_trace()
+
+import os.path
+file_path = os.path.dirname(args.saved_path)
+with open(file_path + "/ood.log", mode='w') as fs:
+    fs.write(df)
+    fs.write('\n')
+    fs.write(df.to_latex(escape=False))
+    fs.flush()
+
+# print(pd.DataFrame.from_dict(evaluations, orient='index').to_latex(escape=False))

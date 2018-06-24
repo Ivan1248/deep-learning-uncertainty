@@ -132,7 +132,7 @@ def view_predictions_2(dataset, infer=None, save_dir=None):
     def get_frame(datapoint):
 
         def process(pred):
-            if np.issubdtype(pred.dtype, np.float):
+            if np.issubdtype(pred.dtype, np.floating):
                 return pred
             else:
                 return colorify_label(pred + 1, colors)
@@ -176,7 +176,7 @@ def view_predictions(dataset, infer=None, save_dir=None):
 
         def add_prediction(pred):
             pred_disp = np.full(img.shape[:2], pred) if classification else pred
-            if np.issubdtype(pred_disp.dtype, np.float):
+            if np.issubdtype(pred_disp.dtype, np.floating):
                 shape = list(pred_disp.shape) + [3]
                 pred_disp = np.repeat(pred_disp, 3, axis=-1)
                 pred_disp = np.reshape(pred_disp, shape)
