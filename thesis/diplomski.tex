@@ -31,7 +31,8 @@ Radu priložiti izvorni i izvršni kod razvijenih postupaka, ispitne slijedove i
 
 
 % Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
-\zahvala{zahvala} %Zahvaljujem prof. dr. sc. Siniši Šegviću na tome što se puno trudi pomagati.}
+\zahvala{
+Zahvaljujem prof. dr. sc. Siniši Šegviću na pomoći, savjetima i prijedlozima tijekom studiranja i pogotovo tijekom rada na diplomskom radu. Zahvaljujem i asistentima Ivanu Kreši, Marinu Oršiću i Petri Bevandić na pomoći. Zahvaljujem svojoj obitelji na podršci.}
 
 \tableofcontents
 %\listoffigures
@@ -644,7 +645,7 @@ Na slici~\ref{fig:bm-regresija} prikazan je primjer na kojem se koriste još nek
 \end{figure}
 
 Općenitije, o uvjetnoj nezavisnosti podskupova varijabli govori svojstvo \emphasize{d-separacije}. Kažemo da je staza (podgraf sa strukturom lanca) $P$ grafa $G$ \emphasize{d-odvojena} skupom čvorova $\set E$ akko $P$ sadrži barem jedno od sljedećeg \citep{Murphy:2012:MLPP}:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item lanac $\rvar a\rightarrow\rvar b\rightarrow\rvar c$, gdje $\rvar b\in E$
 	\item račvanje $\rvar a\leftarrow\rvar b\rightarrow\rvar c$, gdje $\rvar b\in E$
 	\item sraz $\rvar a\rightarrow\rvar b\leftarrow\rvar c$, gdje $\forall \rvar b'\in\cbr{\rvar b}\cup\succ_G(\rvar b), \rvar b'\notin E$.
@@ -910,7 +911,7 @@ Većina algoritama strojnog učenja kombinira obje vrste induktivne pristranosti
 \section{Komponente algoritma strojnog učenja}
 
 Prema \citet{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo razlikovati $3$ osnovne komponente, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item \emphasize{Model} ili prostor hipoteza. Model $\set H$ je skup funkcija $h$  parametriziranih parametrima $\vec\theta$: $\set H=\cbr{h(\vec x;\vec{\theta})}_{\vec{\theta}}$.
 	\item \emphasize{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emphasize{funkciju gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar predikcija hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
 	\begin{align}
@@ -1084,7 +1085,7 @@ h(\vec x) = f(\vec w^\tp\phi(\vec x)) \text{.}
 U odnosu na linearne modele, oni još imaju \emphasize{prijenosnu} (\emphasize{aktivacijsku}) funkciju $\funcdef{f}{\R}{\R}$. Ako je $f$ nelinearna, model je nelinearan u parametrima, ali granica klasifikacijskog modela je i dalje hiperravnina.
 
 Slijedi pregled nekih linearnih modela prema \citet{Snajder:2017:SULR2}:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 \item \emphasize{Linearna regresija}:
 \begin{align*}
 h(\vec x;\vec w) &= \vec w^\tp\phi(\vec x), \\
@@ -1373,7 +1374,7 @@ i iteracija (prema jednadžbi~\eqref{eq:gs}) ima oblik
 gdje je $e$ broj epohe, a $i+1$ broj trenutne iteracije unutar epohe.
 
 Prema \citet{Goodfellow:2016:DL}, na odabir veličine mini-grupe utječu:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item Kvaliteta procjene gradijenta. Veće minigrupe daju točniju procjenu gradijenta.
 	\item Računska efikasnost. Premale mini-grupe ne iskorištavaju potpuno mogućnost paralelizacije izračuna, a prevelike grupe ne stanu u memoriju.
 	\item Optimizacija s manjim mini-grupama ima učinak regularizacije \citep{Wilson:2003:GIBTGDL}, ali zahtijeva manju stopu učenja i sporije konvergira.
@@ -1399,7 +1400,7 @@ Pomaci se obično inicijaliziraju na neku konstantu.
 \subsection{Problem nekonveksnosti funkcije pogreške}
 
 \citet{Goodfellow:2016:DL} navode sljedeće probleme koji se javljaju kod nekonveksne optimizacije:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item \emphasize{Loše kondicioniranje Hesseove matrice}. Loše kondicioniranje Hesseove matrice može biti razlog da i s jako malim korakom učenje funkcija pogreške raste u smjeru gradijenta zato što kvadratni član u Taylorovom rezvoju u jednadžbi~\eqref{eq:grad-delta-approx}  bude pozitivan i prevlada linearni član.
 	\item \emphasize{Lokalni minimumi}. I ako se zanemare ekvivalentni lokalni minimumi koji postoje zbog simetričnosti zamjenjivosti položaja neurona u istom sloju i drugih simetričnosti u neurnoskim mrežama, funkcija pogreške ima velik broj lokalnih minimuma. Empirijski se pokazuje da loši lokalni minimumi nisu problem i da nije potrebno pronaći globalni minimum kako bi se dobili dobri rezultati.
 	\item \emphasize{Ostale stacionarne točke}. Kod visokodimenzionalnih optimizacijskih problema lokalni minimumi i maksimumi su obično rijetki zato što bi onda sve vlastite vrijednosti Hesseove matrice morale biti istog predznaka. Zato su češće sedlaste točke kod kojih se predznak barem jedne vlastite vrijednosti razlikuje od predznaka ostalih. Empirijski se pokazuje da sedlaste točke kod dubokih mreža nisu velik problem za optimizacijske postupke prvog reda koje ne privlače sedlaste točke. I ako se parametri nalaze točno u sedlastoj točki tako da je gradijent $\cvec 0$, stohastički gradijentni spust može imati drugačije gradijente.
@@ -1681,7 +1682,7 @@ Jednako tako, definirana je konvolucija funkcija iz $\Z^n\to\R$:
 (f*g)(\vec t) \coloneqq \sum_{\vec\tau} f(\vec\tau)g(\vec t-\vec\tau) \text{.}
 \end{align}
 Na isti način, s integralom umjesto zbroja, definirana je i konvolucija funkcija s kontinuiranom domenom. Neka od svojstava konvolucije su:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item Komutativnost: $f*g=g*f$.
 	\item Distributivnost zbrajanja. Vrijedi $(f+g)*h=f*h+g*h$.	
 	\item Translacijska ekvivarijantnost. Ako $f'(t) \coloneqq f(t+d)$, onda $(f'*g)(t)=(f*g)(t+d)$.
@@ -2135,7 +2136,59 @@ L(y\mid h'(\vec x;\vec\theta))
 \end{align}
 Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Carlo} aproksimacija.
 
-\citet{Kendall:2017:WUNBDLCV} su koristili aproksimaciju bayesovske neuronske mreže dropoutom, što je opisano u pododjeljku~\ref{subsec:bnm-dropout}, i empirijski su pokazali da se uz modeliranje aleatorne nesigurnosti uz gubitke u jednadžbama~\eqref{eq:aleatorni-gubitak-regresija}~i~\eqref{eq:aleatorni-gubitak-klasifikacija} može dobiti malo poboljšanje predikcija na zadacima regresije dubine i semantičke segmentacije.
+\citet{Kendall:2017:WUNBDLCV} su koristili aproksimaciju bayesovske neuronske mreže pomoću \textit{dropouta} i empirijski su pokazali da se uz modeliranje aleatorne nesigurnosti uz gubitke u jednadžbama~\eqref{eq:aleatorni-gubitak-regresija}~i~\eqref{eq:aleatorni-gubitak-klasifikacija} može dobiti malo poboljšanje predikcija na zadacima regresije dubine i semantičke segmentacije. Aproksimaciju bayesovske neuronske mreže pomoću \textit{dropouta} je opisana u pododjeljku~\ref{subsec:bnm-dropout}. Na slici \ref{fig:camvid_qual} se mogu vidjeti primjeri razlikovanja aleatorne i epistemičke nesigurnosti kod predikcije, što su dobili takvim postupkom za semantičku segmentaciju.
+
+\begin{figure}
+	\centering
+	\resizebox{1\linewidth}{!}{
+		\begin{subfigure}[t]{0.22\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_1_output_0.jpg}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_0.jpg}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_0.jpg}
+			\caption{Ulazna slika.}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.22\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_1_output_2.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_2.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_2.png}
+			\caption{Ciljne oznake.}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.22\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_1_output_1.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_1.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_1.png}
+			\caption{Samantičke segmentacija.}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.22\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_1_output_3.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_3.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_3.png}
+			\caption{Aleatorna nesigurnost.}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.22\linewidth}
+			\centering
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_1_output_5.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_5.png}
+			\\\vspace{1px}
+			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_5.png}
+			\caption{Epistemička nesigurnost}			
+	\end{subfigure}}
+	\caption{Ilustracija procjena aleatorne i epistemičke kod semantičke segmentacije preuzeta iz \citet{Kendall:2017:WUNBDLCV}. Aleatorna nesigurnost je veća na rubovima objekata, posebno na rubovima krošanja, i na udaljenim objektima.}
+	\label{fig:camvid_qual}
+\end{figure}
 
 \subsection{Međusobna informacija kao mjera epistemičke nesigurnosti} \label{subsec:mi-epistemicka}
 
@@ -2239,7 +2292,7 @@ U ovom odjeljku su opisane evaluacijske mjere korištene u eksperimentima.
 \subsection{Binarna klasifikacija}
 
 Kod binarne klasifikacije klase dijelimo na \emphasize{pozitivnu klasu} i \emphasize{negativnu klasu}. Primjere iz skupa korištenog za ispitivanje prema predikcijama klasifikatora dijelimo u $4$ skupine:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item \emphasize{stvarno pozitivni} (engl. \textit{true positives}, TP) --- pozitivno klasificirani pozitivni primjeri
 	\item \emphasize{stvarno negativni} (engl. \textit{true negatives}, TN) --- negativno klasificirani negativni primjeri
 	\item \emphasize{lažno pozitivni} (engl. \textit{false positives}, FP) --- pozitivno klasificirani negativni primjeri
@@ -2269,7 +2322,7 @@ To možemo prikazati konfuzijskom matricom kao na slici~\ref{fig:konfuzijska-mat
 \end{figure}
 
 Neke od češćih evaluacijskih mjera za binarnu klasifikaciju su:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item \emphasize{točnost} (engl. \textit{accuracy}) --- udio točno klasificiranih primjera: $A\coloneqq\frac{\TP+\TN}{N}=\frac{\TP+\TN}{\TP+\FP+\TN+\FN}$
 	\item \emphasize{preciznost} (engl. \textit{precision}) --- udio stvarno pozitivnih primjera u pozitivno klasificiranim primjerima: $P\coloneqq\frac{\TP}{\TP+\FP}$
 	\item \emphasize{odziv} ili \emphasize{stopa stvarnih pozitiva} (engl. \textit{recall}, \textit{true positive rate}) --- udio stvarno pozitivnih primjera u pozitivnim primjerima: $R\coloneqq \TPR\coloneqq\frac{\TP}{\TP+\FN}$
@@ -2311,7 +2364,7 @@ Kod višeklasne klasifikacije u $C$ klasa, konfuzijska matrica je dimenzija $C\t
 %\end{align}
 
 Neke od evaluacijskih mjera za višeklasnu klasifikaciju u $C$ klasa su:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item \emphasize{točnost} (engl. \textit{accuracy}) --- udio točno klasificiranih primjera: $A\coloneqq\frac{\sum_k \TP_k}{N}$
 	\item \emphasize{makro-usrednjena preciznost} (engl. \textit{macro-averaged precision}) --- srednja preciznost po klasama: $P_\text{m}\coloneqq\frac{1}{C}\sum_k P_k$, gdje $P_k\coloneqq\frac{\TP_k}{\TP_k+\FP_k}$
 	\item \emphasize{srednja prosječna preciznost preciznost} (engl. \textit{mean average precision}) --- srednja prosječna preciznost po klasama: $\mathit{mAP}\coloneqq\frac{1}{C}\sum_k \AP_k$, gdje $\AP_k\coloneqq\int_0^1 P_k(R_k)\dif R_k$
@@ -2388,7 +2441,7 @@ Za ispitivanje su korištene rezidualna mreža WRN-28-10 \citep{Zagoruyko:2016:W
 \subsubsection{Izvanrazdiobni skupovi}
 
 Za ove eksperimente je kao unutarrazdiobni skup korišten podskup za testiranje iz skupa CIFAR-10. Slike su dimenzija $32\times 32$ i ima ih $10000$ u skupu za testiranje. Za izvanrazdiobne skupove su, slično kao kod \cite{Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN}, korišteni skupovi:
-\begin{enumerate}
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 	\item TinyImageNet\footnote{\url{https://tiny-imagenet.herokuapp.com/}} --- podskup ImageNet-a \citep{Deng:2009:ILSHID} sa slikama iz $200$ klasa. Skup za testiranje sadrži $10000$ slika. Za ove eksperimente su iz skupa za testiranje konstruirana dva skupa: TinyImageNet-C, kojeg čine slike iz kojih su nasumično izrezani dijelovi dimenzija $32\times 32$, i TinyImageNet-R, kojeg čine slike umanjene na iste dimenzije, tj. dimenzije slika iz skupa CIFAR-10.
 	\item LSUN \citep{Yu:2015:LSUN} --- skup sličan TinyImageNetu. Skup za testiranje sastoji se od $10000$ slika. Kao i za TinyImageNet, iz skupa za testiranje konstruirana su dva skupa: LSUN-C, kojeg čine slike iz kojih su nasumično izrezani dijelovi dimenzija $32\times 32$, i LSUN-R, kojeg čine slike umanjene slike.
 	\item iSUN \citep{Xu:2015:TCSWBET} --- podskup SUN-a \citep{Xiao:2016:SUN}. Za eksperimente se koriste sve slike iSUN-a umanjene na dimenzije $32\times 32$.
@@ -2399,78 +2452,108 @@ Kao i kod učenja, za svaki skup, slike koje se daju kao ulaz mreži su normaliz
 
 \subsubsection{Odabir parametara}
 
-Na temelju rezultata u \cite{Liang:2017:PDOODENN}, koji pokazuju da su veće temperature bolje, za eksperimente u kojima se koristi temperaturno skaliranje logita prije softmaksa koristi se temperatura $T=1000$. Za odabir veličine pomaka $\epsilon$ iz svakog izvanrazdiobnog skupa se izvoji $1000$ slika. Optimalni $\epsilon$ se traži u skupu $\cbr{0,10^{-3},2\cdot 10^{-3},\bidot,12\cdot 10^{-3}}$. I kod mreže WRN-28-10 i kod mreže DN-100-12 (vlastitih implementacija), optimalni $\epsilon$ je ispadao oko $5$ puta veći nego kod \citet{Liang:2017:PDOODENN}.
+Na temelju rezultata u \cite{Liang:2017:PDOODENN}, koji pokazuju da su veće temperature bolje, za eksperimente u kojima se koristi temperaturno skaliranje logita prije softmaksa koristi se temperatura $T=1000$. Za odabir veličine pomaka $\epsilon$ iz svakog izvanrazdiobnog skupa se izvoji $1000$ slika. Optimalni $\epsilon$ se traži u skupu $\cbr{0,10^{-3},2\cdot 10^{-3},\bidot,12\cdot 10^{-3}}$. I kod mreže WRN-28-10 i kod mreže DN-100-12 (vlastitih implementacija), optimalni $\epsilon$ je ispadao oko $5$ puta veći nego kod \citet{Liang:2017:PDOODENN} za svaki izvanrazdiobni skup.
 
 \subsubsection{Rezultati}
 
-
-
-
-\url{http://elbereth.zemris.fer.hr:8080/wiki_vision2/index.php?title=Uncertainty}
-
-\newpage
+Rezultati glavnih eksperimenata su prikazani u tablicama~\ref{tab:ood-dn-cifar}~i~\ref{tab:ood-wrn-cifar}. Za svaku evaluacijsku mjeru, $5$ stupaca redom predstavlja klasifikaciju maksimalne vrijednosti:
+\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\item softmaksa uz $T=1$
+\item softmaksa uz $T=1000$ (ili logita s pomakom ulaza uz $T\gg 1$)
+\item softmaksa uz $T=1000$ i pomak ulaza
+\item logita (uz bilo koji $T$)
+\item logita uz pomak ulaza za $T=1$.
+\end{enumerate}
 
 \begin{table} \centering
 	\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccc}
-	\toprule
-	{} &                                $\mathit{FPR}_{R=0.95}/\%$ &                                       $\mathit{AUROC}/\%$ &                                $\mathit{AP}_\text{in}/\%$ &                               $\mathit{AP}_\text{out}/\%$ &                             $\epsilon/10^{-3}$ \\
-	\midrule
-	TinyImagenet-C &  $\begin{matrix}50.2&34.8&37.7&\mathbf{34.4}\end{matrix}$ &  $\begin{matrix}91.0&\mathbf{93.4}&91.9&92.1\end{matrix}$ &  $\begin{matrix}92.7&\mathbf{94.3}&92.1&92.0\end{matrix}$ &  $\begin{matrix}87.8&\mathbf{92.0}&90.9&91.8\end{matrix}$ &  $\begin{matrix}0.0&0.0&8.0&8.0\end{matrix}$ \\
-	TinyImagenet-R &  $\begin{matrix}55.0&\mathbf{43.2}&47.8&44.1\end{matrix}$ &  $\begin{matrix}89.4&\mathbf{90.2}&88.7&88.1\end{matrix}$ &  $\begin{matrix}\mathbf{90.3}&90.1&88.5&87.0\end{matrix}$ &  $\begin{matrix}86.0&\mathbf{88.8}&87.1&87.7\end{matrix}$ &  $\begin{matrix}0.0&0.0&4.0&4.0\end{matrix}$ \\
-	iSUN           &  $\begin{matrix}51.0&31.7&30.4&\mathbf{28.6}\end{matrix}$ &  $\begin{matrix}91.6&\mathbf{93.9}&92.6&92.5\end{matrix}$ &  $\begin{matrix}99.2&\mathbf{99.4}&99.2&99.1\end{matrix}$ &  $\begin{matrix}44.4&60.3&60.7&\mathbf{66.1}\end{matrix}$ &  $\begin{matrix}0.0&0.0&9.0&9.0\end{matrix}$ \\
-	Gaussian       &  $\begin{matrix}88.2&71.8&\mathbf{0.0}&0.0\end{matrix}$ &  $\begin{matrix}87.4&91.6&98.6&\mathbf{99.2}\end{matrix}$ &  $\begin{matrix}92.6&95.0&99.1&\mathbf{99.5}\end{matrix}$ &  $\begin{matrix}75.1&82.5&96.6&\mathbf{98.5}\end{matrix}$ &  $\begin{matrix}0.0&0.0&12.0&12.0\end{matrix}$ \\
-	Uniform        &  $\begin{matrix}88.2&71.8&\mathbf{0.0}&0.0\end{matrix}$ &  $\begin{matrix}87.4&91.6&98.6&\mathbf{99.2}\end{matrix}$ &  $\begin{matrix}92.6&95.0&99.1&\mathbf{99.5}\end{matrix}$ &  $\begin{matrix}75.1&82.5&96.6&\mathbf{98.5}\end{matrix}$ &  $\begin{matrix}0.0&0.0&12.0&12.0\end{matrix}$ \\
-	\bottomrule
-\end{tabular}
-}
-\caption{WRN-28-10, CIFAR-10,  $A = 0.9571$, $T=1000$, (softmax logits softmax-perturb logits-perturb).}
-\label{tab:ood-wrn-cifar}
+		\begingroup
+		\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
+		\begin{tabular}{llllll}
+			\toprule
+			{} &                                             $\mathit{FPR}_{R=0.95}/\%$ &                                                    $\mathit{AUROC}/\%$ &                                             $\mathit{AP}_\text{in}/\%$ &                                            $\mathit{AP}_\text{out}/\%$ &                                       $\epsilon/10^{-3}$ \\
+			\midrule
+			CIFAR-10       &  $\hnc{95.0}\;\hnc{\mathbf{95.0}}\;\hnc{95.0}\;\hnc{95.0}\;\hnc{95.0}$ &  $\hnc{\mathbf{50.0}}\;\hnc{50.0}\;\hnc{50.0}\;\hnc{50.0}\;\hnc{50.0}$ &  $\hnc{\mathbf{62.1}}\;\hnc{52.6}\;\hnc{52.6}\;\hnc{52.6}\;\hnc{52.6}$ &  $\hnc{\mathbf{47.4}}\;\hnc{47.4}\;\hnc{47.4}\;\hnc{47.4}\;\hnc{47.4}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}$ \\
+			Gaussian       &  $\hnc{74.3}\;\hnc{6.1}\;\hnc{\mathbf{0.0}}\;\hnc{0.0}\;\hnc{0.0}$ &  $\hnc{93.3}\;\hnc{97.0}\;\hnc{\mathbf{98.9}}\;\hnc{98.9}\;\hnc{98.9}$ &  $\hnc{96.2}\;\hnc{98.3}\;\hnc{\mathbf{99.3}}\;\hnc{99.3}\;\hnc{99.3}$ &  $\hnc{85.2}\;\hnc{91.2}\;\hnc{\mathbf{96.8}}\;\hnc{96.8}\;\hnc{96.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
+			LSUN-C         &  $\hnc{54.0}\;\hnc{\mathbf{33.3}}\;\hnc{33.3}\;\hnc{39.5}\;\hnc{33.3}$ &  $\hnc{91.8}\;\hnc{\mathbf{94.5}}\;\hnc{94.5}\;\hnc{93.1}\;\hnc{94.5}$ &  $\hnc{94.1}\;\hnc{\mathbf{95.5}}\;\hnc{95.5}\;\hnc{94.3}\;\hnc{95.5}$ &  $\hnc{88.0}\;\hnc{\mathbf{92.9}}\;\hnc{92.9}\;\hnc{91.3}\;\hnc{92.9}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}$ \\
+			LSUN-R         &  $\hnc{48.7}\;\hnc{18.9}\;\hnc{\mathbf{12.1}}\;\hnc{15.0}\;\hnc{12.1}$ &  $\hnc{93.1}\;\hnc{96.8}\;\hnc{\mathbf{97.7}}\;\hnc{97.4}\;\hnc{97.7}$ &  $\hnc{95.1}\;\hnc{97.5}\;\hnc{\mathbf{98.1}}\;\hnc{97.9}\;\hnc{98.1}$ &  $\hnc{89.8}\;\hnc{95.9}\;\hnc{\mathbf{97.4}}\;\hnc{96.8}\;\hnc{97.4}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{7.0}$ \\
+			TinyImageNet-C &  $\hnc{52.1}\;\hnc{23.9}\;\hnc{18.8}\;\hnc{20.4}\;\hnc{\mathbf{18.8}}$ &  $\hnc{92.5}\;\hnc{96.0}\;\hnc{96.2}\;\hnc{\mathbf{96.3}}\;\hnc{96.2}$ &  $\hnc{94.6}\;\hnc{96.8}\;\hnc{96.5}\;\hnc{\mathbf{96.9}}\;\hnc{96.5}$ &  $\hnc{88.9}\;\hnc{94.7}\;\hnc{\mathbf{95.8}}\;\hnc{95.5}\;\hnc{95.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{6.0}\;\hnc{0.0}\;\hnc{6.0}$ \\
+			TinyImageNet-R &  $\hnc{58.5}\;\hnc{39.5}\;\hnc{\mathbf{36.5}}\;\hnc{37.0}\;\hnc{36.5}$ &  $\hnc{90.3}\;\hnc{92.4}\;\hnc{92.3}\;\hnc{\mathbf{92.7}}\;\hnc{92.3}$ &  $\hnc{92.6}\;\hnc{93.6}\;\hnc{92.9}\;\hnc{\mathbf{93.6}}\;\hnc{92.9}$ &  $\hnc{86.2}\;\hnc{90.6}\;\hnc{91.3}\;\hnc{\mathbf{91.4}}\;\hnc{91.3}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{6.0}\;\hnc{0.0}\;\hnc{6.0}$ \\
+			Uniform        &  $\hnc{74.3}\;\hnc{6.1}\;\hnc{\mathbf{0.0}}\;\hnc{0.0}\;\hnc{0.0}$ &  $\hnc{93.3}\;\hnc{97.0}\;\hnc{\mathbf{98.9}}\;\hnc{98.9}\;\hnc{98.9}$ &  $\hnc{96.2}\;\hnc{98.3}\;\hnc{\mathbf{99.3}}\;\hnc{99.3}\;\hnc{99.3}$ &  $\hnc{85.2}\;\hnc{91.2}\;\hnc{\mathbf{96.8}}\;\hnc{96.8}\;\hnc{96.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
+			iSUN           &  $\hnc{51.1}\;\hnc{20.5}\;\hnc{\mathbf{12.7}}\;\hnc{15.5}\;\hnc{12.7}$ &  $\hnc{92.9}\;\hnc{96.6}\;\hnc{\mathbf{97.6}}\;\hnc{97.3}\;\hnc{97.6}$ &  $\hnc{95.4}\;\hnc{97.7}\;\hnc{\mathbf{98.2}}\;\hnc{98.0}\;\hnc{98.2}$ &  $\hnc{88.3}\;\hnc{95.2}\;\hnc{\mathbf{97.0}}\;\hnc{96.3}\;\hnc{97.0}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{7.0}$ \\
+			\bottomrule
+		\end{tabular}
+		\endgroup
+	}
+	\caption{DN-100-12, CIFAR-10, $A = 0.9481$, $T=1000$ (softmax, t= logits softmax-perturb logits-perturb).}
+	\label{tab:ood-dn-cifar}
 \end{table}
+
 
 \begin{table} \centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llllll}
-	\toprule
-	{} &                                $\mathit{FPR}_{R=0.95}/\%$ &                                       $\mathit{AUROC}/\%$ &                                $\mathit{AP}_\text{in}/\%$ &                               $\mathit{AP}_\text{out}/\%$ &                             $\epsilon/10^{-3}$ \\
-	\midrule
-	TinyImagenet-C &  $\begin{matrix}52.3&24.0&30.3&\mathbf{19.9}\end{matrix}$ &  $\begin{matrix}92.5&\mathbf{96.0}&93.6&96.0\end{matrix}$ &  $\begin{matrix}94.7&\mathbf{96.9}&94.6&96.4\end{matrix}$ &  $\begin{matrix}88.8&94.8&93.1&\mathbf{95.6}\end{matrix}$ &  $\begin{matrix}0.0&0.0&8.0&8.0\end{matrix}$ \\
-	TinyImagenet-R &  $\begin{matrix}58.5&39.6&47.4&\mathbf{36.3}\end{matrix}$ &  $\begin{matrix}90.3&92.4&91.2&\mathbf{92.7}\end{matrix}$ &  $\begin{matrix}92.6&\mathbf{93.6}&92.8&93.4\end{matrix}$ &  $\begin{matrix}86.2&90.6&89.2&\mathbf{91.5}\end{matrix}$ &  $\begin{matrix}0.0&0.0&4.0&4.0\end{matrix}$ \\
-	iSUN           &  $\begin{matrix}51.5&17.8&22.9&\mathbf{11.2}\end{matrix}$ &  $\begin{matrix}93.0&97.1&96.2&\mathbf{98.1}\end{matrix}$ &  $\begin{matrix}99.4&99.8&99.7&\mathbf{99.8}\end{matrix}$ &  $\begin{matrix}46.4&72.8&71.5&\mathbf{83.2}\end{matrix}$ &  $\begin{matrix}0.0&0.0&6.0&6.0\end{matrix}$ \\
-	Gaussian       &  $\begin{matrix}74.3&6.1&\mathbf{0.0}&0.0\end{matrix}$ &  $\begin{matrix}93.3&97.0&99.3&\mathbf{99.6}\end{matrix}$ &  $\begin{matrix}96.2&98.3&99.5&\mathbf{99.7}\end{matrix}$ &  $\begin{matrix}85.2&91.2&\mathbf{99.1}&98.8\end{matrix}$ &  $\begin{matrix}0.0&0.0&4.0&4.0\end{matrix}$ \\
-	Uniform        &  $\begin{matrix}74.3&6.1&\mathbf{0.0}&0.0\end{matrix}$ &  $\begin{matrix}93.3&97.0&99.3&\mathbf{99.6}\end{matrix}$ &  $\begin{matrix}96.2&98.3&99.5&\mathbf{99.7}\end{matrix}$ &  $\begin{matrix}85.2&91.2&\mathbf{99.1}&98.8\end{matrix}$ &  $\begin{matrix}0.0&0.0&4.0&4.0\end{matrix}$ \\
-	\bottomrule
-\end{tabular}
-}
-\caption{DN-100-12, CIFAR-10, $A = 0.9481$, $T=1000$ (softmax logits softmax-perturb logits-perturb).}
-\label{tab:ood-dn-cifar}
+	\resizebox{\textwidth}{!}{%
+		\begingroup
+		\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
+		\begin{tabular}{llllll}
+			\toprule
+			{} &                                             $\mathit{FPR}_{R=0.95}/\%$ &                                                    $\mathit{AUROC}/\%$ &                                             $\mathit{AP}_\text{in}/\%$ &                                            $\mathit{AP}_\text{out}/\%$ &                                       $\epsilon/10^{-3}$ \\
+			\midrule
+			TinyImageNet-C &  $\hnc{51.8}\;\hnc{35.7}\;\hnc{\mathbf{32.0}}\;\hnc{34.0}\;\hnc{32.0}$ &  $\hnc{90.6}\;\hnc{93.1}\;\hnc{93.3}\;\hnc{92.3}\;\hnc{\mathbf{93.3}}$ &  $\hnc{92.5}\;\hnc{\mathbf{94.1}}\;\hnc{93.8}\;\hnc{92.2}\;\hnc{93.8}$ &  $\hnc{87.4}\;\hnc{91.7}\;\hnc{92.5}\;\hnc{91.8}\;\hnc{\mathbf{92.5}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{4.0}\;\hnc{0.0}\;\hnc{4.0}$ \\
+			TinyImageNet-R &  $\hnc{55.0}\;\hnc{43.2}\;\hnc{\mathbf{42.7}}\;\hnc{49.8}\;\hnc{42.7}$ &  $\hnc{89.4}\;\hnc{\mathbf{90.2}}\;\hnc{90.0}\;\hnc{85.1}\;\hnc{90.0}$ &  $\hnc{\mathbf{90.3}}\;\hnc{90.1}\;\hnc{89.6}\;\hnc{83.5}\;\hnc{89.6}$ &  $\hnc{86.0}\;\hnc{88.8}\;\hnc{\mathbf{88.9}}\;\hnc{85.2}\;\hnc{88.9}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{1.0}\;\hnc{0.0}\;\hnc{1.0}$ \\
+			LSUN-C         &  $\hnc{37.4}\;\hnc{\mathbf{17.2}}\;\hnc{17.2}\;\hnc{37.0}\;\hnc{17.2}$ &  $\hnc{94.3}\;\hnc{96.6}\;\hnc{96.6}\;\hnc{89.1}\;\hnc{\mathbf{96.6}}$ &  $\hnc{95.6}\;\hnc{97.0}\;\hnc{97.0}\;\hnc{87.6}\;\hnc{\mathbf{97.0}}$ &  $\hnc{91.5}\;\hnc{96.0}\;\hnc{96.0}\;\hnc{90.0}\;\hnc{\mathbf{96.0}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}$ \\
+			LSUN-R         &  $\hnc{47.3}\;\hnc{28.0}\;\hnc{22.3}\;\hnc{23.8}\;\hnc{\mathbf{22.3}}$ &  $\hnc{92.6}\;\hnc{94.6}\;\hnc{\mathbf{94.8}}\;\hnc{94.1}\;\hnc{94.8}$ &  $\hnc{94.2}\;\hnc{\mathbf{95.2}}\;\hnc{94.7}\;\hnc{93.8}\;\hnc{94.7}$ &  $\hnc{89.4}\;\hnc{93.5}\;\hnc{\mathbf{94.6}}\;\hnc{94.1}\;\hnc{94.6}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{4.0}\;\hnc{0.0}\;\hnc{4.0}$ \\
+			iSUN           &  $\hnc{49.0}\;\hnc{31.8}\;\hnc{\mathbf{25.8}}\;\hnc{26.5}\;\hnc{25.8}$ &  $\hnc{91.8}\;\hnc{93.9}\;\hnc{\mathbf{94.3}}\;\hnc{93.4}\;\hnc{94.3}$ &  $\hnc{94.0}\;\hnc{\mathbf{95.0}}\;\hnc{94.9}\;\hnc{93.7}\;\hnc{94.9}$ &  $\hnc{87.4}\;\hnc{91.9}\;\hnc{93.3}\;\hnc{92.8}\;\hnc{\mathbf{93.3}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{3.0}\;\hnc{0.0}\;\hnc{3.0}$ \\
+			Uniform        &  $\hnc{88.2}\;\hnc{71.8}\;\hnc{\mathbf{0.0}}\;\hnc{0.0}\;\hnc{0.0}$ &  $\hnc{87.4}\;\hnc{91.6}\;\hnc{98.7}\;\hnc{\mathbf{98.7}}\;\hnc{98.7}$ &  $\hnc{92.6}\;\hnc{95.0}\;\hnc{99.1}\;\hnc{\mathbf{99.1}}\;\hnc{99.1}$ &  $\hnc{75.1}\;\hnc{82.5}\;\hnc{97.8}\;\hnc{\mathbf{97.8}}\;\hnc{97.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{7.0}$ \\
+			Gaussian       &  $\hnc{88.2}\;\hnc{71.8}\;\hnc{\mathbf{0.0}}\;\hnc{0.0}\;\hnc{0.0}$ &  $\hnc{87.4}\;\hnc{91.6}\;\hnc{98.7}\;\hnc{\mathbf{98.7}}\;\hnc{98.7}$ &  $\hnc{92.6}\;\hnc{95.0}\;\hnc{99.1}\;\hnc{\mathbf{99.1}}\;\hnc{99.1}$ &  $\hnc{75.1}\;\hnc{82.5}\;\hnc{97.8}\;\hnc{\mathbf{97.8}}\;\hnc{97.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{7.0}$ \\
+			\bottomrule
+		\end{tabular}
+		\endgroup
+	}
+	\caption{(softmax ($T=0$), softmax ($T=1000$), softmax-perturb ($T=1000$), logits,  logits-perturb ($T=1000$))\\
+		WRN-28-10, CIFAR-10,  $A = 0.9571$, $T=1000$, .}
+	\label{tab:ood-wrn-cifar}
 \end{table}
 
+Eksperimenti su pokazali da klasifikacija maksimalnog logita s pomakom ulaza uz $T=1000$ daje skoro pa iste rezultate kao klasifikacija maksimalne vrijednosti softmaksa uz $T=1000$, tj. nije se vidjela razlika barem u prve $3$ decimale. Slijedi objašnjenje. Neka su $s_i=\vec s_\ind{i}$ logiti. Prema definiciji softmaksa,
+\begin{align}
+\softmax\del{\frac{1}{T}\vec s}_\ind{i} = \frac{\exp(s_i/T)}{\sum_j \exp(s_j/T)} \text{.}
+\end{align}
+Za dovoljno velik $T$ eksponencijalne funkcije se mogu linearno aproksimirati s velikom točnošću, pa 
+\begin{align}
+\softmax\del{\frac{1}{T}\vec s}_\ind{i}
+\approx \frac{1+s_i/T}{\sum_j (1+s_j/T)}
+= \frac{1+s_i/T}{C + \frac{1}{T}\sum_j s_j}
+\text{,}
+\end{align}
+gdje je $C$ broj klasa. U eksperimentima s mrežama naučenim na skupu CIFAR-10, kod DN-100-12 je zbroj logita, neovisno o skupu, skoro uvijek ima vrijednost iz $\intcc{0.001,0.004}$, a maksimalni logit iz intervala $\intcc{2,30}$, a kod WRN-28-10 je zbroj logita skoro uvijek ima vrijednost iz $\intcc{0,0.0004}$, a maksimalni logit iz $\intcc{2,20}$. Primjeri iz različitih skupova su za DN-100-12 prikazani u prostoru \textit{maksimalni~logit~--~zbroj~logita} na slici~\ref{fig:dn-100-12-maxlogits-sumlogits}. Zbrojevi logita podijeljeni s velikom temperaturom $T$ su zanemarivi u odnosu na $C$, pa softmax možemo aproksimirati ovako:
+\begin{align}
+\softmax\del{\frac{1}{T}\vec s}_\ind{i}
+\approx \frac{1+s_i/T}{C}
+= \frac{1}{C}+\frac{1}{TC}s_i
+\text{.}
+\end{align}
+Uz ovakvu aproksimaciju vidimo da se maksimalni izlaz softmaksa svodi na afinu transformaciju maksimalnog logita, pa se klasifikacija maksimalne vrijednosti softmaksa svodi na klasifikaciju maksimalnog logita.
 
-\begingroup
-\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
-\begin{tabular}{llllll}
-	\toprule
-	{} &                                 $\mathit{FPR}_{R=0.95}/\%$ &                                        $\mathit{AUROC}/\%$ &                                 $\mathit{AP}_\text{in}/\%$ &                                $\mathit{AP}_\text{out}/\%$ &                            $\epsilon/10^{-3}$ \\
-	\midrule
-	CIFAR-10       &  $\hnc{\mathbf{94.4}}\;\hnc{94.4}\;\hnc{94.4}\;\hnc{94.4}$ &  $\hnc{\mathbf{50.5}}\;\hnc{50.0}\;\hnc{50.5}\;\hnc{50.0}$ &  $\hnc{\mathbf{53.3}}\;\hnc{53.1}\;\hnc{53.3}\;\hnc{53.1}$ &  $\hnc{\mathbf{48.0}}\;\hnc{47.5}\;\hnc{48.0}\;\hnc{47.5}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}$ \\
-	Gaussian       &  $\hnc{92.2}\;\hnc{84.1}\;\hnc{6.7}\;\hnc{\mathbf{0.0}}$ &  $\hnc{86.9}\;\hnc{90.2}\;\hnc{97.1}\;\hnc{\mathbf{98.6}}$ &  $\hnc{92.4}\;\hnc{94.3}\;\hnc{98.3}\;\hnc{\mathbf{99.2}}$ &  $\hnc{73.6}\;\hnc{80.3}\;\hnc{94.7}\;\hnc{\mathbf{97.2}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{7.0}$ \\
-	LSUN-R         &  $\hnc{53.7}\;\hnc{40.7}\;\hnc{28.5}\;\hnc{\mathbf{28.1}}$ &  $\hnc{91.2}\;\hnc{\mathbf{93.1}}\;\hnc{92.3}\;\hnc{91.9}$ &  $\hnc{93.2}\;\hnc{\mathbf{93.8}}\;\hnc{92.6}\;\hnc{91.4}$ &  $\hnc{86.8}\;\hnc{91.6}\;\hnc{91.6}\;\hnc{\mathbf{92.0}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{9.0}\;\hnc{9.0}$ \\
-	TinyImageNet-C &  $\hnc{53.7}\;\hnc{44.1}\;\hnc{37.4}\;\hnc{\mathbf{33.7}}$ &  $\hnc{90.6}\;\hnc{92.7}\;\hnc{92.2}\;\hnc{\mathbf{92.8}}$ &  $\hnc{92.4}\;\hnc{\mathbf{93.8}}\;\hnc{92.9}\;\hnc{93.0}$ &  $\hnc{86.3}\;\hnc{90.9}\;\hnc{89.9}\;\hnc{\mathbf{91.6}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{5.0}\;\hnc{5.0}$ \\
-	TinyImageNet-R &  $\hnc{56.7}\;\hnc{53.0}\;\hnc{53.3}\;\hnc{\mathbf{43.7}}$ &  $\hnc{89.4}\;\hnc{89.5}\;\hnc{\mathbf{89.6}}\;\hnc{89.0}$ &  $\hnc{\mathbf{90.7}}\;\hnc{89.9}\;\hnc{90.6}\;\hnc{89.0}$ &  $\hnc{84.7}\;\hnc{87.7}\;\hnc{86.5}\;\hnc{\mathbf{87.8}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{2.0}$ \\
-	Uniform        &  $\hnc{92.2}\;\hnc{84.1}\;\hnc{6.7}\;\hnc{\mathbf{0.0}}$ &  $\hnc{86.9}\;\hnc{90.2}\;\hnc{97.1}\;\hnc{\mathbf{98.6}}$ &  $\hnc{92.4}\;\hnc{94.3}\;\hnc{98.3}\;\hnc{\mathbf{99.2}}$ &  $\hnc{73.6}\;\hnc{80.3}\;\hnc{94.7}\;\hnc{\mathbf{97.2}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{7.0}$ \\
-	iSUN           &  $\hnc{54.4}\;\hnc{38.5}\;\hnc{27.8}\;\hnc{\mathbf{26.7}}$ &  $\hnc{91.7}\;\hnc{93.8}\;\hnc{93.8}\;\hnc{\mathbf{94.1}}$ &  $\hnc{94.0}\;\hnc{\mathbf{94.8}}\;\hnc{94.5}\;\hnc{94.2}$ &  $\hnc{86.7}\;\hnc{92.1}\;\hnc{92.4}\;\hnc{\mathbf{93.6}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{6.0}\;\hnc{6.0}$ \\
-	\bottomrule
-\end{tabular}
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{dn-100-12-maxlogits-sumlogits}
+	\caption{Odnos maksimalnog logita i zbroja logita za različite skupove kod mreže DN-100-12. Svaka točka predstavlja jedan primjer iz podskupova s po $500$ primjera iz skupova korištenih za ispitivanje.}
+	\label{fig:dn-100-12-maxlogits-sumlogits}
+\end{figure}
 
-\endgroup
+
+\url{http://elbereth.zemris.fer.hr:8080/wiki_vision2/index.php?title=Uncertainty}
 
 
 
 \chapter{Zaključak}
 
+U ovom radu su opisani i eksperimentalno ispitani neki od nadziranih pristupa za procjenu nesigurnosti kod dubokih nadziranih modela. 
 
-Zaključak.
+Jedna skupina razmatranih pristupa se temelji na aproksimaciji bayesovskih neuronskih mreža kod kojih se provodi bayesovska procjena parametara. Oni omogućuju procjenu nesigurnosti i razlikovanje je li uzrok nesigurnosti višeznačnost podatka ili nesigurnost u parametre modela, ali i uz jako jednostavnu varijacijsku razdiobu kojom se aproksimira aposteriorna razdioba parametara zahtijevaju puno više računanja u odnosu na uobičajene mreže. \citet{Gal:2016:BCNNBAVI} su učenje mreže s \textit{dropoutom} interpretirali kao varijacijsko zaključivanje. Za ovaj rad je ispitan pristup za procjenjivanje i razlikovanje nesigurnosti pomoću \textit{Monte Carlo dropouta} i drugih ideja iz \citet{Kendall:2017:WUNBDLCV,Smith:2018:UMUAED}.
+
+Druga skupina razmatranih pristupa za procjenu nesigurnosti su pristupi za prepoznavanje primjera koji su izvan razdiobe skupa za učenje \citet{Guo:2017:CMNN,Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN} na temelju maksimalnog izlaza softmaksa ili logita kod unaprijed naučenih modela. Postupci opisani u \citet{Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN}, koji za klasifikaciju koriste maksimalni izlaz softmaksa, uspoređeni su s analognim postupcima koji umjesto maksimalnog izlaza softmaksa koriste maksimalni logit.
+
 
 \bibliography{literatura}
 \bibliographystyle{fer} 
