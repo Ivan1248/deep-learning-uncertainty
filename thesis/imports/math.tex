@@ -212,3 +212,10 @@
 
 % no vertical space stretching around display math
 \usepackage[nodisplayskipstretch]{setspace}
+
+\newenvironment{talign}
+{\let\displaystyle\textstyle\align}
+{\endalign}
+\newenvironment{talign*}
+{\let\displaystyle\textstyle\csname align*\endcsname}
+{\endalign}
