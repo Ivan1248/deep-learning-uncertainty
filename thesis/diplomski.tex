@@ -55,7 +55,7 @@ U poglavlju~\ref{chap:osnovni-pojmovi} su definirani i kratko objašnjeni neki o
 U poglavlju~\ref{chap:statisticko-zakljucivanje} su opisani neki od osnovnih pojmova u vezi statističkog zaključivanja, koje je jako bitno u strojnom učenju.
 U poglavlju~\ref{chap:nadzirano-strojno-ucenje} su opisani neki od osnovnih pojmova strojnog učenja, posebno u vezi nadziranog učenja.
 U poglavlju~\ref{chap:duboko-ucenje-i-konvolucijske-mreze} su neki od osnovnih pojmova dubokog učenja, posebno u vezi unaprijednih neuronskih mreža i konvolucijskih mreža.
-Poglavlje \ref{chap:procjenjivanje-nesigurnosti} se bavi glavnom temom ovog rada --- procjenjivanjem nesigurnosti kod dubokih nadziranih modela. U njemu je opisana podjela nesigurnosti, bayesovske neuronske mreže, mjere za izražavanje nesigurnosti i neki primjeri pristupa za procjenu nesigurnosti ili prepoznavanje nalazi li se podatak u razdiobi skupa za učenje. Neki od tih pristupa \citep{Kendall:2017:WUNBDLCV,Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN} su isprobani za ovaj rad. Rezultati eksperimenata su opisani u poglavlju~\ref{chap:eksperimenti}.
+Poglavlje \ref{chap:procjenjivanje-nesigurnosti} se bavi glavnom temom ovog rada --- procjenom nesigurnosti kod dubokih nadziranih modela. U njemu je opisana podjela nesigurnosti, bayesovske neuronske mreže, mjere za izražavanje nesigurnosti i neki primjeri pristupa za procjenu nesigurnosti ili prepoznavanje nalazi li se podatak u razdiobi skupa za učenje. Neki od tih pristupa \citep{Kendall:2017:WUNBDLCV,Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN} su isprobani za ovaj rad. Rezultati eksperimenata su opisani u poglavlju~\ref{chap:eksperimenti}.
 
 Rad je pisan u \LaTeX-u. Za slike u radu su korišteni TikZ, Matplotlib (i druge biblioteke u Pythonu) i Inkscapes. Za programsku potpouru korišten je programski jezik Python i biblioteke TensorFlow, NumPy, PyTorch, Scikit-image, Scikit-learn, Matplotlib, SciPy i druge. Izvorni kod za sve je u repozitoriju \url{https://github.com/Ivan1248/deep-learning-uncertainty}.
 
@@ -1963,7 +1963,7 @@ Za smanjivanje mapa značajki često se koriste i uobičajeni postupci interpola
 
 
 
-\chapter{Procjenjivanje nesigurnosti kod dubokih modela} \label{chap:procjenjivanje-nesigurnosti}
+\chapter{Porcjena nesigurnosti kod dubokih modela} \label{chap:procjenjivanje-nesigurnosti}
 
 Kod uobičajenih modela dubokog učenja ne možemo pouzdano procijeniti nesigurnost predikcija. Modeli za regresiju kao izlaz daju točkastu procjenu izlaza, a modeli za klasifikaciju daju vektor koji predstavlja razdiobu sigurnosti u klase, ali ta razdioba nije dobar pokazatelj stvarne nesigurnosti i neznanja.
 
@@ -2023,11 +2023,11 @@ Jedan poseban slučaj epistemičke nesigurnosti je nesigurnost u to \emphasize{p
 Problem prepoznavanja primjera koji su izvan razdiobe skupa za učenje prirodno rješavaju generativni probabilistički modeli, ali kod složenih visokodimenzionalnih podataka to postaje problem zbog prokletstva dimenzionalnosti i složenosti modeliranja i statističkog zaključivanja. Kod diskriminativnih modela je problem to što oni ne modeliraju razdiobu ulaznih primjera $\p(\rvec x)$, nego samo uvjetnu razdiobu izlaza uz dani ulaz $\p(\rvec y \mid\vec x)$.
 
 
-\section{Važnost i primjene procjenjivanja i razlikovanja nesigurnosti} \label{sec:vaznost-primjene-nesigurnosti}
+\section{Važnost i primjene procjene i razlikovanja nesigurnosti} \label{sec:vaznost-primjene-nesigurnosti}
 
 Sve se više upotrebljavaju složeni duboki modeli kod ozbiljnih primjena kao što su medicina i autonomna vozila, gdje treba osigurati pouzdanost i sposobnost prepoznavanja primjera o kojima model ne može donositi pouzdane zaključke. Trenutno najuspješniji modeli imaju problema s pokazivanjem prevelike sigurnosti u predikciji kod izvanrazdiobnih primjera i krivo klasificiranih primjera \cite{Nguyen:2015:DNNEFHCPUI,Guo:2017:CMNN,Hendrycks:2016:BDMOODE}, a mogu se i pronalaziti neprijateljski primjeri  \citep{Szegedy:2013:IPNN,Goodfellow:2014:EHAE,Moosavi:2016:UAP}, koji su opisani u pododjeljku~\ref{subsec:neprijateljski-primjeri}.
 
-Primjeri područja strojnog učenja u kojima je posebno važno procjenjivanje nesigunosti su aktivno učenje i podržano učenje. Aktivno učenje je oblik polunadziranog učenja gdje algoritam učenja bira primjere za koje zaključi da su potrebni za učenje. Kod podržanog učenja algoritam bira koja će stanja istraživati. Osim procjenjivanja mjere nesigurnosti, za efikasno učenje kod takvih algoritama je bitno i razlikovanje epsitemičke i aleatorne nesigurnosti \citep{Gal:2016:UDL}. Npr. agent kod podržanog učenja neće puno naučiti pretraživanjem stanja koja su sama po sebi nasumična (aleatorna), dok će pretraživanjem stanja o kojima nema puno znanja (epistemička nesigurnost) naučiti nešto novo. Dakle, uspješnim modeliranjem i razlikovanjem nesigurnosti može se poboljšati efikasnost takvih algoritama.
+Primjeri područja strojnog učenja u kojima je posebno važna procjena nesigunosti su aktivno učenje i podržano učenje. Aktivno učenje je oblik polunadziranog učenja gdje algoritam učenja bira primjere za koje zaključi da su potrebni za učenje. Kod podržanog učenja algoritam bira koja će stanja istraživati. Osim procjene mjere nesigurnosti, za efikasno učenje kod takvih algoritama bitno je i razlikovanje epsitemičke i aleatorne nesigurnosti \citep{Gal:2016:UDL}. Npr. agent kod podržanog učenja neće puno naučiti pretraživanjem stanja koja su sama po sebi nasumična (aleatorna), dok će pretraživanjem stanja o kojima nema puno znanja (epistemička nesigurnost) naučiti nešto novo. Dakle, uspješnim modeliranjem i razlikovanjem nesigurnosti može se poboljšati efikasnost takvih algoritama.
 
 
 \section{Bayesovske neuronske mreže}
@@ -2123,7 +2123,7 @@ Za procjenu ukupne varijance predikcije predlažu zbroj aleatorne varijance i o�
 \E_{\rvec\theta\mid\set D}\sigma(\vec x;\vec\theta) + \sum_i \D_{\rvec\theta\mid\set D}\del{h(\vec x;\vec\theta)_\ind{i}} \text{.}
 \end{align}
 
-Za procjenjivanje epistemičke nesigurnosti predikcije kod klasifikacije, \citet{Kendall:2017:WUNBDLCV} koriste entropiju očekivanja predikcije: $\H\del{\rvar y\mid\vec x,\set D}=\H\del{\E_{\rvec\theta\mid\set D}(\rvar y\mid\vec x,\vec\theta)}$. Razdiobe $(\rvar y\mid\vec x,\vec\theta)$ predstavlja izlaz softmaksa, tj. $h(\vec x;\vec\theta)_\ind{k}=(\rvar y=k\mid\vec x,\vec\theta)$. Za procjenu aleatorne nesigurnosti kod klasifikacije pretpostavljaju da logiti imaju Gaussovu razdiobu i predlažu da se za svaki logit procjenjuje varijanca. Neka je $g(\vec x)=g(\vec x;\vec\theta)$ funkcija koja daje očekivanje, a $\sigma(\vec x)=\sigma(\vec x;\vec\theta)$ funkcija koja daje vektor standardnih devijacija logita. Izlazna razdioba se računa ovako:
+Za procjenu epistemičke nesigurnosti predikcije kod klasifikacije \citet{Kendall:2017:WUNBDLCV} koriste entropiju očekivanja predikcije: $\H\del{\rvar y\mid\vec x,\set D}=\H\del{\E_{\rvec\theta\mid\set D}(\rvar y\mid\vec x,\vec\theta)}$. Razdiobe $(\rvar y\mid\vec x,\vec\theta)$ predstavlja izlaz softmaksa, tj. $h(\vec x;\vec\theta)_\ind{k}=(\rvar y=k\mid\vec x,\vec\theta)$. Za procjenu aleatorne nesigurnosti kod klasifikacije pretpostavljaju da logiti imaju Gaussovu razdiobu i predlažu da se za svaki logit procjenjuje varijanca. Neka je $g(\vec x)=g(\vec x;\vec\theta)$ funkcija koja daje očekivanje, a $\sigma(\vec x)=\sigma(\vec x;\vec\theta)$ funkcija koja daje vektor standardnih devijacija logita. Izlazna razdioba se računa ovako:
 \begin{align} \label{eq:kendall-hipoteza-klasifikacija}
 h(\vec x;\set D) = \E_{\vec s\sim\mathcal{N}(g(\vec x),\diag\del{\sigma(\vec x)^2})}\softmax(\vec s) \text{.}
 \end{align}
@@ -2166,7 +2166,7 @@ Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Car
 			\includegraphics[width=\linewidth]{camvid-kendall/segnet_13_output_1.png}
 			\\\vspace{1px}
 			\includegraphics[width=\linewidth]{camvid-kendall/segnet_2_output_1.png}
-			\caption{Samantičke segmentacija.}
+			\caption{Samantička segmentacija.}
 		\end{subfigure}
 		\begin{subfigure}[t]{0.22\linewidth}
 			\centering
@@ -2197,7 +2197,7 @@ Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Car
 \I(\rvar y,\rvec\theta\mid\vec x,\set D) 
 &= \H(\rvar y\mid\vec x,\set D) - \H\del{\del{\rvar y\mid\vec x,\set D}\mid\del{\rvec\theta\mid\vec x,\set D}} \\
 &= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x,\set D) \\
-&= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{,}
+&= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{,} \label{eq:mi-epistemicka-nesigurnost}
 \end{align}
 gdje je korištena definicija uvjetne entropije i pretpostavka $\rvar y\perp\rvec\theta\mid\rset D$, tj. znanje o podacima ne nosi nove informacije o oznaci ako znamo parametre. Veća međusobna informacija se može interpretirati tako da opažanje oznake $y$ za primjer $x$ povećava znanje o parametrima ako postoji nesigurnost u njih. Ako nema puno nesigurnosti u parametre, a ima u predikciju zbog velike aleatorne nesigurnosti, međusobna informacija će biti mala jer je naučeno da za primjer $x$ nije moguće puzdano predvidjeti oznaku. Dakle, međusobna informacije je mjera epistemičke nesigurnosti \citep{Smith:2018:UMUAED}. Dobro je još primijetiti da vrijedi $0<\I(\rvar y,\rvec\theta\mid\vec x,\set D)<\H(\rvar y\mid\vec x,\set D)$, kao što je i ilustrirano na slici~\ref{fig:entropije}. \citet{Smith:2018:UMUAED} objašnjavaju uspješnost korištenja varijance softmaksa kao mjere nesigurnosti u drugim radovima pokazujući da varijanca može dobiti kao aproksimacija međusobne informacije razvojem međusobne informacije u Taylorov red.
 
@@ -2243,7 +2243,8 @@ gdje $\lambda\in\R_{\geq 0}$. To je ista funkcija pogreške koja se inače koris
 Za zaključivanje prema izrazu~\eqref{eq:zakljucivanje-y-bnm-q} može se koristiti \textit{Monte Carlo} aproksimacija (\textit{MC-dropout}):
 \begin{align} \label{eq:zakljucivanje-y-bnm-q-mcd}
 \p(\vec y\mid \vec x, \set{D})
-\approx \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\p(\vec y\mid\vec x,\vec\theta) \approx \frac{1}{M}\sum_{i=1}^M \p\del{\vec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i}  \text{,}
+\approx \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\p(\vec y\mid\vec x,\vec\theta) 
+\approx \frac{1}{M}\sum_{i=1}^M \p\del{\vec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i}  \text{,}
 \end{align}
 gdje su $\tilde{\vec\theta}_i$ uzorci parametara iz varijacijske razdiobe $q_{\vec\phi}$.
 
@@ -2384,19 +2385,42 @@ Aproksimacija bayesovske neuronske mreže pomoću \textit{dropouta} \citep{Gal:2
 
 Kako bi razlikovali aleatornu i epistemičku nesigurnosti kod semantičke segmentacije, \citet{Kendall:2017:WUNBDLCV} aleatornu nesigurnost modeliraju pomoću predikcije varijanci logita svakog piksela kao što je opisano u pododjeljku~\ref{subsec:eksplicitno-modeliranje-aleatorne}, tj. gubitak za svaki piksel je negativni logaritam vjerojatnosti ciljne klase, ali vjerojatnosti se računaju kao očekivanje izlaza softmaksa po razdiobi logita, kao što je opisano jednadžbom~\eqref{eq:kendall-gubitak-klasifikacija}. Očekivanje se procjenjuje \textit{Monte Carlo} aprosksimacijom. Za semantičku segmentaciju se ukupan gubitak jedne slike računa kao srednji gubitak po pikselima. Kao mjeru epistemičke nesigurnosti, \citet{Kendall:2017:WUNBDLCV} za svaki piksel koriste entropiju njegove izlazne razdiobe dobivene uz \textit{MC-dropout}.
 
-Ovaj pristup nije do kraja ostvaren i umjesto njega je isproban \textit{MC-dropout} uz procjenu epistemičke nesigurnosti međusobnom informacijom kao što je opisano u pododjeljku~\ref{subsec:mi-epistemicka} \citep{Smith:2018:UMUAED}.
+Ovaj pristup nije do kraja ostvaren i umjesto njega je isproban \textit{MC-dropout} uz procjenu epistemičke nesigurnosti međusobnom informacijom kao što je opisano u pododjeljku~\ref{subsec:mi-epistemicka} \citep{Smith:2018:UMUAED}. 
+
+Neka $\overline{h}$ označava \textit{Monte Carlo} aproksimaciju hipoteze -- usrednjeni izlaz softmaksa:
+\begin{align}
+\overline{h}(\vec x) \coloneqq \frac{1}{M}\sum_{i=1}^M h\del{\vec x;\tilde{\vec\theta}_i} \text{,}
+\end{align}
+gdje je $M$ broj uzoraka za \textit{Monte Carlo} aproksimaciju, a $\tilde{\vec\theta}_i$ uzorci iz varijacijske razdiobe koja odgovara \textit{dropoutu}. Ukupna procjena nesigurnosti predikcije je entropija procjena entropije izlazne razdiobe:
+\begin{align} \label{eq:mc-dropout-entropija}
+\H(\rvar y\mid\vec x,\set D)\approx -\overline{h}(\vec x)^\tp\ln\del{\overline{h}(\vec x)} \text{.}
+\end{align}
+Aleatorna nesigurnost se procjenjuje kao uvjetna entropija izlazne razdiobe s obzirom na aposteriornu razdiobu parametara (drugi član u izrazu~\eqref{eq:mi-epistemicka-nesigurnost}), čemu odgovara aproksimacija prosječnom entropijom uzoraka izlazne razdiobe:
+\begin{align} \label{eq:mc-dropout-aleatorna-nesigurnost}
+\E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec x,\vec\theta)\approx \frac{1}{M}\sum_{i=1}^M \H\del{\rvec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i} \text{,}
+\end{align}
+gdje je 
+\begin{align}
+\H\del{\rvec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i} = -h\del{\vec x; \tilde{\vec\theta}_i}^\tp\ln\del{h\del{\vec x; \tilde{\vec\theta}_i}}
+\end{align}
+entropija razdiobe izlaza softmaksa $i$-tog uzorka, a epistemička nesigurnost se procjenjuje kao procjena međusobne informacija prema izrazu~\eqref{eq:mi-epistemicka-nesigurnost}, tj. kao razlika ukupne nesigurnosti u izrazu~\eqref{eq:mc-dropout-entropija} i aleatorne nesigurnosti u izrazu~\eqref{eq:mc-dropout-aleatorna-nesigurnost}:
+\begin{align} \label{eq:mc-dropout-epistemicka nesigurnost}
+\I(\rvar y,\rvec\theta\mid\vec x,\set D) 
+&= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \\
+&\approx -\overline{h}(\vec x)^\tp\ln\del{\overline{h}(\vec x)} - \frac{1}{M}\sum_{i=1}^M \H\del{\rvec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i} \text{.}
+\end{align}
 
 \subsubsection{Modeli i skupovi podataka}
 
 Za ovaj rad su ispitane neke od tih ideja na zadatku semantičke segmentacije. Umjesto mreže koju su koristili \citet{Kendall:2017:WUNBDLCV}, korištena je mreža LadderDensenet-121 \citep{Kreso:2017:LSDFSSLNI}, za koju je potrebno manje memorije. Korištena je vlastita implementacija te mreže koja ne postiže jednako dobru performansu kao originalna iako nije poznata razlika u inicijalizaciji i učenju. Ta mreža će se označavati s \textit{LadderDensenet-121-V}. Na validacijskom skupu Cityscapesa \citep{Cordts:2016:Cityscapes} LadderDensenet-121-V bez \textit{dropouta} postiže srednji omjer presjeka i unije $\mIoU=0.6721\pm0.007$ i točnost piksela $A=0.9459\pm0.0006$ (sredina i standardna devijacija skupa od $5$ mjerenja), što je značajno manje od $\mIoU=0.7282$ i $A=0.9506$ kod originalne implementacije. Na skupu za testiranje CamVida \citep{Brostow:2008:CamVid} ista mreža uz isti postupak učenja postiže $\mIoU=0.6774\pm0.0031$ i $A=0.9176\pm0.0025$. Pokazalo se da dodavanje \textit{dropouta} s vjerojatnošću isključivanja $1-p=0.2$, prema \citep{Huang:2016:DCCN}, loše utječe na performansu modela. Čini se da ni vjerojatnost isključivanja $0.1$ nema značajno pozitivan utjecaj na rezultat u odnosu na mrežu bez \textit{dropouta}, pogotovo za Cityscapes, koji je veći skup od CamVida. 
 
-Unatoč lošijoj performansi, za eksperimente je korištena mreža s vjerojatnošću isključivanja $0.2$ kako aposteriorna razdioba parametara ne bi imala premalu entropiju i različiti uzorci mreže s \textit{dropoutom} ne bi bili previše slični, što bi onemogućilo dobro procjenjivanje epistemičke nesigurnosti predikcije, koja proizlazi iz nesigurnosti u parametre. Kako nije bilo dovoljno memorije za učenje mreže s \textit{dropoutom} na slikama iz Cityscapesa umanjenim na dimenzije $1024\times448$, kao kod \citet{Kreso:2017:LSDFSSLNI}, pri učenju je korišteno nasumično izrezivanje dijelova slika dimenzija $448\times448$ i broj epoha je povećan s $30$ na $80$. Kod CamVida su slike dimenzija $480\times360$ i bilo je dovoljno memorije. Veličina mini-grupe za CamVid je bila $8$. 
+Unatoč lošijoj performansi, za eksperimente je, ako nije drugačije navedeno, korištena mreža s vjerojatnošću isključivanja $0.2$ kako aposteriorna razdioba parametara ne bi imala premalu entropiju i različiti uzorci mreže s \textit{dropoutom} ne bi bili previše slični, što bi onemogućilo dobro procjenjivanje epistemičke nesigurnosti predikcije, koja proizlazi iz nesigurnosti u parametre. Kako nije bilo dovoljno memorije za učenje mreže s \textit{dropoutom} na slikama iz Cityscapesa umanjenim na dimenzije $1024\times448$, kao kod \citet{Kreso:2017:LSDFSSLNI}, pri učenju je korišteno nasumično izrezivanje dijelova slika dimenzija $448\times448$ i broj epoha je povećan s $30$ na $80$. Kod CamVida su slike dimenzija $480\times360$ i bilo je dovoljno memorije. Veličina mini-grupe za CamVid je bila $8$. 
 
 Za \textit{MC-dropout} je, kao kod \cite{Kendall:2017:WUNBDLCV} za evaluaciju korišteno po $50$ uzoraka, tj. unaprijednih prolaza s \textit{dropoutom}, za procjenu izlazne razdiobe klasa za svaki primjer.
 
 \subsubsection{Rezultati}
 
-U tablici~\ref{tab:evaluacija-camvid} su prikazani rezultati evaluacije različitih modela učenih na CamVidu (osim podskupa za testiranje). Može se vidjeti da MC-dropout skoro uvijek ima pozitivan učinak na evaluaciju u odnosu na obični \textit{dropout}.
+U tablici~\ref{tab:evaluacija-camvid} su prikazani rezultati evaluacije različitih modela učenih na CamVidu (osim podskupa za testiranje). Može se vidjeti da MC-dropout ima pozitivan učinak na evaluaciju u odnosu na obični \textit{dropout}.
 
 \begin{table}
 	\centering\small
@@ -2420,6 +2444,27 @@ U tablici~\ref{tab:evaluacija-camvid} su prikazani rezultati evaluacije različi
 	\label{tab:evaluacija-camvid}
 \end{table}
 
+Napravljen je eksperiment s učenjem mreže na podskupovima CamVida veličine $\frac{1}{2}$, $\frac{1}{4}$ i $\frac{1}{8}$ cijelog skupa za usporedbu procjena aleatorne i epistemičke nesigurnosti. Smanjivanjem skupa za učenje epistemička nesigurnost trebala bi rasti, a trebao bi rasti i omjer epistemičke i aleatorne nesigurnosti. Rezultati u tablici~\ref{tab:epistemicka-aleatorna-ucenje-testiranje} pokazuju da raste procjena epistemičke nesigurnosti, ali omjer procjena epistemičke i aleatorne nesigurnosti ne raste. 
+
+\begin{table}
+	\centering\small
+	\begin{tabular}{llrrrr}
+		\toprule
+		\bfseries Učenje & \bfseries Testiranje & $\mIoU$ & \bfseries Aleatorna & \bfseries Epistemička & $\frac{\text{epistemička}}{\text{aleatorna}}$ \\
+		\midrule
+		CamVid-tv & CamVid-test & $0.663$ & $0.207$ & $0.025$ & $0.1206$ \\
+		CamVid-tv$/2$ & CamVid-test & $0.615$ & $0.272$ & $0.026$ & $0.0968$ \\
+		CamVid-tv$/4$ & CamVid-test & $0.546$ & $0.391$ & $0.029$ & $0.0732$ \\
+		CamVid-tv$/8$ & CamVid-test & $0.460$ & $0.538$ & $0.034$ & $0.0633$ \\
+		\midrule
+		CamVid-tv     & CamVid-val  & $0.827$ & $0.118$ & $0.011$ & $0.0931$ \\
+		\midrule
+		CamVid-tv    & WildDash-bench &      -  & $0.501$ & $0.075$ & $0.149$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{.}
+	\label{tab:epistemicka-aleatorna-ucenje-testiranje}
+\end{table}
 
 
 CamVid -- $1/4$, $1/2$ i cijeli skup za učenje -- usporedba aleatorne i epistemičke nesigurnosti kao u \cite{Smith:2018:UMUAED}
@@ -2514,18 +2559,18 @@ Rezultati glavnih eksperimenata su prikazani u tablicama~\ref{tab:ood-dn-cifar}~
 	\label{tab:ood-wrn-cifar}
 \end{table}
 
-Eksperimenti su pokazali da klasifikacija maksimalnog logita s pomakom ulaza uz $T=1000$ daje skoro pa iste rezultate kao klasifikacija maksimalne vrijednosti softmaksa uz $T=1000$, tj. nije se vidjela razlika barem u prve $3$ decimale. Slijedi objašnjenje. Neka su $s_i=\vec s_\ind{i}$ logiti. Prema definiciji softmaksa,
+Eksperimenti su pokazali da klasifikacija maksimalnog logita s pomakom ulaza uz $T=1000$ daje skoro pa iste rezultate kao klasifikacija maksimalne vrijednosti softmaksa uz $T=1000$, tj. nije se vidjela razlika barem u prve $3$ decimale. Slijedi pokušaj objašnjenja koji ipak ne objašnjava zašto se softmaks s $T=1000$ bez pomaka značajnije razlikuje od logita bez pomaka. Neka su $s_i=\vec s_\ind{i}$ logiti. Prema definiciji softmaksa,
 \begin{align}
 \softmax\del{\frac{1}{T}\vec s}_\ind{i} = \frac{\exp(s_i/T)}{\sum_j \exp(s_j/T)} \text{.}
 \end{align}
-Za dovoljno velik $T$ eksponencijalne funkcije se mogu linearno aproksimirati s velikom točnošću, pa 
+Za dovoljno velik $T$ eksponencijalne funkcije se mogu linearno aproksimirati s malom greškom, pa 
 \begin{align}
 \softmax\del{\frac{1}{T}\vec s}_\ind{i}
 \approx \frac{1+s_i/T}{\sum_j (1+s_j/T)}
 = \frac{1+s_i/T}{C + \frac{1}{T}\sum_j s_j}
 \text{,}
 \end{align}
-gdje je $C$ broj klasa. U eksperimentima s mrežama naučenim na skupu CIFAR-10, kod DN-100-12 je zbroj logita, neovisno o skupu, skoro uvijek ima vrijednost iz $\intcc{0.001,0.004}$, a maksimalni logit iz intervala $\intcc{2,30}$, a kod WRN-28-10 je zbroj logita skoro uvijek ima vrijednost iz $\intcc{0,0.0004}$, a maksimalni logit iz $\intcc{2,20}$. Primjeri iz različitih skupova su za DN-100-12 prikazani u prostoru \textit{maksimalni~logit~--~zbroj~logita} na slici~\ref{fig:dn-100-12-maxlogits-sumlogits}. Zbrojevi logita podijeljeni s velikom temperaturom $T$ su zanemarivi u odnosu na $C$, pa softmax možemo aproksimirati ovako:
+gdje je $C$ broj klasa. U eksperimentima s mrežama naučenim na skupu CIFAR-10, kod mreže DN-100-12 je zbroj logita skoro uvijek u intervalu $\intcc{0.001,0.004}$, a maksimalni logit u intervalu $\intcc{2,30}$, a kod mreže WRN-28-10 je zbroj logita skoro uvijek u intervalu $\intcc{0,0.0004}$, a maksimalni logit u intervalu $\intcc{2,20}$. Primjeri iz različitih skupova su za DN-100-12 prikazani u prostoru \textit{maksimalni~logit~--~zbroj~logita} na slici~\ref{fig:dn-100-12-maxlogits-sumlogits}. Zbrojevi logita podijeljeni s velikom temperaturom $T$ su zanemarivi u odnosu na $C$, pa softmax možemo aproksimirati ovako:
 \begin{align}
 \softmax\del{\frac{1}{T}\vec s}_\ind{i}
 \approx \frac{1+s_i/T}{C}
@@ -2543,6 +2588,47 @@ Uz ovakvu aproksimaciju vidimo da se maksimalni izlaz softmaksa svodi na afinu t
 
 
 \url{http://elbereth.zemris.fer.hr:8080/wiki_vision2/index.php?title=Uncertainty}
+
+\resizebox{\textwidth}{!}{%
+	\begingroup
+	\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
+	\begin{tabular}{lllll}
+		\toprule
+		{} &                                                                                 $\mathit{FPR}_{R=0.95}/\%$ &                                                                                        $\mathit{AUROC}/\%$ &                                                                        $\mathit{AP}_\text{in}/\%$ &                                                                                $\mathit{AP}_\text{out}/\%$ \\
+		\midrule
+		Gaussiov šum   &  $\hnc{74.1}\;\hnc{8.9}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{93.1}\;\hnc{96.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{96.1}\;\hnc{98.3}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{86.1}\;\hnc{91.1}\;\hnc{\mathbf{98.3}}\;\hnc{\mathbf{98.3}}\;\hnc{\mathbf{98.3}}$ \\
+		LSUN-C         &  $\hnc{57.3}\;\hnc{35.6}\;\hnc{\mathbf{34.8}}\;\hnc{41.0}\;\hnc{\mathbf{34.8}}$ &  $\hnc{90.8}\;\hnc{\mathbf{93.8}}\;\hnc{92.0}\;\hnc{92.4}\;\hnc{92.0}$ &  $\hnc{93.1}\;\hnc{\mathbf{94.8}}\;\hnc{92.0}\;\hnc{93.4}\;\hnc{92.0}$ &  $\hnc{87.3}\;\hnc{\mathbf{92.6}}\;\hnc{91.9}\;\hnc{91.1}\;\hnc{91.9}$ \\
+		LSUN-R         &  $\hnc{49.4}\;\hnc{19.3}\;\hnc{\mathbf{9.2}}\;\hnc{14.8}\;\hnc{\mathbf{9.3}}$ &  $\hnc{93.2}\;\hnc{96.9}\;\hnc{\mathbf{98.0}}\;\hnc{\mathbf{97.6}}\;\hnc{\mathbf{98.0}}$ &  $\hnc{95.2}\;\hnc{97.6}\;\hnc{\mathbf{98.4}}\;\hnc{\mathbf{98.0}}\;\hnc{\mathbf{98.4}}$ &  $\hnc{90.1}\;\hnc{96.2}\;\hnc{\mathbf{97.7}}\;\hnc{97.2}\;\hnc{\mathbf{97.7}}$ \\
+		TinyImageNet-C &  $\hnc{53.3}\;\hnc{26.0}\;\hnc{\mathbf{19.3}}\;\hnc{21.4}\;\hnc{\mathbf{19.3}}$ &  $\hnc{92.5}\;\hnc{96.0}\;\hnc{\mathbf{96.6}}\;\hnc{\mathbf{96.5}}\;\hnc{\mathbf{96.6}}$ &  $\hnc{94.7}\;\hnc{\mathbf{97.0}}\;\hnc{\mathbf{97.2}}\;\hnc{\mathbf{97.2}}\;\hnc{\mathbf{97.2}}$ &  $\hnc{89.0}\;\hnc{95.0}\;\hnc{\mathbf{96.2}}\;\hnc{\mathbf{95.8}}\;\hnc{\mathbf{96.2}}$ \\
+		TinyImageNet-R &  $\hnc{59.0}\;\hnc{40.1}\;\hnc{40.4}\;\hnc{\mathbf{39.1}}\;\hnc{40.4}$ &  $\hnc{90.4}\;\hnc{\mathbf{92.7}}\;\hnc{\mathbf{92.9}}\;\hnc{\mathbf{93.0}}\;\hnc{\mathbf{92.9}}$ &  $\hnc{92.8}\;\hnc{\mathbf{94.1}}\;\hnc{\mathbf{94.2}}\;\hnc{\mathbf{94.2}}\;\hnc{\mathbf{94.2}}$ &  $\hnc{86.3}\;\hnc{91.0}\;\hnc{\mathbf{91.5}}\;\hnc{\mathbf{91.8}}\;\hnc{\mathbf{91.5}}$ \\
+		Uniformni šum  &  $\hnc{74.1}\;\hnc{8.9}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{93.1}\;\hnc{96.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{96.1}\;\hnc{98.3}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{86.1}\;\hnc{91.1}\;\hnc{\mathbf{98.3}}\;\hnc{\mathbf{98.3}}\;\hnc{\mathbf{98.3}}$ \\
+		iSUN           &  $\hnc{51.4}\;\hnc{20.9}\;\hnc{\mathbf{12.6}}\;\hnc{15.2}\;\hnc{13.4}$ &  $\hnc{92.8}\;\hnc{96.4}\;\hnc{\mathbf{97.6}}\;\hnc{\mathbf{97.2}}\;\hnc{\mathbf{97.6}}$ &  $\hnc{94.9}\;\hnc{97.2}\;\hnc{\mathbf{98.0}}\;\hnc{\mathbf{97.7}}\;\hnc{\mathbf{98.0}}$ &  $\hnc{89.5}\;\hnc{95.7}\;\hnc{\mathbf{97.4}}\;\hnc{96.8}\;\hnc{\mathbf{97.4}}$ \\
+		\bottomrule
+	\end{tabular}
+	
+	\endgroup
+}
+
+\resizebox{\textwidth}{!}{%
+	\begingroup
+	\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
+	\begin{tabular}{llllll}
+		\toprule
+		{} &                                                                                 $\mathit{FPR}_{R=0.95}/\%$ &                                                                                        $\mathit{AUROC}/\%$ &                                                                        $\mathit{AP}_\text{in}/\%$ &                                                                                $\mathit{AP}_\text{out}/\%$ &                                       $\epsilon/10^{-3}$ \\
+		\midrule
+		LSUN-C         &  $\hnc{66.2}\;\hnc{45.3}\;\hnc{\mathbf{42.4}}\;\hnc{50.9}\;\hnc{\mathbf{42.4}}$ &  $\hnc{88.8}\;\hnc{\mathbf{92.3}}\;\hnc{89.1}\;\hnc{90.8}\;\hnc{89.1}$ &  $\hnc{92.2}\;\hnc{\mathbf{93.5}}\;\hnc{89.7}\;\hnc{92.3}\;\hnc{89.7}$ &  $\hnc{83.7}\;\hnc{\mathbf{90.4}}\;\hnc{89.1}\;\hnc{88.9}\;\hnc{89.1}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{9.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		LSUN-R         &  $\hnc{54.9}\;\hnc{26.4}\;\hnc{\mathbf{14.2}}\;\hnc{18.9}\;\hnc{\mathbf{14.2}}$ &  $\hnc{91.6}\;\hnc{96.1}\;\hnc{\mathbf{97.7}}\;\hnc{97.0}\;\hnc{\mathbf{97.7}}$ &  $\hnc{94.1}\;\hnc{97.0}\;\hnc{\mathbf{98.2}}\;\hnc{97.6}\;\hnc{\mathbf{98.2}}$ &  $\hnc{88.0}\;\hnc{95.3}\;\hnc{\mathbf{97.4}}\;\hnc{96.6}\;\hnc{\mathbf{97.4}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{9.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		TinyImageNet-C &  $\hnc{59.3}\;\hnc{31.1}\;\hnc{29.6}\;\hnc{\mathbf{25.8}}\;\hnc{29.6}$ &  $\hnc{90.5}\;\hnc{95.1}\;\hnc{\mathbf{95.6}}\;\hnc{\mathbf{96.0}}\;\hnc{\mathbf{95.6}}$ &  $\hnc{93.5}\;\hnc{\mathbf{96.3}}\;\hnc{\mathbf{96.6}}\;\hnc{\mathbf{96.8}}\;\hnc{\mathbf{96.6}}$ &  $\hnc{86.0}\;\hnc{93.8}\;\hnc{94.8}\;\hnc{\mathbf{95.4}}\;\hnc{94.8}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{1.0}\;\hnc{0.0}\;\hnc{1.0}$ \\
+		TinyImageNet-R &  $\hnc{64.7}\;\hnc{46.2}\;\hnc{46.2}\;\hnc{\mathbf{42.2}}\;\hnc{46.2}$ &  $\hnc{88.6}\;\hnc{91.3}\;\hnc{91.3}\;\hnc{\mathbf{92.0}}\;\hnc{91.3}$ &  $\hnc{91.8}\;\hnc{\mathbf{93.3}}\;\hnc{\mathbf{93.3}}\;\hnc{\mathbf{93.6}}\;\hnc{\mathbf{93.3}}$ &  $\hnc{83.8}\;\hnc{89.3}\;\hnc{89.3}\;\hnc{\mathbf{90.7}}\;\hnc{89.3}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}$ \\
+		iSUN           &  $\hnc{59.1}\;\hnc{27.1}\;\hnc{\mathbf{16.4}}\;\hnc{19.8}\;\hnc{\mathbf{16.4}}$ &  $\hnc{91.2}\;\hnc{95.8}\;\hnc{\mathbf{97.4}}\;\hnc{96.8}\;\hnc{\mathbf{97.4}}$ &  $\hnc{93.9}\;\hnc{96.7}\;\hnc{\mathbf{97.8}}\;\hnc{\mathbf{97.4}}\;\hnc{\mathbf{97.8}}$ &  $\hnc{87.1}\;\hnc{94.8}\;\hnc{\mathbf{97.2}}\;\hnc{96.4}\;\hnc{\mathbf{97.2}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{5.0}\;\hnc{0.0}\;\hnc{5.0}$ \\
+		Uniformni šum  &  $\hnc{80.4}\;\hnc{26.7}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{91.0}\;\hnc{95.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{94.8}\;\hnc{97.6}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{82.4}\;\hnc{89.2}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
+		Gaussiov šum   &  $\hnc{80.4}\;\hnc{26.7}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{91.0}\;\hnc{95.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{94.8}\;\hnc{97.6}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{82.4}\;\hnc{89.2}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
+
+		\bottomrule
+	\end{tabular}
+	
+	\endgroup
+}
 
 
 
