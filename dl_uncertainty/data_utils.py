@@ -92,6 +92,12 @@ def get_dataset(name, trainval_test=False):
         if trainval_test:
             ds_train = ds_train + ds_test
             ds_test = load('testing')
+    elif name == 'lsun':
+        assert trainval_test
+        ds_path = dirs.DATASETS + '/LSUN'
+        load = lambda s: datasets.LSUNDataset(ds_path, s)
+        ds_test = load('test')
+        ds_train = ds_test
     else:
         assert False, f"Invalid dataset name: {name}"
     return ds_train, ds_test

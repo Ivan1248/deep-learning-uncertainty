@@ -506,7 +506,30 @@ class ISUNDataset(Dataset):
     def __getitem__(self, idx):
         name = self._image_names[idx]
         img = _load_image(f"{self._images_dir}/{name}.jpg")
-        return img, None
+        return img, -1
+
+    def __len__(self):
+        return len(self._image_names)
+
+
+class LSUNDataset(Dataset):
+    # TODO: labels
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['test']
+        self._subset_dir = f'{data_dir}/{subset}'
+        self._image_names = [
+            os.path.relpath(x, start=self._subset_dir)
+            for x in glob.glob(f'{self._subset_dir}/**/*.webp', recursive=True)
+        ]
+        self.info = {
+            'id': 'LSUN',
+            'problem_id': None,
+        }
+        self.name = f"LSUN-{subset}"
+
+    def __getitem__(self, idx):
+        img = _load_image(f"{self._subset_dir}/{self._image_names[idx]}")
+        return img, -1
 
     def __len__(self):
         return len(self._image_names)
