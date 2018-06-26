@@ -2461,15 +2461,15 @@ Napravljen je eksperiment s učenjem mreže na podskupovima CamVida veličine $\
 		\midrule
 		CamVid-tv & CamVid-test & $0.663$ & $0.207$ & $0.025$ & $0.1206$ \\
 		$\text{CamVid-tv}/2$ & CamVid-test & $0.615$ & $0.272$ & $0.026$ & $0.0968$ \\
-		CamVid-tv$/4$ & CamVid-test & $0.546$ & $0.391$ & $0.029$ & $0.0732$ \\
-		CamVid-tv$/8$ & CamVid-test & $0.460$ & $0.538$ & $0.034$ & $0.0633$ \\
+		$\text{CamVid-tv}/4$ & CamVid-test & $0.546$ & $0.391$ & $0.029$ & $0.0732$ \\
+		$\text{CamVid-tv}/8$ & CamVid-test & $0.460$ & $0.538$ & $0.034$ & $0.0633$ \\
 		\midrule
 		CamVid-tv     & CamVid-val  & $0.827$ & $0.118$ & $0.011$ & $0.0931$ \\
 		\midrule
 		CamVid-tv    & WildDash-bench &      -  & $0.501$ & $0.075$ & $0.149$ \\
 		\bottomrule
 	\end{tabular}
-	\caption{Procjene aleatorne i epistemičke nesigurnosti za različite parove skupa za učenje i skupa za ispitivanje. CamVid-tv označava uniju skupa za učenje i skupa za validaciju, }
+	\caption{Procjene aleatorne i epistemičke nesigurnosti za različite parove skupa za učenje i skupa za ispitivanje. CamVid-tv označava uniju skupa za učenje i skupa za validaciju, $\text{CamVid-tv}/n$ da se koristi $\frac{1}{n}$ od svih primjera skupa CamVid-tv, CamVid-val skup za validaciju koji je podskup skupa CamVid-tv, CamVid-test skup za testiranje, WildDash skup na kojemu bi se}
 	\label{tab:epistemicka-aleatorna-ucenje-testiranje}
 \end{table}
 
@@ -2511,10 +2511,10 @@ Na temelju rezultata u \cite{Liang:2017:PDOODENN}, koji pokazuju da su veće tem
 Rezultati glavnih eksperimenata su prikazani u tablicama~\ref{tab:ood-dn-cifar}~i~\ref{tab:ood-wrn-cifar}. Za svaku evaluacijsku mjeru, $5$ stupaca redom predstavlja klasifikaciju maksimalne vrijednosti:
 \begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
 \item softmaksa uz $T=1$
-\item softmaksa uz $T=1000$ (ili logita s pomakom ulaza uz $T\gg 1$)
+\item softmaksa uz $T=1000$ %(ili logita s pomakom ulaza uz $T\gg 1$)
 \item softmaksa uz $T=1000$ i pomak ulaza
 \item logita (uz bilo koji $T$)
-\item logita uz pomak ulaza za $T=1$.
+\item logita uz pomak ulaza za $T=1000$.
 \end{enumerate}
 
 \begin{table} \centering
