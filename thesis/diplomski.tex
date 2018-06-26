@@ -2199,7 +2199,14 @@ Za procjenu ovog i drugih očekivanja (i varijanci) se koristi \textit{Monte Car
 &= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x,\set D) \\
 &= \H(\rvar y\mid\vec x,\set D) - \E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{,} \label{eq:mi-epistemicka-nesigurnost}
 \end{align}
-gdje je korištena definicija uvjetne entropije i pretpostavka $\rvar y\perp\rvec\theta\mid\rset D$, tj. znanje o podacima ne nosi nove informacije o oznaci ako znamo parametre. Veća međusobna informacija se može interpretirati tako da opažanje oznake $y$ za primjer $x$ povećava znanje o parametrima ako postoji nesigurnost u njih. Ako nema puno nesigurnosti u parametre, a ima u predikciju zbog velike aleatorne nesigurnosti, međusobna informacija će biti mala jer je naučeno da za primjer $x$ nije moguće puzdano predvidjeti oznaku. Dakle, međusobna informacije je mjera epistemičke nesigurnosti \citep{Smith:2018:UMUAED}. Dobro je još primijetiti da vrijedi $0<\I(\rvar y,\rvec\theta\mid\vec x,\set D)<\H(\rvar y\mid\vec x,\set D)$, kao što je i ilustrirano na slici~\ref{fig:entropije}. \citet{Smith:2018:UMUAED} objašnjavaju uspješnost korištenja varijance softmaksa kao mjere nesigurnosti u drugim radovima pokazujući da varijanca može dobiti kao aproksimacija međusobne informacije razvojem međusobne informacije u Taylorov red.
+gdje je korištena definicija uvjetne entropije i pretpostavka $\rvar y\perp\rvec\theta\mid\rset D$, tj. znanje o podacima ne nosi nove informacije o oznaci ako znamo parametre. Međusobna informacija se može interpretirati kao količina znanja koja se dobije o parametrima kada se opaža oznaka $y$ za primjer $\vec x$. Ako nema epistemičke nesigurnosti, tj. nesigurnosti u parametre, izlazne razdiobe $\p(\rvec y\mid\vec x,\vec\theta)$ će biti jednake. Desni član u izrazu~\eqref{eq:mi-epistemicka-nesigurnost} će biti jednak lijevom i međusobna informacija će biti $0$. Ako nema aleatorne nesigurnost, izlazna razdioba će za svaki parametar $\vec\theta$ iz aposteriorne razdiobe parametara za neki $y$ imati vjerojatnost $1$, tj. entropiju će im biti $0$. Desni član u izrazu~\eqref{eq:mi-epistemicka-nesigurnost} će onda biti $0$, a lijevi može biti veći od $0$ jer je on entropija prosječne hipoteze za ulaz $\vec x$, predikcije različitih parametara iz aposteriorne razdiobe mogu se razlikovati.
+
+Kao što je i ilustrirano na slici~\ref{fig:entropije}, vrijedi $0\leq\I(\rvar y,\rvec\theta\mid\vec x,\set D)\leq\H(\rvar y\mid\vec x,\set D)$. Oduzimanjem međusobne informacije od entropije marginalizirane izlazne razdiobe možemo dobiti mjeru aleatorne nesigurnosti:
+\begin{align}
+\E_{\rvec\theta\mid\set D} \H(\rvar y\mid\vec\theta,\vec x) \text{.} \label{eq:mi-aleatorna-nesigurnost}
+\end{align}
+
+\citet{Smith:2018:UMUAED} objašnjavaju uspješnost korištenja varijance softmaksa kao mjere epsitemičke nesigurnosti u drugim radovima pokazujući da se ona može dobiti kao aproksimacija međusobne informacije razvojem međusobne informacije u Taylorov red.
 
 \citet{Smith:2018:UMUAED} su koristili aproksimaciju bayesovske neuronske mreže pomoću dropouta, što je opisano u pododjeljku~\ref{subsec:bnm-dropout}, i koristili su uzorkovanje, tj. \textit{Monte Carlo} aproksimaciju za procjenu izlazne razdiobe i mjera nesigurnosti.
 
@@ -2453,7 +2460,7 @@ Napravljen je eksperiment s učenjem mreže na podskupovima CamVida veličine $\
 		\bfseries Učenje & \bfseries Testiranje & $\mIoU$ & \bfseries Aleatorna & \bfseries Epistemička & $\frac{\text{epistemička}}{\text{aleatorna}}$ \\
 		\midrule
 		CamVid-tv & CamVid-test & $0.663$ & $0.207$ & $0.025$ & $0.1206$ \\
-		CamVid-tv$/2$ & CamVid-test & $0.615$ & $0.272$ & $0.026$ & $0.0968$ \\
+		$\text{CamVid-tv}/2$ & CamVid-test & $0.615$ & $0.272$ & $0.026$ & $0.0968$ \\
 		CamVid-tv$/4$ & CamVid-test & $0.546$ & $0.391$ & $0.029$ & $0.0732$ \\
 		CamVid-tv$/8$ & CamVid-test & $0.460$ & $0.538$ & $0.034$ & $0.0633$ \\
 		\midrule
@@ -2462,7 +2469,7 @@ Napravljen je eksperiment s učenjem mreže na podskupovima CamVida veličine $\
 		CamVid-tv    & WildDash-bench &      -  & $0.501$ & $0.075$ & $0.149$ \\
 		\bottomrule
 	\end{tabular}
-	\caption{.}
+	\caption{Procjene aleatorne i epistemičke nesigurnosti za različite parove skupa za učenje i skupa za ispitivanje. CamVid-tv označava uniju skupa za učenje i skupa za validaciju, }
 	\label{tab:epistemicka-aleatorna-ucenje-testiranje}
 \end{table}
 
@@ -2481,7 +2488,7 @@ Isprobani su postupci koji su opisani u odjeljku~\ref{subsec:pristupi-ood-softma
 
 \subsubsection{Modeli}
 
-Za ispitivanje su korištene rezidualna mreža WRN-28-10 \citep{Zagoruyko:2016:WRN} i mreža DenseNetBC \citep{Huang:2016:DCCN} s dubinom $L=100$ i faktorom rasta (engl. \textit{growth rate}) $k=12$, koja će biti označavana s \textit{DN-100-12}. Ni kod jedne mreže se ne koristi \textit{dropout}. Korištene su vlastite implementacije tih mreža koje se ne bi trebale previše razlikovati od originalnih, tj. trebalo bi biti sve isto kao što je opisano u \citet{Zagoruyko:2016:WRN,Huang:2016:DCCN}. I jedna i druga ipak postižu malo manju točnost od originalnih mreža na skupu za testiranje skupa CIFAR-10 \citep{Krizhevsky:2009:LMLFTI}. Od mreža korištenih za ispitivanje, WRN-28-10 ima točnost oko $0.957$, a DN-100-12 oko $0.948$.
+Za ispitivanje su korištene rezidualna mreža WRN-28-10 \citep{Zagoruyko:2016:WRN} i mreža DenseNetBC \citep{Huang:2016:DCCN} s dubinom $L=100$ i faktorom rasta (engl. \textit{growth rate}) $k=12$, koja će biti označavana s \textit{DN-100-12}. Ni kod jedne mreže se ne koristi \textit{dropout}. Korištene su vlastite implementacije tih mreža koje se ne bi trebale previše razlikovati od originalnih, tj. trebalo bi biti sve isto kao što je opisano u \citet{Zagoruyko:2016:WRN,Huang:2016:DCCN}. I jedna i druga ipak postižu malo manju točnost od originalnih mreža na skupu za testiranje skupa CIFAR-10 \citep{Krizhevsky:2009:LMLFTI}. Od modela korištenih za ispitivanje, WRN-28-10 ima točnost oko $0.957$, a DN-100-12 oko $0.948$.
 
 \subsubsection{Izvanrazdiobni skupovi}
 
@@ -2624,6 +2631,29 @@ Uz ovakvu aproksimaciju vidimo da se maksimalni izlaz softmaksa svodi na afinu t
 		Uniformni šum  &  $\hnc{80.4}\;\hnc{26.7}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{91.0}\;\hnc{95.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{94.8}\;\hnc{97.6}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{82.4}\;\hnc{89.2}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
 		Gaussiov šum   &  $\hnc{80.4}\;\hnc{26.7}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{91.0}\;\hnc{95.9}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}\;\hnc{\mathbf{99.0}}$ &  $\hnc{94.8}\;\hnc{97.6}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}\;\hnc{\mathbf{99.4}}$ &  $\hnc{82.4}\;\hnc{89.2}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}\;\hnc{\mathbf{98.5}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{2.0}$ \\
 
+		\bottomrule
+	\end{tabular}
+	
+	\endgroup
+}
+
+
+\resizebox{\textwidth}{!}{%
+	\begingroup
+	\newcommand\hnc[1]{\phantom{\mathbf{00.0}}\mathllap{#1}}
+	\begin{tabular}{llllll}
+		\toprule
+		{T=1 za logite DenseNet} &                                                                                 $\mathit{FPR}_{R=0.95}/\%$ &
+		$\mathit{AUROC}/\%$ &                                                               $\mathit{AP}_\text{in}/\%$ &
+		$\mathit{AP}_\text{out}/\%$ &                                       $\epsilon/10^{-3}$ \\
+		\midrule
+		LSUN-C         &  $\hnc{55.7}\;\hnc{\mathbf{34.3}}\;\hnc{\mathbf{34.3}}\;\hnc{40.1}\;\hnc{37.0}$ &  $\hnc{91.6}\;\hnc{\mathbf{94.3}}\;\hnc{\mathbf{94.3}}\;\hnc{92.8}\;\hnc{90.4}$ &  $\hnc{93.9}\;\hnc{\mathbf{95.4}}\;\hnc{\mathbf{95.4}}\;\hnc{94.1}\;\hnc{89.3}$ &  $\hnc{87.6}\;\hnc{\mathbf{92.6}}\;\hnc{\mathbf{92.6}}\;\hnc{91.0}\;\hnc{90.4}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		LSUN-R         &  $\hnc{48.7}\;\hnc{18.9}\;\hnc{\mathbf{12.1}}\;\hnc{15.0}\;\hnc{13.6}$ &  $\hnc{93.1}\;\hnc{96.8}\;\hnc{\mathbf{97.7}}\;\hnc{97.4}\;\hnc{97.4}$ &  $\hnc{95.1}\;\hnc{97.5}\;\hnc{\mathbf{98.1}}\;\hnc{\mathbf{97.9}}\;\hnc{97.7}$ &  $\hnc{89.8}\;\hnc{95.9}\;\hnc{\mathbf{97.4}}\;\hnc{96.8}\;\hnc{96.9}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		TinyImageNet-C &  $\hnc{51.8}\;\hnc{23.6}\;\hnc{\mathbf{18.3}}\;\hnc{19.9}\;\hnc{20.8}$ &  $\hnc{92.6}\;\hnc{96.1}\;\hnc{\mathbf{96.2}}\;\hnc{\mathbf{96.4}}\;\hnc{95.4}$ &  $\hnc{94.8}\;\hnc{\mathbf{96.9}}\;\hnc{96.5}\;\hnc{\mathbf{97.1}}\;\hnc{95.4}$ &  $\hnc{89.0}\;\hnc{94.9}\;\hnc{\mathbf{95.8}}\;\hnc{\mathbf{95.6}}\;\hnc{95.1}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		TinyImageNet-R &  $\hnc{58.5}\;\hnc{39.5}\;\hnc{\mathbf{36.5}}\;\hnc{37.0}\;\hnc{37.2}$ &  $\hnc{90.3}\;\hnc{\mathbf{92.4}}\;\hnc{92.3}\;\hnc{\mathbf{92.7}}\;\hnc{91.9}$ &  $\hnc{92.6}\;\hnc{\mathbf{93.6}}\;\hnc{92.9}\;\hnc{\mathbf{93.6}}\;\hnc{92.2}$ &  $\hnc{86.2}\;\hnc{90.6}\;\hnc{\mathbf{91.3}}\;\hnc{\mathbf{91.4}}\;\hnc{91.0}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{6.0}\;\hnc{0.0}\;\hnc{6.0}$ \\
+		iSUN           &  $\hnc{51.1}\;\hnc{20.5}\;\hnc{\mathbf{12.7}}\;\hnc{15.5}\;\hnc{14.1}$ &  $\hnc{92.9}\;\hnc{96.6}\;\hnc{\mathbf{97.6}}\;\hnc{97.3}\;\hnc{97.2}$ &  $\hnc{95.4}\;\hnc{97.7}\;\hnc{\mathbf{98.2}}\;\hnc{\mathbf{98.0}}\;\hnc{97.8}$ &  $\hnc{88.3}\;\hnc{95.2}\;\hnc{\mathbf{97.0}}\;\hnc{96.3}\;\hnc{96.5}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{7.0}\;\hnc{0.0}\;\hnc{9.0}$ \\
+		Uniformni šum  &  $\hnc{74.3}\;\hnc{6.1}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{93.3}\;\hnc{97.0}\;\hnc{\mathbf{98.9}}\;\hnc{\mathbf{98.9}}\;\hnc{\mathbf{99.1}}$ &  $\hnc{96.2}\;\hnc{98.3}\;\hnc{\mathbf{99.3}}\;\hnc{\mathbf{99.3}}\;\hnc{\mathbf{99.5}}$ &  $\hnc{85.2}\;\hnc{91.2}\;\hnc{96.8}\;\hnc{96.8}\;\hnc{\mathbf{97.6}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{3.0}$ \\
+		Gaussiov šum   &  $\hnc{74.3}\;\hnc{6.1}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}\;\hnc{\mathbf{0.0}}$ &  $\hnc{93.3}\;\hnc{97.0}\;\hnc{\mathbf{98.9}}\;\hnc{\mathbf{98.9}}\;\hnc{\mathbf{99.1}}$ &  $\hnc{96.2}\;\hnc{98.3}\;\hnc{\mathbf{99.3}}\;\hnc{\mathbf{99.3}}\;\hnc{\mathbf{99.5}}$ &  $\hnc{85.2}\;\hnc{91.2}\;\hnc{96.8}\;\hnc{96.8}\;\hnc{\mathbf{97.6}}$ &  $\hnc{0.0}\;\hnc{0.0}\;\hnc{2.0}\;\hnc{0.0}\;\hnc{3.0}$ \\
 		\bottomrule
 	\end{tabular}
 	
