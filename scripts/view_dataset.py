@@ -26,17 +26,20 @@ if args.ds == 'wilddash':
     datasets = data_utils.get_cached_dataset_with_normalized_inputs(args.ds)
     datasets = dict(zip(names, datasets))
     ds = datasets[args.part]
+elif args.part.startswith('test'):
+    ds = data_utils.get_cached_dataset_with_normalized_inputs(
+        args.ds, trainval_test=True)[1]
 else:
     ds_train, ds_val = data_utils.get_cached_dataset_with_normalized_inputs(
         args.ds, trainval_test=False)
-    ds_trainval, ds_test = data_utils.get_cached_dataset_with_normalized_inputs(
-        args.ds, trainval_test=True)
     ds = {
         'train': ds_train,
         'val': ds_val,
         'trainval': ds_train + ds_val,
-        'test': ds_test
     }[args.part]
+
+if 'class_count' not in ds.info:
+    ds.info['class_count'] = 2
 
 if args.augment:
     ds = ds.map(data_utils.get_augmentation_func(ds))

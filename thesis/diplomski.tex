@@ -12,7 +12,7 @@
 \input{imports/glossary}
 \usepackage[toc]{appendix}
 \usepackage{pdfpages}
-
+\usepackage{makecell}
 
 \begin{document}
 
@@ -641,11 +641,11 @@ Na slici~\ref{fig:bm-regresija} prikazan je primjer na kojem se koriste još nek
 \end{figure}
 
 Općenitije, o uvjetnoj nezavisnosti podskupova varijabli govori svojstvo \emphasize{d-separacije}. Kažemo da je staza (podgraf sa strukturom lanca) $P$ grafa $G$ \emphasize{d-odvojena} skupom čvorova $\set E$ akko $P$ sadrži barem jedno od sljedećeg \citep{Murphy:2012:MLPP}:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item lanac $\rvar a\rightarrow\rvar b\rightarrow\rvar c$, gdje $\rvar b\in E$
 	\item račvanje $\rvar a\leftarrow\rvar b\rightarrow\rvar c$, gdje $\rvar b\in E$
 	\item sraz $\rvar a\rightarrow\rvar b\leftarrow\rvar c$, gdje $\forall \rvar b'\in\cbr{\rvar b}\cup\succ_G(\rvar b), \rvar b'\notin E$.
-\end{enumerate}
+\end{solidenumerate}
 Kažemo da skup čvorova $\set E$ d-odvaja čvorove $\rvar x$ i $\rvar y$ akko su sve staze između njih d-odvojene. Vrijedi $\rvar x\perp\rvar y \mid \set E$ akko skup čvorova $\set E$ d-odvaja čvorove $\rvar x$ i $\rvar y$. To se može poopćiti na skupove čvorova. Skup čvorova opažanjem kojega neki čvor postaje neovisan o ostatku grafa naziva se \emphasize{Markovljev pokrivač} (engl. \textit{Markov blanket}). Markovljev pokrivač čvora $\rvar x$ je
 \begin{align}
 \pa_G(\rvar x)\cup\ch_G(\rvar x)\cup\bigcup_{\rvar y\in\ch_G(\rvar x)}\pa_G(\rvar y)
@@ -897,17 +897,17 @@ Modeli se još mogu podijeliti na \emphasize{parametarske} i \emphasize{neparame
 \section{Induktivna pristranost}
 
 Uz zadani skup hipoteza koji dopušta model, \emphasize{algoritam strojnog učenja} traži parametre koji definiraju jednu hipotezu. Učenje hipoteze je loše definiran (engl. \textit{ill-posed}) problem jer skup podataka $\set{D}$ nije dovoljan za jednoznačan odabir hipoteze. Osim dobrog opisivanja podataka za učenje, naučena hipoteza mora dobro generalizirati. Kako bi učenje i generalizacija bili mogući, potreban je skup pretpostavki koji se naziva \emphasize{induktivna pristranost}. Razlikujemo dvije vrste induktivne pristranosti \citep{Snajder:2014:SU}:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{pristranost ograničavanjem} ili \emphasize{pristranost jezika} --- ograničavanje skupa hipoteza koje se mogu prikazati modelom
 	\item \emphasize{pristranost preferencijom} ili \emphasize{pristranost pretraživanja} --- dodjeljivanje različitih prednosti različitim hipotezama.
-\end{enumerate}
+\end{solidenumerate}
 Većina algoritama strojnog učenja kombinira obje vrste induktivne pristranosti. 
 
 
 \section{Komponente algoritma strojnog učenja}
 
 Prema \citet{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo razlikovati $3$ osnovne komponente, od kojih prva predstavlja pristranost ograničavanjem, a druge dvije obično pristranost preferencijom:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{Model} ili prostor hipoteza. Model $\set H$ je skup funkcija $h$  parametriziranih parametrima $\vec\theta$: $\set H=\cbr{h(\vec x;\vec{\theta})}_{\vec{\theta}}$.
 	\item \emphasize{Funkcija pogreške} ili ciljna funkcija. Funkcija pogreške $E(\vec{\theta,\set D})$ na temelju parametara modela (hipoteze) i skupa podataka izračunava broj koji izražava procjenu dobrote hipoteze. Obično pretpostavljamo da su primjeri iz skupa za učenje nezavisni i definiramo \emphasize{funkciju gubitka} $\funcdef{L}{\set Y\times\set Y}{\R}$, kojoj je prvi parametar predikcija hipoteze, a drugi ciljna oznaka koja odgovara ulaznom primjeru. Funkciju pogreške možemo definirati kao prosječni gubitak na skupu za učenje:
 	\begin{align}
@@ -919,7 +919,7 @@ Prema \citet{Snajder:2014:SU}, kod većine algoritama strojnog učenja možemo r
 	\vec\theta^* = \argmin_{\vec{\theta}} E(\vec{\theta,\set D}) \text{.}
 	\end{align}
 	Kod nekih jednostavnijih modela minimum možemo odrediti analitički. Inače moramo koristiti neki iterativni optimizacijski postupak. Kod nekih složenijih modela, kao što su neuronske mreže, funkcija pogreške nije unimodalna i vjerojatnost pronalaska globalnog optimuma je zanemariva, ali ipak se mogu pronaći dobra rješenja.
-\end{enumerate}
+\end{solidenumerate}
 
 U literaturi riječ \textit{model} često ima šire značenje. Uz skup hipoteza obično obuhvaća i induktivnu pristranost ili dio nje. Model u tom smislu bi se formalno mogao definirati kao par $(\set H, B)$, gdje je $\set H$ skup mogućih hipoteza, a $B$ induktivna pristranost koja hipotezama dodjeljuje različite važnosti. Npr. za regresiju $\set H$ može biti skup polinoma stupnja $4$, a $B$ pretpostavka da primjeri imaju razdiobu $\p(\rvar y\mid x)=\mathcal{N}(h(x),1)$, gdje je $h$ nepoznata hipoteza. Ovdje će se u nastavku koristiti takvo značenje riječi \textit{model}, a riječ \textit{prostor hipoteza} će se koristiti sa značenjem modela u užem smislu.
 
@@ -1081,7 +1081,7 @@ h(\vec x) = f(\vec w^\tp\phi(\vec x)) \text{.}
 U odnosu na linearne modele, oni još imaju \emphasize{prijenosnu} (\emphasize{aktivacijsku}) funkciju $\funcdef{f}{\R}{\R}$. Ako je $f$ nelinearna, model je nelinearan u parametrima, ali granica klasifikacijskog modela je i dalje hiperravnina.
 
 Slijedi pregled nekih linearnih modela prema \citet{Snajder:2017:SULR2}:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 \item \emphasize{Linearna regresija}:
 \begin{align*}
 h(\vec x;\vec w) &= \vec w^\tp\phi(\vec x), \\
@@ -1107,7 +1107,7 @@ L(y, h(\vec x)) &= -\sum_k \enbbracket{y=k}\ln h(\vec x)^\enbbracket{y=k}, \\
 \nabla_{\vec W}L(y, h(\vec x)) &= \phi(\vec x)^\tp \del{h(\vec x)-\cvec e_y} \text{,}
 \end{align*}
 gdje $y\in\cbr{1\bidot C}$, $\softmax(\vec s)\coloneqq\frac{1}{\cvec 1^\tp\exp(\vec s)}\exp(\vec s)$, $h(\vec x)=\sbr{h_k(\vec x)}_{k=1\bidot C}^\tp$, $\funcdef{h_i}{\R^n}{\R}$, a $\cvec e_k$ označava jednojedinični vektor (vektor kanonske baze) s elementima $\cvec {e_k}_\ind{i}\coloneqq\enbbracket{i=k}$.
-\end{enumerate}
+\end{solidenumerate}
 Funkcije gubitka su definirane kao negativni logaritam izglednosti, $L(y, h(\vec x))=-\ln\P(y\mid\vec x,\vec w)$, i konveksne su. Optimalne težine linearne regresije mogu se analitički izračunati, logistička regresija i višeklasna logistička regresija se obično uče optimizacijskim postupcima temeljenim na gradijentu.
 
 Razdiobe $\P(\rvec y\mid\vec x,\vec w)$ poopćenih linearnih modela spadaju u \emphasize{eksponencijalnu familiju razdioba}. Može se pokazati da je to jedina familija razdioba za koje postoje konjugatne apriorne razdiobe, što pojednostavljuje računanje aposteriorne razdiobe \citep{Murphy:2012:MLPP}. Opći oblik ekponencijalne familije i više o njenim svojstvima i svojstvima poopćenih linearnih modela može se naći u \citet{Murphy:2012:MLPP}.
@@ -1370,11 +1370,11 @@ i iteracija (prema jednadžbi~\eqref{eq:gs}) ima oblik
 gdje je $e$ broj epohe, a $i+1$ broj trenutne iteracije unutar epohe.
 
 Prema \citet{Goodfellow:2016:DL}, na odabir veličine mini-grupe utječu:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item Kvaliteta procjene gradijenta. Veće minigrupe daju točniju procjenu gradijenta.
 	\item Računska efikasnost. Premale mini-grupe ne iskorištavaju potpuno mogućnost paralelizacije izračuna, a prevelike grupe ne stanu u memoriju.
 	\item Optimizacija s manjim mini-grupama ima učinak regularizacije \citep{Wilson:2003:GIBTGDL}, ali zahtijeva manju stopu učenja i sporije konvergira.
-\end{enumerate}
+\end{solidenumerate}
 
 Kako bi optimizacijski algoritam konvergirao, treba se smanjivati stopa učenja ovisno o iteraciji (epohi). Prema \cite{Goodfellow:2016:DL}, dovoljan uvjet za konvergenciju gradijentnog spusta je
 \begin{align}
@@ -1396,12 +1396,12 @@ Pomaci se obično inicijaliziraju na neku konstantu.
 \subsection{Problem nekonveksnosti funkcije pogreške}
 
 \citet{Goodfellow:2016:DL} navode sljedeće probleme koji se javljaju kod nekonveksne optimizacije:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{Loše kondicioniranje Hesseove matrice}. Loše kondicioniranje Hesseove matrice može biti razlog da i s jako malim korakom učenje funkcija pogreške raste u smjeru gradijenta zato što kvadratni član u Taylorovom rezvoju u jednadžbi~\eqref{eq:grad-delta-approx}  bude pozitivan i prevlada linearni član.
 	\item \emphasize{Lokalni minimumi}. I ako se zanemare ekvivalentni lokalni minimumi koji postoje zbog simetričnosti zamjenjivosti položaja neurona u istom sloju i drugih simetričnosti u neurnoskim mrežama, funkcija pogreške ima velik broj lokalnih minimuma. Empirijski se pokazuje da loši lokalni minimumi nisu problem i da nije potrebno pronaći globalni minimum kako bi se dobili dobri rezultati.
 	\item \emphasize{Ostale stacionarne točke}. Kod visokodimenzionalnih optimizacijskih problema lokalni minimumi i maksimumi su obično rijetki zato što bi onda sve vlastite vrijednosti Hesseove matrice morale biti istog predznaka. Zato su češće sedlaste točke kod kojih se predznak barem jedne vlastite vrijednosti razlikuje od predznaka ostalih. Empirijski se pokazuje da sedlaste točke kod dubokih mreža nisu velik problem za optimizacijske postupke prvog reda koje ne privlače sedlaste točke. I ako se parametri nalaze točno u sedlastoj točki tako da je gradijent $\cvec 0$, stohastički gradijentni spust može imati drugačije gradijente.
 	\item \emphasize{Litice i eksplodirajući gradijenti}. Kod nekih modela javlja se problem velikih vrijednosti gradijenta u nekim točkama. To se može riješiti ograničavanjem norme gradijenta.
-\end{enumerate}
+\end{solidenumerate}
 
 
 \section{Regularizacija i poboljšavanje učenja}
@@ -1678,12 +1678,12 @@ Jednako tako, definirana je konvolucija funkcija iz $\Z^n\to\R$:
 (f*g)(\vec t) \coloneqq \sum_{\vec\tau} f(\vec\tau)g(\vec t-\vec\tau) \text{.}
 \end{align}
 Na isti način, s integralom umjesto zbroja, definirana je i konvolucija funkcija s kontinuiranom domenom. Neka od svojstava konvolucije su:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item Komutativnost: $f*g=g*f$.
 	\item Distributivnost zbrajanja. Vrijedi $(f+g)*h=f*h+g*h$.	
 	\item Translacijska ekvivarijantnost. Ako $f'(t) \coloneqq f(t+d)$, onda $(f'*g)(t)=(f*g)(t+d)$.
 	\item Konvolucija u vremenskoj domeni odgovara umnošku u Fourierovoj domeni, tj. $\const F[f*g]=\const F[f]\const F[g]$, gdje $\const F$ označava odgovarajuću Fourierovu transformaciju.
-\end{enumerate}
+\end{solidenumerate}
 
 Konvolucija se može poopćiti na funkcije s kodomenom koja može općeniti vektorski prostor, tj. funkcije iz $\Z^m\to\R^n$. Jedan način je ovaj, gdje se po svakoj komponenti paralelno obavlja konvolucija:
 \begin{align}
@@ -2296,12 +2296,12 @@ U ovom odjeljku su opisane evaluacijske mjere korištene u eksperimentima.
 \subsection{Binarna klasifikacija}
 
 Kod binarne klasifikacije klase dijelimo na \emphasize{pozitivnu klasu} i \emphasize{negativnu klasu}. Primjere iz skupa korištenog za ispitivanje prema predikcijama klasifikatora dijelimo u $4$ skupine:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{stvarno pozitivni} (engl. \textit{true positives}, TP) --- pozitivno klasificirani pozitivni primjeri
 	\item \emphasize{stvarno negativni} (engl. \textit{true negatives}, TN) --- negativno klasificirani negativni primjeri
 	\item \emphasize{lažno pozitivni} (engl. \textit{false positives}, FP) --- pozitivno klasificirani negativni primjeri
 	\item \emphasize{lažno negativni} (engl. \textit{true negatives}, FN) --- negativno klasificirani pozitivni primjeri.
-\end{enumerate}
+\end{solidenumerate}
 Neka $h(\vec x_i)$ označava predikciju modela za primjer $\vec x_i$ čija je stvarna oznaka $y_i$. Ovako ćemo označavati brojeve primjera u navedenim skupinama:
 \begin{align}
 \begin{aligned}
@@ -2326,7 +2326,7 @@ To možemo prikazati konfuzijskom matricom kao na slici~\ref{fig:konfuzijska-mat
 \end{figure}
 
 Neke od češćih evaluacijskih mjera za binarnu klasifikaciju su:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{točnost} (engl. \textit{accuracy}) --- udio točno klasificiranih primjera: $A\coloneqq\frac{\TP+\TN}{N}=\frac{\TP+\TN}{\TP+\FP+\TN+\FN}$
 	\item \emphasize{preciznost} (engl. \textit{precision}) --- udio stvarno pozitivnih primjera u pozitivno klasificiranim primjerima: $P\coloneqq\frac{\TP}{\TP+\FP}$
 	\item \emphasize{odziv} ili \emphasize{stopa stvarnih pozitiva} (engl. \textit{recall}, \textit{true positive rate}) --- udio stvarno pozitivnih primjera u pozitivnim primjerima: $R\coloneqq \TPR\coloneqq\frac{\TP}{\TP+\FN}$
@@ -2334,7 +2334,7 @@ Neke od češćih evaluacijskih mjera za binarnu klasifikaciju su:
 	\item \emphasize{stopa lažnih pozitiva} (engl. \textit{false positive rate}) --- udio lažno pozitivnih primjera u negativnim primjerima: $\FPR\coloneqq\frac{\FP}{\TN+\FP}$%=1-\mathit{TNR}$
 	\item \emphasize{mjera $F_1$} - harmonijska sredina preciznosti i odziva: $F_1\coloneqq\frac{2}{P^{-1}+R^{-1}}=\frac{2PR}{P+R}=\frac{2\TP}{2\TP+\FP+\FN}$
 	\item \emphasize{Jaccardov indeks} ili \emphasize{omjer presjeka i unije} (engl. \textit{intersection over union}) - udio točno klasificiranih primjera u uniji pozitivnih i pozitivno klasificiranih primjera: $J\coloneqq\IoU\coloneqq\frac{\TP}{\TP+\FP+\FN}=\frac{1}{P^{-1}+R^{-1}-1}$.
-\end{enumerate}
+\end{solidenumerate}
 Kod binarne klasifikacije (ne kod višeklasne) su $F_1$ i $J$ ekvivalentne u smislu da se jedna može izraziti preko druge --- $F_1$ je harmonijska sredina između $J$ i $1$: $F_1=\frac{2}{J^{-1}+1}$.
 
 \subsubsection{Mjere neovisne o pragu klasifikatora}
@@ -2368,12 +2368,12 @@ Kod višeklasne klasifikacije u $C$ klasa, konfuzijska matrica je dimenzija $C\t
 %\end{align}
 
 Neke od evaluacijskih mjera za višeklasnu klasifikaciju u $C$ klasa su:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item \emphasize{točnost} (engl. \textit{accuracy}) --- udio točno klasificiranih primjera: $A\coloneqq\frac{\sum_k \TP_k}{N}$
 	\item \emphasize{makro-usrednjena preciznost} (engl. \textit{macro-averaged precision}) --- srednja preciznost po klasama: $P_\text{m}\coloneqq\frac{1}{C}\sum_k P_k$, gdje $P_k\coloneqq\frac{\TP_k}{\TP_k+\FP_k}$
 	\item \emphasize{srednja prosječna preciznost preciznost} (engl. \textit{mean average precision}) --- srednja prosječna preciznost po klasama: $\mathit{mAP}\coloneqq\frac{1}{C}\sum_k \AP_k$, gdje $\AP_k\coloneqq\int_0^1 P_k(R_k)\dif R_k$
 	\item \emphasize{makro-usrednjeni Jaccardov indeks} ili \emphasize{srednji omjer presjeka i unije} (engl. \textit{mean intersection over union}) - srednji Jaccardov indeks po klasama: $J_\text{m}\coloneqq\mIoU\coloneqq\frac{1}{C}\sum_k J_k$, gdje $J_k\coloneqq\frac{\TP_k}{\TP_k+\FP_k+\FN_k}$.
-\end{enumerate}
+\end{solidenumerate}
 
 %Kod višeklasne klasifikacije navedenim evaluacijskim mjerama odgovaraju te mjere usrednjene po klasama, najčešće srednja preciznost . Za svaku klasu $k$ se posebno gledaju $\TP_k$,$\TN_k$,$\FP_k$,$\FN_k$ tako da nju uzimamo kao pozitivnu klasu, a sve ostale kao negativnu. Npr. srednja (\textit{makro-usrednjena}) preciznost (engl. \textit{mean precision}) je definirana kao aritmetička sredina preciznosti svih klasa: $P_\text{m}\coloneqq\frac{1}{C}\sum_k P_k$. Tako usrednjene mjere ćemo označavati s $\text{m}$ u indeksu. Za svaku klasu $k$ vrijedi $A_\text{m}=A_k=\frac{1}{N}\sum_k \TP_k$, gdje je $N$ ukupan broj primjera.
 
@@ -2413,9 +2413,20 @@ entropija razdiobe izlaza softmaksa $i$-tog uzorka, a epistemička nesigurnost s
 &\approx -\overline{h}(\vec x)^\tp\ln\del{\overline{h}(\vec x)} - \frac{1}{M}\sum_{i=1}^M \H\del{\rvec y\midmid\vec x,\rvec\theta=\tilde{\vec\theta}_i} \text{.}
 \end{align}
 
-\subsubsection{Modeli i skupovi podataka}
+Za ovaj rad su ispitane neke od tih ideja na zadatku semantičke segmentacije.
 
-Za ovaj rad su ispitane neke od tih ideja na zadatku semantičke segmentacije. Umjesto mreže koju su koristili \citet{Kendall:2017:WUNBDLCV}, korištena je mreža LadderDensenet-121 \citep{Kreso:2017:LSDFSSLNI}, za koju je potrebno manje memorije. Korištena je vlastita implementacija te mreže koja ne postiže jednako dobru performansu kao originalna iako nije poznata razlika u inicijalizaciji i učenju. Ta mreža će se označavati s \textit{LadderDensenet-121-V}. Na validacijskom skupu Cityscapesa \citep{Cordts:2016:Cityscapes} LadderDensenet-121-V bez \textit{dropouta} postiže srednji omjer presjeka i unije $\mIoU=0.6721\pm0.007$ i točnost piksela $A=0.9459\pm0.0006$ (sredina i standardna devijacija skupa od $5$ mjerenja), što je značajno manje od $\mIoU=0.7282$ i $A=0.9506$ kod originalne implementacije. Mreža učena na CamVidu \citep{Brostow:2008:CamVid} uz isti postupak učenja postiže $\mIoU=0.6774\pm0.0031$ i $A=0.9176\pm0.0025$ na skupu za testiranje CamVida. Pokazalo se da dodavanje \textit{dropouta} s vjerojatnošću isključivanja $1-p=0.2$, prema \citep{Huang:2016:DCCN}, loše utječe na performansu modela. Čini se da ni vjerojatnost isključivanja $0.1$ nema značajno pozitivan utjecaj na rezultat u odnosu na mrežu bez \textit{dropouta}, pogotovo za Cityscapes, koji je veći skup od CamVida. 
+\subsubsection{Skupovi podataka}
+
+Za učenje i ispitivanje su korišteni ovi skupovi podataka s oznakama za semantičku segmentaciju:
+\begin{solidenumerate}
+	\item CamVid\footnote{\url{https://github.com/alexgkendall/SegNet-Tutorial/tree/master/CamVid}} \citep{Brostow:2008:CamVid} -- skup kojeg čine slijedne slike dimenzija $480\times360$ iz snimki vožnje u gradu s oznakama za $32$ klase. Skup za učenje ima $367$ slika, skup za validaciju $101$, a skup za testiranje $233$. CamVid je korišten u \citet{Kendall:2017:WUNBDLCV}.
+	\item Cityscapes \citep{Cordts:2016:Cityscapes} -- skup slika dimenzija $2048\times1024$ iz vožnje u gradovima s oznakama za $19$ klasa. Skup za učenje ima $2975$ slika, skup za validaciju $500$, a skup za testiranje $1525$. Nisu dostupne ciljne oznake skupa za testiranje. Za učenje i ispitivanje su korištene slike umanjene uz odsječen donji dio, koji uglavnom činu neoznačena hauba, tako da budu dimenzije $1024\times448$.
+	\item WildDash\footnote{\url{http://www.wilddash.cc/}} -- skup iz vožnje s različitim vremenskim uvjetima, osvjetljenjima, okolinama, vozilima, rijetkim pojavama i s različitim parametrima kamere. Slike su dimenzija $1920\times1080$. Oznake su iste kao kod Cityscapesa. Za eksperimente je korišten podskup $\text{WildDash}_\text{bench}$ koji nema oznake i sadrži posebno teške slike od kojih su neke izobličene i neke nisu slike prometa i ne bi se trebale moći označiti i slično.
+\end{solidenumerate}
+
+\subsubsection{Modeli}
+
+Umjesto modela koji su koristili \citet{Kendall:2017:WUNBDLCV}, korištena je mreža LadderDenseNet-121 \citep{Kreso:2017:LSDFSSLNI}, za koju je potrebno manje memorije. Ona se temelji na mreži DenseNetBC-121 \citep{Huang:2016:DCCN} i prilagođena je za semantičku segmentaciju. Korištena je vlastita implementacija te mreže koja ne postiže jednako dobru performansu kao originalna iako nije poznata značajna razlika u inicijalizaciji i učenju. Ta mreža će se označavati s \textit{LadderDensenet-121-V}. Na validacijskom skupu Cityscapesa LadderDensenet-121-V bez \textit{dropouta} postiže srednji omjer presjeka i unije $\mIoU=0.6721\pm0.007$ i točnost piksela $A=0.9459\pm0.0006$ (sredina i standardna devijacija skupa od $5$ mjerenja), što je značajno manje od $\mIoU=0.7282$ i $A=0.9506$ kod originalne implementacije. Mreža učena na CamVidu uz isti postupak učenja postiže $\mIoU=0.6774\pm0.0031$ i $A=0.9176\pm0.0025$ na skupu za testiranje CamVida. Pokazalo se da dodavanje \textit{dropouta} s vjerojatnošću isključivanja $1-p=0.2$, kao kod \citep{Huang:2016:DCCN}, loše utječe na performansu. Čini se da ni vjerojatnost isključivanja $0.1$ nema značajno pozitivan utjecaj na rezultat u odnosu na mrežu bez \textit{dropouta}, pogotovo za Cityscapes, koji je veći skup od CamVida. 
 
 Unatoč lošijoj performansi, za eksperimente je, ako nije drugačije navedeno, korištena mreža s vjerojatnošću isključivanja $0.2$ kako aposteriorna razdioba parametara ne bi imala premalu entropiju i različiti uzorci mreže s \textit{dropoutom} ne bi bili previše slični, što bi onemogućilo dobro procjenjivanje epistemičke nesigurnosti predikcije, koja proizlazi iz nesigurnosti u parametre. Kako nije bilo dovoljno memorije za učenje mreže s \textit{dropoutom} na slikama iz Cityscapesa umanjenim na dimenzije $1024\times448$, kao kod \citet{Kreso:2017:LSDFSSLNI}, pri učenju je korišteno nasumično izrezivanje dijelova slika dimenzija $448\times448$ i broj epoha je povećan s $30$ na $80$. Kod CamVida su slike dimenzija $480\times360$ i bilo je dovoljno memorije. Veličina mini-grupe za CamVid je bila $8$. 
 
@@ -2423,7 +2434,7 @@ Za \textit{MC-dropout} je kao kod \cite{Kendall:2017:WUNBDLCV} korišteno po $50
 
 \subsubsection{Rezultati}
 
-U tablici~\ref{tab:evaluacija-camvid} su prikazani rezultati evaluacije različitih modela učenih na CamVidu (osim podskupa za testiranje). Može se vidjeti da MC-dropout ima pozitivan učinak na evaluaciju u odnosu na obični \textit{dropout}.
+U tablici~\ref{tab:evaluacija-camvid} su prikazani rezultati evaluacije različitih modela učenih na CamVidu (osim podskupa za testiranje). Može se vidjeti da \textit{MC-dropout} ima pozitivan učinak na evaluaciju u odnosu na obični \textit{dropout}.
 
 \begin{table}
 	\centering\small
@@ -2455,27 +2466,109 @@ Napravljen je eksperiment s učenjem mreže na podskupovima CamVida veličine $\
 		\toprule
 		\bfseries Učenje & \bfseries Testiranje & $\mIoU$ & \bfseries Aleatorna & \bfseries Epistemička & $\frac{\text{epistemička}}{\text{aleatorna}}$ \\
 		\midrule
-		CamVid-tv & CamVid-test & $0.663$ & $0.207$ & $0.025$ & $0.1206$ \\
-		$\text{CamVid-tv}/2$ & CamVid-test & $0.615$ & $0.272$ & $0.026$ & $0.0968$ \\
-		$\text{CamVid-tv}/4$ & CamVid-test & $0.546$ & $0.391$ & $0.029$ & $0.0732$ \\
-		$\text{CamVid-tv}/8$ & CamVid-test & $0.460$ & $0.538$ & $0.034$ & $0.0633$ \\
+		$\text{CamVid}_\text{trainval}$ & $\text{CamVid}_\text{test}$ & $0.663$ & $0.207$ & $0.025$ & $0.121$ \\
+		$\text{CamVid}_{\text{trainval},1/2}$ & $\text{CamVid}_\text{test}$ & $0.615$ & $0.272$ & $0.026$ & $0.097$ \\
+		$\text{CamVid}_{\text{trainval},1/4}$ & $\text{CamVid}_\text{test}$ & $0.546$ & $0.391$ & $0.029$ & $0.073$ \\
+		$\text{CamVid}_{\text{trainval},1/8}$ & $\text{CamVid}_\text{test}$ & $0.460$ & $0.538$ & $0.034$ & $0.063$ \\
 		\midrule
-		CamVid-tv     & CamVid-val  & $0.827$ & $0.118$ & $0.011$ & $0.0931$ \\
+		$\text{CamVid}_\text{trainval}$     & $\text{CamVid}_\text{val}$ & $0.827$ & $0.118$ & $0.011$ & $0.093$ \\
 		\midrule
-		CamVid-tv  & Cityscapes     &      -  & $0.383$ & $0.060$ & $0.1558$ \\
-		CamVid-tv  & WildDash-bench &      -  & $0.501$ & $0.075$ & $0.1492$ \\
+		$\text{CamVid}_\text{trainval}$  & $\text{Cityscapes}_\text{test}$ &      -  & $0.383$ & $0.060$ & $0.156$ \\
+		$\text{CamVid}_\text{trainval}$  & 	$\text{WildDash}_\text{bench}$	 &      -  & $0.501$ & $0.075$ & $0.149$ \\
+		\midrule
+		$\text{Cityscapes}_\text{train}$ & $\text{Cityscapes}_\text{val}$  & $0.644$ & $0.187$ & $0.024$ & $0.126$ \\
+		$\text{Cityscapes}_\text{train}$ & $\text{Cityscapes}_\text{test}$ & -       & $0.162$ & $0.020$ & $0.122$ \\
+		$\text{Cityscapes}_\text{train}$ & $\text{WildDash}_\text{bench}$  & - & $0.600$ & $0.153$ & $0.254$ \\
 		\bottomrule
 	\end{tabular}
-	\caption{Procjene aleatorne i epistemičke nesigurnosti za različite parove skupa za učenje i skupa za ispitivanje. CamVid-tv označava uniju skupa za učenje i skupa za validaciju, $\text{CamVid-tv}/n$ skup koji ima $1/n$ od primjera skupa CamVid-tv, CamVid-val skup za validaciju koji je podskup skupa CamVid-tv, CamVid-test skup za testiranje, Cityscapes skup za testiranje Cityscapesa, WildDash-bench skup na kojemu bi trebala biti veća epistemička nesigurnost jer su slike raznolikije.}
+	\caption{Procjene aleatorne i epistemičke nesigurnosti za različite parove skupa za učenje i skupa za ispitivanje i njihovi omjeri. U indeksima su imena podskupova. $1/n$ u indeksu označava da se uzima slučajan podskup s $1/n$ od svih primjera.}
 	\label{tab:epistemicka-aleatorna-ucenje-testiranje}
 \end{table}
 
+Na slikama~\ref{fig:nesigurnost-predikcije-cityscapes}~i~\ref{fig:nesigurnost-predikcije-wilddash} su prikazani odabrani primjeri predikcija i nesigurnosti kod kojih se vidi razlika između procjene aleatorne i procjene epistemičke nesigurnosti. Reci redom predstavljaju:
+\begin{solidenumerate}
+	\item ulaznu sliku
+	\item ciljne oznake (samo kod Cityscapesa ako ih ima)
+	\item segmentaciju dobivenu običnim \textit{dropoutom}
+	\item segmentaciju dobivenu \textit{MC-dropoutom}
+	\item entropije izlaznih razdioba po pikselima dobivene običnim \textit{dropoutom}
+	\item entropije izlaznih razdioba po pikselima dobivene \textit{MC-dropoutom}
+	\item procjenu aleatorne nesigurnosti procjenom uvjetne entropije prema izrazu~\eqref{eq:mc-dropout-aleatorna-nesigurnost} za svaki piksel
+	\item procjenu epistemičke nesigurnosti procjenom međusobne informacije prema izrazu~\eqref{eq:mc-dropout-epistemicka nesigurnost} pomnožena s $5$ za svaki piksel.
+\end{solidenumerate}
+Kod slika koje predstavljaju nesigurnost boje od crne do bijele predstavljaju vrijednosti iz intervala $\intcc{0,\ln C}$, gdje je $C=19$ broj klasa. Na slici~\ref{fig:boje-klasa-cityscapesa} se vidi koja boja predstavlja koju klasu kod semantičke segmentacije. Mreža je naučena na skupu za učenje Cityscapesa s \textit{dropoutom}.
 
-kalibracija nesigurnosti -- ako stignem
+\begin{figure}
+	\centering\footnotesize
+	\begin{minipage}[b]{1.9cm}\offinterlineskip
+		\begin{tabu} {@{}X[1,c,m]@{}@{}X[-1,c,m]@{}}
+			\makecell[l]{ulaz} & \vspace{1.6cm} \\
+			\makecell[l]{ciljna\\ oznaka} & \vspace{1.6cm} \\
+			\makecell[l]{predikcija --\\ \textit{dropout}} & \vspace{1.6cm} \\
+			\makecell[l]{predikcija --\\ \textit{MC-dropout}} &\vspace{1.6cm} \\
+			\makecell[l]{entropija --\\ \textit{dropout}} &\vspace{1.6cm} \\
+			\makecell[l]{entropija --\\ \textit{MC-dropout}} &\vspace{1.6cm} \\
+			\makecell[l]{aleatorna\\ nesigurnost} &\vspace{1.6cm} \\
+			\makecell[l]{epistemička\\ nesigurnost\\$\cdot5$ } &\vspace{1.6cm} \\
+		\end{tabu}
+	\end{minipage}
+	\raisebox{-.5\height+0.85mm}{\includegraphics[height=12.8cm,keepaspectratio]{experiments/uncertainty-predictions-cityscapes.png}}
+	\caption{Predikcije i procjene nesigurnosti na odabranim slikama iz skupova za validaciju i testiranje Cityscapesa na kojima se vide veća razlike između procjena epistemičke i aleatorne nesiguernosti.}
+	\label{fig:nesigurnost-predikcije-cityscapes}
+\end{figure}
 
-eksplicitna aleatorna nesigurnost s Gaussovom razdiobom logita kao u \cite{Kendall:2017:WUNBDLCV} -- ako stignem (mislim da neću)
+\begin{figure}
+	\centering\footnotesize
+	\begin{minipage}[b]{1.9cm}\offinterlineskip
+	\begin{tabu} {@{}X[1,c,m]@{}@{}X[-1,c,m]@{}}
+		\makecell[l]{ulaz} & \vspace{1.6cm} \\
+		\makecell[l]{predikcija --\\ \textit{dropout}} & \vspace{1.6cm} \\
+		\makecell[l]{predikcija --\\ \textit{MC-dropout}} &\vspace{1.6cm} \\
+		\makecell[l]{entropija --\\ \textit{dropout}} &\vspace{1.6cm} \\
+		\makecell[l]{entropija --\\ \textit{MC-dropout}} &\vspace{1.6cm} \\
+		\makecell[l]{aleatorna\\ nesigurnost} &\vspace{1.6cm} \\
+		\makecell[l]{epistemička\\ nesigurnost\\$\cdot5$ } &\vspace{1.6cm} \\
+	\end{tabu}
+\end{minipage}
+	\raisebox{-.5\height+0.85mm}{\includegraphics[height=11.2cm,keepaspectratio]{experiments/uncertainty-predictions-wilddash.png}}
+	\caption{Predikcije i procjene nesigurnosti na odabranim slikama iz skupa WildDash na kojima se vide veća razlike između procjena epistemičke i aleatorne nesiguernosti.}
+	\label{fig:nesigurnost-predikcije-wilddash}
+\end{figure}
 
-slike -- primjeri izlaza
+\begin{figure}
+	\centering\footnotesize
+	\begin{minipage}[b]{3.2cm}\offinterlineskip
+		\begin{tabu} {@{}X[1,r,m]@{} @{}X[-1,c,m]@{}}
+			neoznačeno &\vspace{0.5cm} \\
+			cesta &\vspace{0.5cm} \\
+			nogostup &\vspace{0.5cm} \\
+			građevina &\vspace{0.5cm} \\
+			zid &\vspace{0.5cm} \\
+			ograda &\vspace{0.5cm} \\
+			stup &\vspace{0.5cm} \\
+			semafor &\vspace{0.5cm} \\
+			prometni~znak &\vspace{0.5cm} \\
+			vegetacija &\vspace{0.5cm} \\			
+			teren &\vspace{0.5cm} \\			
+			nebo &\vspace{0.5cm} \\			
+			čovjek &\vspace{0.5cm} \\			
+			biciklist ili motociklist &\vspace{0.5cm} \\
+			automobil &\vspace{0.5cm} \\
+			kamion &\vspace{0.5cm} \\			
+			autobus &\vspace{0.5cm} \\			
+			vlak &\vspace{0.5cm} \\	
+			motocikl &\vspace{0.5cm} \\	
+			bicikl &\vspace{0.5cm} \\
+		\end{tabu}
+	\end{minipage}
+	\raisebox{-.5\height+0.85mm}{\includegraphics[height=10cm,keepaspectratio]{experiments/cityscapes-colors.png}}
+	\caption{Nazivi klasa i boje kojima su označene klase Cityscapesa.}
+	\label{fig:boje-klasa-cityscapesa}
+\end{figure}
+
+%kalibracija nesigurnosti -- ako stignem
+%eksplicitna aleatorna nesigurnost s Gaussovom razdiobom logita kao u %\cite{Kendall:2017:WUNBDLCV} -- ako stignem (mislim da neću)
+
 
 \section{Prepoznavanje izvanrazdiobnih i krivo klasificiranih primjera na temelju izlaza softmaksa ili logita kod klasifikacije slika}
 
@@ -2488,23 +2581,23 @@ Za ispitivanje su korištene rezidualna mreža WRN-28-10 \citep{Zagoruyko:2016:W
 \subsubsection{Izvanrazdiobni skupovi}
 
 Za ove eksperimente je kao unutarrazdiobni skup korišten podskup za testiranje iz skupa CIFAR-10. CIFAR-10 ima 10 klasa. Slike su dimenzija $32\times 32$ i ima ih $10000$ u skupu za testiranje. Za izvanrazdiobne skupove su, slično kao kod \cite{Hendrycks:2016:BDMOODE,Liang:2017:PDOODENN}, korišteni skupovi:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 	\item TinyImageNet\footnote{\url{https://tiny-imagenet.herokuapp.com/}} --- podskup ImageNet-a \citep{Deng:2009:ILSHID} sa slikama iz $200$ klasa. Skup za testiranje sadrži $10000$ slika. Za ove eksperimente su iz skupa za testiranje konstruirana dva skupa: TinyImageNet-C, kojeg čine slike iz kojih su nasumično izrezani dijelovi dimenzija $32\times 32$, i TinyImageNet-R, kojeg čine slike umanjene na iste dimenzije, tj. dimenzije slika iz skupa CIFAR-10.
 	\item LSUN \citep{Yu:2015:LSUN} --- skup sličan TinyImageNetu. Skup za testiranje sastoji se od $10000$ slika. Kao i za TinyImageNet, iz skupa za testiranje konstruirana su dva skupa: LSUN-C, kojeg čine slike iz kojih su nasumično izrezani dijelovi dimenzija $32\times 32$, i LSUN-R, kojeg čine slike umanjene slike.
 	\item iSUN \citep{Xu:2015:TCSWBET} --- podskup SUN-a \citep{Xiao:2016:SUN}. Za eksperimente se koriste sve slike iSUN-a umanjene na dimenzije $32\times 32$.
 	\item Gaussov šum --- slučajni uzorci nizova dimenzija $32\times 32\times 3$ tako da svaki element ima nezavisnu vrijednost iz Gaussove razdiobe s očekivanjem $0$ i varijancom $1$.
 	\item Uniformni šum --- slučajni uzorci nizova dimenzija $32\times 32\times 3$ tako da svaki element ima nezavisnu vrijednost iz uniformne razdiobe s očekivanjem $0$ i varijancom $1$.
-\end{enumerate}
+\end{solidenumerate}
 Kao i kod učenja, za svaki skup, slike koje se daju kao ulaz mreži su normalizirane oduzimanjem prosječne vrijednosti i dijeljenjem sa standardnom devijacijom svake komponente (RGB) prema pikselima u skupu za učenje (i validaciju).
 
 \subsubsection{Evaluacijske mjere}
 
 Kod svih evaluacijskih mjera, osim jedne, kao pozitivna klasa se uzimaju unutarrazdiobni primjeri. Kao kod \cite{Liang:2017:PDOODENN}, koriste se sljedeće evaluacijske mjere:
-\begin{enumerate}
+\begin{solidenumerate}
 	\item Stopa lažnih pozitiva $\FPR$ kada je odziv $0.95$, što će biti označavano $\FPR_{R=0.95}$. $\FPR$ se može interpretirati kao vjerojatnost da se izvanrazdiobni primjer krivo klasificira kao unutarrazdiobni.
 	\item $\AUROC$ -- mjera neovisna o pragu i omjeru veličina klasa.
 	\item Prosječna preciznost $\AP$ (ili $\AUPR$) -- mjera neovisna o pragu. $\AP$ će označavati prosječnu preciznost kada se unutarrazdiobni ili točno klasificirani primjeri uzimaju kao pozitivna klasa, a $\AP_\text{n}$ kada se izvanrazdiobni ili krivo klasificirani primjeri uzimaju kao pozitivna klasa.
-\end{enumerate}
+\end{solidenumerate}
 
 \subsubsection{Odabir parametara}
 
@@ -2513,13 +2606,13 @@ Na temelju rezultata u \cite{Liang:2017:PDOODENN}, koji pokazuju da su veće tem
 \subsubsection{Rezultati}
 
 Rezultati glavnih eksperimenata su prikazani u tablicama~\ref{tab:ood-dn-cifar}~i~\ref{tab:ood-wrn-cifar}. U tablicama za svaku evaluacijsku mjeru, $5$ stupaca redom predstavlja klasifikaciju:
-\begin{enumerate}[topsep=0pt,itemsep=0pt,partopsep=0pt]
+\begin{solidenumerate}
 \item maksimalne vrijednosti softmaksa uz $T=1$
 \item maksimalne vrijednosti softmaksa uz $T=1000$ %(ili logita s pomakom ulaza uz $T\gg 1$)
 \item maksimalne vrijednosti softmaksa uz $T=1000$ i pomak ulaza
 \item maksimalne vrijednosti logita
 \item maksimalne vrijednosti logita uz pomak ulaza za $T=1000$.
-\end{enumerate}
+\end{solidenumerate}
 
 \begin{table} \centering
 \begin{subtable}[t]{1\textwidth}
@@ -2621,6 +2714,7 @@ U tablici~\ref{tab:krivo-klasificirani-cifar} su prikazani rezultati prepoznavan
 \end{table}
 
 
+
 \chapter{Zaključak}
 
 U ovom radu su opisani i eksperimentalno ispitani neki od nadziranih pristupa za procjenu nesigurnosti predikcija kod dubokih nadziranih modela. 
@@ -2653,7 +2747,7 @@ Ovaj rad razmatra problem procjene nesigurnosti predikcija kod dubokih modela. O
 \begin{abstract}
 This thesis considers the problem of predictive uncertainty estimation in deep models. Two classes of uncertainty estimation are cosidered. The goal of one of the classes is to achieve reliable uncertainty estiamtion and distinguish whether the cause of uncertainty is ambiguity of data or parameter uncertainty by approximating Bayesian neural networks. The goal of the other considered class of approaches is to improve predictive uncertainty estimation without changing a pre-trained neural network and to detect out-of-distribution or misclassified examples based on the output (softmax output or logits). Some approaches have been described and tested on semantic segmentation and image classification tasks.
 
-\keywords{deep learning, machine learning, statistical inference, variational inference, Bayesian neural networks, out-of-distribution example detection, computer vision}
+	\keywords{deep learning, machine learning, statistical inference, variational inference, Bayesian neural networks, out-of-distribution example detection, computer vision}
 \end{abstract}
 
 \end{document}
