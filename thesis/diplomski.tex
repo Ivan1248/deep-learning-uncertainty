@@ -2243,7 +2243,7 @@ Ako pretpostavimo da \textit{dropout} dolazi iza slojeva linearne transformacije
 \end{align}
 gdje je $l$ indeks linearnog sloja, $\vec M_l$ matrica varijacijskih parametara, a $\rvar z_l$ slučajni vektor čiji elementi su nezavisne slučajne varijable s Bernoullijevom razdiobom s očekivanjem $p$, ako je $1-p$ vjerojatnost isključivanja. Druge parametre, kao što su pomaci, možemo točkasto procjenjivati, što za svaki parametar odgovara razdiobi koja ima samo jednu moguću vrijednost koja je varijacijski parametar.
 
-Kod bayesovskih neuronskih mreža maksimiziramo marginalnu izglednost što kod diskriminativnih modela odgovara maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost}:
+Kod bayesovskih neuronskih mreža maksimiziramo marginalnu izglednost, što kod diskriminativnih modela odgovara maksimizaciji izraza~\eqref{eq:bnm-marginalna-izglednost}:
 \begin{align} \label{eq:bnm-marginalna-izglednost-ponovljeno}
 \E_{\tilde{\vec\theta}\sim q_{\vec\phi}}\del{\sum_i \ln\p\del{\vec y_i\midmid\vec x_i,\rvec\theta=\tilde{\vec\theta}}} - \Dkl{q_{\vec\phi}}{\p(\rvec\theta)}
 \end{align}
