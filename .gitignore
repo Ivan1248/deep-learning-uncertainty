@@ -105,6 +105,9 @@ thesis/*.stn
 thesis/*.xdy
 thesis/*.lof
 thesis/*.lot
+thesis/*.snm
+thesis/*.nav
+thesis/*.auxlock
 
 # Specific
 /data/nets
