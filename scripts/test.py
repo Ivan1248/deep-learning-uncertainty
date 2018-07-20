@@ -2,6 +2,7 @@ import argparse
 import datetime
 
 import numpy as np
+from tqdm import tqdm
 
 from _context import dl_uncertainty
 
@@ -14,6 +15,7 @@ Use "--trainval" only for training on "trainval" and testing "test".
 CUDA_VISIBLE_DEVICES=0 python test.py
 CUDA_VISIBLE_DEVICES=1 python test.py
 CUDA_VISIBLE_DEVICES=2 python test.py
+ --mcdropout --trainval --uncertainties
  cifar wrn 28 10 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/wrn-28-10-e200/2018-05-28-0956/Model
  cifar wrn 28 10 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/wrn-28-10-dropout-e200/2018-05-29-1708/Model --mcdropout
  cifar dn 100 12 /home/igrubisic/projects/dl-uncertainty/data/nets/cifar-trainval/dn-100-12-e300/2018-05-28-0121/Model
@@ -23,16 +25,29 @@ CUDA_VISIBLE_DEVICES=2 python test.py
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-pretrained-e30/2018-05-18-2129/Model
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-pretrained-e80/2018-05-24-0403/Model --mcdropout
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-pretrained-e80/2018-05-24-0403/Model --mcdropout --test_dataset wilddash
+  
  dropout0.1
  camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-pretrained-e30/2018-06-24-1051/Model --mcdropout
  dropout0.1 1/2
- camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-22-1256/Model --mcdropout
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-22-1256/Model --mcdropout --trainval --uncertainties
  dropout0.1 1/4
- camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac4-pretrained-e30/2018-06-22-1226/Model --mcdropout
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac4-pretrained-e30/2018-06-22-1226/Model --mcdropout --trainval --uncertainties
  dropout0.1 1/8
- camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac8-pretrained-e30/2018-06-22-1205/Model --mcdropout
- dropout0.1 1/2
- camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-24-1509/Model --mcdropout
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac8-pretrained-e30/2018-06-22-1205/Model --mcdropout --trainval --uncertainties
+ 
+ dropout0.2
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-pretrained-e30/2018-06-24-1941/Model --mcdropout --trainval --uncertainties
+ dropout0.2 1/2
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac2-pretrained-e30/2018-06-24-1509/Model --mcdropout --trainval --uncertainties
+ dropout0.2 1/4
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac4-pretrained-e30/2018-06-25-1253/Model --mcdropout --trainval --uncertainties
+ dropout0.2 1/8
+ camvid ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/camvid-trainval/ldn-121-32-dropout-frac8-pretrained-e30/2018-06-25-1232/Model --mcdropout --trainval --uncertainties
+
+ dropout0.2
+ cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-randomcrop-pretrained-e80/2018-06-27-0739/Model --mcdropout --trainval --uncertainties
+
+
  mozgalo rn 50 64
  mozgalo rn 18 64
 """
@@ -51,6 +66,7 @@ parser.add_argument('--test_dataset', default="", type=str)
 parser.add_argument('--view', action='store_true')
 parser.add_argument('--view2', action='store_true')
 parser.add_argument('--hard', action='store_true')  # display hard exampels
+parser.add_argument('--uncertainties', action='store_true')
 parser.add_argument('--save', action='store_true')
 args = parser.parse_args()
 print(args)
@@ -99,12 +115,13 @@ if args.view or args.hard or args.view2:
                 mc_dropout=args.mcdropout,
                 outputs=out_names + ['probs_mi']  #,'pred_logits_var']
             )
+            maxent = np.log(mc_probs.shape[-1])
             epistemic = mc_probs_mi
             aleatoric = mc_probs_entropy - mc_probs_mi
             uncertainties = [
-                probs_entropy, mc_probs_entropy, aleatoric, epistemic * 20
+                probs_entropy, mc_probs_entropy, aleatoric,
+                np.clip(epistemic * 4, 0, maxent)
             ]
-            maxent = np.log(mc_probs.shape[-1])
             for a in uncertainties:
                 a.flat[0] = maxent
                 a.flat[1] = 0
@@ -116,8 +133,24 @@ if args.view or args.hard or args.view2:
         save_dir += f'-{args.test_dataset}'
     if args.dropout or args.mcdropout:
         save_dir += "-dropout"
+    if args.trainval:
+        save_dir += "-test"
     view = view_predictions_2 if args.view2 else view_predictions
     view(ds_disp, predict, save_dir=save_dir if args.save else None)
+elif args.uncertainties:
+    aleatoric = []
+    epistemic = []
+    for x, y in tqdm(ds_test):
+        ent, mi = model.predict(
+            x,
+            single_input=True,
+            mc_dropout=True,
+            outputs=['probs_entropy', 'probs_mi'])
+        aleatoric += [np.mean(ent - mi)]
+        epistemic += [np.mean(mi)]
+    aleatoric = np.mean(aleatoric)
+    epistemic = np.mean(epistemic)
+    print(aleatoric, epistemic)
 else:
     model.test(
         DataLoader(ds_train, model.batch_size),

@@ -201,7 +201,7 @@
 \newcommand{\FPR}{\mathit{FPR}}
 \newcommand{\TPR}{\mathit{TPR}}
 \newcommand{\AUROC}{\mathit{AUROC}}
-\newcommand{\AUPR}{\mathit{AUROC}}
+\newcommand{\AUPR}{\mathit{AUPR}}
 \newcommand{\AP}{\mathit{AP}}
 \newcommand{\IoU}{\mathit{IoU}}
 \newcommand{\mIoU}{\mathit{mIoU}}
@@ -220,3 +220,9 @@
 \newenvironment{talign*}
 {\let\displaystyle\textstyle\csname align*\endcsname}
 {\endalign}
+
+
+\usepackage{dashbox}%
+%\newcommand\dashedbox[1][H]{\setlength{\fboxsep}{0pt}\setlength{\dashlength}{4pt}\setlength{\dashdash}{2pt} \dbox{\phantom{#1}}}
+\newcommand\phbox[1][\phantom{:}]{\setlength{\fboxsep}{0.5pt}\setlength{\dashlength}{4pt}\setlength{\dashdash}{3pt} \raisebox{2pt}{\dbox{$\phantom{:}_{#1}$}}}
+%\newcommand\dashedbox[1][H]{\setlength{\fboxsep}{0pt}\dbox{\phantom{#1}}}

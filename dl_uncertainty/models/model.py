@@ -254,7 +254,7 @@ class Model(object):
         NP = [
             'probs', 'output', 'probs_entropy', 'pred_logits_var', 'logits_var',
             'probs_mi'
-        ]        
+        ]
         for o in outputs:
             assert o in NP
 
@@ -266,8 +266,14 @@ class Model(object):
             sampled_logits = np.reshape(sampled_logits, shape)
             sampled_probs = np.reshape(sampled_probs, shape)
 
+        if 'pred_logits_var' not in outputs:
+            del sampled_logits
+
         probs = sampled_probs.mean(0)
         output = np.argmax(probs, -1)
+
+        if 'probs_mi' not in outputs:
+            del sampled_probs
 
         #pred_logits_var = (probs * sampled_logits.var(0)).mean(-1)
 

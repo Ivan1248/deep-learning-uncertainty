@@ -45,7 +45,7 @@ def train(model: Model,
             assert not mcd or mcd and mc_dropout
             view_predictions(ds, lambda x: predict(x, mcd))
 
-        if text is None:
+        if text is None or len(text) == 0:
             return
         if text == 'q':
             return True
@@ -81,6 +81,7 @@ def train(model: Model,
         model.train(ds_train_loader, epoch_count=1)
         model.test(ds_val_loader, 'validation data')
         model.test(ds_train_part_loader, 'training data subset')
-    if mc_dropout:   
+    if mc_dropout:
         model.test(ds_val_loader, 'validation data', mc_dropout=True)
-        model.test(ds_train_part_loader, 'training data subset', mc_dropout=True)
+        model.test(
+            ds_train_part_loader, 'training data subset', mc_dropout=True)

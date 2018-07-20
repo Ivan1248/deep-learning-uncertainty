@@ -118,6 +118,9 @@ class Dataset(torch.utils.data.Dataset):
         name = f"concat[" + ",".join(x.name for x in datasets) + "]"
         return Dataset(ConcatDataset(datasets), info, name)
 
+    def extract_feature(self, feature):
+        return [d[feature] for d in self]
+
     def _print(self, *args, **kwargs):
         print(*args, f"({self.name})", **kwargs)
 

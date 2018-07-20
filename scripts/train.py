@@ -23,10 +23,15 @@ CUDA_VISIBLE_DEVICES=2 python train.py
   cityscapes dn  121 32 --epochs 30 --pretrained
   cityscapes rn   50 64 --epochs 30 --pretrained
   cityscapes ldn 121 32 --epochs 30 --pretrained
+  cityscapes ldn 121 32 --epochs 140 --pretrained --randomcrop --mcdropout
   camvid ldn 121 32 --epochs 30 --trainval --pretrained
   mozgalo rn 50 64 --pretrained --epochs 15 --trainval
   mozgalo rn 18 64 --epochs 12 --trainval
-CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 16; CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=1 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 2
+CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 2
+
+CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 120 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 60 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 8; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 120 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 60 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained --frac 4; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 120 --trainval --mcdropout --pretrained --frac 2; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 60 --trainval --mcdropout --pretrained --frac 2; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 120 --trainval --mcdropout --pretrained; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 60 --trainval --mcdropout --pretrained; CUDA_VISIBLE_DEVICES=0 python train.py camvid ldn 121 32 --epochs 30 --trainval --mcdropout --pretrained;
+
+
 """
 
 parser = argparse.ArgumentParser()

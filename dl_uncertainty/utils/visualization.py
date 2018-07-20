@@ -218,7 +218,7 @@ def view_predictions(dataset, infer=None, save_dir=None):
 
         os.makedirs(save_dir, exist_ok=True)
         for i, d in enumerate(tqdm(dataset)):
-            imsave(f'{save_dir}/p{i}.png', get_frame(d))
+            imsave(f'{save_dir}/p{i:05d}.png', get_frame(d))
 
     return Viewer().display(dataset, get_frame)
 
