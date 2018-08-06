@@ -29,7 +29,8 @@ def train(model: Model,
           mc_dropout=False,
           jitter=None,
           jitter_name="jitter",
-          data_loading_worker_count=0):
+          data_loading_worker_count=0,
+          no_validation=False):
 
     def handle_step(i):
         text = console.read_line(impatient=True, discard_non_last=True)
@@ -74,14 +75,18 @@ def train(model: Model,
             num_workers=data_loading_worker_count,
             drop_last=True) for ds in [ds_train, ds_val, ds_train_part]
     ]
+    if no_validation:
+        del ds_val_loader
 
     print(f"Starting training ({epoch_count} epochs)...")
-    model.test(ds_val_loader, 'validation data')
+    if not no_validation:
+        model.test(ds_val_loader, 'validation data')
     for _ in range(epoch_count):
         model.train(ds_train_loader, epoch_count=1)
-        model.test(ds_val_loader, 'validation data')
+        if not no_validation:
+            model.test(ds_val_loader, 'validation data')
         model.test(ds_train_part_loader, 'training data subset')
     if mc_dropout:
-        model.test(ds_val_loader, 'validation data', mc_dropout=True)
-        model.test(
-            ds_train_part_loader, 'training data subset', mc_dropout=True)
+        if not no_validation:
+            model.test(ds_val_loader, 'validation data', mc_dropout=True)
+        model.test(ds_train_part_loader, 'training data subset', mc_dropout=True)

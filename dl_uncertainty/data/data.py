@@ -2,6 +2,8 @@ import os
 import secrets
 import pickle
 import base64
+import collections
+import re
 
 import numpy as np
 import torch.utils.data
@@ -9,6 +11,50 @@ from torch.utils.data.dataset import ConcatDataset
 from functools import lru_cache
 import itertools
 from tqdm import tqdm, trange
+
+# Batching
+
+
+def tuple_collate(batch):  # malo brže
+    return tuple(map(np.array, zip(*batch)))
+
+
+from torch.utils.data.dataloader import default_collate
+
+
+def default_collate_numpy(batch):
+    elem_type = type(batch[0])
+    if elem_type.__module__ == 'numpy' and elem_type.__name__ != 'str_' \
+            and elem_type.__name__ != 'string_':
+        elem = batch[0]
+        #if elem_type.__name__ == 'ndarray':
+        #    # array of string classes and object
+        #    if re.search('[SaUO]', elem.dtype.str) is not None:
+        #        raise TypeError(error_msg.format(elem.dtype))
+        #    return np.stack([b for b in batch], 0)
+        if elem.shape == ():  # scalars
+            #py_type = float if elem.dtype.name.startswith('float') else int
+            #return np.array(list(map(py_type, batch)))
+            return np.array(batch)
+        else:
+            return np.stack(batch, 0)
+    elif isinstance(batch[0], int):
+        return np.array(batch)
+    elif isinstance(batch[0], float):
+        return np.array(batch)
+    elif isinstance(batch[0], str):
+        return batch
+    elif isinstance(batch[0], collections.Mapping):
+        return {
+            key: default_collate_numpy([d[key] for d in batch])
+            for key in batch[0]
+        }
+    elif isinstance(batch[0], collections.Sequence):
+        transposed = zip(*batch)
+        return [default_collate_numpy(samples) for samples in transposed]
+    else:
+        assert False
+
 
 # Dataset
 
@@ -65,7 +111,9 @@ class Dataset(torch.utils.data.Dataset):
             ds.info = new_info
         return ds
 
-    def batch(drop_last=True):
+    def batch(batch_size, drop_last=True, collate_fn=None):
+        return BatchesDataset(self, batch_size)
+
         assert drop_last, "Not implemented"
         assert False, "TODO"
 
@@ -326,11 +374,32 @@ class RepeatedDataset(Dataset):
         return self.length
 
 
+class BatchesDataset(Dataset):
+
+    def __init__(self, dataset, batch_size):
+        self.name = dataset.name + f"-batch{batch_size}"
+        self.dataset = dataset
+        self.length = len(self.dataset) // batch_size
+        self.batch_size = batch_size
+        if len(self.dataset) > self.length * batch_size:
+            self.length += 1
+            self.last_batch_size = self.length * batch_size - len(self.dataset)
+        else:
+            self.last_batch_size = self.batch_size
+        self.info = self.dataset.info
+
+    def __getitem__(self, idx):
+        if idx < 0 or idx >= self.length:
+            raise IndexError(idx)
+        batch_size = self.last_batch_size if idx == self.length - 1 else self.batch_size
+        i_start = idx * self.batch_size
+        return [self.dataset[i] for i in range(i_start, i_start + batch_size)]
+
+    def __len__(self):
+        return self.length
+
+
 # DataLoader
-
-
-def tuple_collate(batch):
-    return tuple(map(np.array, zip(*batch)))
 
 
 class DataLoader(torch.utils.data.DataLoader):
@@ -340,11 +409,12 @@ class DataLoader(torch.utils.data.DataLoader):
                  batch_size,
                  shuffle=False,
                  num_workers=0,
-                 drop_last=False):
+                 drop_last=False,
+                 collate_fn=default_collate_numpy):
         super().__init__(
             dataset,
             batch_size=batch_size,
             shuffle=shuffle,
             num_workers=num_workers,
             drop_last=drop_last,
-            collate_fn=tuple_collate)
+            collate_fn=collate_fn)

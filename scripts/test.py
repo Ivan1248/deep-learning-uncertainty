@@ -47,6 +47,9 @@ CUDA_VISIBLE_DEVICES=2 python test.py
  dropout0.2
  cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-randomcrop-pretrained-e80/2018-06-27-0739/Model --mcdropout --trainval --uncertainties
 
+  ood
+ cityscapes ldn 121 32 /home/igrubisic/projects/dl-uncertainty/data/nets/cityscapes-train/ldn-121-32-dropout-randomcrop-pretrained-e120/2018-07-24-0416/Model --mcdropout --trainval --uncertaintyood
+
 
  mozgalo rn 50 64
  mozgalo rn 18 64
@@ -67,6 +70,7 @@ parser.add_argument('--view', action='store_true')
 parser.add_argument('--view2', action='store_true')
 parser.add_argument('--hard', action='store_true')  # display hard exampels
 parser.add_argument('--uncertainties', action='store_true')
+parser.add_argument('--uncertaintyood', action='store_true')
 parser.add_argument('--save', action='store_true')
 args = parser.parse_args()
 print(args)
@@ -99,7 +103,6 @@ model.load_state(args.saved_path)
 
 if args.view or args.hard or args.view2:
     ds_disp = ds_train if args.test_on_training_set else ds_test
-    ds_disp = ds_disp.permute()
 
     if args.hard:
         ds_disp = training.get_hard_examples(model, ds_disp)
@@ -151,6 +154,49 @@ elif args.uncertainties:
     aleatoric = np.mean(aleatoric)
     epistemic = np.mean(epistemic)
     print(aleatoric, epistemic)
+elif args.uncertaintyood:
+    from sklearn.metrics import precision_recall_curve, auc, average_precision_score
+    pixelwise = True
+    y_true = np.ones(156)
+    y_true[141:] = 0
+    y_true[[141, 142, 151, 155]] = -1
+    ds_test = ds_test.subset([i for i, v in enumerate(y_true) if v != -1])
+    y_true = np.ones(156 - 4)
+    y_true[141:] = 0
+    epistemic = []
+    for x, y in tqdm(ds_test):
+        ent, mi = model.predict(
+            x,
+            single_input=True,
+            mc_dropout=True,
+            outputs=['probs_entropy', 'probs_mi'])
+        #mi = ent
+        if pixelwise:
+            epistemic += [mi]
+        else:
+            epistemic += [np.mean(mi)]
+        print(epistemic[-1])
+
+    y_score = np.array(epistemic).flatten()
+    if pixelwise:
+        y_true = np.repeat(y_true, len(epistemic[0].flat))
+
+    #p_in, r_in, thr = precision_recall_curve(y_true=y_true, probas_pred=y_score)
+    #pi_in = np.array([np.max(p_in[:j + 1]) for j, _ in enumerate(p_in)])
+
+    #p_out, r_out, thr = precision_recall_curve(
+    #    y_true=1 - y_true, probas_pred=-y_score)
+    #pi_out = np.copy(p_out)
+    #pi_out = np.array([np.max(p_out[:j + 1]) for j, _ in enumerate(p_out)])
+
+    #ap_in = auc(r_in, p_in)
+    #api_in = auc(r_in, pi_in)
+    #ap_out = auc(r_out, p_out)
+    #api_out = auc(r_out, pi_out)
+    #print(ap_in, api_in, ap_out, api_out)
+    ap_in = average_precision_score(y_true, -y_score)
+    ap_out = average_precision_score(1 - y_true, y_score)
+    print(ap_in, ap_out)
 else:
     model.test(
         DataLoader(ds_train, model.batch_size),

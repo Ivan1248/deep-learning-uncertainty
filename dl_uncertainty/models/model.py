@@ -153,7 +153,7 @@ class Model(object):
         self._log(f'Testing ({test_name})...')
         loss_sum = 0
         self._sess.run(self.ae_reset)
-        for inputs, labels in data:
+        for inputs, labels in tqdm(data):
             fetches = [self.nodes['loss'], self.ae_accum_batch]
             loss, _ = self._run(fetches, inputs, labels, is_training=False)
             loss_sum += loss

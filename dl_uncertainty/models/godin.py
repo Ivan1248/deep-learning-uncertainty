@@ -26,8 +26,7 @@ class Godin:
                 self.perturb_node = fgsm(
                     x=model.nodes['input'],
                     probs=model.nodes['probs'],
-                    eps=self.epsilon_node,
-                    antiadversarial=True)
+                    eps=-self.epsilon_node)
         self.max_epsilon = max_epsilon
         self.epsilon_count = epsilon_count
         self.epsilon = 0

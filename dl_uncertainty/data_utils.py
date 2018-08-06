@@ -26,13 +26,13 @@ def get_dataset(name, trainval_test=False):
         if trainval_test:
             ds_train = ds_train + ds_test
             ds_test = datasets.TinyImageNet(ds_path, 'test')
-    elif name == 'svhn':
-        ds_path = dirs.DATASETS + '/tiny-imagenet-200'
-        ds_train = datasets.TinyImageNet(ds_path, 'train')
-        ds_test = datasets.TinyImageNet(ds_path, 'val')
+    elif name == 'inaturalist18':
+        ds_path = dirs.DATASETS + '/inaturalist18'
+        ds_train = datasets.INaturalist2018Dataset(ds_path, 'train')
+        ds_test = datasets.INaturalist2018Dataset(ds_path, 'val')
         if trainval_test:
             ds_train = ds_train + ds_test
-            ds_test = datasets.TinyImageNet(ds_path, 'test')
+            ds_test = datasets.INaturalist2018Dataset(ds_path, 'test')
     elif name.startswith('mozgalo'):
         mozgalo_path = dirs.DATASETS + '/mozgalo_robust_ml_challenge'
         ds_train = datasets.MozgaloRVCDataset(
@@ -98,6 +98,33 @@ def get_dataset(name, trainval_test=False):
         load = lambda s: datasets.LSUNDataset(ds_path, s)
         ds_test = load('test')
         ds_train = ds_test
+    elif name == 'cs-wd-ood':
+        import PIL.Image as pimg
+        from PIL import Image
+
+        def resize(x, shape, label=False):
+            shape = (shape[1], shape[0])
+            im = Image.fromarray(x).resize(shape, pimg.NEAREST
+                                           if label else pimg.BILINEAR)
+            return np.array(im, dtype=np.int8 if label else np.uint8)
+
+        cs_train = datasets.CityscapesSegmentationDataset(dirs.DATASETS + '/cityscapes','train', \
+            downsampling_factor=2, remove_hood=True)
+
+        load_wd = lambda s: datasets.WildDashSegmentationDataset(dirs.DATASETS + '/wilddash', s)
+        wd_val = load_wd('val')
+        s = cs_train[0][1].shape[1] / wd_val[0][0].shape[1]
+        shape = (round(wd_val[0][0].shape[0] * s), round(
+            wd_val[0][0].shape[1] * s))
+        wd_val = wd_val.map(
+            lambda x: (resize(x[0], shape)[64:-64], resize(x[1], shape, True)[64:-64]),
+            func_name='cswdood')
+
+        ds_train = cs_train.join(wd_val)
+
+        ds_test = load_wd('bench').map(
+            lambda x: (resize(x[0], shape)[64:-64], resize(x[1], shape, True)[64:-64]),
+            func_name='cswdood')
     else:
         assert False, f"Invalid dataset name: {name}"
     return ds_train, ds_test
@@ -114,8 +141,10 @@ def get_input_mean_std(dataset):
 
 class LazyNormalizer:
 
-    def __init__(self, ds, cache_dir=None):
+    def __init__(self, ds, cache_dir=None, max_sample_size=10000):
         self.ds = ds
+        if len(self.ds) > max_sample_size:
+            self.ds = self.ds.permute().subset(np.arange(max_sample_size))
         self.mean, self.std = get_input_mean_std([ds[0], ds[1]])
         self.initialized = multiprocessing.Value('i', 0)
         self.mean = multiprocessing.Array('f', self.mean)
@@ -177,7 +206,7 @@ class CacheSpaceAssigner:
             ds2 = ds2.cache_hdd_only(self.cache_dir)
             return ds1 + ds2
 
-    def cache_ram_only(self, ds):  # caching (HDD, RAM)
+    def cache_ram_only(self, ds):
         assert self.cache_left >= len(ds), \
             f"Data doesn't fit in cache space ({len(ds)}>{self.cache_left})"
         return ds.cache()
@@ -190,15 +219,16 @@ class CacheSpaceAssigner:
 # Cached dataset with normalized inputs
 
 
-def get_cached_dataset_with_normalized_inputs(name, trainval_test=False):
-    ds_train, ds_test = get_dataset(name, trainval_test)
+def get_cached_dataset_with_normalized_inputs(ds_id, trainval_test=False):
+    ds_train, ds_test = get_dataset(ds_id, trainval_test)
     dss = (ds_train, ds_test)
     cache_dir = f"{dirs.CACHE}"
     print("Setting up data preprocessing...")
     normalizer = LazyNormalizer(ds_train, cache_dir)
     dss = map(lambda ds: ds.map(normalizer.normalize, 0), dss)
     print("Setting up data caching on HDD...")
-    dss = map(lambda ds: ds.cache_hdd_only(cache_dir), dss)
+    if ds_id not in ['inaturalist18']:
+        dss = map(lambda ds: ds.cache_hdd_only(cache_dir), dss)
     return tuple(dss)
 
 

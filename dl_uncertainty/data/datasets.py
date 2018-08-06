@@ -1,5 +1,6 @@
 import os, glob
 import pickle
+import json
 
 import PIL.Image as pimg
 import numpy as np
@@ -208,6 +209,42 @@ class TinyImageNet(Dataset):
         return len(self._examples)
 
 
+class INaturalist2018Dataset(Dataset):
+
+    def __init__(self, data_dir, subset='train'):
+        assert subset in ['train', 'val', 'test']
+
+        self._data_dir = data_dir
+
+        with open(f"{data_dir}/{subset}2018.json") as fs:
+            info = json.loads(fs.read())
+        self._file_names = [x['file_name'] for x in info['images']]
+        if 'annotations' in info.keys():
+            self._labels = [x['category_id'] for x in info['annotations']]
+        else:
+            self._labels = np.full(shape=len(self._file_names), fill_value=-1)
+
+        with open(f"{data_dir}/categories.json") as fs:
+            categories = json.loads(fs.read())
+
+        self.info = {
+            'id': 'inaturalist18',
+            'class_count': 8142,
+            'class_to_categories': categories,
+            'problem_id': 'clf'
+        }
+        self.name = f"iNaturalist2018-{subset}"
+
+    def __getitem__(self, idx):
+        img_path = f"{self._data_dir}/{self._file_names[idx]}"
+        img = _load_image(img_path)
+        img = pad_to_shape(img, [800, 800])
+        return img, self._labels[idx]
+
+    def __len__(self):
+        return len(self._labels)
+
+
 # Semantic segmentation
 
 
@@ -344,10 +381,10 @@ class WildDashSegmentationDataset(Dataset):
         self._id_to_label = [(l.id, l.trainId) for l in cslabels]
 
         self._images_dir = f'{data_dir}/wd_{subset}_01'
-        self._image_names = [
+        self._image_names = sorted([
             os.path.relpath(x, start=self._images_dir)[:-5]
             for x in glob.glob(self._images_dir + f'/*{self._IMG_SUFFIX}')
-        ]
+        ])
         class_count = 19
         self.info = {
             'id': 'wilddash',

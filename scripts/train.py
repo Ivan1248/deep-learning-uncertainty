@@ -18,12 +18,14 @@ CUDA_VISIBLE_DEVICES=2 python train.py
   cifar wrn 28 10 --epochs 200 --trainval
   cifar dn 100 12 --epochs 300 --trainval
   cifar rn  34  8 --epochs 200 --trainval
+  inaturalist18 rn  34  8 --epochs 200
   cifar rn 164 16 --epochs 200 --trainval
   voc2012 rn 50 64 --pretrained --epochs 30 --trainval
   cityscapes dn  121 32 --epochs 30 --pretrained
   cityscapes rn   50 64 --epochs 30 --pretrained
   cityscapes ldn 121 32 --epochs 30 --pretrained
   cityscapes ldn 121 32 --epochs 140 --pretrained --randomcrop --mcdropout
+  cs-wd-ood ldn 121 32 --epochs 140 --pretrained --randomcrop --mcdropout
   camvid ldn 121 32 --epochs 30 --trainval --pretrained
   mozgalo rn 50 64 --pretrained --epochs 15 --trainval
   mozgalo rn 18 64 --epochs 12 --trainval
@@ -44,6 +46,7 @@ parser.add_argument('--dropout', action='store_true')
 parser.add_argument('--mcdropout', action='store_true')
 parser.add_argument('--pretrained', action='store_true')
 parser.add_argument('--randomcrop', action='store_true')
+parser.add_argument('--no_validation', action='store_true')
 parser.add_argument('--epochs', nargs='?', const=200, type=int)
 parser.add_argument('--frac', nargs='?', default=None, type=int)
 parser.add_argument('--name_addition', required=False, default="", type=str)
@@ -89,6 +92,7 @@ training.train(
     jitter=jitter,
     mc_dropout=args.mcdropout,
     data_loading_worker_count=4,
+    no_validation=args.no_validation,
     **train_kwargs)
 
 # Saving

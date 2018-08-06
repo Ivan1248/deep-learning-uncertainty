@@ -181,9 +181,13 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
             'values': [base_learning_rate * 0.1**i for i in range(3)]
         }
         if ds_id in ['cifar', 'svhn']:
-            batch_size = 64 if net_name == 'dn' else 128
+            batch_size = 128
         elif ds_id == 'mozgalo':
-            batch_size = 32 if net_name == 'dn' else 64
+            batch_size = 64
+        elif ds_id == 'inaturalist18':
+            batch_size = 64
+        if net_name == 'dn':
+            batch_size //= 2
         return TrainingComponents.standard(
             batch_size=batch_size,
             loss=problem_id,
