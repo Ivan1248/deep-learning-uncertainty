@@ -211,7 +211,7 @@ class TinyImageNet(Dataset):
 
 class INaturalist2018Dataset(Dataset):
 
-    def __init__(self, data_dir, subset='train'):
+    def __init__(self, data_dir, subset='train', superspecies='all'):
         assert subset in ['train', 'val', 'test']
 
         self._data_dir = data_dir
@@ -237,8 +237,10 @@ class INaturalist2018Dataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = f"{self._data_dir}/{self._file_names[idx]}"
-        img = _load_image(img_path)
-        img = pad_to_shape(img, [800, 800])
+        img = pimg.open(img_path)
+        img = img.resize(np.array(img.size) // 2, pimg.BILINEAR)
+        img = pad_to_shape(np.array(img), [400, 400])
+        img = _to_rgb(img)
         return img, self._labels[idx]
 
     def __len__(self):

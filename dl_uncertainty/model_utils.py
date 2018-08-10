@@ -185,7 +185,7 @@ def get_training_component(net_name, ds_train, epoch_count, pretrained=False):
         elif ds_id == 'mozgalo':
             batch_size = 64
         elif ds_id == 'inaturalist18':
-            batch_size = 64
+            batch_size = 16
         if net_name == 'dn':
             batch_size //= 2
         return TrainingComponents.standard(
@@ -258,7 +258,7 @@ def get_model(net_name,
 
     if pretrained:
         print("Loading pretrained parameters...")
-        if net_name == 'rn' and depth == 50:
+        if net_name == 'rn' and depth == 50 and width == 64:
             names_to_params = parameter_loading.get_resnet_parameters_from_checkpoint_file(
                 f'{dirs.PRETRAINED}/resnetv2_50/resnet_v2_50.ckpt')
         elif net_name == 'dn' and depth == 121 and width == 32:
