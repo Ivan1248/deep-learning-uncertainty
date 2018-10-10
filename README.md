@@ -54,6 +54,15 @@ My master thesis project.
     └── view_dataset.py     # e.g. python view_dataset.py cifar trainval
 ```
 
+`dl_uncertainty/dirs.py` requires that directories matching regular expressions below exist.
+```
+.(\/..)+\/data\/cache       # some ancestor direcotory contains data/cache
+.(\/..)+\/data\/datasets    # some ancestor direcotory contains data/datasets ...
+.(\/..)+\/data\/pretrained_parameters
+.(\/..)+\/data\/nets
+```
+
+
 ### Usage
 TODO
 
