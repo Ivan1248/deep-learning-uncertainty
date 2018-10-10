@@ -20,7 +20,7 @@ My master thesis project.
 ### Code structure
 ```
 .
-├── data  # non-code data
+├── data  # non-code
 │   ├── nets                # trained model parameters
 │   └── plots
 ├── dl_uncertainty          # library
@@ -29,7 +29,7 @@ My master thesis project.
 │   │   ├── datasets.py     # raw `Dataset` implementations
 │   ├── ioutils
 │   ├── models
-│   │   ├── components.py   # a higher-level abstractions of `tf_utils/layers.py` with an experimantal programming design
+│   │   ├── components.py   # abstractions/wrappers of `tf_utils/layers.py` with an experimantal programming design
 │   │   ├── modeldef.py     # `InferenceComponent` (model graph), `TrainingComponent` (inductive bias), `ModelDef` ((almost) all information that needs to be given to the `Model` inintializer)
 │   │   ├── model.py        # `Model` with methods such as `train`, `test`, `predict`, `save_state`, `load_state`, `load_parameters`
 │   │   └── tf_utils
@@ -47,13 +47,11 @@ My master thesis project.
 │   ├── model_utils.py      # factories `get_inference_component`, `get_training_component`, model factory `get_model`
 │   ├── parameter_loading.py
 │   └── training.py         # `train`, training loop function
-├── notebooks
-├── scripts
-│   ├── _context.py
-│   ├── test.py             # e.g. python test.py cifar wrn 28 10 ../data/nets/cifar-trainval/wrn-28-10-e100/2018-05-28-0956/Model
-│   ├── train.py            # e.g. python train.py cifar rn 18 64 --epochs 100 --trainval
-│   └── view_dataset.py     # e.g. python view_dataset.py cifar trainval
-├── tests
+└── scripts
+    ├── _context.py
+    ├── test.py             # e.g. python test.py cifar wrn 28 10 ../data/nets/cifar-trainval/wrn-28-10-e100/2018-05-28-0956/Model
+    ├── train.py            # e.g. python train.py cifar rn 18 64 --epochs 100 --trainval
+    └── view_dataset.py     # e.g. python view_dataset.py cifar trainval
 ```
 
 ### Usage
