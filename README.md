@@ -54,15 +54,70 @@ My master thesis project.
     └── view_dataset.py     # e.g. python view_dataset.py cifar trainval
 ```
 
+### Prerequisites
+
 `dl_uncertainty/dirs.py` requires that directories matching regular expressions below exist.
 ```
-.(\/..)+\/data\/cache       # some ancestor direcotory contains data/cache
-.(\/..)+\/data\/datasets    # some ancestor direcotory contains data/datasets ...
+.(\/..)+\/data\/cache       # some ancestor directory contains `data/cache`
+.(\/..)+\/data\/datasets    # some ancestor directory contains `data/datasets` ...
 .(\/..)+\/data\/pretrained_parameters
 .(\/..)+\/data\/nets
 ```
 
+#### Dataset directory
+
+The `<ancestor>/data/datasets` directory (stored in the `dirs.DATASETS` variable in `dl_uncertainty/dirs.py`) needs to contain the required datasets. For example, for CIFAR-10 it needs to contain this directory subtree:
+```
+cifar-10-batches-py/
+├── batches.meta
+├── data_batch_1
+├── data_batch_2
+├── data_batch_3
+├── data_batch_4
+├── data_batch_5
+└── test_batch
+```
+
+#### Preprocessed data caching directory
+
+The `<ancestor>/data/cache` directory is used for caching preprocessed data in the `get_cached_dataset_with_normalized_inputs` factory function  in `dl_uncertainty/data_utils.py` (`data_utils.LazyNormalizer` stores average image channel values and `data.Dataset.cache_hdd_only` stores preprocessed data). `python scripts/clear_cache.py <dataset_id>` can be used to clear cache for a dataset.
+
+#### Trained model parameters directory
+
+The `<ancestor>/data/nets` directory is used storing trained model parameters and training log data.
+
 
 ### Usage
+
+#### Training
+
+To train a model, the script `scripts/train.py` needs to be run. An example command for training a model is 
+```
+python train.py <dataset_id> <model_id> <model_depth> <model_width_parameter> --epochs <epoch_count> [--trainval]
+```
+
+Some examples of `<dataset_id>` are `cifar`, `inaturalist`, `tinyimagenet`. Other dataset IDs can be seen in `dl_uncertainty/data_utils.py`.
+
+`<model_id> <model_depth> <model_width_parameter>` describe the general model structure. Some examples are 
+  * ResNets (V2), where `<model_width_parameter>` represents the number of feature maps of the first group of residual blocks  `rn 18 64` (ResNetV2 18), `rn 50 64` (ResNetV2 50);
+  * wide ResNets, where `<model_width_parameter>` represents 1/16 of the number of feature maps of the first group of residual blocks: `wrn 28 10` (WRN-28-10), `wrn 16 4` (WRN-16-4);
+  * DenseNets (BC variant) where `<model_width_parameter>` represents the growth rate (k): `dn 100 12`, `dn 121 32`.
+
+If the optional `--trainval` argument is passed, the model is trained on the `trainval` set and tested on the `test` set. Otherwise, it is trained on the `train` set and tested on the `val` set.
+
+Even though `--epochs` looks like it is optional, it is not.
+
+When the training is finished the path of the trained model (a path ending with "/Model") is saved is printed on the screen. It can be copied for use in other scripts, like `test.py`.
+
+#### Testing
+
+To test a trained model on some new dataset `scripts/test.py` needs to be run. An example command for testing is 
+```
+python test.py <dataset_id> <model_id> <model_depth> <model_width_parameter> <path_to_model>
+```
+
+`<dataset_id>` is the ID of the dataset that the model was trained on.
+`<path_to_model>` is the path to the saved parameters of the model (the path ending with "/Model)).
+
 TODO
 
