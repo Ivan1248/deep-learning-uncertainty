@@ -56,12 +56,13 @@ My master thesis project.
 
 ### Prerequisites
 
-`dl_uncertainty/dirs.py` requires that directories matching regular expressions below exist.
+`dl_uncertainty/dirs.py` requires that a directories matching the following regular expressions exist ('.' and '/' are not escaped for readability).
+
 ```
-.(\/..)+\/data\/cache       # some ancestor directory contains `data/cache`
-.(\/..)+\/data\/datasets    # some ancestor directory contains `data/datasets` ...
-.(\/..)+\/data\/pretrained_parameters
-.(\/..)+\/data\/nets
+.(/..)+/data/cache       # some ancestor directory contains `data/cache`
+.(/..)+/data/datasets    # some ancestor directory contains `data/datasets` ...
+.(/..)+/data/pretrained_parameters
+.(/..)+/data/nets
 ```
 
 #### Dataset directory
