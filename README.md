@@ -106,8 +106,6 @@ Some examples of `<dataset_id>` are `cifar`, `inaturalist`, `tinyimagenet`. Othe
 
 If the optional `--trainval` argument is passed, the model is trained on the `trainval` set and tested on the `test` set. Otherwise, it is trained on the `train` set and tested on the `val` set.
 
-Even though `--epochs` looks like it is optional, it is not.
-
 When the training is finished the path of the trained model (a path ending with "/Model") is saved is printed on the screen. It can be copied for use in other scripts, like `test.py`.
 
 #### Testing
